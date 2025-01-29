@@ -1,10 +1,33 @@
-import {FC, useEffect, useState} from 'react';
-import axios from 'axios';
+import { FC } from 'react';
+import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import DimensaoAdmin from './components/admin/dimensaoAdmin';
+import DimensaoPage from './components/admin/dimensaoPage';
 
+const App:FC = () => {
+  return(
+    <BrowserRouter>
+      <Routes>
+        <Route path="/admin/dimensao" element={<DimensaoAdmin/>} />
+        <Route path="/admin/dimensao/:dimensao" element={<DimensaoPage/>} />
+      </Routes>
+    </BrowserRouter>
+  )
+}
+/*
 interface AppProps {
   title: string;
 }
 
+interface User {
+  login: {
+    uuid: string;
+  };
+  name: {
+    first: string;
+    last: string;
+  };
+  email: string;
+}
 const App:FC<AppProps> = ({title}) => {
   const [users, setUsers] = useState([]);
   useEffect(() => {
@@ -41,5 +64,5 @@ return (
       </ul>
     </div>
   );};
-
+*/
 export default App
