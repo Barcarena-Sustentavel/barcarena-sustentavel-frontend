@@ -26,29 +26,30 @@ const Map:FC = () =>{
 
     //Função para pegar as coordenadas de um kml
     const getKmlCoords = (kml:string) => async () => {
+        setKmlDocument(null)
         const response = await api.get(`/dimensoes/kmlCoords/${kml}/`)
         const parser = new DOMParser();
         const kmlParser:any = parser.parseFromString(response.data.coordenadas, "text/xml")
         //Pega todas as coordenadas do kmlDocument
-        let arraySelector =  kmlParser.querySelectorAll("coordinates")
+        const arraySelector =  kmlParser.querySelectorAll("coordinates")
         //Cria um array de arrays de strings com as coordenadas
-        let arraysCoords:Array<Array<string>> = []
+        const arraysCoords:Array<Array<string>> = []
 
         //Transforma as coordenadas em um array string
         for(let i = 0; i < arraySelector.length; i++){
-          let arraySelectorTextContent = arraySelector[i].textContent.split(" ")
-          let arrayFilter = arraySelectorTextContent.filter((_:any, i:number) => i % (arraySelector.length/10) == 0);
+          const arraySelectorTextContent = arraySelector[i].textContent.split(" ")
+          const arrayFilter = arraySelectorTextContent.filter((_:any, i:number) => i % (arraySelector.length/10) == 0);
           arraysCoords.push(arrayFilter)
         }
 
-        let setArr: Array<Array<number>> = [];
+        const setArr: Array<Array<number>> = [];
 
         arraysCoords.forEach((coordArray) => {
           coordArray.forEach((coord) => {
             // Divide a string de coordenadas usando vírgula como separador e pega apenas os 2 primeiros elementos (lat,long), invertendo a ordem
-            let strArr = coord.split(",").splice(0, 2).reverse();
+            const strArr = coord.split(",").splice(0, 2).reverse();
             // Cria um array vazio para armazenar os números convertidos
-            let numArr:Array<number> = [];
+            const numArr:Array<number> = [];
             // Converte cada elemento string para número decimal e adiciona ao array numArr
             strArr.forEach((elem) => {
               numArr.push(parseFloat(elem));
@@ -63,7 +64,7 @@ const Map:FC = () =>{
       }
     return (
     <div style={{height:'100%', width:'100%'}}>
-        <MapContainer id="map" style={{height:'100%', width:'100%'}} center={[-1.51130, -48.61914]} zoom={10} scrollWheelZoom={true}>
+        <MapContainer style={{height:'100%', width:'100%'}} center={[-1.51130, -48.61914]} zoom={10} scrollWheelZoom={true}>
             <TileLayer
               attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
               url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
@@ -77,6 +78,8 @@ const Map:FC = () =>{
           </Marker>
         )}
         </MapContainer>
+
+        
     <div>
     <Dropdown>
       <Dropdown.Toggle variant="success" id="dropdown-basic">
