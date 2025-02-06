@@ -11,13 +11,13 @@ import ReactLeafletKml from 'react-leaflet-kml'; // react-leaflet-kml must be lo
 import { Polygon } from 'react-leaflet/Polygon';
 import { Tooltip } from 'react-leaflet/Tooltip';
 
-const Map:FC = () =>{
+const Map2:FC = () =>{
     //Kml a ser mostrado no mapa
     const [kmlDocument, setKmlDocument] = useState<any>(null);
     //Kmls a serem mostrados na tela
     const [kmls, setKml] = useState<KML[]>([])
     //Array com lista de coordenadas
-    const [diagram, setDiagram] = useState<Array<Array<number>>>([])
+    const [diagram, setDiagram] = useState<number[][][]>([])
     const getKml = (dimensao: string) => async () => {
         if(kmls.length > 0){
           setKml([])
@@ -44,20 +44,23 @@ const Map:FC = () =>{
           arraysCoords.push(arrayFilter)
         }
 
-        const setArr: Array<Array<number>> = [];
+        const setArr: number [][][] = [];
 
         arraysCoords.forEach((coordArray) => {
+        
           coordArray.forEach((coord) => {
             // Divide a string de coordenadas usando vírgula como separador e pega apenas os 2 primeiros elementos (lat,long), invertendo a ordem
             const strArr = coord.split(",").splice(0, 2).reverse();
+            console.log(strArr)
             // Cria um array vazio para armazenar os números convertidos
-            const numArr:Array<number> = [];
+            //const numArr:number[][] = [];
             // Converte cada elemento string para número decimal e adiciona ao array numArr
-            strArr.forEach((elem) => {
-              numArr.push(parseFloat(elem));
-            });
-            // Adiciona o par de coordenadas convertido ao array final setArr
-            setArr.push(numArr);
+            //strArr.forEach((elem) => {
+            //    
+            //  numArr.push(parseFloat(elem));
+            //});
+            //// Adiciona o par de coordenadas convertido ao array final setArr
+            //setArr.push(numArr);
           });
         });
         setDiagram(setArr);
@@ -72,15 +75,12 @@ const Map:FC = () =>{
               url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
             />
             {kmlDocument && <ReactLeafletKml kml={kmlDocument}/>}
-            {diagram.length > 0 && diagram.map((position:any, idx) => 
-          <Marker key={`marker-${idx}`} position={position}>
-            <Popup>
-              <span>{"User"}</span>
-            </Popup>
-          </Marker>
-        )}
+            {diagram.length > 0 && <Polygon positions={diagram}>
+            <Tooltip sticky>sticky Tooltip for Polygon</Tooltip>
+        </Polygon>
+        }
         </MapContainer>
-        
+
         <div>
           <Dropdown>
             <Dropdown.Toggle variant="success" id="dropdown-basic">
@@ -104,4 +104,4 @@ const Map:FC = () =>{
         )
 }
 
-export default Map
+export default Map2

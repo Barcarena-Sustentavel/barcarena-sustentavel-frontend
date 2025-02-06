@@ -11,7 +11,7 @@ import ReactLeafletKml from 'react-leaflet-kml'; // react-leaflet-kml must be lo
 import { Polygon } from 'react-leaflet/Polygon';
 import { Tooltip } from 'react-leaflet/Tooltip';
 
-const Map:FC = () =>{
+const Map3:FC = () =>{
     //Kml a ser mostrado no mapa
     const [kmlDocument, setKmlDocument] = useState<any>(null);
     //Kmls a serem mostrados na tela
@@ -79,8 +79,7 @@ const Map:FC = () =>{
             </Popup>
           </Marker>
         )}
-        </MapContainer>
-        
+        </MapContainer> 
         <div>
           <Dropdown>
             <Dropdown.Toggle variant="success" id="dropdown-basic">
@@ -104,4 +103,4 @@ const Map:FC = () =>{
         )
 }
 
-export default Map
+export default Map3
