@@ -1,17 +1,18 @@
 import { FC, useState} from "react";
 import { MapContainer } from 'react-leaflet/MapContainer'
 import { TileLayer } from 'react-leaflet/TileLayer'
-import { Marker } from 'react-leaflet/Marker'
-import { Popup } from 'react-leaflet/Popup'
 import dimensoes from "../const";
-import Dropdown from 'react-bootstrap/Dropdown';
+import { Container, Row, Col } from "react-bootstrap";
+import { Form } from "react-bootstrap";
 import { KML } from "../../interfaces/kml_interface";
 import api from "../../api";
 import ReactLeafletKml from 'react-leaflet-kml'; // react-leaflet-kml must be loaded AFTER react-leaflet
 import { Polygon } from 'react-leaflet/Polygon';
 import { Tooltip } from 'react-leaflet/Tooltip';
+import { LatLng, LatLngExpression } from "leaflet";
 
 const Map2:FC = () =>{
+    const [formIndicadoresAble, setformIndicadoresAble] = useState<boolean>(true);
     //Kml a ser mostrado no mapa
     const [kmlDocument, setKmlDocument] = useState<any>(null);
     //Kmls a serem mostrados na tela
@@ -19,6 +20,7 @@ const Map2:FC = () =>{
     //Array com lista de coordenadas
     const [diagram, setDiagram] = useState<number[][][]>([])
     const getKml = (dimensao: string) => async () => {
+      formIndicadoresAble == true ? setformIndicadoresAble(false): setformIndicadoresAble(false)
         if(kmls.length > 0){
           setKml([])
         } 
@@ -44,61 +46,68 @@ const Map2:FC = () =>{
           arraysCoords.push(arrayFilter)
         }
 
-        const setArr: number [][][] = [];
+        const setArr: number[][][] = [];
+        //const setArr: LatLng[][][] = [];
 
         arraysCoords.forEach((coordArray) => {
-        
+          const numArr:number[][] = [];
+          //const numArr: LatLng[][] = [];
           coordArray.forEach((coord) => {
             // Divide a string de coordenadas usando vírgula como separador e pega apenas os 2 primeiros elementos (lat,long), invertendo a ordem
             const strArr = coord.split(",").splice(0, 2).reverse();
-            console.log(strArr)
+            const strArrNum:number[] = []
             // Cria um array vazio para armazenar os números convertidos
-            //const numArr:number[][] = [];
             // Converte cada elemento string para número decimal e adiciona ao array numArr
-            //strArr.forEach((elem) => {
-            //    
-            //  numArr.push(parseFloat(elem));
-            //});
+            //numArr.push(strArr)
+            strArr.forEach(element => {
+              strArrNum.push(Number(element));
+          
+            });
+            console.log(strArrNum);
+            numArr.push(strArrNum);
+            setArr.push(numArr);
             //// Adiciona o par de coordenadas convertido ao array final setArr
             //setArr.push(numArr);
           });
         });
-        setDiagram(setArr);
+        setDiagram((setArr));
         setKmlDocument(kmlParser);
-        console.log(setArr)
+        
       }
     return (
     <div style={{height:'100%', width:'100%'}}>
-        <MapContainer style={{height:'30%', width:'100%'}} center={[-1.51130, -48.61914]} zoom={10} scrollWheelZoom={true}>
+        <MapContainer style={{height:'50%', width:'100%'}} center={[-1.51130, -48.61914]} zoom={10} scrollWheelZoom={true}>
             <TileLayer
               attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
               url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
             />
             {kmlDocument && <ReactLeafletKml kml={kmlDocument}/>}
             {diagram.length > 0 && <Polygon positions={diagram}>
-            <Tooltip sticky>sticky Tooltip for Polygon</Tooltip>
+            <Tooltip sticky={true}>sticky Tooltip for Polygon</Tooltip>
         </Polygon>
         }
         </MapContainer>
 
-        <div>
-          <Dropdown>
-            <Dropdown.Toggle variant="success" id="dropdown-basic">
-              Dropdown Button
-            </Dropdown.Toggle>
-
-            <Dropdown.Menu>
-              {dimensoes.map((dimensao) => (
-                <Dropdown.Item onClick={getKml(dimensao)} key={dimensao}>{dimensao}</Dropdown.Item>
+        <Container>
+        <Row>
+          <Col md={6}>
+          <Form.Select   aria-label="Default select example">
+            <option selected>Escolha a dimensão</option> :
+          {dimensoes.map((dimensao) => (
+                <option onClick={getKml(dimensao)} key={dimensao}>{dimensao}</option>
               ))}
-            </Dropdown.Menu>
-          </Dropdown>
-          {kmls.length > 0 && kmls.map((kml) => (
-            <div>
-              <Dropdown.Item onClick={getKmlCoords(kml.nome)} key={kml.nome}>{kml.nome}</Dropdown.Item>
-              </div>
-            ))}
-        </div>
+          </Form.Select>
+          </Col>
+          <Col md={6}>
+              <Form.Select disabled={formIndicadoresAble} id="formIndicadores" aria-label="Default select example">
+              <option selected>Escolha o seu indicador</option> :
+                {kmls.length > 0 && kmls.map((kml) => (
+                    <option onClick={getKmlCoords(kml.nome)} key={kml.nome}>{kml.nome}</option>
+                  ))}
+                </Form.Select>
+          </Col>
+        </Row>
+      </Container>
     </div>     
 
         )
