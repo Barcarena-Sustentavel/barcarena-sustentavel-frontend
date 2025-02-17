@@ -13,7 +13,7 @@ const App:FC = () => {
         <Route path="/" element={<Home/>} />
         <Route path="/admin/dimensao/" element={<DimensaoAdmin/>} />
         <Route path="/admin/dimensao/:dimensao/" element={<DimensaoPage/>} />
-        <Route path='/admin/dimensao/create/' element={<CreatePage/>}/>
+        <Route path='/admin/dimensao/:dimensao/create/:activeTab' element={<CreatePage/>}/>
       </Routes>
     </BrowserRouter>
   )

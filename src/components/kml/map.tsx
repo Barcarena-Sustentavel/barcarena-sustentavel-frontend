@@ -20,6 +20,7 @@ const Map:FC = () =>{
     //Array com lista de coordenadas
     const [diagram, setDiagram] = useState<Array<Array<number>>>([])
     const getKml = (dimensao: string) => async () => {
+        // eslint-disable-next-line @typescript-eslint/no-unused-expressions
         formIndicadoresAble == true ? setformIndicadoresAble(false): setformIndicadoresAble(false)
         if(kmls.length > 0){
           setKml([])
@@ -30,8 +31,11 @@ const Map:FC = () =>{
 
     //Função para pegar as coordenadas de um kml
     const getKmlCoords = (kml:string) => async () => {
-        setKmlDocument(null)
-        const response = await api.get(`/dimensoes/kmlCoords/${kml}/`)
+      // eslint-disable-next-line @typescript-eslint/no-unused-expressions
+      kmlDocument != null ? setKmlDocument(null) : setKmlDocument(kmlDocument)
+      // eslint-disable-next-line @typescript-eslint/no-unused-expressions
+      diagram != [] ? setDiagram([]) : setDiagram(diagram)
+      const response = await api.get(`/dimensoes/kmlCoords/${kml}/`)
         const parser = new DOMParser();
         const kmlParser:any = parser.parseFromString(response.data.coordenadas, "text/xml")
         //Pega todas as coordenadas do kmlDocument

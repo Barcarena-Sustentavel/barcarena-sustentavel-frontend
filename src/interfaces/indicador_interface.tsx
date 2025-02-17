@@ -1,6 +1,6 @@
 export interface Indicador{
-    id: number,
+    id: number | null,
     nome: string,
-    fkDimensao: number
+    fkDimensao: number| null
 }
 

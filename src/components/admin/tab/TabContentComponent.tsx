@@ -11,7 +11,7 @@ export const TabContentComponent:FC<RenderContentInterface> = ({dimensao, active
     const [referencias, setReferencias] = useState<string[]>([])
     const [contribuicoes, setContribuicoes] = useState<string[]>([])
     const [kmls, setKmls] = useState<string[]>([])
-    let activeTabDict:any = {
+    const activeTabDict:any = {
       'Indicadores': indicadores,
       'Referências': referencias,
       'Contribuições': contribuicoes,
@@ -58,7 +58,7 @@ export const TabContentComponent:FC<RenderContentInterface> = ({dimensao, active
               setReferencias(referencias => [...referencias, response.data.referencias[i].nome])
             }
           }
-          else if (`/dimensoesAdmin/${dimensao}/`){
+          else if (url === `/dimensoesAdmin/${dimensao}/`){
             setContribuicoes(response.data.contribuicoes)
             setKmls(response.data.kmls)
           }
@@ -108,7 +108,7 @@ export const TabContentComponent:FC<RenderContentInterface> = ({dimensao, active
 
     else{
         return (<div>
-          <AddDelete />
+          <AddDelete dimensao={dimensao} activeTab={activeTab} />
         <div>
         {activeTabDict[activeTab].map((elementName:string) => {
           return (

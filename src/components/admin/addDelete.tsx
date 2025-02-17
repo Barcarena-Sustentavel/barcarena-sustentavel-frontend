@@ -1,12 +1,23 @@
 import { FC } from 'react'
-import { Link } from 'react-router-dom'
+import { useNavigate } from 'react-router-dom'
+import { RenderContentInterface } from '../../interfaces/admin_interfaces/render_content_interface'
 
-const AddDelete:FC = () => {
+
+const AddDelete:FC<RenderContentInterface> = ({dimensao, activeTab}) => {
+
+  const navigate = useNavigate()
+  const handleAdd = () => {
+    navigate(`/admin/dimensao/${dimensao}/create/${activeTab}`)
+  }
+
+  const handleDelete = () => {
+    navigate(`/admin/dimensao/${dimensao}/delete/${activeTab}`)
+  }
   return (
     <div>
         <span>
-        <Link to='/admin/dimensao/create/'><p>Adicionar</p></Link>
-        <button><p>Deletar</p></button>    
+        <button onClick={handleAdd}><p>Adicionar</p></button>
+        <button onClick={handleDelete}><p>Deletar</p></button>    
         </span>
     </div>
   )
