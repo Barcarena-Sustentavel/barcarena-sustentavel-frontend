@@ -1,7 +1,7 @@
 import {FC} from 'react'
-import SideBar from './sideBar'
 import { useNavigate } from 'react-router-dom'
 import dimensoes  from '../const'
+import AddDelete from './addDelete'
 
 const DimensaoAdmin:FC = () => {     
     const navigate = useNavigate()
@@ -10,9 +10,9 @@ const DimensaoAdmin:FC = () => {
     }
 
         return (
-    <div>
-        <SideBar/>
         <div>
+            <AddDelete />
+
             {dimensoes.map((dimensao) => (
                 <ul key={dimensao}>
                     <li> 
@@ -22,7 +22,6 @@ const DimensaoAdmin:FC = () => {
                     </li>
                 </ul> 
             ))}
-        </div>
     </div>
   )
 }
