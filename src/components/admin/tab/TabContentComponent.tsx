@@ -1,4 +1,4 @@
-import React, { FC, useState, useEffect } from 'react';
+import React, { FC, useState, useEffect} from 'react';
 import { Link } from 'react-router-dom';
 import { Dimensao } from '../../../interfaces/dimensao_interface';
 import { RenderContentInterface } from '../../../interfaces/admin_interfaces/render_content_interface';
@@ -6,18 +6,22 @@ import api from '../../../api';
 import AddDelete from '../addDelete'; 
 
 export const TabContentComponent:FC<RenderContentInterface> = ({dimensao, activeTab}) => {
+    
     const [dimensaoJson, setDimensao] = useState<Dimensao>()
     const [indicadores, setIndicadores] = useState<string[]>([])
     const [referencias, setReferencias] = useState<string[]>([])
     const [contribuicoes, setContribuicoes] = useState<string[]>([])
     const [kmls, setKmls] = useState<string[]>([])
-    const activeTabDict:any = {
+    const [urls, setUrls] = useState<string[]>([`/dimensoes/${dimensao}/`, `/dimensoesAdmin/${dimensao}/`])
+    const activeTabDict:{[key: string]: string[]} = {
       'Indicadores': indicadores,
       'Referências': referencias,
       'Contribuições': contribuicoes,
       'Kmls': kmls
     }
-    const urls:string[] = [`/dimensoes/${dimensao}/`, `/dimensoesAdmin/${dimensao}/`]
+    
+    //const urls:string[] =  [`/dimensoes/${dimensao}/`, `/dimensoesAdmin/${dimensao}/`]
+
     //Lista de dados dos indicadores relacionados a dimensão
     const [formData, setFormData] = useState({
         nome: '',
@@ -47,7 +51,8 @@ export const TabContentComponent:FC<RenderContentInterface> = ({dimensao, active
     }
 
     useEffect(() => {
-      urls.forEach(url => {api.get(url)
+     
+      urls.map(url => {api.get(url)
         .then(response => {
           if (url === `/dimensoes/${dimensao}/`){
             setDimensao(response.data.dimensao)
@@ -62,6 +67,9 @@ export const TabContentComponent:FC<RenderContentInterface> = ({dimensao, active
             setContribuicoes(response.data.contribuicoes)
             setKmls(response.data.kmls)
           }
+          console.log(dimensaoJson)
+          console.log(indicadores)
+          console.log(referencias)
         }).catch(error => {
           if (url === `/dimensoes/${dimensao}/`) {
             setDimensao(undefined)
@@ -74,8 +82,8 @@ export const TabContentComponent:FC<RenderContentInterface> = ({dimensao, active
           }
           console.log(error)
         })
-      });
-    })
+      })
+    },[urls, dimensao])
 
     if (activeTab === 'Dimensão') {
       return (

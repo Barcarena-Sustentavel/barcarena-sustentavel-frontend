@@ -7,11 +7,11 @@ const AddDelete:FC<RenderContentInterface> = ({dimensao, activeTab}) => {
 
   const navigate = useNavigate()
   const handleAdd = () => {
-    navigate(`/admin/dimensao/${dimensao}/create/${activeTab}`)
+    navigate(`/admin/dimensao/${dimensao}/create/${activeTab}/`)
   }
 
   const handleDelete = () => {
-    navigate(`/admin/dimensao/${dimensao}/delete/${activeTab}`)
+    navigate(`/admin/dimensao/${dimensao}/delete/${activeTab}/`)
   }
   return (
     <div>

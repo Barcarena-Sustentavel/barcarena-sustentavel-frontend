@@ -1,16 +1,13 @@
 import { FC, useState} from 'react'
 import { useParams } from 'react-router-dom'
-import SideBar from '../sideBar/SideBarComponent'
 import { TabContentComponent } from '../tab/TabContentComponent'
 
-const DimensaoPage:FC = () => {
+const DimensaoPageComponent:FC = () => {
   const {dimensao} = useParams()
-  const [activeTab, setActiveTab] = useState<string>('Dimensao')
-  
+  const [activeTab, setActiveTab] = useState<string>('Dimensão')
   return (
     <div>
-      <SideBar/>
-      <nav /*style={styles.navbar}*/>
+      <nav>
         <button 
           onClick={() => setActiveTab('Dimensão')}
         >
@@ -45,4 +42,4 @@ const DimensaoPage:FC = () => {
   )
 }
 
-export default DimensaoPage
+export default DimensaoPageComponent

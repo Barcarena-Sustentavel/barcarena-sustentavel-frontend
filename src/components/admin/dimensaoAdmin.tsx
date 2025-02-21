@@ -1,17 +1,17 @@
 import {FC} from 'react'
 import { useNavigate } from 'react-router-dom'
 import dimensoes  from '../const'
-import AddDelete from './addDelete'
+//import AddDelete from './addDelete'
 
 const DimensaoAdmin:FC = () => {     
     const navigate = useNavigate()
     const handleClick = (dimensao:string) => {
-        navigate(`/admin/dimensao/${dimensao}`);
+        navigate(`/admin/dimensao/${dimensao}/`);
     }
 
         return (
         <div>
-            <AddDelete />
+       
 
             {dimensoes.map((dimensao) => (
                 <ul key={dimensao}>
