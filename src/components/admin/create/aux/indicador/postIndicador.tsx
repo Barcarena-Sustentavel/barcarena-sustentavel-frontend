@@ -1,35 +1,28 @@
 import api from "../../../../../api"
-import { Indicador } from "../../../../../interfaces/indicador_interface"
-import { Anexo } from "../../../../../interfaces/anexo_interface"
-import { PostIndicadorInterface } from "../../../../../interfaces/admin_interfaces/post_indicador_interface"
+import {IndicadorResponse} from "../../../../../interfaces/indicador_interface"
 
-export const postIndicador =  async (dimensao:string | undefined,indicador:string, pathAnexo: File | undefined, tipoGrafico: string|null, descricaoGrafico: string|null) => {
-    const indicadorInterface:Indicador = {
-        id: null,
+export const postIndicador = async (dimensao:string|undefined, arrayGrafico:IndicadorResponse[]) => {
+
+/*
+export const postIndicador =  async (dimensao:string | undefined,indicador:string, pathAnexo: string, tipoGrafico: string, descricaoGrafico: string|undefined) => {
+
+    const dadosIndicador:IndicadorResponse ={
         nome: indicador,
-        fkDimensao: null
-    }
-
-    const anexoInterface:Anexo = {
-        id: null,
-        path: `./images/${pathAnexo?.name}`,
-        tipoGrafico: tipoGrafico,
+        arquivo: pathAnexo,
         descricaoGrafico: descricaoGrafico,
-        fkIndicador: null,
-        fkDimensao: null,
-        fkKml: null,
-        fkContribuicao: null
+        tituloGrafico: indicador,
+        tipoGrafico: tipoGrafico
+    }
+*/
+    let responseArray:IndicadorResponse[]=[];
+
+    for (let index = 0; index < arrayGrafico.length; index++) {
+        await api.post(`/admin/dimensoes/${dimensao}/indicador/`, arrayGrafico[index]).then((response) => {
+            responseArray.push(response.data)
+        })
     }
 
-    const data:PostIndicadorInterface= {
-        dadosIndicador: indicadorInterface,
-        dadosAnexo: anexoInterface
-    }
+    //const responseIndicador = await api.post(`/admin/dimensoes/${dimensao}/indicador/`, dadosIndicador)//.then((response) => {
 
-    const responseIndicador = await api.post(`/dimensoes/${dimensao}/${indicador}/`, data)//.then((response) => {
-    //).catch((error) => {
-    //   console.log(error.response.data)
-    //)
-
-    return responseIndicador
+    return responseArray
 }

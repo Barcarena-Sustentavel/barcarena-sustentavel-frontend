@@ -11,7 +11,6 @@ const DimensaoAdmin:FC = () => {
 
         return (
         <div>
-       
 
             {dimensoes.map((dimensao) => (
                 <ul key={dimensao}>
