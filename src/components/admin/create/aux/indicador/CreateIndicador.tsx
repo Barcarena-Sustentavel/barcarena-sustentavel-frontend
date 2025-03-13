@@ -9,7 +9,6 @@ interface CreateIndicadorProps {
 
 interface GraficoComponentProps {
     chaveValorGraficos: { [key: string]: string };
-    //arrayIndicadorResponse: GraficosIndicador[]
 }
 
 let arrayIndicadorResponse: GraficosIndicador[] = []
@@ -36,19 +35,13 @@ export const CreateIndicador:FC<CreateIndicadorProps> = ({dimensao}) => {
         'Grafo de Rede': 'networkgraph',
         'Linha do Tempo': 'timeline'
     };
-    //const [arrayIndicadorResponse, setArrayIndicadorResponse] = useState<GraficosIndicador[]>([])
     const [graficoNode, setGraficoNode] = useState<React.ReactElement[]>([<GraficoComponent 
         chaveValorGraficos={chaveValorGraficos}
-        //arrayIndicadorResponse={arrayIndicadorResponse}
-        //setArrayIndicadorResponse={setArrayIndicadorResponse}
          />])
    
 
     const addGrafico = () =>{
-        setGraficoNode([...graficoNode, <GraficoComponent chaveValorGraficos={chaveValorGraficos}
-            //arrayIndicadorResponse={arrayIndicadorResponse}
-            //setArrayIndicadorResponse={setArrayIndicadorResponse}
-            />
+        setGraficoNode([...graficoNode, <GraficoComponent chaveValorGraficos={chaveValorGraficos}/>
         ]
         )
     }
@@ -73,9 +66,9 @@ export const CreateIndicador:FC<CreateIndicadorProps> = ({dimensao}) => {
 }
 
 const GraficoComponent:FC<GraficoComponentProps> = ({/*arrayIndicadorResponse,*/ chaveValorGraficos}) => {
-    const [graficoAdicionado, setGraficoAdicionado] = useState<Boolean>(false)
+    const [graficoAdicionado, setGraficoAdicionado] = useState<boolean>(false)
     const [newIndicadorResponse, setNewIndicadorResponse] = useState<GraficosIndicador>({
-        arquivo: undefined,
+        arquivo: null,
         descricaoGrafico: '', 
         tituloGrafico: '',
         tipoGrafico: ''
@@ -86,7 +79,7 @@ const GraficoComponent:FC<GraficoComponentProps> = ({/*arrayIndicadorResponse,*/
         <div>
         <label htmlFor="tituloGrafico">Titulo do gráfico</label>
         <input type="text" id="tituloGrafico" name="tituloGrafico" placeholder="Titulo do gráfico" onChange={(e) => 
-                                              setNewIndicadorResponse(prevState => ({...prevState, tituloGrafico: e.target.value})) 
+                                            setNewIndicadorResponse(prevState => ({...prevState, tituloGrafico: e.target.value})) 
             } />
         <label htmlFor="csvGrafico">Dados do gráfico</label>
                 <input required
@@ -97,11 +90,11 @@ const GraficoComponent:FC<GraficoComponentProps> = ({/*arrayIndicadorResponse,*/
                         {   
                             //const formArquivo = new FormData();
                             //formArquivo.append('arquivo', e.target.files![0]);
-                            //console.log(formArquivo)
+                            //setNewIndicadorResponse(prevState => ({...prevState, arquivo:formArquivo}))
                             setNewIndicadorResponse(prevState => ({...prevState, arquivo:e.target.files![0]}))
                         }
                     }
-                    accept=".csv"
+                    /*accept=".csv"*/
                 />
         <label htmlFor="descricaoGrafico">Descrição do gráfico</label>
         <input type="text" id="descricaoGrafico" name="descricaoGrafico" onChange={(e) => setNewIndicadorResponse(prevState => ({...prevState, descricaoGrafico: e.target.value}))} placeholder="Descrição do gráfico" />

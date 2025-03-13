@@ -1,18 +1,14 @@
-export interface IndicadorResponse extends Indicador{
+export interface IndicadorResponse{
     graficos: GraficosIndicador[]
 }
 
-//export interface Indicador{
 interface Indicador{
-    //id: number | null,
     nome: string,
-    //fkDimensao: number| null
 }
 
 export interface GraficosIndicador{
-    //arquivo: string,
-    arquivo: File | undefined,
-    descricaoGrafico: string | null,
+    arquivo: File //FormData | null 
+    descricaoGrafico: string,
     tituloGrafico: string,
     tipoGrafico: string
 }

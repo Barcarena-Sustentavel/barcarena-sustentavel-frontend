@@ -6,7 +6,6 @@ import api from '../../../api';
 import AddDelete from '../addDelete'; 
 
 export const TabContentComponent:FC<RenderContentInterface> = ({dimensao, activeTab}) => {
-    
     const [dimensaoJson, setDimensao] = useState<Dimensao>()
     const [indicadores, setIndicadores] = useState<string[]>([])
     const [referencias, setReferencias] = useState<string[]>([])
