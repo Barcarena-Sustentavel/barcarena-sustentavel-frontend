@@ -1,4 +1,4 @@
- /*const dimensoes = [
+ const dimensoes = [
         "Segurança",
         "Mobilidade",
         "Saúde",
@@ -8,6 +8,5 @@
         "Emprego",
         "Educação",
         "Conectividade"
-    ]*/
-const dimensoes:string[] = ["Social", "Economica", "Ambiental"]
+    ]
 export default dimensoes

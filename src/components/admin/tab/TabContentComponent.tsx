@@ -7,19 +7,18 @@ import AddDelete from '../addDelete';
 
 export const TabContentComponent:FC<RenderContentInterface> = ({dimensao, activeTab}) => {
     const [dimensaoJson, setDimensao] = useState<Dimensao>()
-    const [indicadores, setIndicadores] = useState<string[]>([])
-    const [referencias, setReferencias] = useState<string[]>([])
-    const [contribuicoes, setContribuicoes] = useState<string[]>([])
-    const [kmls, setKmls] = useState<string[]>([])
-    const [urls, setUrls] = useState<string[]>([`/dimensoes/${dimensao}/`, `/dimensoesAdmin/${dimensao}/`])
+    const [nomeIndicadores, setNomeIndicadores] = useState<string[]>([])
+    const [nomeReferencias, setNomeReferencias] = useState<string[]>([])
+    const [nomeContribuicoes, setNomeContribuicoes] = useState<string[]>([])
+    const [nomeKmls, setNomeKmls] = useState<string[]>([])
+    const url:string = `/admin/dimensoes/${dimensao}/`
     const activeTabDict:{[key: string]: string[]} = {
-      'Indicadores': indicadores,
-      'Referências': referencias,
-      'Contribuições': contribuicoes,
-      'Kmls': kmls
+      'Indicadores': nomeIndicadores,
+      'Referências': nomeReferencias,
+      'Contribuições': nomeContribuicoes,
+      'Kmls': nomeKmls
     }
     
-    //const urls:string[] =  [`/dimensoes/${dimensao}/`, `/dimensoesAdmin/${dimensao}/`]
 
     //Lista de dados dos indicadores relacionados a dimensão
     const [formData, setFormData] = useState({
@@ -50,46 +49,26 @@ export const TabContentComponent:FC<RenderContentInterface> = ({dimensao, active
     }
 
     useEffect(() => {
-     
-      urls.map(url => {api.get(url)
-        .then(response => {
-          if (url === `/dimensoes/${dimensao}/`){
+        api.get(url).then(response => {
             setDimensao(response.data.dimensao)
-            for (let i = 0; i < response.data.indicadores.length; i++) {
-              setIndicadores(indicadores => [...indicadores, response.data.indicadores[i].nome])
-            }
-            for (let i = 0; i < response.data.referencias.length; i++) {
-              setReferencias(referencias => [...referencias, response.data.referencias[i].nome])
-            }
-          }
-          else if (url === `/dimensoesAdmin/${dimensao}/`){
-            setContribuicoes(response.data.contribuicoes)
-            setKmls(response.data.kmls)
-          }
-          console.log(dimensaoJson)
-          console.log(indicadores)
-          console.log(referencias)
+            setNomeIndicadores(indicadores => [...indicadores, response.data.indicadores])
+            setNomeReferencias(referencias => [...referencias, response.data.referencias])
+            setNomeContribuicoes(contribuicoes => [...contribuicoes, response.data.contribuicoes])
+            setNomeKmls(kmls => [...kmls, response.data.kmls])
         }).catch(error => {
-          if (url === `/dimensoes/${dimensao}/`) {
             setDimensao(undefined)
-            setIndicadores([])
-            setReferencias([])
-          }
-          else if (url === `/dimensoesAdmin/${dimensao}/`) {
-            setContribuicoes([])
-            setKmls([])
-          }
+            setNomeIndicadores([])
+            setNomeReferencias([])
+          
+            setNomeContribuicoes([])
+            setNomeKmls([])
           console.log(error)
         })
-      })
-    },[urls, dimensao])
+      }, [url, dimensao])
 
     if (activeTab === 'Dimensão') {
       return (
-        <div>
-          <label>ID</label>
-          <input type="text" placeholder={dimensaoJson?.id.toString()} disabled />
-          
+        <div>  
           <label>Nome</label>
           <input
             type="text"

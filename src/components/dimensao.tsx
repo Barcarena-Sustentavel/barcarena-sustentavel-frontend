@@ -1,14 +1,20 @@
 import { FC,useEffect, useState } from "react";
+import { useNavigate, useParams} from "react-router-dom";
 import { Referencia } from "../interfaces/referencia_interface";
 import { Dimensao } from "../interfaces/dimensao_interface";
-import { Link } from "react-router-dom";
 import api from "../api";
 
-export const DimensaoComponent:FC<{dimensao:string}> = ({dimensao}) => {
-    const [url, setUrl] = useState<string>(`/dimensoes/${dimensao}/`);
+const DimensaoComponent:FC = () => {
+    const { dimensao } = useParams();
     const [indicadores, setIndicadores] = useState<string[]>([]);
     const [referencias, setReferencias] = useState<Referencia[]>([]);
     const [dimensaoJson, setDimensao] = useState<Dimensao | null>(null);
+    const url:string = `/dimensoes/${dimensao}/`;
+    const navigate = useNavigate();
+
+    const handleNavigate = (indicador:string) => {
+        navigate(`/${dimensao}/${indicador}/`)
+    }
 
     useEffect(() => {
         api.get(url).then((response) => {
@@ -22,12 +28,13 @@ export const DimensaoComponent:FC<{dimensao:string}> = ({dimensao}) => {
         <div>
             <h1>{dimensaoJson?.nome}</h1>
             <h2>{dimensaoJson?.descricao}</h2>
+            <ul>
             {indicadores.length > 0 && indicadores.map((indicador) => (
-                <div>
-                    <Link to={`/${dimensao}/${indicador}/`}> <h3>{indicador}</h3></Link>
-                </div>
+                <li>
+                    <button onClick={() => handleNavigate(indicador)}>{indicador}</button>
+                </li>
             ))}
-
+            </ul>   
             {referencias.length > 0 && referencias.map((referencia) => (
                 <div>
                     <a href={`${referencia.link}`}></a> <h3>{referencia.nome}</h3>
@@ -35,6 +42,6 @@ export const DimensaoComponent:FC<{dimensao:string}> = ({dimensao}) => {
             ))}
         </div>
     )
-
-
 }
+
+export default DimensaoComponent

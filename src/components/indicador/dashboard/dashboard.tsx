@@ -2,34 +2,58 @@ import * as Highcharts from 'highcharts';
 import HighchartsReact from 'highcharts-react-official';
 import { FC, useRef } from 'react';
 
+interface PlotSeries {
+    name: string,
+    data: number[]
+}
+
 interface DashboardProps {
-    tipo: 'line' | 'column' | 'bar' | 'pie' | 'scatter'
-    dados: number[][],
-    titulo: string
+    tipoGrafico: string 
+    tituloGrafico: string | null
+    dados: PlotSeries[]
+    categorias: string[] | number[] 
 }
 
 const plotOptions = (dashboard:DashboardProps) => {
     return {
+        chart:{
+            type: dashboard.tipoGrafico,
+        },
         title: {
-            text: dashboard.titulo
+            text: dashboard.tituloGrafico != null ? dashboard.tituloGrafico : '',
           },
-          series: [{
-            type: dashboard.tipo,
-            data: dashboard.dados
-        }]
+        series: dashboard.dados,
+        xAxis:{
+            categories:dashboard.categorias
+        },
+        yAxis: {
+            title: {
+                text: 'Valores'
+            }
+        }
     }
 }
 
-export const DashboardComponent:FC<DashboardProps> = ({tipo,dados, titulo}) => {
+export const DashboardComponent:FC<{tipoGrafico:string, dados: number[][], tituloGrafico: string | null, categorias: string[] | number[]}> = ({tipoGrafico,dados, tituloGrafico, categorias}) => {
     const chartComponentRef = useRef<HighchartsReact.RefObject>(null);
+    let dadosGrafico:PlotSeries[] = []
+
+    dados.map((dado:number[], index:number=0) => {
+        dadosGrafico.push({
+            name: `Dado ${index+1}`,
+            data: dado
+        })
+    })
 
     return(
         <HighchartsReact 
           highcharts = {Highcharts}
           options = {plotOptions({
-                                tipo:tipo,
-                                dados:dados,
-                                titulo:titulo})}
+                                tipoGrafico:tipoGrafico,
+                                dados:dadosGrafico,
+                                tituloGrafico:tituloGrafico,
+                                categorias:categorias
+                            })}
            ref = {chartComponentRef}/>
         )
 }

@@ -1,24 +1,40 @@
 import { FC,useEffect, useState } from "react";
-import { Indicador } from "../../interfaces/indicador_interface";
-import { Anexo } from "../../interfaces/anexo_interface";
+import { IndicadorDadosGrafico, DadosGrafico } from "../../interfaces/indicador_interface";
 import { DashboardComponent } from "./dashboard/dashboard";
 import api from "../../api";
+import { useParams } from "react-router-dom";
 
-export const IndicadorComponent:FC<{dimensao:string,indicador:string}> = 
-    ({dimensao,indicador}) => {
-    const [url, setUrl] = useState<string>(`/dimensoes/${dimensao}/${indicador}/`);
-    const [indicadorJson, setIndicador] = useState<Indicador | null>(null);
-    const [anexo, setAnexo] = useState<Anexo | null>(null);
-    const [tipoGrafico, setTipoGrafico] = useState<'line' | 'column' | 'bar' | 'pie' | 'scatter'>()
-    
+const IndicadorComponent:FC = () => {
+    const {dimensao, indicador} = useParams()
+    const url:string = `/dimensoes/${dimensao}/indicador/${indicador}/`
+    const [indicadorJson, setIndicadorJson] = useState<IndicadorDadosGrafico>({
+        nome: '',
+        graficos: []
+    })
+
     useEffect(() => {
         api.get(url).then((response) => {
-            setIndicador(response.data.indicador);
-            setAnexo(response.data.anexo);
+            setIndicadorJson(response.data)
         })
-    }, [url,dimensao,indicador])
+        console.log(indicadorJson)
+    }, [url])
 
     return(
-        <DashboardComponent tipo={anexo?.tipoGrafico} dados={anexo?.dados} titulo={indicadorJson?.titulo}/>
+        <div>
+            <h1>{indicadorJson.nome}</h1>
+            {indicadorJson.graficos.map((grafico:DadosGrafico) => {
+                return(
+                    <div>
+                        <div>
+                        <DashboardComponent tipoGrafico={grafico.tipoGrafico} dados={grafico.dados} tituloGrafico={grafico.tituloGrafico} categorias={grafico.categoria}/>
+                        <p>{grafico.descricaoGrafico != null ? grafico.descricaoGrafico:''}</p>
+                    </div>
+                    </div>
+                )
+            })}
+        </div>
+        
     )
 }
+
+export default IndicadorComponent
