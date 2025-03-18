@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
+/* eslint-disable @typescript-eslint/no-unused-expressions */
 import { FC, useState} from "react";
 import { MapContainer } from 'react-leaflet/MapContainer'
 import { TileLayer } from 'react-leaflet/TileLayer'
@@ -5,13 +7,13 @@ import { Marker } from 'react-leaflet/Marker'
 import { Popup } from 'react-leaflet/Popup'
 import dimensoes from "../const";
 import {Container, Row, Col} from 'react-bootstrap';
-import Dropdown from 'react-bootstrap/Dropdown';
-import Form from 'react-bootstrap/Form';
+import { Form } from "react-bootstrap";
 import { KML } from "../../interfaces/kml_interface";
 import api from "../../api";
 import ReactLeafletKml from 'react-leaflet-kml'; // react-leaflet-kml must be loaded AFTER react-leaflet
+import { Tooltip } from "react-leaflet";
 
-const Map:FC = () =>{
+const Map3:FC = () =>{
     const [formIndicadoresAble, setformIndicadoresAble] = useState<boolean>(true);
     //Kml a ser mostrado no mapa
     const [kmlDocument, setKmlDocument] = useState<any>(null);
@@ -20,8 +22,7 @@ const Map:FC = () =>{
     //Array com lista de coordenadas
     const [diagram, setDiagram] = useState<Array<Array<number>>>([])
     const getKml = (dimensao: string) => async () => {
-        // eslint-disable-next-line @typescript-eslint/no-unused-expressions
-        formIndicadoresAble == true ? setformIndicadoresAble(false): setformIndicadoresAble(false)
+      formIndicadoresAble == true ? setformIndicadoresAble(false): setformIndicadoresAble(formIndicadoresAble)
         if(kmls.length > 0){
           setKml([])
         } 
@@ -31,11 +32,14 @@ const Map:FC = () =>{
 
     //Função para pegar as coordenadas de um kml
     const getKmlCoords = (kml:string) => async () => {
-      // eslint-disable-next-line @typescript-eslint/no-unused-expressions
-      kmlDocument != null ? setKmlDocument(null) : setKmlDocument(kmlDocument)
-      // eslint-disable-next-line @typescript-eslint/no-unused-expressions
-      diagram != [] ? setDiagram([]) : setDiagram(diagram)
-      const response = await api.get(`/dimensoes/kmlCoords/${kml}/`)
+        //setKmlDocument(null)
+        //setDiagram([])
+        kmlDocument != null ? setKmlDocument(null) : setKmlDocument(kmlDocument)
+        // eslint-disable-next-line @typescript-eslint/no-unused-expressions
+        diagram != [] ? setDiagram([]) : setDiagram(diagram)
+
+
+        const response = await api.get(`/dimensoes/kmlCoords/${kml}/`)
         const parser = new DOMParser();
         const kmlParser:any = parser.parseFromString(response.data.coordenadas, "text/xml")
         //Pega todas as coordenadas do kmlDocument
@@ -83,10 +87,11 @@ const Map:FC = () =>{
             <Popup>
               <span>{"User"}</span>
             </Popup>
+            <Tooltip>Tooltip for Marker</Tooltip>
           </Marker>
         )}
-        </MapContainer>
-      <Container>
+        </MapContainer> 
+        <Container>
         <Row>
           <Col md={6}>
           <Form.Select   aria-label="Default select example">
@@ -111,4 +116,4 @@ const Map:FC = () =>{
         )
 }
 
-export default Map
+export default Map3

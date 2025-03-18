@@ -1,27 +1,26 @@
 import { FC, useState} from "react";
 import { MapContainer } from 'react-leaflet/MapContainer'
 import { TileLayer } from 'react-leaflet/TileLayer'
-import { Marker } from 'react-leaflet/Marker'
-import { Popup } from 'react-leaflet/Popup'
 import dimensoes from "../const";
-import {Container, Row, Col} from 'react-bootstrap';
-import Dropdown from 'react-bootstrap/Dropdown';
-import Form from 'react-bootstrap/Form';
+import { Container, Row, Col } from "react-bootstrap";
+import { Form } from "react-bootstrap";
 import { KML } from "../../interfaces/kml_interface";
 import api from "../../api";
 import ReactLeafletKml from 'react-leaflet-kml'; // react-leaflet-kml must be loaded AFTER react-leaflet
+import { Polygon } from 'react-leaflet/Polygon';
+import { Tooltip } from 'react-leaflet/Tooltip';
 
-const Map:FC = () =>{
+const Map2:FC = () =>{
     const [formIndicadoresAble, setformIndicadoresAble] = useState<boolean>(true);
     //Kml a ser mostrado no mapa
     const [kmlDocument, setKmlDocument] = useState<any>(null);
     //Kmls a serem mostrados na tela
     const [kmls, setKml] = useState<KML[]>([])
     //Array com lista de coordenadas
-    const [diagram, setDiagram] = useState<Array<Array<number>>>([])
+    const [diagram, setDiagram] = useState<number[][][]>([])
     const getKml = (dimensao: string) => async () => {
-        // eslint-disable-next-line @typescript-eslint/no-unused-expressions
-        formIndicadoresAble == true ? setformIndicadoresAble(false): setformIndicadoresAble(false)
+      // eslint-disable-next-line @typescript-eslint/no-unused-expressions
+      formIndicadoresAble == true ? setformIndicadoresAble(false): setformIndicadoresAble(false)
         if(kmls.length > 0){
           setKml([])
         } 
@@ -50,25 +49,33 @@ const Map:FC = () =>{
           arraysCoords.push(arrayFilter)
         }
 
-        const setArr: Array<Array<number>> = [];
+        const setArr: number[][][] = [];
+        //const setArr: LatLng[][][] = [];
 
         arraysCoords.forEach((coordArray) => {
+          const numArr:number[][] = [];
+          //const numArr: LatLng[][] = [];
           coordArray.forEach((coord) => {
             // Divide a string de coordenadas usando vírgula como separador e pega apenas os 2 primeiros elementos (lat,long), invertendo a ordem
             const strArr = coord.split(",").splice(0, 2).reverse();
+            const strArrNum:number[] = []
             // Cria um array vazio para armazenar os números convertidos
-            const numArr:Array<number> = [];
             // Converte cada elemento string para número decimal e adiciona ao array numArr
-            strArr.forEach((elem) => {
-              numArr.push(parseFloat(elem));
+            //numArr.push(strArr)
+            strArr.forEach(element => {
+              strArrNum.push(Number(element));
+          
             });
-            // Adiciona o par de coordenadas convertido ao array final setArr
+            console.log(strArrNum);
+            numArr.push(strArrNum);
             setArr.push(numArr);
+            //// Adiciona o par de coordenadas convertido ao array final setArr
+            //setArr.push(numArr);
           });
         });
-        setDiagram(setArr);
+        setDiagram((setArr));
         setKmlDocument(kmlParser);
-        console.log(setArr)
+        
       }
     return (
     <div style={{height:'100%', width:'100%'}}>
@@ -78,15 +85,13 @@ const Map:FC = () =>{
               url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
             />
             {kmlDocument && <ReactLeafletKml kml={kmlDocument}/>}
-            {diagram.length > 0 && diagram.map((position:any, idx) => 
-          <Marker key={`marker-${idx}`} position={position}>
-            <Popup>
-              <span>{"User"}</span>
-            </Popup>
-          </Marker>
-        )}
+            {diagram.length > 0 && <Polygon positions={diagram}>
+            <Tooltip sticky={true}>sticky Tooltip for Polygon</Tooltip>
+        </Polygon>
+        }
         </MapContainer>
-      <Container>
+
+        <Container>
         <Row>
           <Col md={6}>
           <Form.Select   aria-label="Default select example">
@@ -111,4 +116,4 @@ const Map:FC = () =>{
         )
 }
 
-export default Map
+export default Map2

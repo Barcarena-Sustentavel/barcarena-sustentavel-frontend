@@ -1,9 +1,11 @@
 export interface Anexo{
-    id: number,
+    id: number | null,
     path: string,
-    fkIndicador: number,
-    fkDimensao: number,
-    fkKml: number,
-    fkContribuicao: number,
+    descricaoGrafico: string | null,
+    tipoGrafico: string | null,
+    fkIndicador: number | null,
+    fkDimensao: number | null,
+    fkKml: number | null,
+    fkContribuicao: number | null,
 }
 
