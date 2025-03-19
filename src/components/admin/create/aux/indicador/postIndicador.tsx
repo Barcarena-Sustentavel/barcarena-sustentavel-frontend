@@ -1,4 +1,4 @@
-import { error } from "highcharts";
+//import { error } from "highcharts";
 import api from "../../../../../api"
 import {Indicador, GraficosIndicador} from "../../../../../interfaces/indicador_interface"
 
@@ -25,9 +25,6 @@ export const postIndicador = async (dimensao:string | undefined, indicador:strin
             console.log(formData)
             await fetch(endpoit, {
                 method: 'POST', 
-                //headers:{
-                //    'Content-Type': 'multipart/form-data',
-                //},
                 body: formData
             }).catch((error) => {
                 console.log(error)

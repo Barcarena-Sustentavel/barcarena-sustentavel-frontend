@@ -1,5 +1,5 @@
-import { postIndicador } from "../../components/admin/create/aux/indicador/postIndicador";
-import {GraficosIndicador} from "../../interfaces/indicador_interface";
+//import { postIndicador } from "../../components/admin/create/aux/indicador/postIndicador";
+//import {GraficosIndicador} from "../../interfaces/indicador_interface";
 
 
 

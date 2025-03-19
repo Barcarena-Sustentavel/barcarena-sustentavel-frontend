@@ -5,7 +5,7 @@ import { Marker } from 'react-leaflet/Marker'
 import { Popup } from 'react-leaflet/Popup'
 import dimensoes from "../const";
 import {Container, Row, Col} from 'react-bootstrap';
-import Dropdown from 'react-bootstrap/Dropdown';
+//import Dropdown from 'react-bootstrap/Dropdown';
 import Form from 'react-bootstrap/Form';
 import { KML } from "../../interfaces/kml_interface";
 import api from "../../api";
@@ -34,7 +34,7 @@ const Map:FC = () =>{
       // eslint-disable-next-line @typescript-eslint/no-unused-expressions
       kmlDocument != null ? setKmlDocument(null) : setKmlDocument(kmlDocument)
       // eslint-disable-next-line @typescript-eslint/no-unused-expressions
-      diagram != [] ? setDiagram([]) : setDiagram(diagram)
+      //diagram != [] ? setDiagram([]) : setDiagram(diagram)
       const response = await api.get(`/dimensoes/kmlCoords/${kml}/`)
         const parser = new DOMParser();
         const kmlParser:any = parser.parseFromString(response.data.coordenadas, "text/xml")

@@ -36,7 +36,7 @@ const Map3:FC = () =>{
         //setDiagram([])
         kmlDocument != null ? setKmlDocument(null) : setKmlDocument(kmlDocument)
         // eslint-disable-next-line @typescript-eslint/no-unused-expressions
-        diagram != [] ? setDiagram([]) : setDiagram(diagram)
+        //diagram != [] ? setDiagram([]) : setDiagram(diagram)
 
 
         const response = await api.get(`/dimensoes/kmlCoords/${kml}/`)

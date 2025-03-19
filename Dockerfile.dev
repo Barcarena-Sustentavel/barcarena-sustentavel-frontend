@@ -1,0 +1,11 @@
+FROM node:10-alpine
+
+ENV HOME=/src
+WORKDIR $HOME
+
+COPY package.json ./
+RUN npm install
+
+expose 4000
+
+CMD ["npm", "start"]

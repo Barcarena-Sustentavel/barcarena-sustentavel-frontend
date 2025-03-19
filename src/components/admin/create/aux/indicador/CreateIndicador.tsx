@@ -68,7 +68,7 @@ export const CreateIndicador:FC<CreateIndicadorProps> = ({dimensao}) => {
 const GraficoComponent:FC<GraficoComponentProps> = ({/*arrayIndicadorResponse,*/ chaveValorGraficos}) => {
     const [graficoAdicionado, setGraficoAdicionado] = useState<boolean>(false)
     const [newIndicadorResponse, setNewIndicadorResponse] = useState<GraficosIndicador>({
-        arquivo: null,
+        arquivo: ,
         descricaoGrafico: '', 
         tituloGrafico: '',
         tipoGrafico: ''
@@ -107,7 +107,7 @@ const GraficoComponent:FC<GraficoComponentProps> = ({/*arrayIndicadorResponse,*/
                 </option>
             ))}
         </Form.Select>
-        <button type="button" onClick={(e) => {
+        <button type="button" onClick={() => {
             if (graficoAdicionado === true){
                 arrayIndicadorResponse.map(indicador => {
                     if(indicador === cacheIndicadorResponse){
