@@ -1,11 +1,11 @@
 import { FC } from 'react';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
-import DimensaoAdmin from './components/admin/dimensaoAdmin';
-import DimensaoComponent  from './components/dimensao';
-import DimensaoPageComponent from './components/admin/dimensao/DimensaoPageComponent';
-import IndicadorComponent from './components/indicador/indicador';
-import Home from './components/index';
-import CreatePage  from './components/admin/create/createPage';
+import DimensaoAdmin from './components/admin/dimensaoAdmin.tsx';
+import DimensaoComponent  from './components/dimensao.tsx';
+import DimensaoPageComponent from './components/admin/dimensao/DimensaoPageComponent.tsx';
+import IndicadorComponent from './components/indicador/indicador.tsx';
+import Home from './components/index.tsx';
+import CreatePage  from './components/admin/create/createPage.tsx';
 
 
 const App:FC = () => {

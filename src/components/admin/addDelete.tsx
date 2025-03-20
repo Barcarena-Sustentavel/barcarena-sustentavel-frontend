@@ -1,7 +1,6 @@
 import { FC } from 'react'
 import { useNavigate } from 'react-router-dom'
-import { RenderContentInterface } from '../../interfaces/admin_interfaces/render_content_interface'
-
+import { RenderContentInterface } from '../../interfaces/admin_interfaces/render_content_interface.tsx'
 
 const AddDelete:FC<RenderContentInterface> = ({dimensao, activeTab}) => {
 

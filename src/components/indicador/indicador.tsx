@@ -1,7 +1,7 @@
 import { FC,useEffect, useState } from "react";
-import { IndicadorDadosGrafico, DadosGrafico } from "../../interfaces/indicador_interface";
-import { DashboardComponent } from "./dashboard/dashboard";
-import api from "../../api";
+import { IndicadorDadosGrafico, DadosGrafico } from "../../interfaces/indicador_interface.tsx";
+import { DashboardComponent } from "./dashboard/dashboard.tsx";
+import api from "../../api.tsx";
 import { useParams } from "react-router-dom";
 
 const IndicadorComponent:FC = () => {

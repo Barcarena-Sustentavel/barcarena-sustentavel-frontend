@@ -1,8 +1,8 @@
 import { FC,useEffect, useState } from "react";
 import { useNavigate, useParams} from "react-router-dom";
-import { Referencia } from "../interfaces/referencia_interface";
-import { Dimensao } from "../interfaces/dimensao_interface";
-import api from "../api";
+import { Referencia } from "../interfaces/referencia_interface.tsx";
+import { Dimensao } from "../interfaces/dimensao_interface.tsx";
+import api from "../api.tsx";
 
 const DimensaoComponent:FC = () => {
     const { dimensao } = useParams();

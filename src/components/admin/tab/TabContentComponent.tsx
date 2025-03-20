@@ -1,9 +1,10 @@
 import React, { FC, useState, useEffect} from 'react';
 import { Link } from 'react-router-dom';
-import { Dimensao } from '../../../interfaces/dimensao_interface';
-import { RenderContentInterface } from '../../../interfaces/admin_interfaces/render_content_interface';
-import api from '../../../api';
-import AddDelete from '../addDelete'; 
+import { Dimensao } from '../../../interfaces/dimensao_interface.tsx';
+import { RenderContentInterface } from '../../../interfaces/admin_interfaces/render_content_interface.tsx';
+import api from '../../../api.tsx';
+import AddDelete from '../addDelete.tsx'; 
+
 
 export const TabContentComponent:FC<RenderContentInterface> = ({dimensao, activeTab}) => {
     const [dimensaoJson, setDimensao] = useState<Dimensao>()

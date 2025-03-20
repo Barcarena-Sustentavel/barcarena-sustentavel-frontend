@@ -2,10 +2,19 @@
   "name": "barcarena-sustentavel-frontend-ts",
   "private": true,
   "version": "0.0.0",
+<<<<<<< HEAD
   "type": "module",
   "scripts": {
     "dev": "vite",
     "build": "tsc -b && vite build",
+=======
+  "scripts": {
+    "start":"vite",
+    "build":"vite build",
+    "tsc":"tsc",
+    "dev": "vite",
+    "clean": "tsc --build --clean",
+>>>>>>> 58089f24 (Dockerfile funcionand)
     "lint": "eslint .",
     "preview": "vite preview"
   },
@@ -26,7 +35,12 @@
     "react-bootstrap": "^2.10.9",
     "react-dom": "^19.0.0-rc.1",
     "react-leaflet": "^5.0.0-rc.2",
+<<<<<<< HEAD
     "react-leaflet-kml": "^2.1.2"
+=======
+    "react-leaflet-kml": "^2.1.2",
+    "vite": "^6.0.5"
+>>>>>>> 58089f24 (Dockerfile funcionand)
   },
   "devDependencies": {
     "@eslint/js": "^9.17.0",

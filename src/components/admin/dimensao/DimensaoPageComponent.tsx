@@ -1,6 +1,7 @@
 import { FC, useState} from 'react'
 import { useParams } from 'react-router-dom'
-import { TabContentComponent } from '../tab/TabContentComponent'
+import { TabContentComponent } from '../tab/TabContentComponent.tsx'
+
 
 const DimensaoPageComponent:FC = () => {
   const {dimensao} = useParams()

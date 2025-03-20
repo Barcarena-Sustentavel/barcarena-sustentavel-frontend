@@ -1,7 +1,7 @@
 import { FC } from "react"
 import { useParams } from "react-router-dom"
+import { CreateIndicador } from "./aux/indicador/CreateIndicador.tsx";
 
-import { CreateIndicador } from "./aux/indicador/CreateIndicador";
 
 const CreatePage: FC = () => {
     const { dimensao, activeTab } = useParams()
