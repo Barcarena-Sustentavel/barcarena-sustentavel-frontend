@@ -3,12 +3,12 @@ import { MapContainer } from 'react-leaflet/MapContainer'
 import { TileLayer } from 'react-leaflet/TileLayer'
 import { Marker } from 'react-leaflet/Marker'
 import { Popup } from 'react-leaflet/Popup'
-import dimensoes from "../const";
+import dimensoes from "../const.tsx";
 import {Container, Row, Col} from 'react-bootstrap';
 //import Dropdown from 'react-bootstrap/Dropdown';
 import Form from 'react-bootstrap/Form';
-import { KML } from "../../interfaces/kml_interface";
-import api from "../../api";
+import { KML } from "../../interfaces/kml_interface.tsx";
+import api from "../../api.tsx";
 import ReactLeafletKml from 'react-leaflet-kml'; // react-leaflet-kml must be loaded AFTER react-leaflet
 
 const Map:FC = () =>{

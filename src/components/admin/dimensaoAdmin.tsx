@@ -1,7 +1,6 @@
 import {FC} from 'react'
 import { useNavigate } from 'react-router-dom'
 import dimensoes  from '../const.tsx'
-//import AddDelete from './addDelete'
 
 const DimensaoAdmin:FC = () => {     
     const navigate = useNavigate()

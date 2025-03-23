@@ -1,11 +1,11 @@
 import { FC, useState} from "react";
 import { MapContainer } from 'react-leaflet/MapContainer'
 import { TileLayer } from 'react-leaflet/TileLayer'
-import dimensoes from "../const";
+import dimensoes from "../const.tsx";
 import { Container, Row, Col } from "react-bootstrap";
 import { Form } from "react-bootstrap";
-import { KML } from "../../interfaces/kml_interface";
-import api from "../../api";
+import { KML } from "../../interfaces/kml_interface.tsx";
+import api from "../../api.tsx";
 //import ReactLeafletKml from 'react-leaflet-kml'; // react-leaflet-kml must be loaded AFTER react-leaflet
 //import { Polygon } from 'react-leaflet/Polygon';
 //import { Tooltip } from 'react-leaflet/Tooltip';

@@ -1,11 +1,5 @@
-//import { error } from "highcharts";
-<<<<<<< HEAD
-import api from "../../../../../api"
-import {Indicador, GraficosIndicador} from "../../../../../interfaces/indicador_interface"
-=======
 import api from "../../../../../api.tsx"
 import {Indicador, GraficosIndicador} from "../../../../../interfaces/indicador_interface.tsx"
->>>>>>> 58089f24 (Dockerfile funcionand)
 
 export const postIndicador = async (dimensao:string | undefined, indicador:string,arrayGrafico:GraficosIndicador[]) => {
     const Indicador:Indicador = {

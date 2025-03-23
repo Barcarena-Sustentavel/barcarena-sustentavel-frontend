@@ -9,7 +9,7 @@ const react_router_dom_1 = require("react-router-dom");
 require("../css/map.css");
 //import Map2 from "./kml/map2";
 //import Map3 from "./kml/map3";
-const const_1 = __importDefault(require("./const"));
+const const_1 = __importDefault(require("../const"));
 const Home = () => {
     const navigate = (0, react_router_dom_1.useNavigate)();
     const handleClick = (dimensao) => {

@@ -1,20 +1,3 @@
-<<<<<<< HEAD
-FROM node:18.19.1-alpine AS build
-
-WORKDIR /app 
-
-COPY package*.json ./
-RUN npm install 
-COPY . . 
-RUN npm run build
-
-FROM nginx:stable-alpine AS production
-COPY --from=build /app/build /usr/sahre/nginx/html
-
-EXPOSE 80
-CMD ["nginx", "-g", "daemon off;"]
-
-=======
 FROM nginx
 
 RUN apt-get update && apt-get install -y \
@@ -42,4 +25,3 @@ RUN cp -a dist/. /usr/share/nginx/html
 
 EXPOSE 80
 CMD ["nginx", "-g", "daemon off;"]
->>>>>>> 58089f24 (Dockerfile funcionand)

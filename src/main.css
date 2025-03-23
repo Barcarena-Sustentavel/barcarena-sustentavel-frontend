@@ -11,6 +11,24 @@
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  --secondary-green: rgb(159, 196, 72);
+  --primary-blue: rgb(16, 92, 168);
+  --secondary-darkblue: rgb(26, 66, 110);
+  --secondary-light-blue: rgb(87, 197, 229);
+  --secondary-black: rgb(0, 0, 0);
+  --secondary-orange: rgb(233, 92, 46);
+  --secondary-gray: rgb(237, 239, 238);
+
+  /* Cores para as dimensões */
+  --dark-red-d: rgba(173, 18, 18, 0.9);
+  --red-d: rgba(213, 49, 40, 0.9);
+  --orange-d: rgba(245, 109, 67, 0.9);
+  --yellow-d: rgba(250, 181, 77, 0.9);
+  --dark-green-d: rgba(212, 201, 61, 0.9);
+  --green-d: rgba(121, 194, 98, 0.9);
+  --green-light-d: rgba(61, 222, 163, 0.9);
+  --blue-d: rgba(69, 117, 181, 0.9);
+  --dark-blue-d: rgba(41, 54, 122, 0.9);
 }
 
 a {
@@ -20,14 +38,6 @@ a {
 }
 a:hover {
   color: #535bf2;
-}
-
-body {
-  margin: 0;
-  display: flex;
-  place-items: center;
-  min-width: 320px;
-  min-height: 100vh;
 }
 
 h1 {

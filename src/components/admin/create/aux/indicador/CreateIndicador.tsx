@@ -1,13 +1,7 @@
 import React, { FC, useState } from "react"
-<<<<<<< HEAD
-import { postIndicador } from "./postIndicador";
-import { Form } from "react-bootstrap";
-import { GraficosIndicador } from "../../../../../interfaces/indicador_interface";
-=======
 import { postIndicador } from "./postIndicador.tsx";
 import { Form } from "react-bootstrap";
 import { GraficosIndicador } from "../../../../../interfaces/indicador_interface.tsx";
->>>>>>> 58089f24 (Dockerfile funcionand)
 
 interface CreateIndicadorProps {
     dimensao: string | undefined
@@ -74,11 +68,7 @@ export const CreateIndicador:FC<CreateIndicadorProps> = ({dimensao}) => {
 const GraficoComponent:FC<GraficoComponentProps> = ({/*arrayIndicadorResponse,*/ chaveValorGraficos}) => {
     const [graficoAdicionado, setGraficoAdicionado] = useState<boolean>(false)
     const [newIndicadorResponse, setNewIndicadorResponse] = useState<GraficosIndicador>({
-<<<<<<< HEAD
-        arquivo: ,
-=======
         arquivo: new File([], ''),
->>>>>>> 58089f24 (Dockerfile funcionand)
         descricaoGrafico: '', 
         tituloGrafico: '',
         tipoGrafico: ''
