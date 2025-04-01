@@ -2,6 +2,8 @@ import { FC,useEffect, useState } from "react";
 import { useNavigate, useParams} from "react-router-dom";
 import { Referencia } from "../interfaces/referencia_interface.tsx";
 import { Dimensao } from "../interfaces/dimensao_interface.tsx";
+import NavbarComponent from "./home/navbar/navbar.tsx";
+import '../css/index.css'
 import api from "../api.tsx";
 
 const DimensaoComponent:FC = () => {
@@ -25,7 +27,8 @@ const DimensaoComponent:FC = () => {
     }, [url,dimensao])
 
     return(
-        <div>
+        <div className="home-container">
+            <NavbarComponent/>
             <h1>{dimensaoJson?.nome}</h1>
             <h2>{dimensaoJson?.descricao}</h2>
             <ul>

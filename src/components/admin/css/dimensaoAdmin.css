@@ -1,0 +1,88 @@
+.admin-header {
+    text-align: center;
+    padding: 2rem 1rem;
+    background-color: #f8f9fa;
+    margin-bottom: 2rem;
+  }
+  
+  .admin-header h1 {
+    color: #2c3e50;
+    margin-bottom: 1rem;
+  }
+  
+  .admin-header p {
+    color: #7f8c8d;
+    max-width: 800px;
+    margin: 0 auto;
+  }
+  
+  .dimensoes-grid {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 2rem;
+    padding: 0 2rem 3rem;
+  }
+  
+  .dimensoes-column {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+    max-width: 500px;
+  }
+  
+  .dimensao-card {
+    background-color: white;
+    border-radius: 8px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+  }
+  
+  .dimensao-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+  }
+  
+  .dimensao-button {
+    width: 100%;
+    padding: 1.5rem;
+    background: white;
+    border: none;
+    cursor: pointer;
+    text-align: left;
+    transition: background-color 0.3s ease;
+  }
+  
+  .dimensao-button:hover {
+    background-color: #f8f9fa;
+  }
+  
+  .dimensao-button h3 {
+    color: #2c3e50;
+    margin-bottom: 0.5rem;
+    font-size: 1.25rem;
+  }
+  
+  .dimensao-button p {
+    color: #7f8c8d;
+    font-size: 0.9rem;
+  }
+  
+  .dimensao-icon {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 1rem;
+  }
+  
+  @media (max-width: 768px) {
+    .dimensoes-grid {
+      flex-direction: column;
+      align-items: center;
+    }
+    
+    .dimensoes-column {
+      width: 100%;
+    }
+  }
+  
