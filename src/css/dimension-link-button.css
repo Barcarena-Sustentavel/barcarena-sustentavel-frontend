@@ -1,0 +1,63 @@
+.dimension-link-button {
+    position: relative;
+    padding: 0px;
+    text-decoration: none;
+    color: var(--text-color, black);
+    border-left: 8px solid var(--dim-color);
+    border-bottom: 2px solid var(--dim-color);
+    overflow: hidden;
+    display: inline-block;
+    transition: color 0.3s ease;
+    background-color: transparent;
+    margin: 20px 0px 20px 0px !important;
+  }
+  
+/* Pseudo-elemento para o preenchimento animado */
+.dimension-link-button::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 0%;
+    height: 100%;
+    background-color: var(--dim-color);
+    z-index: 0;
+    transition: width 0.8s ease;
+}
+
+/* Colocar o texto acima da animação */
+.dimension-link-button > * {
+    position: relative;
+    z-index: 1;
+}
+
+/* Hover: preenche da esquerda pra direita e troca a cor do texto */
+.dimension-link-button:hover::before {
+    width: 100%;
+}
+
+.dimension-link-button:hover {
+    color: white;
+}
+  
+.dimensao-item, .dimensao-item:hover{ 
+    background-color: transparent;
+    box-shadow: none;
+    color: var(--dim-color);
+}
+
+.dimension-link-button:hover .dimensao-item{
+    color: white;
+}
+
+.icon-color{
+    background-color: var(--dim-color);
+}
+
+.dimension-link-button:hover .icon-color{
+    background-color: white;
+}
+
+.dimensao-item p {
+    font-size: 20px;
+}

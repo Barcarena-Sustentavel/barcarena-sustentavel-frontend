@@ -5,6 +5,7 @@ import '../../../css/carousel.css';
 import image1 from "../../../assets/images/carousel/Barcarena1.jpg";
 import image2 from "../../../assets/images/carousel/Barcarena2.webp";
 import image3 from "../../../assets/images/carousel/praiaDoCaripi.jpg";
+import grafismo from "../../../assets/images/grafismos/grafismo4.png";
 const ImageCarousel: FC = () => {
   const [index, setIndex] = useState(0);
 
@@ -16,11 +17,11 @@ const ImageCarousel: FC = () => {
 
   return (
     <div id="carouselExampleControls">
+      <div className="backgroundCarousel"></div>
       <Carousel 
         activeIndex={index} 
         onSelect={handleSelect}
         interval={5000}
-        fade
         style={{ display: "flex", justifyContent: "center", alignItems: "center" }}
       >
         {images.map((image, idx) => (

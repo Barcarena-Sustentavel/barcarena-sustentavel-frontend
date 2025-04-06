@@ -2,7 +2,7 @@ import React, { FC, useEffect, useRef } from 'react';
 import { Link } from 'react-router-dom';
 import '../../../css/dimensoes-section.css';
 import dimensoes  from '../../const.tsx';
-
+import DimensionLinkButton from './dimensionLinkButton.tsx';
 
 const DimensoesSection: FC = () => {
   const dimensoesRef = useRef<HTMLDivElement>(null);
@@ -39,40 +39,46 @@ const DimensoesSection: FC = () => {
 
   return (
     <div id="dimensoesPai">
-      <h2 className="text-center pt-5">Escolha uma dimensão</h2>
+      <h2 className="text-center pt-3">Escolha uma dimensão</h2>
 
-      <div id="dimensoes" className="d-flex flex-wrap" ref={dimensoesRef}>
+      <div id="dimensoes" className="d-flex flex-wrap px-md-5 py-1" ref={dimensoesRef}>
         {/* First column */}
-        <div className="col-md-6 d-flex flex-column pr-md-5">
+        <div className="col-md-6 d-flex flex-column px-md-5">
           {Object.entries(dimensoes.dimensoesColumn1).map(([item, value]) => (
-            <Link
-              key={item}
-              to={`/${item}`}
-              className={`dimensao-item d-flex flex-row justify-content-between my-2`}
-            >
-              <p>{item}</p>
-              <div 
-                className={`icon-color`}
-                style={{ backgroundImage: `url(${value})` }}
-              />
-            </Link>
+            <DimensionLinkButton to={`/${item}`} color={dimensoes.dimensaoCores[item]} key={item} increaseIcon={dimensoes.dimensaoAumentaIcone[item]}>
+              <div className="dimensao-item d-flex flex-row align-items-center justify-content-between my-4">
+                <p>{item}</p>
+                <div
+                  className="icon-color"
+                  style={{ maskImage: `url(${value})`,
+                  WebkitMaskImage: `url(${value})`, // defina a cor aqui se quiser
+                  maskRepeat: 'no-repeat',
+                  WebkitMaskRepeat: 'no-repeat',
+                  maskSize: 'contain',
+                  WebkitMaskSize: 'contain', }}
+                />
+              </div>
+            </DimensionLinkButton>
           ))}
         </div>
 
         {/* Second column */}
-        <div className="col-md-6 d-flex flex-column pl-md-5">
+        <div className="col-md-6 d-flex flex-column px-md-5">
           {Object.entries(dimensoes.dimensoesColumn2).map(([item, value]) => (
-            <Link
-              key={item}
-              to={`/${item}`}
-              className={`dimensao-item d-flex flex-row justify-content-between my-2`}
-            >
-              <p>{item}</p>
-              <div 
-                className={`icon-color`}
-                style={{ backgroundImage: `url(${value})` }}
-              />
-            </Link>
+            <DimensionLinkButton to={`/${item}`} color={dimensoes.dimensaoCores[item]} key={item} increaseIcon={dimensoes.dimensaoAumentaIcone[item]}>
+              <div className="dimensao-item d-flex flex-row align-items-center justify-content-between my-4">
+                <p>{item}</p>
+                <div
+                  className="icon-color"
+                  style={{ maskImage: `url(${value})`,
+                  WebkitMaskImage: `url(${value})`, // defina a cor aqui se quiser
+                  maskRepeat: 'no-repeat',
+                  WebkitMaskRepeat: 'no-repeat',
+                  maskSize: 'contain',
+                  WebkitMaskSize: 'contain', }}
+                />
+              </div>
+            </DimensionLinkButton>
           ))}
         </div>
       </div>

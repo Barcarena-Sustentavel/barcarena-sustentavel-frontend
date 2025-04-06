@@ -93,3 +93,9 @@
         padding: 1rem;
     }
 }
+
+@font-face {
+    font-family: 'Brandom';
+    src: url('../assets/fonts/Brandon-Grotesque/Brandon_reg.otf') format('opentype');
+  }
+  

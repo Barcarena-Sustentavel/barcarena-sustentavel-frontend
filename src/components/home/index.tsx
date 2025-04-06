@@ -15,9 +15,6 @@ const Home: FC = () => {
         <div className="home-container">
             <NavbarComponent />
             <ImageCarousel />
-            <div className="hero-section">
-
-            </div>
             {/*<div className="dimensoes-grid">*/}
                 <DimensoesSection />
                 {/*dimensoes.map((dimensao) => (
