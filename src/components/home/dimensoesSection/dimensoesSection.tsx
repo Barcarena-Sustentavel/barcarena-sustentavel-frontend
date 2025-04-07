@@ -46,7 +46,7 @@ const DimensoesSection: FC = () => {
         <div className="col-md-6 d-flex flex-column px-md-5">
           {Object.entries(dimensoes.dimensoesColumn1).map(([item, value]) => (
             <DimensionLinkButton to={`/${item}`} color={dimensoes.dimensaoCores[item]} key={item} increaseIcon={dimensoes.dimensaoAumentaIcone[item]}>
-              <div className="dimensao-item d-flex flex-row align-items-center justify-content-between my-4">
+              <div className="dimensao-item d-flex flex-row align-items-center justify-content-between my-2">
                 <p>{item}</p>
                 <div
                   className="icon-color"
@@ -66,7 +66,7 @@ const DimensoesSection: FC = () => {
         <div className="col-md-6 d-flex flex-column px-md-5">
           {Object.entries(dimensoes.dimensoesColumn2).map(([item, value]) => (
             <DimensionLinkButton to={`/${item}`} color={dimensoes.dimensaoCores[item]} key={item} increaseIcon={dimensoes.dimensaoAumentaIcone[item]}>
-              <div className="dimensao-item d-flex flex-row align-items-center justify-content-between my-4">
+              <div className="dimensao-item d-flex flex-row align-items-center justify-content-between my-2">
                 <p>{item}</p>
                 <div
                   className="icon-color"

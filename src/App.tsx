@@ -1,5 +1,6 @@
 import { FC } from 'react';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import "bootstrap-icons/font/bootstrap-icons.css"; 
 import DimensaoAdmin from './components/admin/dimensaoAdmin.tsx';
 import DimensaoComponent  from './components/dimensao.tsx';
 import DimensaoPageComponent from './components/admin/dimensao/DimensaoPageComponent.tsx';
