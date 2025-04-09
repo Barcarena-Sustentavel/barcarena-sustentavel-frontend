@@ -3,57 +3,63 @@ import HighchartsReact from 'highcharts-react-official';
 import { FC, useRef } from 'react';
 
 interface PlotSeries {
-    name: string,
-    data: number[]
+    name: string;
+    data: number[];
 }
 
 interface DashboardProps {
-    tipoGrafico: string 
-    tituloGrafico: string | null
-    dados: PlotSeries[]
-    categorias: string[] | number[] 
+    tipoGrafico: string;
+    tituloGrafico: string | null;
+    dados: PlotSeries[];
+    categorias: string[] | number[];
 }
 
-const plotOptions = (dashboard:DashboardProps) => {
+const plotOptions = (dashboard: DashboardProps) => {
     return {
-        chart:{
+        chart: {
             type: dashboard.tipoGrafico,
         },
         title: {
-            text: dashboard.tituloGrafico != null ? dashboard.tituloGrafico : '',
-          },
+            text: dashboard.tituloGrafico ?? '',
+        },
         series: dashboard.dados,
-        xAxis:{
-            categories:dashboard.categorias
+        xAxis: {
+            categories: dashboard.categorias,
         },
         yAxis: {
             title: {
-                text: 'Valores'
-            }
-        }
-    }
-}
+                text: 'Valores',
+            },
+        },
+    };
+};
 
-export const DashboardComponent:FC<{tipoGrafico:string, dados: number[][], tituloGrafico: string | null, categorias: string[] | number[]}> = ({tipoGrafico,dados, tituloGrafico, categorias}) => {
-    const chartComponentRef = useRef<HighchartsReact.HighchartsReactRefObject>(null);
-    let dadosGrafico:PlotSeries[] = []
+export const DashboardComponent: FC<{
+    tipoGrafico: string;
+    dados: number[][];
+    tituloGrafico: string | null;
+    categorias: string[] | number[];
+}> = ({ tipoGrafico, dados, tituloGrafico, categorias }) => {
+    const chartComponentRef = useRef<HighchartsReact.RefObject>(null);
 
-    dados.map((dado:number[], index:number=0) => {
+    const dadosGrafico: PlotSeries[] = [];
+    dados.forEach((dado, index) => {
         dadosGrafico.push({
-            name: `Dado ${index+1}`,
-            data: dado
-        })
-    })
+            name: `Dado ${index + 1}`,
+            data: dado,
+        });
+    });
 
-    return(
-        <HighchartsReact.HighchartsReact 
-          highcharts = {Highcharts}
-          options = {plotOptions({
-                                tipoGrafico:tipoGrafico,
-                                dados:dadosGrafico,
-                                tituloGrafico:tituloGrafico,
-                                categorias:categorias
-                            })}
-           ref = {chartComponentRef}/>
-        )
-}
+    return (
+        <HighchartsReact
+            highcharts={Highcharts}
+            options={plotOptions({
+                tipoGrafico,
+                dados: dadosGrafico,
+                tituloGrafico,
+                categorias,
+            })}
+            ref={chartComponentRef}
+        />
+    );
+};

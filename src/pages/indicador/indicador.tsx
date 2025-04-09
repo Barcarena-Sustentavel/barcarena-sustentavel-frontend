@@ -19,6 +19,7 @@ const IndicadorComponent: FC = () => {
   useEffect(() => {
     api.get(url)
       .then((response) => {
+        console.log(response.data)
         setIndicadorJson(response.data);
         setLoading(false);
       })
@@ -27,7 +28,8 @@ const IndicadorComponent: FC = () => {
         setLoading(false);
       });
   }, [url]);
-
+  console.log(indicadorJson)
+  console.log(DashboardComponent)
   return (
     <div>
       <NavbarComponent />
