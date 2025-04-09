@@ -1,0 +1,66 @@
+.submenu-dimensao {
+    background-color: var(--submenu-dimensao-color);
+}
+
+.icon-color-submenu-dimensao {
+    width: 60px;
+    height: 60px;
+    background-color: var(--icon-color); /* Define a cor do ícone */
+    mask-size: contain;
+    mask-repeat: no-repeat;
+    -webkit-mask-size: contain;
+    -webkit-mask-repeat: no-repeat;
+}
+
+.icon-color-submenu-dimensao.increase {
+    width: 90px;
+    height: 90px;
+}
+
+.submenu-dimensao-item{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    max-width: 130px;
+    max-height: 130px;
+    border-radius: 8px; /* Arredonda os cantos do card */
+    text-decoration: none; /* Remove sublinhado dos links */
+    transition: transform 0.2s; /* Adiciona uma transição suave */
+    width: 150px;
+}
+
+.cards-row {
+    width: 100%;
+    background-color: rgba(0, 0, 0, 0.393);
+}
+
+.label {
+    width: 86%;
+}
+
+.label-dimensao{
+    color: white;
+    font-size: 40px;
+}
+
+.label-icon-dimensao{
+    min-width: 100px;
+    min-height: 100px;
+    max-width: 110px;
+    max-height: 110px;
+    margin: 15px;
+}
+
+.submenu-dimensao-item:hover {
+    transform: scale(1.1); /* Aumenta o card ao passar o mouse */
+}
+
+.submenu-dimensao-item.selected {
+    transform: scale(1.1);
+}
+
+.submenu-dimensao-item p {
+    margin: 0; /* Remove margem padrão */
+    text-align: center; /* Centraliza o texto */
+    font-size: 13px;
+}
