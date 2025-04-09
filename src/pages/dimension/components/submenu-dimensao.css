@@ -13,8 +13,8 @@
 }
 
 .icon-color-submenu-dimensao.increase {
-    width: 80px;
-    height: 80px;
+    width: 90px;
+    height: 90px;
 }
 
 .submenu-dimensao-item{
@@ -44,8 +44,11 @@
 }
 
 .label-icon-dimensao{
-    width: 110px;
-    height: 110px;
+    min-width: 100px;
+    min-height: 100px;
+    max-width: 110px;
+    max-height: 110px;
+    margin: 15px;
 }
 
 .submenu-dimensao-item:hover {
