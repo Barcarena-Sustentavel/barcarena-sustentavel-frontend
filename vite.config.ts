@@ -3,6 +3,7 @@ import { fileURLToPath } from 'url'
 import { defineConfig } from 'vite'
 import react from '@vitejs/plugin-react'
 import svgr from 'vite-plugin-svgr'
+import path from 'path'
 
 const __dirname =  dirname(fileURLToPath(import.meta.url))
 // https://vite.dev/config/
@@ -31,9 +32,14 @@ export default defineConfig({
     outDir: 'dist',
     rollupOptions:{
       input:{
-        main: resolve(__dirname, '/index.html'),
+        main: resolve(__dirname, './index.html'),
       }
     },
     sourcemap: true
-  }
+  },
+  resolve:{
+    alias:{
+      '@assets': path.resolve(__dirname, './src/assets'), // Alias para assets
+    }
+  },
 })

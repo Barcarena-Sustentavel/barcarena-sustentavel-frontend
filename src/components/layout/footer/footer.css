@@ -1,0 +1,42 @@
+.logo-footer {
+    max-width: 50% !important;
+}
+
+ul.social-icon li a{
+    background-color: var(--secondary-light-blue);
+}
+
+ul.social-icon li a:hover{
+    background-color: var(--secondary-orange);
+}
+
+footer.site-footer p {
+    font-size: medium;
+}
+
+footer.site-footer .bg-color-secondary-gray{
+    background-color: var(--secondary-gray);
+}
+
+footer.site-footer .bg-color-secondary-green{
+    background-color: var(--secondary-green);
+}
+
+footer.site-footer .bg-color-secondary-darkblue{
+    background-color: var(--secondary-darkblue);
+}
+
+footer button.back-top-icon:hover{
+    background-color: var(--custom-btn-bg-color);
+}
+
+@media (max-width: 991px){
+    body footer img.logo-footer {
+        content: url('../images/icons/LogoNoLabel.png');
+        max-width: 30% !important;
+    } 
+    
+    body footer.site-footer p {
+        font-size:small;
+    }
+}
