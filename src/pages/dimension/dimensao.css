@@ -1,0 +1,104 @@
+h1{
+    font-size: xx-large;
+    background: white;
+    position: relative;
+    padding: 16px;
+    font-weight: bolder !important;
+    font-family: 'Brandom';
+    text-align: left;
+}
+
+p {
+    color: var(--p-color);
+    font-size: var(--p-font-size);
+    font-weight: var(--font-weight-light);
+}
+
+.dimension-details-container{
+    border-radius: 4px;
+    border: 1px solid grey;
+    padding: 1px;
+    margin: 0 auto;
+    margin-top: 45px;
+    padding: 0 !important;
+}
+
+.dimension-details-container > a{
+    padding-left: 16px;
+}
+
+.dimension-details-container ul.indicadores, 
+.dimension-details-container ul.referencias {
+    list-style-type: none !important;
+    padding: 16px;
+    margin: 0 !important;
+    border-top: solid 1px #ddd;
+    background: var(--secondary-gray);
+}
+.dimension-details-container .descricao,
+.dimension-details-container .contribuicao{
+    padding: 16px;
+    margin: 0 !important;
+    border-top: solid 1px #ddd;
+    background: var(--secondary-gray);
+}
+
+.dimension-details-container ul.indicadores li,
+.dimension-details-container ul.referencias li,
+.dimension-details-container .descricao p,
+.dimension-details-container .contribuicao form{
+    padding: 16px;
+    background: white ;
+    border-radius: 4px;
+    border: 1px solid grey;
+    margin-bottom: 16px;
+    overflow: hidden;
+}
+
+.contribuicao{
+    width: 100%;
+}
+
+.contribuicao label{
+    font-size: calc(1.5rem);
+    padding-left: 16px;
+}
+
+.contribuicao input, textarea{
+    margin-left: 16px;
+    width: 90%;
+}
+
+.contribuicao button{
+    width:30%;
+    margin: 1rem auto 1rem auto;
+    font-size: 2rem;
+    color: #DEE5FF;
+    font-family:'BrandonGrotesque';
+    background-color: #3466F5;
+    border-radius: 8px;
+    border-width: none;
+}
+
+.button-as-link {
+    color: var(--primary-color);
+    text-decoration: none;
+    background: none;
+    border: none;
+    padding: 0;
+    cursor: pointer;
+    font: inherit;
+  }
+  
+.button-as-link:hover {
+    color: var(--custom-btn-bg-color);
+}
+
+a.custom-link-tooplate-gotto-job {
+    color: var(--primary-color);
+    text-decoration: none;
+}
+
+a.custom-link-tooplate-gotto-job:hover {
+    color: var(--custom-btn-bg-color);
+}
