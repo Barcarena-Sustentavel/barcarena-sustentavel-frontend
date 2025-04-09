@@ -34,6 +34,7 @@
     "react-dom": "^19.0.0-rc.1",
     "react-leaflet": "^5.0.0-rc.2",
     "react-leaflet-kml": "^2.1.2",
+    "sweetalert2": "^11.17.2",
     "vite": "^6.0.5"
   },
   "devDependencies": {
