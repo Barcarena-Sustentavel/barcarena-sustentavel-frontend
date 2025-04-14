@@ -18,6 +18,7 @@ export interface DadosGrafico{
     descricaoGrafico: string | null,
     tipoGrafico: string,
     dados: number[][],
+    colunas: string[], 
     categoria: string[] | number[]
 }
 

@@ -1,119 +1,220 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
-/* eslint-disable @typescript-eslint/no-unused-expressions */
-import { FC, useState} from "react";
-import { MapContainer } from 'react-leaflet/MapContainer'
-import { TileLayer } from 'react-leaflet/TileLayer'
-import { Marker } from 'react-leaflet/Marker'
-import { Popup } from 'react-leaflet/Popup'
+import { FC, useState } from "react";
+import { MapContainer, TileLayer, Marker, Popup, Tooltip, GeoJSON } from 'react-leaflet';
 import dimensoes from "../../utils/const.tsx";
-import {Container, Row, Col} from 'react-bootstrap';
-import { Form } from "react-bootstrap";
+import { Container, Row, Col, Form } from 'react-bootstrap';
 import { KML } from "../../interfaces/kml_interface.tsx";
 import api from "../../api.tsx";
-import ReactLeafletKml from 'react-leaflet-kml'; // react-leaflet-kml must be loaded AFTER react-leaflet
-import { Tooltip } from "react-leaflet";
+import * as toGeoJSON from "@tmcw/togeojson";
+import 'leaflet/dist/leaflet.css';
 
-const Map3:FC = () =>{
-    const [formIndicadoresAble, setformIndicadoresAble] = useState<boolean>(true);
-    //Kml a ser mostrado no mapa
-    const [kmlDocument, setKmlDocument] = useState<any>(null);
-    //Kmls a serem mostrados na tela
-    const [kmls, setKml] = useState<KML[]>([])
-    //Array com lista de coordenadas
-    const [diagram, setDiagram] = useState<Array<Array<number>>>([])
-    const getKml = (dimensao: string) => async () => {
-      formIndicadoresAble == true ? setformIndicadoresAble(false): setformIndicadoresAble(formIndicadoresAble)
-        if(kmls.length > 0){
-          setKml([])
-        } 
-        const response = await api.get(`/dimensoes/kml/${dimensao}/`)
-        setKml(response.data.kmls)
-    }
+// 🔧 FIX: importar os ícones diretamente e configurar o Leaflet
+import L from 'leaflet';
+import markerIcon2x from 'leaflet/dist/images/marker-icon-2x.png';
+import markerIcon from 'leaflet/dist/images/marker-icon.png';
+import markerShadow from 'leaflet/dist/images/marker-shadow.png';
 
-    //Função para pegar as coordenadas de um kml
-    const getKmlCoords = (kml:string) => async () => {
-        //setKmlDocument(null)
-        //setDiagram([])
-        kmlDocument != null ? setKmlDocument(null) : setKmlDocument(kmlDocument)
-        // eslint-disable-next-line @typescript-eslint/no-unused-expressions
-        //diagram != [] ? setDiagram([]) : setDiagram(diagram)
+delete (L.Icon.Default.prototype as any)._getIconUrl;
 
+L.Icon.Default.mergeOptions({
+  iconRetinaUrl: markerIcon2x,
+  iconUrl: markerIcon,
+  shadowUrl: markerShadow,
+});
 
-        const response = await api.get(`/dimensoes/kmlCoords/${kml}/`)
-        const parser = new DOMParser();
-        const kmlParser:any = parser.parseFromString(response.data.coordenadas, "text/xml")
-        //Pega todas as coordenadas do kmlDocument
-        const arraySelector =  kmlParser.querySelectorAll("coordinates")
-        //Cria um array de arrays de strings com as coordenadas
-        const arraysCoords:Array<Array<string>> = []
+const Map3: FC = () => {
+  const dimensoesArray: string[] = [
+    ...Object.keys(dimensoes.dimensoesColumn1),
+    ...Object.keys(dimensoes.dimensoesColumn2)
+  ];
 
-        //Transforma as coordenadas em um array string
-        for(let i = 0; i < arraySelector.length; i++){
-          const arraySelectorTextContent = arraySelector[i].textContent.split(" ")
-          const arrayFilter = arraySelectorTextContent.filter((_:any, i:number) => i % (arraySelector.length/10) == 0);
-          arraysCoords.push(arrayFilter)
-        }
+  const [formIndicadoresAble, setformIndicadoresAble] = useState<boolean>(true);
+  const [kmls, setKml] = useState<KML[]>([]);
+  const [diagram, setDiagram] = useState<Array<Array<number>>>([]);
+  const [geojsonData, setGeojsonData] = useState<any>(null);
 
-        const setArr: Array<Array<number>> = [];
+  const getKml = (dimensao: string) => async () => {
+    if (formIndicadoresAble) setformIndicadoresAble(false);
+    if (kmls.length > 0) setKml([]);
 
-        arraysCoords.forEach((coordArray) => {
-          coordArray.forEach((coord) => {
-            // Divide a string de coordenadas usando vírgula como separador e pega apenas os 2 primeiros elementos (lat,long), invertendo a ordem
-            const strArr = coord.split(",").splice(0, 2).reverse();
-            // Cria um array vazio para armazenar os números convertidos
-            const numArr:Array<number> = [];
-            // Converte cada elemento string para número decimal e adiciona ao array numArr
-            strArr.forEach((elem) => {
-              numArr.push(parseFloat(elem));
-            });
-            // Adiciona o par de coordenadas convertido ao array final setArr
-            setArr.push(numArr);
-          });
-        });
-        setDiagram(setArr);
-        setKmlDocument(kmlParser);
-        console.log(setArr)
+    const response = await api.get(`/dimensoes/kml/${dimensao}/`);
+    setKml(response.data.kmls);
+    console.log(response.data.kmls);
+  };
+
+  const getKmlCoords = (kml: string) => async () => {
+    setGeojsonData(null);
+    setDiagram([]);
+
+    const response = await api.get(`/dimensoes/kmlCoords/${kml}/`);
+    const kmlXml = new DOMParser().parseFromString(response.data.coordenadas, "text/xml");
+
+    const geojson = toGeoJSON.kml(kmlXml);
+    setGeojsonData(geojson);
+
+    const coords: Array<Array<number>> = [];
+    geojson.features.forEach((feature: any) => {
+      const geom = feature.geometry;
+      if (geom.type === "Point") {
+        coords.push(geom.coordinates.slice().reverse());
+      } else if (geom.type === "LineString" || geom.type === "Polygon") {
+        const points = geom.type === "Polygon"
+          ? geom.coordinates[0]
+          : geom.coordinates;
+        points.forEach((coord: number[]) => coords.push(coord.slice().reverse()));
       }
-    return (
-    <div style={{height:'100%', width:'100%'}}>
-        <MapContainer style={{height:'50%', width:'100%'}} center={[-1.51130, -48.61914]} zoom={10} scrollWheelZoom={true}>
-            <TileLayer
-              attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-              url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-            />
-            {kmlDocument && <ReactLeafletKml kml={kmlDocument}/>}
-            {diagram.length > 0 && diagram.map((position:any, idx) => 
-          <Marker key={`marker-${idx}`} position={position}>
-            <Popup>
-              <span>{"User"}</span>
-            </Popup>
-            <Tooltip>Tooltip for Marker</Tooltip>
-          </Marker>
-        )}
-        </MapContainer> 
-        <Container>
+    });
+
+    setDiagram(coords);
+  };
+
+  return (
+    <div style={{ marginTop: '50px' }}>
+      <MapContainer style={{ height: '500px', width: '800px', margin: '0 auto' }} center={[-1.51130, -48.61914]} zoom={10} scrollWheelZoom={true}>
+        <TileLayer
+          attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+          url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+        />
+
+        {geojsonData && <GeoJSON data={geojsonData} />}
+
+        {diagram.length > 0 &&
+          diagram.map((position, idx) => (
+            <Marker key={`marker-${idx}`} position={position}>
+              <Popup>
+                <span>{"User"}</span>
+              </Popup>
+              <Tooltip>Tooltip for Marker</Tooltip>
+            </Marker>
+          ))}
+      </MapContainer>
+
+      <Container>
         <Row>
           <Col md={6}>
-          <Form.Select   aria-label="Default select example">
-            <option selected>Escolha a dimensão</option> :
-          {dimensoes.map((dimensao) => (
+            <Form.Select aria-label="Selecionar dimensão">
+              <option>Escolha a dimensão</option>
+              {dimensoesArray.map((dimensao) => (
                 <option onClick={getKml(dimensao)} key={dimensao}>{dimensao}</option>
               ))}
-          </Form.Select>
+            </Form.Select>
           </Col>
           <Col md={6}>
-              <Form.Select disabled={formIndicadoresAble} id="formIndicadores" aria-label="Default select example">
-              <option selected>Escolha o seu indicador</option> :
-                {kmls.length > 0 && kmls.map((kml) => (
-                    <option onClick={getKmlCoords(kml.nome)} key={kml.nome}>{kml.nome}</option>
-                  ))}
-                </Form.Select>
+            <Form.Select disabled={formIndicadoresAble} id="formIndicadores" aria-label="Selecionar indicador">
+              <option>Escolha o seu indicador</option>
+              {kmls.map((kml) => (
+                <option onClick={getKmlCoords(kml.nome)} key={kml.nome}>{kml.nome}</option>
+              ))}
+            </Form.Select>
           </Col>
         </Row>
       </Container>
-    </div>     
+    </div>
+  );
+};
 
-        )
-}
+export default Map3;
 
-export default Map3
+/*import { FC, useState } from "react";
+import { MapContainer, TileLayer, Marker, Popup, Tooltip, GeoJSON } from 'react-leaflet';
+import dimensoes from "../../utils/const.tsx";
+import { Container, Row, Col, Form } from 'react-bootstrap';
+import { KML } from "../../interfaces/kml_interface.tsx";
+import api from "../../api.tsx";
+import * as toGeoJSON from "@tmcw/togeojson";
+import 'leaflet/dist/leaflet.css';
+
+const Map3: FC = () => {
+  const dimensoesArray: string[] = [
+    ...Object.keys(dimensoes.dimensoesColumn1),
+    ...Object.keys(dimensoes.dimensoesColumn2)
+  ];
+
+  const [formIndicadoresAble, setformIndicadoresAble] = useState<boolean>(true);
+  const [kmls, setKml] = useState<KML[]>([]);
+  const [diagram, setDiagram] = useState<Array<Array<number>>>([]);
+  const [geojsonData, setGeojsonData] = useState<any>(null);
+
+  const getKml = (dimensao: string) => async () => {
+    if (formIndicadoresAble) setformIndicadoresAble(false);
+    if (kmls.length > 0) setKml([]);
+
+    const response = await api.get(`/dimensoes/kml/${dimensao}/`);
+    setKml(response.data.kmls);
+    console.log(response.data.kmls);
+  };
+
+  const getKmlCoords = (kml: string) => async () => {
+    setGeojsonData(null);
+    setDiagram([]);
+
+    const response = await api.get(`/dimensoes/kmlCoords/${kml}/`);
+    const kmlXml = new DOMParser().parseFromString(response.data.coordenadas, "text/xml");
+
+    // Converte para GeoJSON
+    const geojson = toGeoJSON.kml(kmlXml);
+    setGeojsonData(geojson);
+
+    // Extrai coordenadas para markers (se precisar)
+    const coords: Array<Array<number>> = [];
+    geojson.features.forEach((feature: any) => {
+      const geom = feature.geometry;
+      if (geom.type === "Point") {
+        coords.push(geom.coordinates.slice().reverse()); // [lat, lon]
+      } else if (geom.type === "LineString" || geom.type === "Polygon") {
+        const points = geom.type === "Polygon"
+          ? geom.coordinates[0] // primeiro anel
+          : geom.coordinates;
+        points.forEach((coord: number[]) => coords.push(coord.slice().reverse()));
+      }
+    });
+
+    setDiagram(coords);
+  };
+
+  return (
+    <div style={{ marginTop: '50px' }}>
+      <MapContainer style={{ height: '500px', width: '800px', margin:'0 auto' }} center={[-1.51130, -48.61914]} zoom={10} scrollWheelZoom={true}>
+        <TileLayer
+          attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+          url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+        />
+
+        {geojsonData && <GeoJSON data={geojsonData} />}
+
+        {diagram.length > 0 &&
+          diagram.map((position, idx) => (
+            <Marker key={`marker-${idx}`} position={position}>
+              <Popup>
+                <span>{"User"}</span>
+              </Popup>
+              <Tooltip>Tooltip for Marker</Tooltip>
+            </Marker>
+          ))}
+      </MapContainer>
+
+      <Container>
+        <Row>
+          <Col md={6}>
+            <Form.Select aria-label="Selecionar dimensão">
+              <option>Escolha a dimensão</option>
+              {dimensoesArray.map((dimensao) => (
+                <option onClick={getKml(dimensao)} key={dimensao}>{dimensao}</option>
+              ))}
+            </Form.Select>
+          </Col>
+          <Col md={6}>
+            <Form.Select disabled={formIndicadoresAble} id="formIndicadores" aria-label="Selecionar indicador">
+              <option>Escolha o seu indicador</option>
+              {kmls.map((kml) => (
+                <option onClick={getKmlCoords(kml.nome)} key={kml.nome}>{kml.nome}</option>
+              ))}
+            </Form.Select>
+          </Col>
+        </Row>
+      </Container>
+    </div>
+  );
+};
+
+export default Map3;
+*/

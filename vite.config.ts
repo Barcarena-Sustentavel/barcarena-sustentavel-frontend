@@ -8,6 +8,9 @@ import path from 'path'
 const __dirname =  dirname(fileURLToPath(import.meta.url))
 // https://vite.dev/config/
 export default defineConfig({
+  optimizeDeps: {
+    exclude: ['react-leaflet-kml'],
+  },
   plugins: [
     react(),
     svgr({

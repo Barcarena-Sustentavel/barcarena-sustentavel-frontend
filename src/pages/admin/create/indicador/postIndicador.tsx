@@ -14,7 +14,8 @@ export const postIndicador = async (dimensao:string | undefined, indicador:strin
     }
 
     try{
-        const endpoit = `http://0.0.0.0:8081/admin/dimensoes/${dimensao}/indicador/${indicador}/anexos/`
+        //const endpoit = `http://0.0.0.0:8081/admin/dimensoes/${dimensao}/indicador/${indicador}/anexos/`
+        const endpoit = `/api/admin/dimensoes/${dimensao}/indicador/${indicador}/anexos/`
         const formData = new FormData()
         for(let i = 0; i < arrayGrafico.length; i++){
             formData.append('grafico', arrayGrafico[i].arquivo)
@@ -33,5 +34,4 @@ export const postIndicador = async (dimensao:string | undefined, indicador:strin
     catch(error){
         console.log(error)
     }
-    //return dadosIndicador;
 }

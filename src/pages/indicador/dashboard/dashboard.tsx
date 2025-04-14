@@ -1,5 +1,6 @@
 import * as Highcharts from 'highcharts';
 import HighchartsReact from 'highcharts-react-official';
+import HighchartsMore from 'highcharts/highcharts-more';
 import { FC, useRef } from 'react';
 
 interface PlotSeries {
@@ -37,15 +38,16 @@ const plotOptions = (dashboard: DashboardProps) => {
 export const DashboardComponent: FC<{
     tipoGrafico: string;
     dados: number[][];
+    colunas: string[];
     tituloGrafico: string | null;
     categorias: string[] | number[];
-}> = ({ tipoGrafico, dados, tituloGrafico, categorias }) => {
+}> = ({ tipoGrafico, dados, tituloGrafico, categorias,colunas }) => {
     const chartComponentRef = useRef<HighchartsReact.RefObject>(null);
 
     const dadosGrafico: PlotSeries[] = [];
     dados.forEach((dado, index) => {
         dadosGrafico.push({
-            name: `Dado ${index + 1}`,
+            name: colunas[index],//`Dado ${index + 1}`,
             data: dado,
         });
     });

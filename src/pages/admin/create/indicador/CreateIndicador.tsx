@@ -4,9 +4,9 @@ import { Form } from "react-bootstrap";
 import { GraficosIndicador } from "../../../../interfaces/indicador_interface.tsx";
 import "../../css/createIndicador.css";
 
-interface CreateIndicadorProps {
-  dimensao: string | undefined
-}
+//interface CreateIndicadorProps {
+//  dimensao: string | undefined
+//}
 
 interface GraficoComponentProps {
   chaveValorGraficos: { [key: string]: string };
@@ -14,7 +14,7 @@ interface GraficoComponentProps {
 
 let arrayIndicadorResponse: GraficosIndicador[] = []
 
-export const CreateIndicador:FC<CreateIndicadorProps> = ({dimensao}) => {
+export const CreateIndicador:FC</*CreateIndicadorProps*/{dimensao:string | undefined}> = ({dimensao}) => {
   const [indicador, setIndicador] = useState<string>("")
   const chaveValorGraficos: { [key: string]: string } = {
     'Linha': 'line',

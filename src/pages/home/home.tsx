@@ -5,6 +5,7 @@ import NavbarComponent from "../../components/layout/navbar/navbar.tsx";
 import ImageCarousel from "./components/carousel/carousel.tsx";
 import DimensoesSection from "./components/dimensoesSection/dimensoesSection.tsx";
 import Footer from "../../components/layout/footer/footer.tsx";
+import Map3 from "../kml/map3.tsx";
 
 const Home: FC = () => {
     const navigate = useNavigate();
@@ -16,22 +17,8 @@ const Home: FC = () => {
         <div className="home-container">
             <NavbarComponent />
             <ImageCarousel />
-            {/*<div className="dimensoes-grid">*/}
-                <DimensoesSection />
-                {/*dimensoes.map((dimensao) => (
-                    <div className="dimensao-card" key={dimensao}>
-                        <button 
-                            className="dimensao-button" 
-                            onClick={() => handleClick(dimensao)}
-                        >
-                            <div className="dimensao-icon">
-                                
-                            </div>
-                            <h3>{dimensao}</h3>
-                        </button>
-                    </div>
-                ))*/}
-            {/*</div>*/}
+            <DimensoesSection />
+            <Map3 />
             <Footer/>
         </div>
     );

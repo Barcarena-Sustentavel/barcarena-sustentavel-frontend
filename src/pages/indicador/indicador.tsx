@@ -54,6 +54,7 @@ const IndicadorComponent: FC = () => {
                       <DashboardComponent 
                         tipoGrafico={grafico.tipoGrafico} 
                         dados={grafico.dados} 
+                        colunas={grafico.colunas}
                         tituloGrafico={grafico.tituloGrafico} 
                         categorias={grafico.categoria}
                       />

@@ -52,10 +52,10 @@ export const TabContentComponent:FC<RenderContentInterface> = ({dimensao, active
     useEffect(() => {
         api.get(url).then(response => {
             setDimensao(response.data.dimensao)
-            setNomeIndicadores(indicadores => [...indicadores, response.data.indicadores])
-            setNomeReferencias(referencias => [...referencias, response.data.referencias])
-            setNomeContribuicoes(contribuicoes => [...contribuicoes, response.data.contribuicoes])
-            setNomeKmls(kmls => [...kmls, response.data.kmls])
+            setNomeIndicadores(response.data.indicadores || [])
+            setNomeReferencias(response.data.referencias || [])
+            setNomeContribuicoes(response.data.contribuicoes || [])
+            setNomeKmls(response.data.kmls || [])
         }).catch(error => {
             setDimensao(undefined)
             setNomeIndicadores([])
@@ -94,16 +94,21 @@ export const TabContentComponent:FC<RenderContentInterface> = ({dimensao, active
     }
 
     else{
+      console.log(activeTabDict[activeTab])
         return (<div>
           <AddDelete dimensao={dimensao} activeTab={activeTab} />
         <div>
-        {activeTabDict[activeTab].map((elementName:string) => {
-          return (
-            <Link to={`/dimensoes/${dimensao}/${elementName}`}>
-              <p>{elementName}</p>
-            </Link>
-          )
-        })}
+        {
+          activeTabDict[activeTab].map((elementName:string) => {
+            return (
+              <span>
+                <Link to={`/dimensoes/${dimensao}/${elementName}/`}>
+                  <p>{elementName}</p>
+                </Link>
+              </span>
+            )
+          })
+        }
         </div>
         </div>)
     }

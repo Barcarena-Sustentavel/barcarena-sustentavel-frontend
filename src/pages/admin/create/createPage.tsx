@@ -1,41 +1,34 @@
 import { FC } from "react"
 import { useParams } from "react-router-dom"
 import { CreateIndicador } from "./indicador/CreateIndicador.tsx";
-
+import CreateReferencias from "./referencias/CreateReferência.tsx";
 
 const CreatePage: FC = () => {
     const { dimensao, activeTab } = useParams()
 
-    if (activeTab === "Dimensão") {
+    if (activeTab === "Referências") {
         return (
-            <div>
-                <form>
-                    <input type="text" placeholder="Nome da Dimensão" />
-                    <input type="text" placeholder="Descrição" />
-                    <button type="submit">Criar Dimensão</button>
-                </form>
-            </div>
+            //<div>
+            //    <form>
+            //        <input type="text" placeholder="Título" />
+            //        <input type="text" placeholder="Link" />
+            //        <button type="submit">Adicionar Referência</button>
+            //    </form>
+            //</div>
+            <CreateReferencias dimensao={dimensao}/>
         )
     }
 
-    if (activeTab === "Referencias") {
+    if (activeTab === "Kmls") {
         return (
             <div>
                 <form>
                     <input type="text" placeholder="Título" />
-                    <input type="text" placeholder="Link" />
-                    <button type="submit">Adicionar Referência</button>
+                    <input type="file" placeholder="Arquivo" />
+                    <button type="submit">Adicionar Kml</button>
                 </form>
             </div>
         )
-    }
-
-    if (activeTab === "Contribuições") {
-        // Handle Contribuições tab creation
-    }
-
-    if (activeTab === "Kmls") {
-        // Handle Kmls tab creation
     }
 
     if (activeTab === "Indicadores") {

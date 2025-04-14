@@ -7,6 +7,7 @@ import DimensaoPageComponent from './pages/admin/dimensao/DimensaoPageComponent.
 import IndicadorComponent from './pages/indicador/indicador.tsx';
 import Home from './pages/home/home.tsx';
 import CreatePage  from './pages/admin/create/createPage.tsx';
+import 'leaflet/dist/leaflet.css';
 
 
 const App:FC = () => {

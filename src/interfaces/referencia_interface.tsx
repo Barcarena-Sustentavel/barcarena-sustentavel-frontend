@@ -1,6 +1,4 @@
 export interface Referencia {
-    id: number,
-    nome: string,
-    link: string,
-    fkDimensao: string    
+    nome: string | undefined,
+    link: string | undefined,    
 }
