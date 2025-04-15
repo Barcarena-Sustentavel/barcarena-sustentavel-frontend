@@ -5,7 +5,7 @@ import Swal from 'sweetalert2';
 import { Referencia } from '../../../../interfaces/referencia_interface.tsx';
 import { postReferencias } from './postReferencias.tsx';
 
-const CreateReferencias: FC<{dimensao:string | undefined}> = ({dimensao}) => {
+const CreateReferencias: FC<{dimensao:string | undefined, referencia: string | undefined}> = ({dimensao, referencia}) => {
   const navigate = useNavigate();
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [formRef, setFormRef] = useState<Referencia>({
