@@ -1,17 +1,32 @@
 import React, { FC, useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
+import { useEffect } from 'react';
 import api from '../../../../api.tsx';
 import Swal from 'sweetalert2';
 import { Referencia } from '../../../../interfaces/referencia_interface.tsx';
-import { postReferencias } from './postReferencias.tsx';
+import { postReferencias, patchReferencias } from './crudReferencias.tsx';
 
 const CreateReferencias: FC<{dimensao:string | undefined, referencia: string | undefined}> = ({dimensao, referencia}) => {
   const navigate = useNavigate();
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [patch, setPatch] = useState(false);
   const [formRef, setFormRef] = useState<Referencia>({
     nome: '',
     link: ''
   });
+  console.log(referencia);
+  useEffect(() => {
+    if (referencia != undefined){
+      api.get(`/admin/dimensoes/${dimensao}/referencias/${referencia}/`).then((response) => {
+        console.log(response.data);
+        setFormRef({
+          nome: response.data.nome,
+          link: response.data.link
+        });
+      });
+      setPatch(true)
+    }
+    }, [dimensao, referencia]);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
@@ -33,8 +48,11 @@ const CreateReferencias: FC<{dimensao:string | undefined, referencia: string | u
 
     setIsSubmitting(true);
     
-    postReferencias(dimensao, formRef.nome, formRef.link);
-      
+    if (patch) {
+      patchReferencias(dimensao, referencia, formRef.nome, formRef.link);
+    }else{
+      postReferencias(dimensao, formRef.nome, formRef.link);
+    }
       // Reset form
       setFormRef({
         nome: '',
@@ -48,7 +66,7 @@ const CreateReferencias: FC<{dimensao:string | undefined, referencia: string | u
 
   return (
     <div className="post-referencias-container">
-      <h2>Adicionar Nova Referência</h2>
+      <h2>{patch === true ? 'Modificar Referência': 'Adicionar Referência' }</h2>
       <form onSubmit={handleSubmit}>
         <div className="form-group">
           <label htmlFor="nome">Título da Referência</label>
@@ -58,7 +76,7 @@ const CreateReferencias: FC<{dimensao:string | undefined, referencia: string | u
             name="nome"
             value={formRef.nome}
             onChange={handleChange}
-            placeholder="Digite o título da referência"
+            placeholder={formRef.nome === '' ? "Digite o título da referência" : formRef.nome}
             required
           />
         </div>
@@ -71,7 +89,7 @@ const CreateReferencias: FC<{dimensao:string | undefined, referencia: string | u
             name="link"
             value={formRef.link}
             onChange={handleChange}
-            placeholder="Digite o link da referência"
+            placeholder={formRef.link === '' ? "Digite o link da referência" : formRef.link}
             required
           />
         </div>

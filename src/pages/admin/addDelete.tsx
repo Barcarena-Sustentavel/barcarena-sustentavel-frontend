@@ -1,8 +1,9 @@
 import { FC } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { RenderContentInterface } from '../../interfaces/admin_interfaces/render_content_interface.tsx'
+import { deleteAll } from './cruds/deleteAll.tsx'
 
-const AddDelete:FC<RenderContentInterface> = ({dimensao, activeTab}) => {
+const AddDelete:FC<RenderContentInterface> = ({dimensao, activeTab, deleteElement}) => {
 
   const navigate = useNavigate()
   const handleAdd = () => {
@@ -10,7 +11,12 @@ const AddDelete:FC<RenderContentInterface> = ({dimensao, activeTab}) => {
   }
 
   const handleDelete = () => {
-    navigate(`/admin/dimensao/${dimensao}/delete/${activeTab}/`)
+    console.log(deleteElement)
+    if (deleteElement.length > 0) {
+       deleteElement.forEach(element => {
+        deleteAll(dimensao, activeTab,element)
+       })
+    }
   }
   return (
     <div>

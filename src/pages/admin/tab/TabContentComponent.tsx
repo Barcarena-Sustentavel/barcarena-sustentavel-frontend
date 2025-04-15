@@ -5,8 +5,9 @@ import { RenderContentInterface } from '../../../interfaces/admin_interfaces/ren
 import api from '../../../api.tsx';
 import AddDelete from '../addDelete.tsx'; 
 
-
 export const TabContentComponent:FC<RenderContentInterface> = ({dimensao, activeTab}) => {
+    const [toDelete, setToDelete] = useState<string[]>([]); 
+    const [checkedItems, setCheckedItems] = useState<Record<string, boolean>>({});
     const [dimensaoJson, setDimensao] = useState<Dimensao>()
     const [nomeIndicadores, setNomeIndicadores] = useState<string[]>([])
     const [nomeReferencias, setNomeReferencias] = useState<string[]>([])
@@ -95,21 +96,49 @@ export const TabContentComponent:FC<RenderContentInterface> = ({dimensao, active
 
     else{
       console.log(activeTabDict[activeTab])
-        return (<div>
-          <AddDelete dimensao={dimensao} activeTab={activeTab} />
+        return (
         <div>
-        {
-          activeTabDict[activeTab].map((elementName:string) => {
-            return (
-              <span>
-                <Link to={`/dimensoes/${dimensao}/${elementName}/`}>
-                  <p>{elementName}</p>
-                </Link>
-              </span>
-            )
-          })
-        }
-        </div>
+          <div>
+            {
+              activeTabDict[activeTab].map((elementName:string) => {
+                return (
+                  <span>
+                    {/*<Link to={`/dimensoes/${dimensao}/${elementName}/`} >*/}
+                    <div className="checkbox-link-container">
+                      <input 
+                        type="checkbox" 
+                        id={`checkbox-${elementName}`}
+                        checked={!!checkedItems[elementName]}
+                        onChange={(e) => {
+                          e.stopPropagation();
+                          setCheckedItems(prev => ({
+                            ...prev,
+                            [elementName]: e.target.checked
+                          }));
+
+                          if (e.target.checked) {
+                            console.log(e.target)
+                            //Conserva os elementos anteriores(..prev) e adiciona o novo
+                              setToDelete(prev => [...prev, elementName]);
+                          } else {
+                            //Pega os elementos do array anterior(prev), realiza um fitro(prev.filter) e remove o elemento selecionado(item => item !== elementName)
+                              setToDelete(prev => prev.filter(item => item !== elementName));
+                          }
+                        }}
+                        onClick={(e) => e.stopPropagation()} 
+                      />
+                      <Link to={`/admin/dimensao/${dimensao}/update/${activeTab}/${elementName}/`}>
+                        <label htmlFor={`checkbox-${elementName}`} className="checkbox-label">
+                          <p>{elementName}</p>
+                        </label>
+                      </Link>
+                    </div>
+                  </span>
+                )
+              })
+            }
+          </div>
+          <AddDelete dimensao={dimensao} activeTab={activeTab} deleteElement={toDelete} />
         </div>)
     }
   }

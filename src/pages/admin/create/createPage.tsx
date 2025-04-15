@@ -4,18 +4,11 @@ import { CreateIndicador } from "./indicador/CreateIndicador.tsx";
 import CreateReferencias from "./referencias/CreateReferência.tsx";
 
 const CreatePage: FC = () => {
-    const { dimensao, activeTab } = useParams()
-
+    const { dimensao, activeTab, elementName } = useParams()
+    
     if (activeTab === "Referências") {
         return (
-            //<div>
-            //    <form>
-            //        <input type="text" placeholder="Título" />
-            //        <input type="text" placeholder="Link" />
-            //        <button type="submit">Adicionar Referência</button>
-            //    </form>
-            //</div>
-            <CreateReferencias dimensao={dimensao}/>
+            <CreateReferencias dimensao={dimensao} referencia={elementName}/>
         )
     }
 

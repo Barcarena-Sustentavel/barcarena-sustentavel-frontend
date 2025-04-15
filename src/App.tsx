@@ -26,6 +26,8 @@ const App:FC = () => {
         <Route path="/admin/dimensao/:dimensao/" element={<DimensaoPageComponent/>} />
         {/*Página para criação de qualquer entidade referente a uma dimensão*/}
         <Route path='/admin/dimensao/:dimensao/create/:activeTab/' element={<CreatePage/>}/>
+
+        <Route path='/admin/dimensao/:dimensao/update/:activeTab/:elementName/' element={<CreatePage/>}/>
       </Routes>
     </BrowserRouter>
   )

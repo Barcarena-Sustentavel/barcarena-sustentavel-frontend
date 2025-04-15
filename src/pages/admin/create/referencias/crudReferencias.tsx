@@ -26,7 +26,29 @@ export const postReferencias = async (dimensao:string | undefined, nomeReferenci
             confirmButtonColor: 'var(--primary-color)',
           });
         } 
-    //catch(error){
-    //    console.log(error)
-    //}
 }
+
+export const patchReferencias = async (dimensao:string | undefined, referencia:string | undefined, nomeReferencia:string | undefined, linkReferencia:string | undefined) => {
+    const referenciaModificada:Referencia = {
+        nome: nomeReferencia,
+        link: linkReferencia
+    }
+    try{
+        await api.patch(`/admin/dimensoes/${dimensao}/referencias/${referencia}/`, referenciaModificada)
+        await Swal.fire({
+                title: 'Sucesso!',
+                text: 'Referência modificada com sucesso.',
+                icon: 'success',
+                confirmButtonColor: 'var(--primary-color)',
+              });
+    }
+    catch (error) {
+          console.error('Error submitting reference:', error);
+          await Swal.fire({
+            title: 'Erro!',
+            text: 'Ocorreu um erro ao modificar a referência. Por favor, tente novamente.',
+            icon: 'error',
+            confirmButtonColor: 'var(--primary-color)',
+          });
+        }
+  }
