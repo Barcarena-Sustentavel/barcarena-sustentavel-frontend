@@ -1,5 +1,5 @@
 import React, { FC, useState } from 'react';
-import { useParams, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { useEffect } from 'react';
 import api from '../../../../api.tsx';
 import Swal from 'sweetalert2';

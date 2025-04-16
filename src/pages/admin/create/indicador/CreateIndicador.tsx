@@ -1,6 +1,7 @@
-import React, { FC, useState } from "react"
-import { postIndicador } from "./postIndicador.tsx";
+import React, { FC, useEffect, useState } from "react"
+import { patchIndicador, postIndicador } from "./crudIndicador.tsx";
 import { Form } from "react-bootstrap";
+import api from "../../../../api.tsx";
 import { GraficosIndicador } from "../../../../interfaces/indicador_interface.tsx";
 import "../../css/createIndicador.css";
 
@@ -10,13 +11,18 @@ import "../../css/createIndicador.css";
 
 interface GraficoComponentProps {
   chaveValorGraficos: { [key: string]: string };
+  grafico: GraficosIndicador | undefined;
 }
-
 let arrayIndicadorResponse: GraficosIndicador[] = []
 
-export const CreateIndicador:FC</*CreateIndicadorProps*/{dimensao:string | undefined}> = ({dimensao}) => {
+export const CreateIndicador:FC</*CreateIndicadorProps*/{dimensao:string | undefined, indicadorNome:string | undefined}> = ({dimensao,indicadorNome}) => {
+  console.log(indicadorNome)
+  const [indicadorAntigo, setIndicadorAntigo] = useState<string>("")
+  const [patch, setPatch] = useState(false);
   const [indicador, setIndicador] = useState<string>("")
+  const url = `admin/dimensoes/${dimensao}/indicador/${indicadorNome}/`
   const chaveValorGraficos: { [key: string]: string } = {
+    'Selecione um tipo de gráfico': '',
     'Linha': 'line',
     'Linha Suave': 'spline',
     'Área': 'area',
@@ -37,20 +43,67 @@ export const CreateIndicador:FC</*CreateIndicadorProps*/{dimensao:string | undef
     'Linha do Tempo': 'timeline'
   };
   const [graficoNode, setGraficoNode] = useState<React.ReactElement[]>([
-    <GraficoComponent chaveValorGraficos={chaveValorGraficos} />
+    <GraficoComponent chaveValorGraficos={chaveValorGraficos} grafico={undefined} />
   ]);
 
+  useEffect(() => {
+    if(indicadorNome != undefined){ 
+      setPatch(true)
+        //const graficosPatchLista:GraficosIndicador[] = []
+
+        api.get(url).then(response => {
+        console.log(response.data)
+        setIndicador(response.data.nome)
+
+        const newGraficoNodes = response.data.graficos.map((grafico: any, index: number) => {
+          const graficoPatch: GraficosIndicador = {
+            arquivo: grafico.path, //new File([], grafico.path),
+            descricaoGrafico: grafico.descricaoGrafico,
+            tituloGrafico: grafico.tituloGrafico,
+            tipoGrafico: grafico.tipoGrafico
+          }
+          //graficosPatchLista.push(graficoPatch)
+          // Return a new component with the initial data
+          return (
+            <GraficoComponent 
+              key={index} 
+              chaveValorGraficos={chaveValorGraficos}
+              grafico={graficoPatch}
+            />
+          )
+        });
+        
+        // Update the state with the new components
+        setGraficoNode(newGraficoNodes);
+        //response.data.graficos.map((grafico, index) => {
+        //  const graficoPatch:GraficosIndicador={
+        //    arquivo: grafico.path,
+        //    descricaoGrafico: grafico.descricaoGrafico,
+        //    tituloGrafico: grafico.tituloGrafico,
+        //    tipoGrafico: grafico.tipoGrafico
+        //  }
+        //  graficosPatchLista.push(graficoPatch)
+        //    })
+          
+          }).catch(error => {
+            console.log(error)
+          })
+        
+    }
+  },[patch, url, indicadorNome])
+
+  //Função para adicionar um novo gráfico
   const addGrafico = (e: React.MouseEvent) => {
     e.preventDefault();
     setGraficoNode([
       ...graficoNode, 
-      <GraficoComponent chaveValorGraficos={chaveValorGraficos} />
+      <GraficoComponent chaveValorGraficos={chaveValorGraficos} grafico={undefined}/>
     ]);
   }
 
   return (
     <div className="create-indicador-container">
-      <h2 className="create-indicador-title">Criar Novo Indicador</h2>
+      <h2 className="create-indicador-title">{patch === false ? 'Criar Novo Indicador' : 'Modificar Indicador'}</h2>
       <form className="create-indicador-form">
         <div className="form-group">
           <label htmlFor="nomeIndicador">Nome do Indicador</label>
@@ -59,7 +112,14 @@ export const CreateIndicador:FC</*CreateIndicadorProps*/{dimensao:string | undef
             placeholder="Nome do Indicador" 
             id="idIndicador" 
             name="nomeIndicador" 
-            onChange={(e) => setIndicador(e.target.value)} 
+            value={indicador}
+            onChange={(e) => {
+              if (patch === true) {
+                setIndicadorAntigo(indicador)
+                setIndicador(e.target.value)
+              } else
+              {setIndicador(e.target.value)}
+              }} 
           />
         </div>
         
@@ -72,7 +132,6 @@ export const CreateIndicador:FC</*CreateIndicadorProps*/{dimensao:string | undef
             </div>
           ))}
         </div>
-        
         <button 
           className="btn btn-add btn-primary" 
           onClick={addGrafico}
@@ -85,24 +144,29 @@ export const CreateIndicador:FC</*CreateIndicadorProps*/{dimensao:string | undef
           className="btn btn-success"
           onClick={(e) => { 
             e.preventDefault();
-            postIndicador(dimensao, indicador, arrayIndicadorResponse)
-          }}
+            if(patch === true){
+              patchIndicador(dimensao, indicadorAntigo, indicador,arrayIndicadorResponse)
+            }
+            else{
+              postIndicador(dimensao, indicador, arrayIndicadorResponse)
+            }
+            }}
         >
-          Criar Indicador
+          {patch === false ? 'Criar Indicador' : 'Modificar Indicador'}
         </button>
       </form>
     </div>
   )
 }
 
-const GraficoComponent:FC<GraficoComponentProps> = ({chaveValorGraficos}) => {
+const GraficoComponent:FC<GraficoComponentProps> = ({chaveValorGraficos, grafico}) => {
   const [graficoAdicionado, setGraficoAdicionado] = useState<boolean>(false)
-  const [newIndicadorResponse, setNewIndicadorResponse] = useState<GraficosIndicador>({
+  const [newIndicadorResponse, setNewIndicadorResponse] = useState<GraficosIndicador>(grafico === undefined ? {
     arquivo: new File([], ''),
     descricaoGrafico: '',
     tituloGrafico: '',
     tipoGrafico: ''
-  })
+  } : grafico)
   const [cacheIndicadorResponse, setCacheIndicadorResponse] = useState<GraficosIndicador | undefined>(undefined)
 
   return(
@@ -114,12 +178,16 @@ const GraficoComponent:FC<GraficoComponentProps> = ({chaveValorGraficos}) => {
           id="tituloGrafico" 
           name="tituloGrafico" 
           placeholder="Título do gráfico" 
+          value={newIndicadorResponse.tituloGrafico !== '' ? newIndicadorResponse.tituloGrafico : ''}
           onChange={(e) => setNewIndicadorResponse(prevState => ({...prevState, tituloGrafico: e.target.value}))} 
         />
       </div>
       
       <div className="form-group">
         <label htmlFor="csvGrafico">Dados do gráfico</label>
+        {newIndicadorResponse.arquivo !== '' && ( <div>
+          <p>{`Arquivo atual: ${newIndicadorResponse.arquivo}`}</p>
+        </div> )}
         <input 
           required
           id="csvGrafico"
@@ -137,6 +205,7 @@ const GraficoComponent:FC<GraficoComponentProps> = ({chaveValorGraficos}) => {
           type="text" 
           id="descricaoGrafico" 
           name="descricaoGrafico" 
+          value={newIndicadorResponse.descricaoGrafico !== '' ? newIndicadorResponse.descricaoGrafico : ''}
           onChange={(e) => setNewIndicadorResponse(prevState => ({...prevState, descricaoGrafico: e.target.value}))} 
           placeholder="Descrição do gráfico" 
         />
@@ -147,9 +216,10 @@ const GraficoComponent:FC<GraficoComponentProps> = ({chaveValorGraficos}) => {
         <Form.Select 
           className="form-select"
           aria-label="Tipo de gráfico" 
+          value={newIndicadorResponse.tipoGrafico !== '' ? newIndicadorResponse.tipoGrafico : ''}
           onChange={(e) => setNewIndicadorResponse(prevState => ({...prevState, tipoGrafico: e.target.value}))}
         >
-          <option value="">Selecione o tipo de gráfico</option>
+          {/*<option value="">Selecione o tipo de gráfico</option>*/}
           {Object.keys(chaveValorGraficos).map(key => (
             <option key={chaveValorGraficos[key]} value={chaveValorGraficos[key]}>
               {key}

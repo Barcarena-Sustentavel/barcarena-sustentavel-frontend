@@ -14,7 +14,6 @@ export const postIndicador = async (dimensao:string | undefined, indicador:strin
     }
 
     try{
-        //const endpoit = `http://0.0.0.0:8081/admin/dimensoes/${dimensao}/indicador/${indicador}/anexos/`
         const endpoit = `/api/admin/dimensoes/${dimensao}/indicador/${indicador}/anexos/`
         const formData = new FormData()
         for(let i = 0; i < arrayGrafico.length; i++){
@@ -25,6 +24,33 @@ export const postIndicador = async (dimensao:string | undefined, indicador:strin
             console.log(formData)
             await fetch(endpoit, {
                 method: 'POST', 
+                body: formData
+            }).catch((error) => {
+                console.log(error)
+            })
+        }
+    }
+    catch(error){
+        console.log(error)
+    }
+}
+
+export const patchIndicador = async (dimensao:string | undefined, antigoIndicador:string, novoIndicador: string, arrayGrafico:GraficosIndicador[]) => {
+    try{
+        const endpoit = `admin/dimensoes/${dimensao}/indicador/${antigoIndicador}/`
+        const formData = new FormData()
+        const novoIndicadorBool:boolean = novoIndicador !== antigoIndicador 
+        if(novoIndicadorBool){
+            formData.append('nome', novoIndicador)
+        }
+        for(let i = 0; i < arrayGrafico.length; i++){
+            formData.append('grafico', arrayGrafico[i].arquivo)
+            formData.append('descricaoGrafico', arrayGrafico[i].descricaoGrafico)
+            formData.append('tituloGrafico', arrayGrafico[i].tituloGrafico)
+            formData.append('tipoGrafico', arrayGrafico[i].tipoGrafico)
+            console.log(formData)
+            await fetch(endpoit, {
+                method: 'PATCH', 
                 body: formData
             }).catch((error) => {
                 console.log(error)

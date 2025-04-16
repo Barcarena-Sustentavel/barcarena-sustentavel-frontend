@@ -25,7 +25,7 @@ const CreatePage: FC = () => {
     }
 
     if (activeTab === "Indicadores") {
-        return (<CreateIndicador  dimensao={dimensao}/> )
+        return (<CreateIndicador  dimensao={dimensao} indicadorNome={elementName}/> )
     }
 
 

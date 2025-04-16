@@ -3,7 +3,7 @@ export interface Indicador{
 }
 
 export interface GraficosIndicador{
-    arquivo: File
+    arquivo: File | string
     descricaoGrafico: string,
     tituloGrafico: string,
     tipoGrafico: string
