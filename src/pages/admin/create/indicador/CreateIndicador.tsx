@@ -1,22 +1,16 @@
 import React, { FC, useEffect, useState } from "react"
 import { patchIndicador, postIndicador } from "./crudIndicador.tsx";
-import { Form } from "react-bootstrap";
 import api from "../../../../api.tsx";
 import { GraficosIndicador } from "../../../../interfaces/indicador_interface.tsx";
 import "../../css/createIndicador.css";
+import { GraficoComponent } from "./components/Grafico.tsx";
 
-//interface CreateIndicadorProps {
-//  dimensao: string | undefined
-//}
-
-interface GraficoComponentProps {
-  chaveValorGraficos: { [key: string]: string };
-  grafico: GraficosIndicador | undefined;
-}
-let arrayIndicadorResponse: GraficosIndicador[] = []
+//array com gráficos a serem inseridos
+const arrayIndicadorResponse: GraficosIndicador[] = []
 
 export const CreateIndicador:FC</*CreateIndicadorProps*/{dimensao:string | undefined, indicadorNome:string | undefined}> = ({dimensao,indicadorNome}) => {
-  console.log(indicadorNome)
+  //console.log(indicadorNome)
+  //const [graficoModificados, setGraficoModificados] = useState<GraficosIndicador[]>([])
   const [indicadorAntigo, setIndicadorAntigo] = useState<string>("")
   const [patch, setPatch] = useState(false);
   const [indicador, setIndicador] = useState<string>("")
@@ -43,61 +37,51 @@ export const CreateIndicador:FC</*CreateIndicadorProps*/{dimensao:string | undef
     'Linha do Tempo': 'timeline'
   };
   const [graficoNode, setGraficoNode] = useState<React.ReactElement[]>([
-    <GraficoComponent chaveValorGraficos={chaveValorGraficos} grafico={undefined} />
+    <GraficoComponent chaveValorGraficos={chaveValorGraficos} grafico={undefined} arrayIndicadorResponse={arrayIndicadorResponse} />
   ]);
 
   useEffect(() => {
     if(indicadorNome != undefined){ 
       setPatch(true)
-        //const graficosPatchLista:GraficosIndicador[] = []
-
         api.get(url).then(response => {
-        console.log(response.data)
+        console.log(arrayIndicadorResponse)
         setIndicador(response.data.nome)
 
-        const newGraficoNodes = response.data.graficos.map((grafico: any, index: number) => {
+        const newGraficoNodes = response.data.graficos.map((grafico: GraficosIndicador, index: number) => {
           const graficoPatch: GraficosIndicador = {
-            arquivo: grafico.path, //new File([], grafico.path),
+            id: grafico.id,
+            arquivo: grafico.arquivo, 
             descricaoGrafico: grafico.descricaoGrafico,
             tituloGrafico: grafico.tituloGrafico,
             tipoGrafico: grafico.tipoGrafico
           }
-          //graficosPatchLista.push(graficoPatch)
           // Return a new component with the initial data
           return (
             <GraficoComponent 
               key={index} 
               chaveValorGraficos={chaveValorGraficos}
               grafico={graficoPatch}
+              arrayIndicadorResponse={arrayIndicadorResponse}
             />
           )
         });
         
         // Update the state with the new components
         setGraficoNode(newGraficoNodes);
-        //response.data.graficos.map((grafico, index) => {
-        //  const graficoPatch:GraficosIndicador={
-        //    arquivo: grafico.path,
-        //    descricaoGrafico: grafico.descricaoGrafico,
-        //    tituloGrafico: grafico.tituloGrafico,
-        //    tipoGrafico: grafico.tipoGrafico
-        //  }
-        //  graficosPatchLista.push(graficoPatch)
-        //    })
           
           }).catch(error => {
             console.log(error)
           })
         
     }
-  },[patch, url, indicadorNome])
+  },[patch, url, indicadorNome, chaveValorGraficos])
 
   //Função para adicionar um novo gráfico
   const addGrafico = (e: React.MouseEvent) => {
     e.preventDefault();
     setGraficoNode([
       ...graficoNode, 
-      <GraficoComponent chaveValorGraficos={chaveValorGraficos} grafico={undefined}/>
+      <GraficoComponent chaveValorGraficos={chaveValorGraficos} grafico={undefined} arrayIndicadorResponse={arrayIndicadorResponse} />
     ]);
   }
 
@@ -145,6 +129,7 @@ export const CreateIndicador:FC</*CreateIndicadorProps*/{dimensao:string | undef
           onClick={(e) => { 
             e.preventDefault();
             if(patch === true){
+              console.log(arrayIndicadorResponse)
               patchIndicador(dimensao, indicadorAntigo, indicador,arrayIndicadorResponse)
             }
             else{
@@ -158,7 +143,7 @@ export const CreateIndicador:FC</*CreateIndicadorProps*/{dimensao:string | undef
     </div>
   )
 }
-
+/*
 const GraficoComponent:FC<GraficoComponentProps> = ({chaveValorGraficos, grafico}) => {
   const [graficoAdicionado, setGraficoAdicionado] = useState<boolean>(false)
   const [newIndicadorResponse, setNewIndicadorResponse] = useState<GraficosIndicador>(grafico === undefined ? {
@@ -219,7 +204,6 @@ const GraficoComponent:FC<GraficoComponentProps> = ({chaveValorGraficos, grafico
           value={newIndicadorResponse.tipoGrafico !== '' ? newIndicadorResponse.tipoGrafico : ''}
           onChange={(e) => setNewIndicadorResponse(prevState => ({...prevState, tipoGrafico: e.target.value}))}
         >
-          {/*<option value="">Selecione o tipo de gráfico</option>*/}
           {Object.keys(chaveValorGraficos).map(key => (
             <option key={chaveValorGraficos[key]} value={chaveValorGraficos[key]}>
               {key}
@@ -253,4 +237,4 @@ const GraficoComponent:FC<GraficoComponentProps> = ({chaveValorGraficos, grafico
       </button>
     </div>
   )
-}
+}*/

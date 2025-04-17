@@ -36,13 +36,27 @@ export const postIndicador = async (dimensao:string | undefined, indicador:strin
 }
 
 export const patchIndicador = async (dimensao:string | undefined, antigoIndicador:string, novoIndicador: string, arrayGrafico:GraficosIndicador[]) => {
-    try{
-        const endpoit = `admin/dimensoes/${dimensao}/indicador/${antigoIndicador}/`
-        const formData = new FormData()
+    
+    const indicador:Indicador = {
+        nome: ''
+    }
+    try {
         const novoIndicadorBool:boolean = novoIndicador !== antigoIndicador 
         if(novoIndicadorBool){
-            formData.append('nome', novoIndicador)
+            indicador.nome = novoIndicador
+            await api.patch(`admin/dimensoes/${dimensao}/indicador/${antigoIndicador}/`, indicador)
         }
+        else{
+            indicador.nome = antigoIndicador
+            
+        }
+    } catch (error) {
+        console.log(error)  
+    }
+    
+    try{
+        const endpoit = `admin/dimensoes/${dimensao}/indicador/${indicador}/`
+        const formData = new FormData()
         for(let i = 0; i < arrayGrafico.length; i++){
             formData.append('grafico', arrayGrafico[i].arquivo)
             formData.append('descricaoGrafico', arrayGrafico[i].descricaoGrafico)

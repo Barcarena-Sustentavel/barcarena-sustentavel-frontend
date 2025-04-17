@@ -3,10 +3,11 @@ export interface Indicador{
 }
 
 export interface GraficosIndicador{
-    arquivo: File | string
-    descricaoGrafico: string,
-    tituloGrafico: string,
-    tipoGrafico: string
+    id: number | null,
+    arquivo: File | string, //| null
+    descricaoGrafico: string, //| null,
+    tituloGrafico: string, //| undefined,
+    tipoGrafico: string //| undefined
 }
 
 export interface IndicadorResponse{
