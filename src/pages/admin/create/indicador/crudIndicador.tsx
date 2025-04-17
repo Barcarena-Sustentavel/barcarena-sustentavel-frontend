@@ -36,7 +36,6 @@ export const postIndicador = async (dimensao:string | undefined, indicador:strin
 }
 
 export const patchIndicador = async (dimensao:string | undefined, antigoIndicador:string, novoIndicador: string, arrayGrafico:GraficosIndicador[]) => {
-    
     const indicador:Indicador = {
         nome: ''
     }
@@ -44,7 +43,7 @@ export const patchIndicador = async (dimensao:string | undefined, antigoIndicado
         const novoIndicadorBool:boolean = novoIndicador !== antigoIndicador 
         if(novoIndicadorBool){
             indicador.nome = novoIndicador
-            await api.patch(`admin/dimensoes/${dimensao}/indicador/${antigoIndicador}/`, indicador)
+            await api.patch(`/admin/dimensoes/${dimensao}/indicador/${antigoIndicador}`, {"indicadorNovo": indicador.nome})
         }
         else{
             indicador.nome = antigoIndicador
@@ -55,10 +54,15 @@ export const patchIndicador = async (dimensao:string | undefined, antigoIndicado
     }
     
     try{
-        const endpoit = `admin/dimensoes/${dimensao}/indicador/${indicador}/`
         const formData = new FormData()
         for(let i = 0; i < arrayGrafico.length; i++){
-            formData.append('grafico', arrayGrafico[i].arquivo)
+            const endpoit = `/api/admin/dimensoes/${dimensao}/indicador/${indicador.nome}/anexos/${arrayGrafico[i].id}/`;
+            //void (arrayGrafico[i].arquivo !== '' ? formData.append('grafico', arrayGrafico[i].arquivo) : null) //formData.append('grafico', ))
+            //void (arrayGrafico[i].descricaoGrafico !== '' ? formData.append('descricaoGrafico', arrayGrafico[i].descricaoGrafico) : null)//formData.append('descricaoGrafico', ''))
+            //void (arrayGrafico[i].tituloGrafico !== '' ? formData.append('tituloGrafico', arrayGrafico[i].tituloGrafico) : null)//formData.append('tituloGrafico', ''))
+            //void (arrayGrafico[i].tipoGrafico !== '' ? formData.append('tipoGrafico', arrayGrafico[i].tipoGrafico) : null) //formData.append('tipoGrafico', ''))
+            //formData.append('grafico', arrayGrafico[i].arquivo)
+            void (arrayGrafico[i].arquivo instanceof File ? formData.append('grafico', arrayGrafico[i].arquivo) : null)
             formData.append('descricaoGrafico', arrayGrafico[i].descricaoGrafico)
             formData.append('tituloGrafico', arrayGrafico[i].tituloGrafico)
             formData.append('tipoGrafico', arrayGrafico[i].tipoGrafico)

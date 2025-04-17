@@ -1,4 +1,4 @@
-import React, { FC, useState } from "react"
+import React, { FC, useEffect, useState } from "react"
 import { GraficosIndicador } from "../../../../../interfaces/indicador_interface.tsx"
 import { Form } from "react-bootstrap";
 
@@ -8,14 +8,10 @@ interface GraficoComponentProps {
   arrayIndicadorResponse: GraficosIndicador[] 
 }
 export const GraficoComponent:FC<GraficoComponentProps> = ({chaveValorGraficos, grafico, arrayIndicadorResponse}) => {
-    const [graficoModificado, setGraficoModificado] = useState<GraficosIndicador>({ 
-        id: null,
-        arquivo: new File([], ''),
-        descricaoGrafico: '',
-        tituloGrafico: '',
-        tipoGrafico: ''})
-
+    //verifica se o grafico já foi adicionado para ser modificado ou não
     const [graficoAdicionado, setGraficoAdicionado] = useState<boolean>(false)
+
+    //Objeto com atributos do grafico
     const [newIndicadorResponse, setNewIndicadorResponse] = useState<GraficosIndicador>(grafico === undefined ? {
         id: null,
         arquivo: new File([], ''),
@@ -25,12 +21,13 @@ export const GraficoComponent:FC<GraficoComponentProps> = ({chaveValorGraficos, 
     } : grafico)
     const [cacheIndicadorResponse, setCacheIndicadorResponse] = useState<GraficosIndicador | undefined>(undefined)
     
-    if(grafico !== undefined){
-    setGraficoModificado(prevState => ({
-        ...prevState,
-        id: grafico.id
-    }));
-}
+    //useEffect(() => {
+    //    if(grafico !== undefined){
+    //        //arrayIndicadorResponse.push(grafico)
+    //        //setGraficoAdicionado(true)
+    //        //setCacheIndicadorResponse(grafico)
+    //        console.log(arrayIndicadorResponse)
+    //}},[grafico])
 
     return(
         <div>
@@ -41,17 +38,17 @@ export const GraficoComponent:FC<GraficoComponentProps> = ({chaveValorGraficos, 
             id="tituloGrafico" 
             name="tituloGrafico" 
             placeholder="Título do gráfico" 
-            value={newIndicadorResponse.tituloGrafico !== '' ? newIndicadorResponse.tituloGrafico : ''}
+            value={newIndicadorResponse.tituloGrafico}//{newIndicadorResponse.tituloGrafico !== '' ? newIndicadorResponse.tituloGrafico : ''}
             onChange={(e) => {
-                if(grafico !== undefined){
-                    setGraficoModificado(prevState => ({
-                        ...prevState,
-                        tituloGrafico: e.target.value
-                    }));
-                }else{
-                    setNewIndicadorResponse(prevState => ({...prevState, tituloGrafico: e.target.value} 
-                    ))}
-            }} 
+                //if(grafico !== undefined){
+                //    setGraficoModificado(prevState => ({
+                //        ...prevState,
+                //        tituloGrafico: e.target.value
+                //    }));
+                //}else{
+                    setNewIndicadorResponse(prevState => ({...prevState, tituloGrafico: e.target.value} ))}
+
+            }//} 
             />
         </div>
         
@@ -66,14 +63,14 @@ export const GraficoComponent:FC<GraficoComponentProps> = ({chaveValorGraficos, 
             name="csvGrafico"
             type="file"
             onChange={(e) => {
-                if(grafico !== undefined){
-                    setGraficoModificado(prevState => ({
-                        ...prevState,
-                        arquivo: e.target.files![0]
-                    }));
-                }else{
+                //if(grafico !== undefined){
+                //    setGraficoModificado(prevState => ({
+                //        ...prevState,
+                //        arquivo: e.target.files![0]
+                //    }));
+                //}else{
                     setNewIndicadorResponse(prevState => ({...prevState, arquivo:e.target.files![0]}))
-                }
+                //}
             }}
             />
         </div>
@@ -84,16 +81,9 @@ export const GraficoComponent:FC<GraficoComponentProps> = ({chaveValorGraficos, 
                 type="text" 
                 id="descricaoGrafico" 
                 name="descricaoGrafico" 
-                value={newIndicadorResponse.descricaoGrafico !== '' ? newIndicadorResponse.descricaoGrafico : ''}
+                value={newIndicadorResponse.descricaoGrafico} 
                 onChange={(e) => {
-                    if(grafico !== undefined){
-                        setGraficoModificado(prevState => ({
-                            ...prevState,
-                            descricaoGrafico: e.target.value
-                        }));
-                    }else{
                         setNewIndicadorResponse(prevState => ({...prevState, descricaoGrafico: e.target.value}))
-                        }
                     } 
                 }
                 placeholder="Descrição do gráfico" 
@@ -107,14 +97,8 @@ export const GraficoComponent:FC<GraficoComponentProps> = ({chaveValorGraficos, 
             aria-label="Tipo de gráfico" 
             value={newIndicadorResponse.tipoGrafico !== '' ? newIndicadorResponse.tipoGrafico : ''}
             onChange={(e) => {
-                if(grafico !== undefined){
-                    setGraficoModificado(prevState => ({
-                        ...prevState,
-                        tipoGrafico: e.target.value
-                    }));
-                }else{
+
                     setNewIndicadorResponse(prevState => ({...prevState, tipoGrafico: e.target.value}))}
-                }
             }
             >
             {Object.keys(chaveValorGraficos).map(key => (
@@ -132,31 +116,17 @@ export const GraficoComponent:FC<GraficoComponentProps> = ({chaveValorGraficos, 
                 if (graficoAdicionado === true){
                 arrayIndicadorResponse.map(indicador => {
                     if(indicador === cacheIndicadorResponse){
-                        if(grafico !== undefined){
-                            setCacheIndicadorResponse(indicador)
-                        }
-                        else{
-                            indicador = newIndicadorResponse
-                            setCacheIndicadorResponse(newIndicadorResponse)
-                            
-                        }
-                        setGraficoAdicionado(true)
+                        indicador = newIndicadorResponse
+                        setCacheIndicadorResponse(newIndicadorResponse)    
+                        console.log(arrayIndicadorResponse)
                         return
                     }
                     })
             }
             else{
-
-                if(grafico !== undefined){
-                    setCacheIndicadorResponse(graficoModificado)
-                    arrayIndicadorResponse.push(graficoModificado)
-                }
-                else{
-                    setCacheIndicadorResponse(newIndicadorResponse)
-                    arrayIndicadorResponse.push(newIndicadorResponse)
-                }
+                setCacheIndicadorResponse(newIndicadorResponse)
+                arrayIndicadorResponse.push(newIndicadorResponse)
                 setGraficoAdicionado(true)
-                console.log(arrayIndicadorResponse)
             }
             }}
         >
