@@ -1,19 +1,13 @@
 import api from "../../../../api.tsx"
 import {Indicador, GraficosIndicador} from "../../../../interfaces/indicador_interface.tsx"
+import Swal from "sweetalert2"
 
 export const postIndicador = async (dimensao:string | undefined, indicador:string,arrayGrafico:GraficosIndicador[]) => {
     const Indicador:Indicador = {
         nome: indicador
     }
-
     try{
         await api.post(`/admin/dimensoes/${dimensao}/indicador/`, Indicador)
-    }
-    catch(error){
-        console.log(error)
-    }
-
-    try{
         const endpoit = `/api/admin/dimensoes/${dimensao}/indicador/${indicador}/anexos/`
         const formData = new FormData()
         for(let i = 0; i < arrayGrafico.length; i++){
@@ -29,8 +23,21 @@ export const postIndicador = async (dimensao:string | undefined, indicador:strin
                 console.log(error)
             })
         }
+        await Swal.fire({
+                        title: 'Sucesso!',
+                        text: 'Indicador adicionado com sucesso.',
+                        icon: 'success',
+                        confirmButtonColor: 'var(--primary-color)',
+                      });
     }
     catch(error){
+        console.error('Error submitting reference:', error);
+                await Swal.fire({
+                    title: 'Erro!',
+                    text: 'Ocorreu um erro ao adicionar o indicador. Por favor, tente novamente.',
+                    icon: 'error',
+                    confirmButtonColor: 'var(--primary-color)',
+                });
         console.log(error)
     }
 }
@@ -39,7 +46,8 @@ export const patchIndicador = async (dimensao:string | undefined, antigoIndicado
     const indicador:Indicador = {
         nome: ''
     }
-    try {
+    
+    try{
         const novoIndicadorBool:boolean = novoIndicador !== antigoIndicador 
         if(novoIndicadorBool){
             indicador.nome = novoIndicador
@@ -49,19 +57,9 @@ export const patchIndicador = async (dimensao:string | undefined, antigoIndicado
             indicador.nome = antigoIndicador
             
         }
-    } catch (error) {
-        console.log(error)  
-    }
-    
-    try{
         const formData = new FormData()
         for(let i = 0; i < arrayGrafico.length; i++){
             const endpoit = `/api/admin/dimensoes/${dimensao}/indicador/${indicador.nome}/anexos/${arrayGrafico[i].id}/`;
-            //void (arrayGrafico[i].arquivo !== '' ? formData.append('grafico', arrayGrafico[i].arquivo) : null) //formData.append('grafico', ))
-            //void (arrayGrafico[i].descricaoGrafico !== '' ? formData.append('descricaoGrafico', arrayGrafico[i].descricaoGrafico) : null)//formData.append('descricaoGrafico', ''))
-            //void (arrayGrafico[i].tituloGrafico !== '' ? formData.append('tituloGrafico', arrayGrafico[i].tituloGrafico) : null)//formData.append('tituloGrafico', ''))
-            //void (arrayGrafico[i].tipoGrafico !== '' ? formData.append('tipoGrafico', arrayGrafico[i].tipoGrafico) : null) //formData.append('tipoGrafico', ''))
-            //formData.append('grafico', arrayGrafico[i].arquivo)
             void (arrayGrafico[i].arquivo instanceof File ? formData.append('grafico', arrayGrafico[i].arquivo) : null)
             formData.append('descricaoGrafico', arrayGrafico[i].descricaoGrafico)
             formData.append('tituloGrafico', arrayGrafico[i].tituloGrafico)
@@ -74,8 +72,21 @@ export const patchIndicador = async (dimensao:string | undefined, antigoIndicado
                 console.log(error)
             })
         }
+        await Swal.fire({
+            title: 'Sucesso!',
+            text: 'Indicador modificado com sucesso.',
+            icon: 'success',
+            confirmButtonColor: 'var(--primary-color)',
+          });
     }
     catch(error){
+        console.error('Error submitting reference:', error);
+                await Swal.fire({
+                    title: 'Erro!',
+                    text: 'Ocorreu um erro ao adicionar o indicador. Por favor, tente novamente.',
+                    icon: 'error',
+                    confirmButtonColor: 'var(--primary-color)',
+                });
         console.log(error)
     }
 }

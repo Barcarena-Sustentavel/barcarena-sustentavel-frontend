@@ -7,7 +7,6 @@ export const postReferencias = async (dimensao:string | undefined, nomeReferenci
         nome: nomeReferencia,
         link: linkReferencia
     }
-
     try{
         await api.post(`/admin/dimensoes/${dimensao}/referencias/`, referenciaNova)
         await Swal.fire({

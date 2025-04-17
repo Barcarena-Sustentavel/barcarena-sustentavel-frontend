@@ -1,4 +1,5 @@
 import React, { FC, useEffect, useMemo, useState } from "react"
+import { useNavigate } from "react-router-dom";
 import { patchIndicador, postIndicador } from "./crudIndicador.tsx";
 import api from "../../../../api.tsx";
 import { GraficosIndicador } from "../../../../interfaces/indicador_interface.tsx";
@@ -12,6 +13,7 @@ export const CreateIndicador:FC</*CreateIndicadorProps*/{dimensao:string | undef
   //console.log(indicadorNome)
   //const [graficoModificados, setGraficoModificados] = useState<GraficosIndicador[]>([])
   //const arrayIndicadorResponse: GraficosIndicador[] = []
+  const navigate = useNavigate()
   const arrayIndicadorResponse: GraficosIndicador[] = useMemo(() => [], []) 
   const [indicadorAntigo, setIndicadorAntigo] = useState<string>("")
   const [patch, setPatch] = useState(false);
@@ -129,9 +131,11 @@ export const CreateIndicador:FC</*CreateIndicadorProps*/{dimensao:string | undef
             if(patch === true){
               //console.log(arrayIndicadorResponse)
               patchIndicador(dimensao, indicadorAntigo, indicador,arrayIndicadorResponse)
+              navigate(`/admin/dimensao/${dimensao}/`);
             }
             else{
               postIndicador(dimensao, indicador, arrayIndicadorResponse)
+              navigate(`/admin/dimensao/${dimensao}/`);
             }
             }}
         >
