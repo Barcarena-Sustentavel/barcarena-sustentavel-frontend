@@ -1,147 +1,92 @@
-import React, { FC, useEffect, useMemo, useState } from "react"
-import { useNavigate } from "react-router-dom";
-import { patchIndicador, postIndicador } from "./crudIndicador.tsx";
-import api from "../../../../api.tsx";
-import { GraficosIndicador } from "../../../../interfaces/indicador_interface.tsx";
-import "../../css/createIndicador.css";
-import { GraficoComponent } from "./components/Grafico.tsx";
+import api from "../../../../api.tsx"
+import {Indicador, GraficosIndicador} from "../../../../interfaces/indicador_interface.tsx"
+import Swal from "sweetalert2"
 
-//array com gráficos a serem inseridos
-//const arrayIndicadorResponse: GraficosIndicador[] = []
-
-export const CreateIndicador:FC</*CreateIndicadorProps*/{dimensao:string | undefined, indicadorNome:string | undefined}> = ({dimensao,indicadorNome}) => {
-  //console.log(indicadorNome)
-  //const [graficoModificados, setGraficoModificados] = useState<GraficosIndicador[]>([])
-  //const arrayIndicadorResponse: GraficosIndicador[] = []
-  const navigate = useNavigate()
-  const arrayIndicadorResponse: GraficosIndicador[] = useMemo(() => [], []) 
-  const [indicadorAntigo, setIndicadorAntigo] = useState<string>("")
-  const [patch, setPatch] = useState(false);
-  const [indicador, setIndicador] = useState<string>(indicadorNome !== undefined ? indicadorNome : "")
-  const url = `admin/dimensoes/${dimensao}/indicador/${indicadorNome}/`
-  const chaveValorGraficos: { [key: string]: string } = useMemo(() => ({
-    'Selecione um tipo de gráfico': '',
-    'Linha': 'line',
-    'Linha Suave': 'spline',
-    'Área': 'area',
-    'Área Suave': 'areaspline',
-    'Dispersão': 'scatter',
-    'Coluna': 'column',
-    'Barra': 'bar',
-    'Bolha': 'bubble',
-    'Intervalo de Área': 'arearange',
-    'Intervalo de Coluna': 'columnrange',
-    'Diagrama de Caixa': 'boxplot',
-    'Mapa de Calor': 'heatmap',
-    'Cascata': 'waterfall',
-    'Funil': 'funnel',
-    'Pirâmide': 'pyramid',
-    'Mapa de Árvore': 'treemap',
-    'Grafo de Rede': 'networkgraph',
-    'Linha do Tempo': 'timeline'
-  }),[]);
-  const [graficoNode, setGraficoNode] = useState<React.ReactElement[]>([
-    <GraficoComponent chaveValorGraficos={chaveValorGraficos} grafico={undefined} arrayIndicadorResponse={arrayIndicadorResponse} />
-  ]);
-
-  useEffect(() => {
-    if(indicadorNome != undefined){ 
-      setPatch(true)
-        api.get(url).then(response => {
-        setIndicadorAntigo(response.data.nome)
-        arrayIndicadorResponse.length = 0;
-        console.log(arrayIndicadorResponse)
-        const newGraficoNodes = response.data.graficos.map((grafico: any, index: number) => {
-          const graficoPatch: GraficosIndicador = {
-            id: grafico.id,
-            arquivo: grafico.path, 
-            descricaoGrafico: grafico.descricaoGrafico,
-            tituloGrafico: grafico.tituloGrafico,
-            tipoGrafico: grafico.tipoGrafico
-          }
-          // Return a new component with the initial data
-          return (
-            <GraficoComponent 
-              key={index} 
-              chaveValorGraficos={chaveValorGraficos}
-              grafico={graficoPatch}
-              arrayIndicadorResponse={arrayIndicadorResponse}
-            />
-          )
-        });
-        
-        // Update the state with the new components
-        setGraficoNode(newGraficoNodes);
-          
-          }).catch(error => {
-            console.log(error)
-          })
-        
+export const postIndicador = async (dimensao:string | undefined, indicador:string,arrayGrafico:GraficosIndicador[]) => {
+    const Indicador:Indicador = {
+        nome: indicador
     }
-  },[url, chaveValorGraficos, indicadorNome])
+    try{
+        await api.post(`/admin/dimensoes/${dimensao}/indicador/`, Indicador)
+        const endpoit = `/api/admin/dimensoes/${dimensao}/indicador/${indicador}/anexos/`
+        const formData = new FormData()
+        for(let i = 0; i < arrayGrafico.length; i++){
+            formData.append('grafico', arrayGrafico[i].arquivo)
+            formData.append('descricaoGrafico', arrayGrafico[i].descricaoGrafico)
+            formData.append('tituloGrafico', arrayGrafico[i].tituloGrafico)
+            formData.append('tipoGrafico', arrayGrafico[i].tipoGrafico)
+            console.log(formData)
+            await fetch(endpoit, {
+                method: 'POST', 
+                body: formData
+            }).catch((error) => {
+                console.log(error)
+            })
+        }
+        await Swal.fire({
+                        title: 'Sucesso!',
+                        text: 'Indicador adicionado com sucesso.',
+                        icon: 'success',
+                        confirmButtonColor: 'var(--primary-color)',
+                      });
+    }
+    catch(error){
+        console.error('Error submitting reference:', error);
+                await Swal.fire({
+                    title: 'Erro!',
+                    text: 'Ocorreu um erro ao adicionar o indicador. Por favor, tente novamente.',
+                    icon: 'error',
+                    confirmButtonColor: 'var(--primary-color)',
+                });
+        console.log(error)
+    }
+}
 
-  //Função para adicionar um novo gráfico
-  const addGrafico = (e: React.MouseEvent) => {
-    e.preventDefault();
-    setGraficoNode([
-      ...graficoNode, 
-      <GraficoComponent chaveValorGraficos={chaveValorGraficos} grafico={undefined} arrayIndicadorResponse={arrayIndicadorResponse} />
-    ]);
-  }
-
-  return (
-    <div className="create-indicador-container">
-      <h2 className="create-indicador-title">{patch === false ? 'Criar Novo Indicador' : 'Modificar Indicador'}</h2>
-      <form className="create-indicador-form">
-        <div className="form-group">
-          <label htmlFor="nomeIndicador">Nome do Indicador</label>
-          <input 
-            type="text" 
-            placeholder="Nome do Indicador" 
-            id="idIndicador" 
-            name="nomeIndicador" 
-            value={indicador}
-            onChange={(e) => {
-              setIndicador(e.target.value)
-              }} 
-          />
-        </div>
-        
-        <h3>Gráficos</h3>
-        <div id="graficos">
-          {graficoNode.map((grafico, index) => (
-            <div key={index} className="grafico-component">
-              <h3>Gráfico {index + 1}</h3>
-              {grafico}
-            </div>
-          ))}
-        </div>
-        <button 
-          className="btn btn-add btn-primary" 
-          onClick={addGrafico}
-        >
-          <span>+</span> Adicionar Gráfico
-        </button>
-        
-        <button 
-          type="button" 
-          className="btn btn-success"
-          onClick={(e) => { 
-            e.preventDefault();
-            if(patch === true){
-              //console.log(arrayIndicadorResponse)
-              patchIndicador(dimensao, indicadorAntigo, indicador,arrayIndicadorResponse)
-              navigate(`/admin/dimensao/${dimensao}/`);
-            }
-            else{
-              postIndicador(dimensao, indicador, arrayIndicadorResponse)
-              navigate(`/admin/dimensao/${dimensao}/`);
-            }
-            }}
-        >
-          {patch === false ? 'Criar Indicador' : 'Modificar Indicador'}
-        </button>
-      </form>
-    </div>
-  )
+export const patchIndicador = async (dimensao:string | undefined, antigoIndicador:string, novoIndicador: string, arrayGrafico:GraficosIndicador[]) => {
+    const indicador:Indicador = {
+        nome: ''
+    }
+    
+    try{
+        const novoIndicadorBool:boolean = novoIndicador !== antigoIndicador 
+        if(novoIndicadorBool){
+            indicador.nome = novoIndicador
+            await api.patch(`/admin/dimensoes/${dimensao}/indicador/${antigoIndicador}`, {"indicadorNovo": indicador.nome})
+        }
+        else{
+            indicador.nome = antigoIndicador
+            
+        }
+        const formData = new FormData()
+        for(let i = 0; i < arrayGrafico.length; i++){
+            const endpoit = `/api/admin/dimensoes/${dimensao}/indicador/${indicador.nome}/anexos/${arrayGrafico[i].id}/`;
+            void (arrayGrafico[i].arquivo instanceof File ? formData.append('grafico', arrayGrafico[i].arquivo) : null)
+            formData.append('descricaoGrafico', arrayGrafico[i].descricaoGrafico)
+            formData.append('tituloGrafico', arrayGrafico[i].tituloGrafico)
+            formData.append('tipoGrafico', arrayGrafico[i].tipoGrafico)
+            console.log(formData)
+            await fetch(endpoit, {
+                method: 'PATCH', 
+                body: formData
+            }).catch((error) => {
+                console.log(error)
+            })
+        }
+        await Swal.fire({
+            title: 'Sucesso!',
+            text: 'Indicador modificado com sucesso.',
+            icon: 'success',
+            confirmButtonColor: 'var(--primary-color)',
+          });
+    }
+    catch(error){
+        console.error('Error submitting reference:', error);
+                await Swal.fire({
+                    title: 'Erro!',
+                    text: 'Ocorreu um erro ao adicionar o indicador. Por favor, tente novamente.',
+                    icon: 'error',
+                    confirmButtonColor: 'var(--primary-color)',
+                });
+        console.log(error)
+    }
 }
