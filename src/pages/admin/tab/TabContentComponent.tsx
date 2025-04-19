@@ -42,10 +42,13 @@ export const TabContentComponent: FC<RenderContentInterface> = ({
 
   const handleSubmit = async () => {
     try {
-      const response = await api.put(`/dimensoes/${dimensaoJson?.id}/`, {
-        nome: formData.nome,
-        descricao: formData.descricao,
-      });
+      const response = await api.patch(
+        `/admin/dimensoes/${dimensaoJson?.nome}/`,
+        {
+          nome: formData.nome,
+          descricao: formData.descricao,
+        },
+      );
       setDimensao(response.data);
     } catch (error) {
       console.log(error);
@@ -81,8 +84,9 @@ export const TabContentComponent: FC<RenderContentInterface> = ({
           type="text"
           name="nome"
           value={formData.nome}
-          placeholder={dimensaoJson?.nome.toString()}
+          placeholder={dimensaoJson?.nome}
           onChange={handleInputChange}
+          disabled
         />
 
         <label>Descrição</label>
@@ -90,7 +94,7 @@ export const TabContentComponent: FC<RenderContentInterface> = ({
           type="text"
           name="descricao"
           value={formData.descricao}
-          placeholder={dimensaoJson?.descricao.toString()}
+          placeholder={dimensaoJson?.descricao}
           onChange={handleInputChange}
         />
 
