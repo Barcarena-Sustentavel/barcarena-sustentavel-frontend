@@ -1,6 +1,7 @@
-export interface KML{
-    id: number,
-    nome: string,
-    fkDimensao: number,
+export interface KMLInterface {
+  nome: string | undefined;
 }
 
+export interface CreateKML extends KMLInterface {
+  arquivo: string | File;
+}
