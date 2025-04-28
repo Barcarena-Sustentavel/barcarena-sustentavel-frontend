@@ -1,24 +1,26 @@
 /* Header styling */
-.admin-header {
+.admin-header-dimensao-page {
     text-align: center;
     padding: 2rem 1rem;
-    background-color: #f8f9fa;
     margin-bottom: 2rem;
-  }
-  
-  .admin-header h1 {
-    color: #2c3e50;
-    margin-bottom: 1rem;
-  }
-  
-  /* Tabs container and navigation */
-  .admin-tabs-container {
+    color: white;
+    background-color: transparent;
+}
+
+/* Tabs container and navigation */
+.admin-tabs-container {
     max-width: 1200px;
     margin: 0 auto;
     padding: 0 2rem;
-  }
-  
-  .admin-tabs-nav {
+}
+
+.admin-header-dimensao-page-space {
+    width: 70%;
+    margin: 0 auto;
+    display: flex;
+}
+
+.admin-tabs-nav {
     display: flex;
     justify-content: center;
     gap: 0.5rem;
@@ -26,9 +28,9 @@
     flex-wrap: wrap;
     border-bottom: 1px solid #e0e0e0;
     padding-bottom: 0.5rem;
-  }
-  
-  .admin-tab-button {
+}
+
+.admin-tab-button {
     padding: 0.75rem 1.5rem;
     background-color: white;
     border: 1px solid #e0e0e0;
@@ -37,150 +39,101 @@
     font-size: 1rem;
     color: #7f8c8d;
     transition: all 0.3s ease;
-  }
-  
-  .admin-tab-button:hover {
+}
+
+.admin-tab-button:hover {
     background-color: #f8f9fa;
     color: #2c3e50;
-  }
-  
-  .admin-tab-button.active {
+}
+
+.admin-tab-button.active {
     background-color: #2c3e50;
     color: white;
     border-color: #2c3e50;
     font-weight: 500;
-  }
-  
-  /* Tab content area */
-  .admin-tab-content {
+}
+
+/* Tab content area */
+.admin-tab-content {
     background-color: white;
     border-radius: 8px;
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
     padding: 2rem;
     min-height: 400px;
-  }
-  
-  /* Form styling within tabs */
-  .admin-form-group {
-    margin-bottom: 1.5rem;
-  }
-  
-  .admin-form-group label {
-    display: block;
-    margin-bottom: 0.5rem;
-    color: #2c3e50;
+    width: 70%;
+    margin: 0 auto;
+}
+
+.admin-forms {
+    /*display: flex;
+    flex-direction: column;*/
+    font-style: "Roboto", sans-serif;
+    width: 70%;
+    margin: 0 auto;
+}
+
+.admin-forms label {
+    margin-bottom: 8px;
     font-weight: 500;
-  }
-  
-  .admin-form-group input,
-  .admin-form-group textarea,
-  .admin-form-group select {
+    color: #333;
+    font-size: 14px;
+}
+.admin-forms input {
+    margin-bottom: 20px;
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    font-size: 14px;
     width: 100%;
-    padding: 0.75rem;
-    border: 1px solid #e0e0e0;
-    border-radius: 4px;
-    font-size: 1rem;
-  }
-  
-  .admin-form-group input:focus,
-  .admin-form-group textarea:focus,
-  .admin-form-group select:focus {
+    box-sizing: border-box;
+}
+.admin-forms input:focus {
     outline: none;
-    border-color: #3498db;
-    box-shadow: 0 0 0 2px rgba(52, 152, 219, 0.2);
-  }
-  
-  /* Action buttons */
-  .admin-action-button {
-    background-color: #3498db;
-    color: white;
-    border: none;
-    border-radius: 4px;
-    padding: 0.75rem 1.5rem;
-    font-size: 1rem;
-    cursor: pointer;
-    transition: background-color 0.3s ease;
-    margin-right: 0.5rem;
-  }
-  
-  .admin-action-button:hover {
-    background-color: #2980b9;
-  }
-  
-  .admin-action-button.secondary {
-    background-color: #95a5a6;
-  }
-  
-  .admin-action-button.secondary:hover {
-    background-color: #7f8c8d;
-  }
-  
-  .admin-action-button.danger {
-    background-color: #e74c3c;
-  }
-  
-  .admin-action-button.danger:hover {
-    background-color: #c0392b;
-  }
-  
-  /* List items within tabs */
-  .admin-list-item {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 1rem;
-    border-bottom: 1px solid #e0e0e0;
-  }
-  
-  .admin-list-item:last-child {
-    border-bottom: none;
-  }
-  
-  .admin-list-item-title {
+    border-color: #0066cc;
+    box-shadow: 0 0 0 2px rgba(0, 102, 204, 0.2);
+}
+.admin-forms button {
+    margin: 0 auto;
+    border: 0px solid transparent;
+    border-radius: 8px;
+    font-size: 14px;
     font-weight: 500;
-    color: #2c3e50;
-  }
-  
-  .admin-list-item-actions {
-    display: flex;
-    gap: 0.5rem;
-  }
-  
-  /* Create new item button */
-  .admin-create-button {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 0.5rem;
-    background-color: #2ecc71;
     color: white;
-    border: none;
-    border-radius: 4px;
-    padding: 0.75rem 1.5rem;
-    font-size: 1rem;
     cursor: pointer;
-    transition: background-color 0.3s ease;
-    margin-bottom: 1.5rem;
-  }
-  
-  .admin-create-button:hover {
-    background-color: #27ae60;
-  }
-  
-  /* Responsive adjustments */
-  @media (max-width: 768px) {
+}
+.dimensao-button-header {
+    width: 100px;
+    height: 100px;
+    background-color: white;
+    color: white;
+    -webkit-mask-size: contain;
+    mask-size: contain;
+    -webkit-mask-repeat: no-repeat;
+    mask-repeat: no-repeat;
+    -webkit-mask-position: center;
+    mask-position: center;
+}
+
+.admin-header-dimensao {
+    font-size: 2rem;
+    font-weight: 700;
+    color: white;
+    margin-bottom: 0;
+    background-color: transparent;
+}
+
+@media (max-width: 768px) {
     .admin-tabs-nav {
-      flex-direction: column;
-      gap: 0.5rem;
+        flex-direction: column;
+        gap: 0.5rem;
     }
-    
+
     .admin-tab-button {
-      width: 100%;
-      border-radius: 4px;
+        width: 100%;
+        border-radius: 4px;
     }
-    
+
     .admin-tab-content {
-      padding: 1rem;
+        padding: 1rem;
     }
-  }
-  
+}

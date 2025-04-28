@@ -1,60 +1,74 @@
-import { FC, useState} from 'react'
-import { useParams } from 'react-router-dom'
-import { TabContentComponent } from '../tab/TabContentComponent.tsx'
-import '../css/dimensaoPage.css'
+import { FC, useState } from "react";
+import { useParams } from "react-router-dom";
+import { TabContentComponent } from "../tab/TabContentComponent.tsx";
+import "../css/dimensaoPage.css";
+import dimensoes from "../../../utils/const.tsx";
 
-const DimensaoPageComponent:FC = () => {
-  const {dimensao} = useParams()
-  const [activeTab, setActiveTab] = useState<string>('Dimensão')
+const DimensaoPageComponent: FC = () => {
+  const { dimensao } = useParams();
+  const [activeTab, setActiveTab] = useState<string>("Dimensão");
   return (
     <div className="home-container">
-      <div className="admin-header">
-        <h1>Administração de {dimensao}</h1>
+      <div
+        style={{
+          backgroundColor: `var(--${dimensoes.dimensaoCores[dimensao!]})`,
+        }}
+        className="admin-header-dimensao-page"
+      >
+        <div className="admin-header-dimensao-page-space">
+          <div
+            style={{
+              maskImage: `url(${dimensoes.dimensoesColumn12[dimensao!]})`,
+            }}
+            className="dimensao-button-header"
+          ></div>
+          <h1 className="admin-header-dimensao-page">{dimensao}</h1>
+        </div>
       </div>
-      
+
       <div className="admin-tabs-container">
         <nav className="admin-tabs-nav">
-          <button 
-            className={`admin-tab-button ${activeTab === 'Dimensão' ? 'active' : ''}`}
-            onClick={() => setActiveTab('Dimensão')}
+          <button
+            className={`admin-tab-button ${activeTab === "Dimensão" ? "active" : ""}`}
+            onClick={() => setActiveTab("Dimensão")}
           >
             Dimensão
           </button>
-          <button 
-            className={`admin-tab-button ${activeTab === 'Indicadores' ? 'active' : ''}`}
-            onClick={() => setActiveTab('Indicadores')}
+          <button
+            className={`admin-tab-button ${activeTab === "Indicadores" ? "active" : ""}`}
+            onClick={() => setActiveTab("Indicadores")}
           >
             Indicadores
           </button>
 
           <button
-            className={`admin-tab-button ${activeTab === 'Referências' ? 'active' : ''}`}
-            onClick={() => setActiveTab('Referências')}
+            className={`admin-tab-button ${activeTab === "Referências" ? "active" : ""}`}
+            onClick={() => setActiveTab("Referências")}
           >
             Referências
           </button>
 
           <button
-            className={`admin-tab-button ${activeTab === 'Contribuições' ? 'active' : ''}`}
-            onClick={() => setActiveTab('Contribuições')}
+            className={`admin-tab-button ${activeTab === "Contribuições" ? "active" : ""}`}
+            onClick={() => setActiveTab("Contribuições")}
           >
             Contribuições
           </button>
 
           <button
-            className={`admin-tab-button ${activeTab === 'Kmls' ? 'active' : ''}`}
-            onClick={() => setActiveTab('Kmls')}
+            className={`admin-tab-button ${activeTab === "Kmls" ? "active" : ""}`}
+            onClick={() => setActiveTab("Kmls")}
           >
             Kmls
           </button>
         </nav>
-        
+
         <div className="admin-tab-content">
-          <TabContentComponent dimensao={dimensao} activeTab={activeTab}/>
+          <TabContentComponent dimensao={dimensao} activeTab={activeTab} />
         </div>
       </div>
     </div>
-  )
-}
+  );
+};
 
-export default DimensaoPageComponent
+export default DimensaoPageComponent;

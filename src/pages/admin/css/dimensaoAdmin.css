@@ -1,88 +1,99 @@
-.admin-header {
+.admin-header-dimensao-admin {
     text-align: center;
     padding: 2rem 1rem;
     background-color: #f8f9fa;
     margin-bottom: 2rem;
-  }
-  
-  .admin-header h1 {
-    color: #2c3e50;
-    margin-bottom: 1rem;
-  }
-  
-  .admin-header p {
+}
+
+.admin-header-dimensao-admin h1 {
+    text-align: center;
+}
+
+.admin-header-dimensao-admin p {
     color: #7f8c8d;
     max-width: 800px;
     margin: 0 auto;
-  }
-  
-  .dimensoes-grid {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
-    gap: 2rem;
-    padding: 0 2rem 3rem;
-  }
-  
-  .dimensoes-column {
+}
+
+.dimensoes-grid {
+    margin: 0 auto;
+    width: 50%;
+    padding: 2rem 2rem 3rem;
+    background-color: white;
+}
+
+.dimensoes-grid-wallpaper {
+    background-image: url("/src/assets/images/grafismos/grafismo5.png");
+    background-repeat: repeat;
+    background-color: var(--primary-blue); /*rgba(135, 206, 235, 1);*/
+}
+
+.dimensoes-column {
     display: flex;
     flex-direction: column;
+    margin: 2rem;
     gap: 1.5rem;
     max-width: 500px;
-  }
-  
-  .dimensao-card {
-    background-color: white;
+}
+
+.dimensao-card {
     border-radius: 8px;
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
     overflow: hidden;
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
-  }
-  
-  .dimensao-card:hover {
+    transition:
+        transform 0.3s ease,
+        box-shadow 0.3s ease;
+}
+
+.dimensao-button-icone {
+    width: 100px;
+    height: 100px;
+    color: white;
+    background-color: white;
+    -webkit-mask-size: contain;
+    mask-size: contain;
+    -webkit-mask-repeat: no-repeat;
+    mask-repeat: no-repeat;
+    -webkit-mask-position: center;
+    mask-position: center;
+}
+
+.dimensao-card:hover {
     transform: translateY(-5px);
     box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
-  }
-  
-  .dimensao-button {
+}
+
+.dimensao-button {
     width: 100%;
     padding: 1.5rem;
-    background: white;
     border: none;
     cursor: pointer;
     text-align: left;
     transition: background-color 0.3s ease;
-  }
-  
-  .dimensao-button:hover {
+}
+
+.dimensao-button:hover {
     background-color: #f8f9fa;
-  }
-  
-  .dimensao-button h3 {
-    color: #2c3e50;
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+}
+
+.dimensao-button h3 {
     margin-bottom: 0.5rem;
     font-size: 1.25rem;
-  }
-  
-  .dimensao-button p {
+}
+
+.dimensao-button p {
     color: #7f8c8d;
     font-size: 0.9rem;
-  }
-  
-  .dimensao-icon {
-    display: flex;
-    justify-content: center;
-    margin-bottom: 1rem;
-  }
-  
-  @media (max-width: 768px) {
+}
+
+@media (max-width: 768px) {
     .dimensoes-grid {
-      flex-direction: column;
-      align-items: center;
+        flex-direction: column;
+        align-items: center;
     }
-    
+
     .dimensoes-column {
-      width: 100%;
+        width: 100%;
     }
-  }
-  
+}

@@ -78,7 +78,7 @@ export const TabContentComponent: FC<RenderContentInterface> = ({
 
   if (activeTab === "Dimensão") {
     return (
-      <div>
+      <div className="admin-forms">
         <label>Nome</label>
         <input
           type="text"
@@ -135,6 +135,7 @@ export const TabContentComponent: FC<RenderContentInterface> = ({
                     onClick={(e) => e.stopPropagation()}
                   />
                   <Link
+                    //Modificação de itens antigo
                     to={`/admin/dimensao/${dimensao}/update/${activeTab}/${elementName}/`}
                   >
                     <label
