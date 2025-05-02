@@ -107,6 +107,11 @@ export const TabContentComponent: FC<RenderContentInterface> = ({
       <div>
         <div>
           {activeTabDict[activeTab].map((elementName: string) => {
+            const encodedURI = encodeURI(
+              `/admin/dimensao/${dimensao}/update/${activeTab}/${elementName}/`,
+            );
+            //const decodeURI = decodeURIComponent(encodedURI);
+            console.log(encodedURI);
             return (
               <span>
                 <div className="checkbox-link-container">
@@ -136,7 +141,8 @@ export const TabContentComponent: FC<RenderContentInterface> = ({
                   />
                   <Link
                     //Modificação de itens antigo
-                    to={`/admin/dimensao/${dimensao}/update/${activeTab}/${elementName}/`}
+                    //to={`/admin/dimensao/${dimensao}/update/${activeTab}/${elementName}/`}
+                    to={encodedURI}
                   >
                     <label
                       htmlFor={`checkbox-${elementName}`}
