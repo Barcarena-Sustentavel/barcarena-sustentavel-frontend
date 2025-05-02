@@ -13,17 +13,6 @@ export const CreateIndicador: FC<{
   dimensao: string | undefined;
   indicadorNome: string | undefined;
 }> = ({ dimensao, indicadorNome }) => {
-  const decodeIndicadorNome = (indicadorNome: string | undefined) => {
-    if (indicadorNome !== undefined) {
-      return "";
-    }
-    const indicadorDecode = encodeURI(indicadorNome!).replace(
-      /%(?![0-9A-Fa-f]{2})/g,
-      "%25",
-    );
-    console.log(indicadorDecode);
-    return decodeURIComponent(indicadorDecode);
-  };
   console.log(indicadorNome);
   const navigate = useNavigate();
   const arrayIndicadorResponse: GraficosIndicador[] = useMemo(() => [], []);
@@ -34,6 +23,7 @@ export const CreateIndicador: FC<{
   );
   console.log(indicador);
   const url = `admin/dimensoes/${dimensao}/indicador/${indicador}/`;
+  console.log(url);
   const chaveValorGraficos: { [key: string]: string } = useMemo(
     () => ({
       "Selecione um tipo de gráfico": "",

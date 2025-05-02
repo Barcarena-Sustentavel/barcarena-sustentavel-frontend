@@ -18,7 +18,8 @@ const IndicadorComponent: FC = () => {
     graficos: [],
   });
   const [loading, setLoading] = useState<boolean>(true);
-
+  console.log(`${indicador}`);
+  console.log(indicador);
   useEffect(() => {
     api
       .get(url)

@@ -64,7 +64,8 @@ const DimensaoComponent: FC = () => {
   };
 
   const handleNavigate = (indicador: string) => {
-    navigate(`/${dimensao}/${indicador}/`);
+    const url = encodeURI(`/${dimensao}/${indicador}/`);
+    navigate(url);
   };
 
   useEffect(() => {
