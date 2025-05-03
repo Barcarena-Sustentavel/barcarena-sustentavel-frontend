@@ -110,7 +110,6 @@ export const TabContentComponent: FC<RenderContentInterface> = ({
             const encodedURI = encodeURI(
               `/admin/dimensao/${dimensao}/update/${activeTab}/${elementName}/`,
             );
-            //const decodeURI = decodeURIComponent(encodedURI);
             console.log(encodedURI);
             return (
               <span>

@@ -1,7 +1,11 @@
+@import url("https://fonts.googleapis.com/css2?family=Cal+Sans&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Cal+Sans&family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap");
+
 .home-container {
     width: 100%;
     margin: 0 auto;
     font-family: "Roboto", sans-serif;
+    background-color: white;
 }
 
 .hero-section {
