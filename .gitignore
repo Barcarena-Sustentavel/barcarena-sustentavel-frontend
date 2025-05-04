@@ -11,6 +11,8 @@ node_modules/*
 dist/
 dist-ssr
 *.local
+src/apt.js
+src/api.tsx
 
 # Editor directories and files
 .vscode/*
