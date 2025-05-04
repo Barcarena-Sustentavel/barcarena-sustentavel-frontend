@@ -5,6 +5,8 @@ import api from "../../../../api.tsx";
 import { GraficosIndicador } from "../../../../interfaces/indicador_interface.tsx";
 import "../../css/createIndicador.css";
 import { GraficoComponent } from "./components/Grafico.tsx";
+import dimensoes from "../../../../utils/const.tsx";
+import "../../css/dimensaoPage.css";
 
 //array com gráficos a serem inseridos
 //const arrayIndicadorResponse: GraficosIndicador[] = []
@@ -110,6 +112,22 @@ export const CreateIndicador: FC<{
 
   return (
     <div className="create-indicador-container">
+      <div
+        style={{
+          backgroundColor: `var(--${dimensoes.dimensaoCores[dimensao!]})`,
+        }}
+        className="admin-header-dimensao-page"
+      >
+        <div className="admin-header-dimensao-page-space">
+          <div
+            style={{
+              maskImage: `url(${dimensoes.dimensoesColumn12[dimensao!]})`,
+            }}
+            className="dimensao-button-header"
+          ></div>
+          <h1 className="admin-header-dimensao-page">{dimensao}</h1>
+        </div>
+      </div>
       <h2 className="create-indicador-title">
         {patch === false ? "Criar Novo Indicador" : "Modificar Indicador"}
       </h2>

@@ -1,8 +1,10 @@
 import * as Highcharts from "highcharts";
 import HighchartsReact from "highcharts-react-official";
 import HighchartsMore from "highcharts/highcharts-more";
+//import HighchartsWaterfall from "highcharts/modules/waterfall";
 import { FC, useRef } from "react";
-
+// Initialize the waterfall module
+//HighchartsWaterfall(Highcharts);
 interface PlotSeries {
   name: string;
   data: number[];
@@ -11,6 +13,7 @@ interface PlotSeries {
 interface TreeMapSeries {
   name: string;
   value: number;
+  color: string;
 }
 
 interface DashboardProps {
@@ -21,16 +24,21 @@ interface DashboardProps {
 }
 
 const plotOptions = (dashboard: DashboardProps) => {
-  const seriesDados =
-    dashboard.tipoGrafico === "treemap"
-      ? [
-          {
-            type: dashboard.tipoGrafico,
-            layoutAlgorithm: "squarified",
-            data: dashboard.dados,
+  if (dashboard.tipoGrafico === "treemap") {
+    console.log(dashboard.dados);
+    return {
+      series: [
+        {
+          type: dashboard.tipoGrafico,
+          layoutAlgorithm: "squarified",
+          data: dashboard.dados,
+          title: {
+            text: dashboard.tituloGrafico,
           },
-        ]
-      : dashboard.dados;
+        },
+      ],
+    };
+  }
 
   return {
     chart: {
@@ -40,7 +48,7 @@ const plotOptions = (dashboard: DashboardProps) => {
       text: dashboard.tituloGrafico ?? "",
     },
     //series: dashboard.dados,
-    series: seriesDados,
+    series: dashboard.dados,
     xAxis: {
       categories: dashboard.categorias,
     },
@@ -69,6 +77,7 @@ export const DashboardComponent: FC<{
       dadosGraficosTrees.push({
         name: colunas[i], //`Dado ${index + 1}`,
         value: dados[i][0],
+        color: "#FF5733",
       });
     }
     finalDadosGraficos = dadosGraficosTrees;

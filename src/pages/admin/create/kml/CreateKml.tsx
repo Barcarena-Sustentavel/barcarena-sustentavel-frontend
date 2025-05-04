@@ -5,6 +5,9 @@ import api from "../../../../api.tsx";
 import Swal from "sweetalert2";
 import { CreateKML } from "../../../../interfaces/kml_interface.tsx";
 import { postKML, patchKML } from "./crudKml.tsx";
+import "./CreateKml.css";
+import "../../css/dimensaoPage.css";
+import dimensoes from "../../../../utils/const.tsx";
 
 const CreateKml: FC<{
   dimensao: string | undefined;
@@ -69,6 +72,22 @@ const CreateKml: FC<{
 
   return (
     <div className="post-referencias-container">
+      <div
+        style={{
+          backgroundColor: `var(--${dimensoes.dimensaoCores[dimensao!]})`,
+        }}
+        className="admin-header-dimensao-page"
+      >
+        <div className="admin-header-dimensao-page-space">
+          <div
+            style={{
+              maskImage: `url(${dimensoes.dimensoesColumn12[dimensao!]})`,
+            }}
+            className="dimensao-button-header"
+          ></div>
+          <h1 className="admin-header-dimensao-page">{dimensao}</h1>
+        </div>
+      </div>
       <h2>{patch === true ? "Modificar Kml" : "Adicionar Kml"}</h2>
       <form onSubmit={handleSubmit}>
         <div className="form-group">

@@ -1,0 +1,68 @@
+/* Container externo */
+.button-container {
+    display: flex;
+    justify-content: center;
+    margin: 2rem 0;
+}
+
+/* Span como agrupador */
+.button-container span {
+    display: flex;
+    gap: 1rem;
+    flex-wrap: wrap;
+}
+
+/* Botões padrão */
+.button-container button {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0.75rem 1.5rem;
+    border-radius: 4px;
+    border: none;
+    cursor: pointer;
+    transition:
+        background-color 0.3s ease,
+        transform 0.2s ease;
+    font-size: 1rem;
+    font-weight: 500;
+    color: white;
+}
+
+/* Texto dentro do botão */
+.button-container button p {
+    margin: 0;
+    color: white;
+}
+
+/* Estilo para botão Adicionar */
+.button-container button:first-child {
+    background-color: #2ecc71;
+}
+
+.button-container button:first-child:hover {
+    background-color: #27ae60;
+    transform: translateY(-2px);
+}
+
+/* Estilo para botão Deletar */
+.button-container button:last-child {
+    background-color: #e74c3c;
+}
+
+.button-container button:last-child:hover {
+    background-color: #c0392b;
+    transform: translateY(-2px);
+}
+
+/* Responsivo */
+@media (max-width: 600px) {
+    .button-container span {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .button-container button {
+        width: 100%;
+    }
+}
