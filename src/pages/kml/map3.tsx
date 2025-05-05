@@ -1,4 +1,4 @@
-import { FC, useState } from "react";
+import { FC, useState, useEffect } from "react";
 import {
   MapContainer,
   TileLayer,
@@ -7,7 +7,7 @@ import {
   Tooltip,
   GeoJSON,
 } from "react-leaflet";
-import dimensoes from "../../utils/const.tsx";
+//import dimensoes from "../../utils/const.tsx";
 import { Container, Row, Col, Form } from "react-bootstrap";
 import { KML } from "../../interfaces/kml_interface.tsx";
 import api from "../../api.tsx";
@@ -29,12 +29,14 @@ L.Icon.Default.mergeOptions({
 });
 
 const Map3: FC = () => {
-  //Array com todas as dimensões
-  const dimensoesArray: string[] = [
-    ...Object.keys(dimensoes.dimensoesColumn1),
-    ...Object.keys(dimensoes.dimensoesColumn2),
-  ];
+  const [dimensoesArray,setDimensoesArray] = useState<Array<string>>([]);
 
+  useEffect(() => {
+    // Obter os dados do arquivo KML
+      api.get("/dimensoes/").then((response) => {
+      setDimensoesArray(response.data.dimensoes);
+    });
+  }, []);
   //habilitar/ desabilitar o botão para escolher os indicadores/kmls, habilitado somente quando há uma dimensão selecionada
   const [formIndicadoresAble, setformIndicadoresAble] = useState<boolean>(true);
   //Lista de kmls para serem escolhidos apenas após uma dimensão ser escolhida
@@ -121,7 +123,7 @@ const Map3: FC = () => {
           <Col md={6}>
             <Form.Select aria-label="Selecionar dimensão">
               <option>Escolha a dimensão</option>
-              {dimensoesArray.map((dimensao) => (
+              {dimensoesArray.map((dimensao, index) => (
                 <option onClick={getKml(dimensao)} key={dimensao}>
                   {dimensao}
                 </option>

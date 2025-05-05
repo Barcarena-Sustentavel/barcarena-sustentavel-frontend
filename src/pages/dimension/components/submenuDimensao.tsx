@@ -10,22 +10,29 @@ interface SubmenuDimensaoProps {
 const SubmenuDimensao: React.FC<SubmenuDimensaoProps> = ({ dimensaoAtiva }) => {
     const location = useLocation();
     const activeDimensionFromPath = decodeURIComponent(location.pathname.split('/')[1]);
-    console.log(activeDimensionFromPath)
-    // Combina as duas colunas em um único objeto
-    const todasDimensoes = { ...dimensoes.dimensoesColumn1, ...dimensoes.dimensoesColumn2 };
+    const {
+        dimensoesColumn1,
+        dimensoesColumn2,
+        dimensoesCores12,
+        dimensaoAumentaIcone,
+        
+      } = dimensoes.GetAllConst();
+      const todasDimensoes = { ...dimensoesColumn1, ...dimensoesColumn2 };
 
     return (
         <div 
         className="submenu-dimensao d-flex flex-column align-items-center"
         style={{ 
-            backgroundColor: `var(--${dimensoes.dimensaoCores[dimensaoAtiva || activeDimensionFromPath] || 'default-color'})` 
+            backgroundColor: `var(--${/*dimensoes.dimensaoCores*/dimensoesCores12[dimensaoAtiva || activeDimensionFromPath] || 'default-color'})` 
         }}
         >
         <div className="cards-row d-flex flex-row justify-content-center flex-wrap">
             {Object.entries(todasDimensoes).map(([nomeDimensao, icon]) => {
             const isAtiva = nomeDimensao === (dimensaoAtiva || activeDimensionFromPath);
-            const cor = dimensoes.dimensaoCores[nomeDimensao] || 'default-color';
-            const aumentaIcone = dimensoes.dimensaoAumentaIcone[nomeDimensao] || false;
+            //const cor = dimensoes.dimensaoCores[nomeDimensao] || 'default-color';
+            const cor =  dimensoesCores12[nomeDimensao]|| 'default-color';
+            //const aumentaIcone = dimensoes.dimensaoAumentaIcone[nomeDimensao] || false;
+            const aumentaIcone = dimensaoAumentaIcone[nomeDimensao] || false;
             
             return (
                 <a
@@ -56,7 +63,7 @@ const SubmenuDimensao: React.FC<SubmenuDimensaoProps> = ({ dimensaoAtiva }) => {
         <div className="label d-flex flex-row align-items-center mt-3">
             <div
             className={`label-icon-dimensao icon-color-submenu-dimensao ${
-                dimensoes.dimensaoAumentaIcone[dimensaoAtiva || activeDimensionFromPath] ? 'increase' : ''
+                /*dimensoes.*/dimensaoAumentaIcone[dimensaoAtiva || activeDimensionFromPath] ? 'increase' : ''
             }`}
             style={{
                 maskImage: `url(${todasDimensoes[dimensaoAtiva || activeDimensionFromPath]})`,

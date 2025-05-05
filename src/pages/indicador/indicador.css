@@ -150,3 +150,24 @@
     margin-bottom: 1rem;
   }
   
+  .grafico-download {
+    display: flex;
+    justify-content: flex-end;
+    margin-top: 10px;
+  }
+  
+  .download-btn {
+    background-color: var(--primary-color);
+    color: white;
+    border: none;
+    border-radius: 4px;
+    padding: 8px 16px;
+    cursor: pointer;
+    font-size: 14px;
+    transition: background-color 0.3s;
+  }
+  
+  .download-btn:hover {
+    background-color: var(--primary-color-dark);
+  }
+  

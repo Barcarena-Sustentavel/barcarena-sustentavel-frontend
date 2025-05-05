@@ -23,7 +23,15 @@ export const CreateIndicador: FC<{
   const [indicador, setIndicador] = useState<string>(
     indicadorNome !== undefined ? indicadorNome : "",
   );
-  console.log(indicador);
+  const {
+      dimensoesColumn1,
+      dimensoesColumn2,
+      dimensoesCores12,
+      } = dimensoes.GetAllConst();
+  const dimensoesColumn12 = {
+        ...dimensoesColumn1,
+        ...dimensoesColumn2,
+      };
   const url = `admin/dimensoes/${dimensao}/indicador/${indicador}/`;
   console.log(url);
   const chaveValorGraficos: { [key: string]: string } = useMemo(
@@ -114,14 +122,14 @@ export const CreateIndicador: FC<{
     <div className="create-indicador-container">
       <div
         style={{
-          backgroundColor: `var(--${dimensoes.dimensaoCores[dimensao!]})`,
+          backgroundColor: `var(--${dimensoesCores12[dimensao!]})`,
         }}
         className="admin-header-dimensao-page"
       >
         <div className="admin-header-dimensao-page-space">
           <div
             style={{
-              maskImage: `url(${dimensoes.dimensoesColumn12[dimensao!]})`,
+              maskImage: `url(${dimensoesColumn12[dimensao!]})`,
             }}
             className="dimensao-button-header"
           ></div>

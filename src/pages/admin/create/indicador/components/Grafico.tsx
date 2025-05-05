@@ -41,14 +41,9 @@ export const GraficoComponent: FC<GraficoComponentProps> = ({
           id="tituloGrafico"
           name="tituloGrafico"
           placeholder="Título do gráfico"
-          value={newIndicadorResponse.tituloGrafico} //{newIndicadorResponse.tituloGrafico !== '' ? newIndicadorResponse.tituloGrafico : ''}
+          value={newIndicadorResponse.tituloGrafico}
           onChange={(e) => {
-            //if(grafico !== undefined){
-            //    setGraficoModificado(prevState => ({
-            //        ...prevState,
-            //        tituloGrafico: e.target.value
-            //    }));
-            //}else{
+        
             setNewIndicadorResponse((prevState) => ({
               ...prevState,
               tituloGrafico: e.target.value,

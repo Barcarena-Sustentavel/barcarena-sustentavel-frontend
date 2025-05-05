@@ -86,7 +86,6 @@ export const TabContentComponent: FC<RenderContentInterface> = ({
           value={formData.nome}
           placeholder={dimensaoJson?.nome}
           onChange={handleInputChange}
-          disabled
         />
 
         <label>Descrição</label>

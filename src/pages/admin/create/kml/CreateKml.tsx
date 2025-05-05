@@ -20,7 +20,15 @@ const CreateKml: FC<{
     nome: "",
     arquivo: "",
   });
-
+ const {
+     dimensoesColumn1,
+     dimensoesColumn2,
+     dimensoesCores12,
+   } = dimensoes.GetAllConst();
+   const dimensoesColumn12 = {
+     ...dimensoesColumn1,
+     ...dimensoesColumn2,
+   };
   useEffect(() => {
     if (kml != undefined) {
       setPatch(true);
@@ -74,14 +82,14 @@ const CreateKml: FC<{
     <div className="post-referencias-container">
       <div
         style={{
-          backgroundColor: `var(--${dimensoes.dimensaoCores[dimensao!]})`,
+          backgroundColor: `var(--${dimensoesCores12[dimensao!]})`,
         }}
         className="admin-header-dimensao-page"
       >
         <div className="admin-header-dimensao-page-space">
           <div
             style={{
-              maskImage: `url(${dimensoes.dimensoesColumn12[dimensao!]})`,
+              maskImage: `url(${dimensoesColumn12[dimensao!]})`,
             }}
             className="dimensao-button-header"
           ></div>

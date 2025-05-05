@@ -3,11 +3,17 @@ import { useNavigate } from "react-router-dom";
 import dimensoes from "../../utils/const.tsx";
 import "./css/dimensaoAdmin.css";
 
+
 const DimensaoAdmin: FC = () => {
   const navigate = useNavigate();
   const handleClick = (dimensao: string) => {
     navigate(`/admin/dimensao/${dimensao}/`);
   };
+  const {
+      dimensoesColumn1,
+      dimensoesColumn2,
+      dimensoesCores12,
+    } = dimensoes.GetAllConst();
 
   return (
     <div className="home-container">
@@ -17,17 +23,17 @@ const DimensaoAdmin: FC = () => {
       <div className="dimensoes-grid-wallpaper">
         <div className="dimensoes-grid">
           <div className="dimensoes-column">
-            {Object.entries(dimensoes.dimensoesColumn1).map(([key, value]) => (
+            {Object.entries(dimensoesColumn1).map(([key, value]) => (
               <div
                 className="dimensao-card"
                 style={{
-                  backgroundColor: `var(--${dimensoes.dimensaoCores[key]})`,
+                  backgroundColor: `var(--${dimensoesCores12[key]})`,
                 }}
                 key={key}
               >
                 <button
                   style={{
-                    backgroundColor: `var(--${dimensoes.dimensaoCores[key]})`,
+                    backgroundColor: `var(--${dimensoesCores12[key]})`,
                   }}
                   className="dimensao-button"
                   onClick={() => handleClick(key)}
@@ -46,17 +52,17 @@ const DimensaoAdmin: FC = () => {
           </div>
 
           <div className="dimensoes-column">
-            {Object.entries(dimensoes.dimensoesColumn2).map(([key, value]) => (
+            {Object.entries(dimensoesColumn2).map(([key, value]) => (
               <div
                 style={{
-                  backgroundColor: `var(--${dimensoes.dimensaoCores[key]})`,
+                  backgroundColor: `var(--${dimensoesCores12[key]})`,
                 }}
                 className="dimensao-card"
                 key={key}
               >
                 <button
                   style={{
-                    backgroundColor: `var(--${dimensoes.dimensaoCores[key]})`,
+                    backgroundColor: `var(--${dimensoesCores12[key]})`,
                   }}
                   className="dimensao-button"
                   onClick={() => handleClick(key)}
