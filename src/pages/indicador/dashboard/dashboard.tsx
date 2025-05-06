@@ -1,42 +1,67 @@
 import * as Highcharts from "highcharts";
 import HighchartsReact from "highcharts-react-official";
-import HighchartsMore from "highcharts/highcharts-more";
-//import HighchartsWaterfall from "highcharts/modules/waterfall";
 import { FC, useRef } from "react";
-// Initialize the waterfall module
-//HighchartsWaterfall(Highcharts);
-interface PlotSeries {
-  name: string;
-  data: number[];
-}
-
-interface TreeMapSeries {
-  name: string;
-  value: number;
-  color: string;
-}
-
-interface DashboardProps {
-  tipoGrafico: string;
-  tituloGrafico: string | null;
-  dados: PlotSeries[];
-  categorias: string[] | number[];
-}
+import { DashboardProps } from "./interface/dashboard_interface.tsx";
+import { PlotSeries, TreeMapSeries, PizzaSeries } from "./interface/dados_graficos_interface.tsx";
 
 const plotOptions = (dashboard: DashboardProps) => {
-  if (dashboard.tipoGrafico === "treemap") {
+  
+  if (dashboard.tipoGrafico === "pie"){
+    console.log(dashboard.dados)
+    return  {
+      chart: {
+          plotBackgroundColor: null,
+          plotBorderWidth: null,
+          plotShadow: false,
+          type: 'pie'
+      },
+      title: {
+          text: dashboard.tituloGrafico ?? ""
+      },
+      plotOptions: {
+          pie: {
+              allowPointSelect: true,
+              cursor: 'pointer'
+          }
+      },
+      series: [{
+          name: 'Valor',
+          data: dashboard.dados
+      }]
+  }
+  }
+
+  if (dashboard.tipoGrafico === "xy") {
     console.log(dashboard.dados);
+    const dadoColuna =  {
+      name: dashboard.dados[0].name,
+      data: dashboard.dados[0].data,
+      type: "spline",
+    }//Salva somente o primeiro array para que este seja a linha
+    dashboard.dados.splice(0, 1);//Remove o primeiro array, e modifica permanentemente o array original
+    const dadosLinha = dashboard.dados
+    for (let index = 0; index < dadosLinha.length; index++) {
+      dadosLinha[index].type = "column"
+    }
+    const dadosSeries = [dadoColuna, ...dadosLinha]
     return {
-      series: [
-        {
-          type: dashboard.tipoGrafico,
-          layoutAlgorithm: "squarified",
-          data: dashboard.dados,
-          title: {
-            text: dashboard.tituloGrafico,
-          },
+      chart: {
+        zooming: {
+          type: "xy",
+        }
+      },
+      title: {
+        text: dashboard.tituloGrafico ?? "",
+      },
+      series: dadosSeries,
+      xAxis: {
+        categories: dashboard.categorias,
+      },
+      yAxis: {
+        title: {
+          text: "Valores",
         },
-      ],
+      },
     };
   }
 
@@ -47,7 +72,6 @@ const plotOptions = (dashboard: DashboardProps) => {
     title: {
       text: dashboard.tituloGrafico ?? "",
     },
-    //series: dashboard.dados,
     series: dashboard.dados,
     xAxis: {
       categories: dashboard.categorias,
@@ -71,7 +95,9 @@ export const DashboardComponent: FC<{
 
   const dadosGraficoPlots: PlotSeries[] = [];
   const dadosGraficosTrees: TreeMapSeries[] = [];
+  const dadosGraficosPizza: PizzaSeries[] = [];
   let finalDadosGraficos: any[] = [];
+
   if (tipoGrafico === "treemap") {
     for (let i = 0; i < dados.length; i++) {
       dadosGraficosTrees.push({
@@ -81,7 +107,19 @@ export const DashboardComponent: FC<{
       });
     }
     finalDadosGraficos = dadosGraficosTrees;
-  } else {
+  } 
+  
+  else if (tipoGrafico === "pie") {
+    for (let i = 0; i < dados.length; i++) {
+      dadosGraficosPizza.push({
+        name: colunas[i], 
+        y: dados[i][0],
+      });
+    }
+    finalDadosGraficos = dadosGraficosPizza;
+  }
+  
+  else {
     dados.forEach((dado, index) => {
       dadosGraficoPlots.push({
         name: colunas[index], //`Dado ${index + 1}`,

@@ -13,7 +13,6 @@ const ImageCarousel: FC = () => {
   };
 
   const images = [image1, image2, image3];
-
   return (
     <div id="carouselExampleControls">
       <div className="backgroundCarousel"></div>

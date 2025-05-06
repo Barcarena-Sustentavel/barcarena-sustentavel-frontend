@@ -18,13 +18,13 @@ const IndicadorComponent: FC = () => {
     graficos: [],
   });
   const [loading, setLoading] = useState<boolean>(true);
-  console.log(`${indicador}`);
-  console.log(indicador);
+  //console.log(`${indicador}`);
+  //console.log(indicador);
   useEffect(() => {
     api
       .get(url)
       .then((response) => {
-        console.log(response.request);
+        //console.log(response.request);
         setIndicadorJson(response.data);
         setLoading(false);
       })
@@ -48,10 +48,10 @@ const IndicadorComponent: FC = () => {
       if (grafico.categoria && grafico.categoria.length > rowIndex) {
         //Adiciona os valores da categoria ao início da linha, após isso insere uma vírgula e pula uma linha
         csvContent += `${grafico.categoria[rowIndex]},${rowData.join(",")}\n`;
-        console.log(csvContent);
+        //console.log(csvContent);
       } else {
         csvContent += rowData.join(",") + "\n";
-        console.log(csvContent);
+        //console.log(csvContent);
       }
     });
     
@@ -61,7 +61,7 @@ const IndicadorComponent: FC = () => {
     const url = window.URL.createObjectURL(blob);
     //Precisamos criar um tag de ancora que possui um atributo com o link e um atributo de download para acessar o link
     const link = document.createElement("a");
-    console.log(link);
+    //console.log(link);
     link.setAttribute("href", url);
     link.setAttribute("download", `${grafico.tituloGrafico || "dados"}.csv`);
     document.body.appendChild(link);

@@ -13,6 +13,7 @@ const DimensoesSection: FC = () => {
     isLoaded,
   } = dimensoes.GetAllConst();
   useEffect(() => {
+    console.log("reload")
     const observer = new IntersectionObserver(
       (entries) => {
         entries.forEach((entry) => {
@@ -24,7 +25,6 @@ const DimensoesSection: FC = () => {
       { threshold: 0.1 }
     );
 
-    // We'll observe elements after they're rendered
     setTimeout(() => {
       const dimensionItems = document.querySelectorAll('.dimensao-item');
       dimensionItems.forEach((item) => {
@@ -38,7 +38,7 @@ const DimensoesSection: FC = () => {
         observer.unobserve(item);
       });
     };
-  });
+  },[]);
 
   return (
     <div id="dimensoesPai">

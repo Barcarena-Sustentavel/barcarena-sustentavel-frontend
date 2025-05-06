@@ -8,7 +8,7 @@ import logoEmprego from "@assets/images/icons/emprego2.svg";
 import logoEducacao from "@assets/images/icons/educacao2.svg";
 import logoConectividade from "@assets/images/icons/conectividade2.svg";
 import api from "../api.tsx";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 // Original Record
 // const dimensoesColumn1: Record<string, any> = {
 //   Segurança: logoSegurança,
@@ -105,29 +105,32 @@ const GetAllConst = () => {
   const [dimensaoAumentaIcone, setDimensaoAumentaIcone] = useState<Record<string, boolean>>({});
   const [isLoaded, setIsLoaded] = useState<boolean>(false);
   const url = '/dimensoes/';
-  api.get(url).then((response) => {
-    const dimensoesList = response.data.dimensoes;
-          const tempDimensoesColumn1: Record<string, string> = {};
-          const tempDimensoesColumn2: Record<string, string> = {};
-          const tempDimensoesCores12: Record<string, string> = {};
-          const tempDimensaoAumentaIcone: Record<string, boolean> = {};
-     for (let index = 0; index < dimensoesList.length; index++) {
-            if(index < 5){
-              tempDimensoesColumn1[dimensoesList[index]] = dimensoesColumn1Array[index];
-            } else {
-              tempDimensoesColumn2[dimensoesList[index]] = dimensoesColumn2Array[index - 5];
+
+  useEffect(() => {
+    api.get(url).then((response) => {
+      const dimensoesList = response.data.dimensoes;
+            const tempDimensoesColumn1: Record<string, string> = {};
+            const tempDimensoesColumn2: Record<string, string> = {};
+            const tempDimensoesCores12: Record<string, string> = {};
+            const tempDimensaoAumentaIcone: Record<string, boolean> = {};
+       for (let index = 0; index < dimensoesList.length; index++) {
+              if(index < 5){
+                tempDimensoesColumn1[dimensoesList[index]] = dimensoesColumn1Array[index];
+              } else {
+                tempDimensoesColumn2[dimensoesList[index]] = dimensoesColumn2Array[index - 5];
+              }
+              tempDimensoesCores12[dimensoesList[index]] = dimensaoCoresArray[index];
+              tempDimensaoAumentaIcone[dimensoesList[index]] = 
+                dimensoesList[index] === 'Mobilidade' || dimensoesList[index] === 'Educação' ? true : false;
             }
-            tempDimensoesCores12[dimensoesList[index]] = dimensaoCoresArray[index];
-            tempDimensaoAumentaIcone[dimensoesList[index]] = 
-              dimensoesList[index] === 'Mobilidade' || dimensoesList[index] === 'Educação' ? true : false;
-          }
-          
-          setDimensoesColumn1(tempDimensoesColumn1);
-          setDimensoesColumn2(tempDimensoesColumn2);
-          setDimensoesCores12(tempDimensoesCores12);
-          setDimensaoAumentaIcone(tempDimensaoAumentaIcone);
-          setIsLoaded(true);
-  });
+
+            setDimensoesColumn1(tempDimensoesColumn1);
+            setDimensoesColumn2(tempDimensoesColumn2);
+            setDimensoesCores12(tempDimensoesCores12);
+            setDimensaoAumentaIcone(tempDimensaoAumentaIcone);
+            setIsLoaded(true);
+    });
+  },[])
   return {
     dimensoesColumn1,
     dimensoesColumn2,

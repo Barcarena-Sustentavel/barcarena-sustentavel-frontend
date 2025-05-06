@@ -3,7 +3,6 @@ import { useNavigate } from "react-router-dom";
 import dimensoes from "../../utils/const.tsx";
 import "./css/dimensaoAdmin.css";
 
-
 const DimensaoAdmin: FC = () => {
   const navigate = useNavigate();
   const handleClick = (dimensao: string) => {
