@@ -9,7 +9,7 @@ import {
 } from "react-leaflet";
 //import dimensoes from "../../utils/const.tsx";
 import { Container, Row, Col, Form } from "react-bootstrap";
-import { KML } from "../../interfaces/kml_interface.tsx";
+import { KMLInterface } from "../../interfaces/kml_interface.tsx";
 import api from "../../api.tsx";
 import * as toGeoJSON from "@tmcw/togeojson";
 import "leaflet/dist/leaflet.css";
@@ -40,7 +40,7 @@ const Map3: FC = () => {
   //habilitar/ desabilitar o botão para escolher os indicadores/kmls, habilitado somente quando há uma dimensão selecionada
   const [formIndicadoresAble, setformIndicadoresAble] = useState<boolean>(true);
   //Lista de kmls para serem escolhidos apenas após uma dimensão ser escolhida
-  const [kmls, setKml] = useState<KML[]>([]);
+  const [kmls, setKml] = useState<KMLInterface[]>([]);
   //Possui as coordenadas para serem plotadas no mapa
   const [diagram, setDiagram] = useState<Array<Array<number>>>([]);
   //Dados que serão transformados em coordenadas
@@ -66,6 +66,7 @@ const Map3: FC = () => {
 
     const response = await api.get(`/dimensoes/kmlCoords/${kmlNome}/`);
     //parse para xml do dado que vem na requisição
+    console.log(response.data["coordenadas"]);
     const kmlXml = new DOMParser().parseFromString(
       response.data["coordenadas"],
       "text/xml",

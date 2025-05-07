@@ -3,6 +3,8 @@ import "@assets/styles/index.css";
 import NavbarComponent from "../../components/layout/navbar/navbar.tsx";
 import Footer from "../../components/layout/footer/footer.tsx";
 import IBS from "@assets/images/about/21.12.2022---conexoes-sustentaveis.jpg";
+import image1 from "@assets/images/about/WhatsApp Image 2025-05-04 at 14.00.02.jpeg";
+import image2 from "@assets/images/about/WhatsApp Image 2025-05-04 at 14.00.11.jpeg";
 import user from "@assets/images/about/user.png";
 import "./about.css";
 
@@ -19,6 +21,7 @@ const About: FC = () => {
       <h1>Sobre o ODSB</h1>
       <div className="about-descricao">
         <div>
+          <div style={{ display: "flex", justifyContent: "center" }}>
           <p>
             O Observatório do Desenvolvimento Sustentável de Barcarena (ODSB) é
             um projeto estratégico voltado para monitorar e analisar as
@@ -33,6 +36,10 @@ const About: FC = () => {
             onde o crescimento econômico da mineração não se traduziu em avanços
             sociais proporcionalmente significativos.
           </p>
+          <img src={IBS} alt="Imagem do equipe do projeto Barcarena" />
+          </div>
+          <div style={{ display: "flex", justifyContent: "center" , flexDirection:"row-reverse"}}>
+
           <p>
             Realizado em parceria com a Iniciativa Barcarena Sustentável (IBS),
             o ODSB funciona como uma ferramenta de governança colaborativa,
@@ -45,6 +52,10 @@ const About: FC = () => {
             stakeholders sejam incorporadas, garantindo relevância e efetividade
             às análises produzidas.
           </p>
+          <img src={image1} alt="Imagem do equipe do projeto Barcarena" />
+          </div>
+
+          <div style={{ display: "flex", justifyContent: "center" }}>
           <p>
             Executado pela Universidade Federal do Pará (UFPA), o ODSB combina
             expertise acadêmica e metodologias avançadas — como análise
@@ -57,8 +68,10 @@ const About: FC = () => {
             Sustentável (ODS) da ONU e às prioridades estratégicas da Hydro para
             a região.
           </p>
+          <img src={image2} alt="Imagem do equipe do projeto Barcarena" />
+          </div>
+
         </div>
-        <img src={IBS} alt="Imagem do equipe do projeto Barcarena" />
       </div>
       <div>
         <h1>O time que faz tudo isso possível</h1>

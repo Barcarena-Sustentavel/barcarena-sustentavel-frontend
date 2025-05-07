@@ -5,7 +5,7 @@ import NavbarComponent from "../../components/layout/navbar/navbar.tsx";
 import ImageCarousel from "./components/carousel/carousel.tsx";
 import DimensoesSection from "./components/dimensoesSection/dimensoesSection.tsx";
 import Footer from "../../components/layout/footer/footer.tsx";
-import Map3 from "../kml/map3.tsx";
+import Map2 from "../kml/map2.tsx";
 
 const Home: FC = () => {
     const navigate = useNavigate();
@@ -18,7 +18,7 @@ const Home: FC = () => {
             <NavbarComponent />
             <ImageCarousel />
             <DimensoesSection />
-            <Map3 />
+            <Map2 />
             <Footer/>
         </div>
     );

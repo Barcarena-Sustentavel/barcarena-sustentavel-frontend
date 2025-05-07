@@ -1,14 +1,17 @@
 .about-descricao {
-    width: 70%;
+    width: 80%;
     height: auto;
     margin: 0 auto;
-    display: grid;
-    grid-template-columns: 50% 50%;
 }
 
 .about-descricao img {
     width: 100%;
     height: auto;
+}
+
+.about-descricao p{
+    font-size: calc(0.8em + 0.2vw);
+
 }
 
 .about-time {
@@ -52,6 +55,7 @@
     font-family: "Montserrat", sans-serif;
     color: white;
     font-weight: 600;
+    width: 50%;
 }
 
 .about-colaborador img {
