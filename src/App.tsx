@@ -6,6 +6,7 @@ import DimensaoComponent from "./pages/dimension/dimensao.tsx";
 import DimensaoPageComponent from "./pages/admin/dimensao/DimensaoPageComponent.tsx";
 import IndicadorComponent from "./pages/indicador/indicador.tsx";
 import Home from "./pages/home/home.tsx";
+import LoginButton from "./pages/admin/loginPage.tsx";
 import CreatePage from "./pages/admin/create/createPage.tsx";
 import About from "./pages/about/about.tsx";
 import "leaflet/dist/leaflet.css";
@@ -21,6 +22,7 @@ const App: FC = () => {
         {/*Página de cada indicador referente a uma dimensão*/}
         <Route path="/:dimensao/:indicador/" element={<IndicadorComponent />} />
         {/*Página que mostra todas as dimensões*/}
+        <Route path="/admin/login/" element={<LoginButton />} />
         <Route path="/admin/dimensao/" element={<DimensaoAdmin />} />
         {/*Página que mostra todas as contribuições, indicadores e referências de uma dimensão*/}
         <Route

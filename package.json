@@ -20,6 +20,7 @@
     ]
   },
   "dependencies": {
+    "@auth0/auth0-react": "^2.3.0",
     "@babel/preset-env": "^7.26.9",
     "@babel/preset-react": "^7.26.3",
     "@highcharts/dashboards": "^3.2.0",
