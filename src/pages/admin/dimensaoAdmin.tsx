@@ -1,18 +1,16 @@
-import { FC } from "react";
+import { FC, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import dimensoes from "../../utils/const.tsx";
 import "./css/dimensaoAdmin.css";
 
 const DimensaoAdmin: FC = () => {
   const navigate = useNavigate();
+  //const [logged, setLogged] = useState(false);
   const handleClick = (dimensao: string) => {
     navigate(`/admin/dimensao/${dimensao}/`);
   };
-  const {
-      dimensoesColumn1,
-      dimensoesColumn2,
-      dimensoesCores12,
-    } = dimensoes.GetAllConst();
+  const { dimensoesColumn1, dimensoesColumn2, dimensoesCores12 } =
+    dimensoes.GetAllConst();
 
   return (
     <div className="home-container">
