@@ -43,6 +43,7 @@ COPY . .
 
 RUN npm install
 RUN npm run build
+RUN apk add --no-cache tzdata
 
 # Stage 2: Serve with Nginx
 FROM nginx:stable-alpine
