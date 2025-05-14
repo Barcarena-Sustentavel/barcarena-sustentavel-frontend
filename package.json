@@ -29,7 +29,6 @@
     "bootstrap": "^5.3.3",
     "bootstrap-icons": "^1.11.3",
     "highcharts": "^12.2.0",
-    "highcharts-heatmap": "^0.1.7",
     "highcharts-react-official": "^3.2.1",
     "leaflet": "^1.9.4",
     "react": "^19.0.0-rc.1",
