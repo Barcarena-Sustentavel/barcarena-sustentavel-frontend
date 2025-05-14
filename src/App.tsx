@@ -1,6 +1,6 @@
 import { FC } from "react";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
-import PrivateRoutes from "./utils/ProvideRoutes.tsx";
+import PrivateRoutes from "./utils/private_route/ProvideRoutes.tsx";
 import "bootstrap-icons/font/bootstrap-icons.css";
 import DimensaoAdmin from "./pages/admin/dimensaoAdmin.tsx";
 import DimensaoComponent from "./pages/dimension/dimensao.tsx";

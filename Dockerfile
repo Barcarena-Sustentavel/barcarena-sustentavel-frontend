@@ -54,7 +54,7 @@ COPY nginx.conf /etc/nginx/nginx.conf
 # Remove default HTML files and add built frontend
 RUN rm -rf /usr/share/nginx/html/*
 COPY --from=build /app/dist /usr/share/nginx/html
-
+COPY src/assets/images/icons/LogoNoLabel.png /usr/share/nginx/html/
 EXPOSE 80
 CMD ["nginx", "-g", "daemon off;"]
 

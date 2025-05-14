@@ -2,12 +2,13 @@ import React, { FC, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useEffect } from "react";
 import api from "../../../../api.tsx";
-import Swal from "sweetalert2";
+//import Swal from "sweetalert2";
 import { Referencia } from "../../../../interfaces/referencia_interface.tsx";
 import { postReferencias, patchReferencias } from "./crudReferencias.tsx";
 import "./CreateReferencias.css";
 import "../../css/dimensaoPage.css";
 import dimensoes from "../../../../utils/const.tsx";
+import { Form, Alert, Button, Spinner } from "react-bootstrap";
 
 const CreateReferencias: FC<{
   dimensao: string | undefined;
@@ -20,6 +21,8 @@ const CreateReferencias: FC<{
     nome: "",
     link: "",
   });
+  const [errorNome, setErrorNome] = useState<string | null>(null);
+  const [errorLink, setErrorLink] = useState<string | null>(null);
   const {
     dimensoesColumn1,
     dimensoesColumn2,
@@ -29,7 +32,8 @@ const CreateReferencias: FC<{
     ...dimensoesColumn1,
     ...dimensoesColumn2,
   };
-  console.log(referencia);
+
+
   useEffect(() => {
     if (referencia != undefined) {
       api
@@ -52,7 +56,24 @@ const CreateReferencias: FC<{
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    formRef.nome && setErrorNome(null)
+    formRef.link && setErrorLink(null)
 
+    if (!formRef.nome || !formRef.link) {
+      if (!formRef.nome) {
+      setErrorNome("O campo nome é obrigatório.");
+    } else {
+      setErrorNome(null);
+    }
+
+    if (!formRef.link) {
+      setErrorLink("O campo link é obrigatório.");
+    } else {
+      setErrorLink(null);
+    }
+    return
+  }
+    /*
     if (!formRef.nome || !formRef.link) {
       await Swal.fire({
         title: "Erro!",
@@ -61,7 +82,7 @@ const CreateReferencias: FC<{
         confirmButtonColor: "var(--primary-color)",
       });
       return;
-    }
+    }*/
 
     setIsSubmitting(true);
 
@@ -102,7 +123,63 @@ const CreateReferencias: FC<{
       <h2>
         {patch === true ? "Modificar Referência" : "Adicionar Referência"}
       </h2>
-      <form onSubmit={handleSubmit}>
+          <Form onSubmit={handleSubmit}>
+      <Form.Group controlId="nome">
+        <Form.Label>Título da Referência</Form.Label>
+        <Form.Control
+          type="text"
+          name="nome"
+          value={formRef.nome}
+          onChange={handleChange}
+          placeholder="Digite o título da referência"
+        />
+      </Form.Group>
+
+      {errorNome && (
+        <Alert variant="danger" className="mt-3">
+          {errorNome}
+        </Alert>
+      )}
+
+      <Form.Group controlId="link" className="mt-3">
+        <Form.Label>Link da Referência</Form.Label>
+        <Form.Control
+          type="url"
+          name="link"
+          value={formRef.link}
+          onChange={handleChange}
+          placeholder="Digite o link da referência"
+        />
+      </Form.Group>
+
+      {errorLink && (
+        <Alert variant="danger" className="mt-3">
+          {errorLink}
+        </Alert>
+      )}
+
+      <div className="d-flex justify-content-between mt-4">
+        <Button
+          variant="secondary"
+          type="button"
+          onClick={() => navigate(`/admin/dimensao/${dimensao}/`)}
+        >
+          Cancelar
+        </Button>
+
+        <Button variant="primary" type="submit" disabled={isSubmitting}>
+          {isSubmitting ? (
+            <>
+              <Spinner animation="border" size="sm" className="me-2" />
+              Adicionando...
+            </>
+          ) : (
+            patch === true ? "Modificar Referência" :"Adicionar Referência"
+          )}
+        </Button>
+      </div>
+    </Form>
+      {/*<form onSubmit={handleSubmit}>
         <div className="form-group">
           <label htmlFor="nome">Título da Referência</label>
           <input
@@ -147,7 +224,7 @@ const CreateReferencias: FC<{
             {isSubmitting ? "Adicionando..." : "Adicionar Referência"}
           </button>
         </div>
-      </form>
+      </form>*/}
     </div>
   );
 };

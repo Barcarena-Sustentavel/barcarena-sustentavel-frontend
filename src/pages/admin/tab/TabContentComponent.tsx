@@ -2,6 +2,7 @@ import React, { FC, useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { Dimensao } from "../../../interfaces/dimensao_interface.tsx";
 import { RenderContentInterface } from "../../../interfaces/admin_interfaces/render_content_interface.tsx";
+import { Form, Alert } from "react-bootstrap";
 import api from "../../../api.tsx";
 import AddDelete from "../addDelete.tsx";
 
@@ -16,6 +17,8 @@ export const TabContentComponent: FC<RenderContentInterface> = ({
   const [nomeReferencias, setNomeReferencias] = useState<string[]>([]);
   const [nomeContribuicoes, setNomeContribuicoes] = useState<string[]>([]);
   const [nomeKmls, setNomeKmls] = useState<string[]>([]);
+
+  const [error,setError] = useState<string | null>(null);
   const url: string = `/admin/dimensoes/${dimensao}/`;
   const activeTabDict: { [key: string]: string[] } = {
     Indicadores: nomeIndicadores,
@@ -26,8 +29,8 @@ export const TabContentComponent: FC<RenderContentInterface> = ({
 
   //Lista de dados dos indicadores relacionados a dimensão
   const [formData, setFormData] = useState({
-    nome: "",
-    descricao: "",
+    nome: undefined,
+    descricao: undefined,
   });
   //Função para atualizar o estado do formulário
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -40,14 +43,29 @@ export const TabContentComponent: FC<RenderContentInterface> = ({
     }));
   };
 
-  const handleSubmit = async () => {
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault()
+    if (formData.nome === undefined && formData.descricao === undefined){
+      setError("Para fazer modificações, preencha os campos que deseja modificar.")
+      return
+    }
     try {
+      const patchDimensao:Record<string, string> = {};
+      if (formData.nome !== undefined) {
+        patchDimensao["nome"] = formData.nome;
+      }
+      if (formData.descricao !== undefined) {
+        patchDimensao["descricao"] = formData.descricao;
+      }
+
+
       const response = await api.patch(
         `/admin/dimensoes/${dimensaoJson?.nome}/`,
-        {
-          nome: formData.nome,
-          descricao: formData.descricao,
-        },
+        patchDimensao
+        //{
+        //  nome: formData.nome,
+        //  descricao: formData.descricao,
+        //},
       );
       setDimensao(response.data);
     } catch (error) {
@@ -79,26 +97,37 @@ export const TabContentComponent: FC<RenderContentInterface> = ({
   if (activeTab === "Dimensão") {
     return (
       <div className="admin-forms">
-        <label>Nome</label>
-        <input
-          type="text"
-          name="nome"
-          value={formData.nome}
-          placeholder={dimensaoJson?.nome}
-          onChange={handleInputChange}
-        />
+        <Form onSubmit={handleSubmit}>
+                <Form.Group controlId="nome">
+                  <Form.Label>Nome</Form.Label>
+                  <Form.Control
+                    type="text"
+                    name="nome"
+                    value={formData.nome}
+                    placeholder={dimensaoJson?.nome}
+                    onChange={handleInputChange}
+                  />
+                </Form.Group>
 
-        <label>Descrição</label>
-        <input
-          type="text"
-          name="descricao"
-          value={formData.descricao}
-          placeholder={dimensaoJson?.descricao}
-          onChange={handleInputChange}
-        />
+                <Form.Group controlId="descricao" className="mt-3">
+                  <Form.Label>Descrição</Form.Label>
+                  <Form.Control
+                    type="text"
+                    name="descricao"
+                    value={formData.descricao}
+                    placeholder={dimensaoJson?.descricao}
+                    onChange={handleInputChange}
+                  />
+                </Form.Group>
 
-        <button onClick={handleSubmit}>Salvar Alterações</button>
-      </div>
+                {error && (
+                  <Alert variant="danger" className="mt-3">
+                    {error}
+                  </Alert>
+                )}
+                <button /*onClick={handleSubmit}*/>Salvar Alterações</button>
+                </Form>    
+        </div>
     );
   } else {
     console.log(activeTabDict[activeTab]);
@@ -125,11 +154,9 @@ export const TabContentComponent: FC<RenderContentInterface> = ({
                       }));
 
                       if (e.target.checked) {
-                        console.log(e.target);
                         //Conserva os elementos anteriores(..prev) e adiciona o novo
                         setToDelete((prev) => [...prev, elementName]);
                       } else {
-                        //Pega os elementos do array anterior(prev), realiza um fitro(prev.filter) e remove o elemento selecionado(item => item !== elementName)
                         setToDelete((prev) =>
                           prev.filter((item) => item !== elementName),
                         );

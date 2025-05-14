@@ -7,15 +7,13 @@ import "../../css/createIndicador.css";
 import { GraficoComponent } from "./components/Grafico.tsx";
 import dimensoes from "../../../../utils/const.tsx";
 import "../../css/dimensaoPage.css";
-
+import { Alert } from "react-bootstrap";
 //array com gráficos a serem inseridos
-//const arrayIndicadorResponse: GraficosIndicador[] = []
 
 export const CreateIndicador: FC<{
   dimensao: string | undefined;
   indicadorNome: string | undefined;
 }> = ({ dimensao, indicadorNome }) => {
-  console.log(indicadorNome);
   const navigate = useNavigate();
   const arrayIndicadorResponse: GraficosIndicador[] = useMemo(() => [], []);
   const [indicadorAntigo, setIndicadorAntigo] = useState<string>("");
@@ -33,7 +31,12 @@ export const CreateIndicador: FC<{
         ...dimensoesColumn2,
       };
   const url = `admin/dimensoes/${dimensao}/indicador/${indicador}/`;
-  console.log(url);
+  const [errorIndicador, setErrorIndicador] = useState<string | null>(null);
+  const [msgsErrorGrafico, setMsgsErrorGrafico] = useState<Array<string>>([]);
+  //const [graficoNodeReturn, setGraficoNodeReturn] = useState<boolean>(
+  //  false,
+  //);
+  const [graficoPronto, setGraficoPronto] = useState<boolean>(false);
   const chaveValorGraficos: { [key: string]: string } = useMemo(
     () => ({
       "Selecione um tipo de gráfico": "",
@@ -54,18 +57,61 @@ export const CreateIndicador: FC<{
       chaveValorGraficos={chaveValorGraficos}
       grafico={undefined}
       arrayIndicadorResponse={arrayIndicadorResponse}
+      graficoPronto={graficoPronto}
+      setGraficoPronto={setGraficoPronto}
     />,
   ]);
 
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setMsgsErrorGrafico([])
+    indicador && setErrorIndicador(null)
+    let graficoNodeReturn = false
+     graficoNode.map(async(grafico, index) => {
+      index += 1
+      if (grafico.props.graficoPronto === false) {
+        setMsgsErrorGrafico(prev => [...prev, "Preencha todos os campos obrigatórios do gráfico " + index + "."]);
+        graficoNodeReturn = true
+        console.log("erro aq")
+      }
+    });
+
+    if (!indicador){
+      setErrorIndicador("O campo de nome do indicador é obrigatório.");
+      console.log("erro aq")
+      return
+    }
+
+    if(graficoNodeReturn){
+      graficoNodeReturn = false
+      console.log("erro aq")
+      return
+      }
+
+    if (patch === true) {
+      //console.log(arrayIndicadorResponse)
+      patchIndicador(
+        dimensao,
+        indicadorAntigo,
+        indicador,
+        arrayIndicadorResponse,
+      );
+      navigate(`/admin/dimensao/${dimensao}/`);
+    } else {
+      postIndicador(dimensao, indicador, arrayIndicadorResponse);
+      navigate(`/admin/dimensao/${dimensao}/`);
+    }
+  };
+
   useEffect(() => {
     if (indicadorNome != undefined) {
+      setGraficoPronto(true);
       setPatch(true);
       api
         .get(url)
         .then((response) => {
           setIndicadorAntigo(response.data.nome);
           arrayIndicadorResponse.length = 0;
-          //console.log(arrayIndicadorResponse);
           const newGraficoNodes = response.data.graficos.map(
             (grafico: any, index: number) => {
               const graficoPatch: GraficosIndicador = {
@@ -75,13 +121,14 @@ export const CreateIndicador: FC<{
                 tituloGrafico: grafico.tituloGrafico,
                 tipoGrafico: grafico.tipoGrafico,
               };
-              // Return a new component with the initial data
               return (
                 <GraficoComponent
                   key={index}
                   chaveValorGraficos={chaveValorGraficos}
                   grafico={graficoPatch}
                   arrayIndicadorResponse={arrayIndicadorResponse}
+                  graficoPronto={graficoPronto}
+                  setGraficoPronto={setGraficoPronto}
                 />
               );
             },
@@ -99,12 +146,15 @@ export const CreateIndicador: FC<{
   //Função para adicionar um novo gráfico
   const addGrafico = (e: React.MouseEvent) => {
     e.preventDefault();
+    setGraficoPronto(false);
     setGraficoNode([
       ...graficoNode,
       <GraficoComponent
         chaveValorGraficos={chaveValorGraficos}
         grafico={undefined}
         arrayIndicadorResponse={arrayIndicadorResponse}
+        graficoPronto={graficoPronto}
+        setGraficoPronto={setGraficoPronto}
       />,
     ]);
   };
@@ -143,6 +193,7 @@ export const CreateIndicador: FC<{
               setIndicador(e.target.value);
             }}
           />
+          {errorIndicador && <Alert variant="danger" className="mt-2">{errorIndicador}</Alert>}
         </div>
 
         <h3>Gráficos</h3>
@@ -153,33 +204,31 @@ export const CreateIndicador: FC<{
               {grafico}
             </div>
           ))}
+
+        {msgsErrorGrafico.length > 0 && msgsErrorGrafico.map((mensagem) => <Alert variant="danger" className="mt-2">{mensagem}</Alert>) }
         </div>
         <button className="btn btn-add btn-primary" onClick={addGrafico}>
           <span>+</span> Adicionar Gráfico
         </button>
+        <div className="d-flex justify-content-between mt-4">
 
-        <button
-          type="button"
-          className="btn btn-success"
-          onClick={(e) => {
-            e.preventDefault();
-            if (patch === true) {
-              //console.log(arrayIndicadorResponse)
-              patchIndicador(
-                dimensao,
-                indicadorAntigo,
-                indicador,
-                arrayIndicadorResponse,
-              );
-              navigate(`/admin/dimensao/${dimensao}/`);
-            } else {
-              postIndicador(dimensao, indicador, arrayIndicadorResponse);
-              navigate(`/admin/dimensao/${dimensao}/`);
-            }
-          }}
-        >
-          {patch === false ? "Criar Indicador" : "Modificar Indicador"}
-        </button>
+          <button type="button" 
+          onClick={() => navigate(`/admin/dimensao/${dimensao}/`)}>
+            
+          Cancelar
+          </button>
+
+            <button
+              type="button"
+              className="btn btn-success"
+              onClick={(e) => {
+                handleSubmit(e)
+              }}
+            >
+
+              {patch === false ? "Criar Indicador" : "Modificar Indicador"}
+            </button>
+        </div>
       </form>
     </div>
   );

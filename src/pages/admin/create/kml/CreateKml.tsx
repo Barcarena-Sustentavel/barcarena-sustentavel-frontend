@@ -2,12 +2,12 @@ import React, { FC, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useEffect } from "react";
 import api from "../../../../api.tsx";
-import Swal from "sweetalert2";
 import { CreateKML } from "../../../../interfaces/kml_interface.tsx";
 import { postKML, patchKML } from "./crudKml.tsx";
 import "./CreateKml.css";
 import "../../css/dimensaoPage.css";
 import dimensoes from "../../../../utils/const.tsx";
+import { Form, Alert, Button} from "react-bootstrap";
 
 const CreateKml: FC<{
   dimensao: string | undefined;
@@ -16,6 +16,8 @@ const CreateKml: FC<{
   const navigate = useNavigate();
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [patch, setPatch] = useState(false);
+  const [nomeError, setNomeError] = useState<string | null>(null);
+  const [arquivoError, setArquivoError] = useState<string | null>(null);
   const [formKml, setFormKml] = useState<CreateKML>({
     nome: "",
     arquivo: "",
@@ -49,21 +51,29 @@ const CreateKml: FC<{
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    formKml.nome && setNomeError(null)
+    formKml.arquivo && setArquivoError(null)
+
 
     if (!formKml.nome || !formKml.arquivo) {
-      await Swal.fire({
-        title: "Erro!",
-        text: "Por favor, preencha todos os campos.",
-        icon: "error",
-        confirmButtonColor: "var(--primary-color)",
-      });
-      return;
+      if (!formKml.nome) {
+      setNomeError("O campo nome é obrigatório.");
+    } else {
+      setNomeError(null);
     }
+
+    if (!formKml.arquivo) {
+      setArquivoError("O campo arquivo é obrigatório.");
+    } else {
+      setArquivoError(null);
+    }
+    return
+  }
 
     setIsSubmitting(true);
 
     if (patch) {
-      patchKML(dimensao, kml, formKml.nome, formKml.arquivo);
+      patchKML(dimensao, kml, formKml.nome!, formKml.arquivo);
     } else {
       postKML(dimensao, formKml.nome, formKml.arquivo);
     }
@@ -97,49 +107,44 @@ const CreateKml: FC<{
         </div>
       </div>
       <h2>{patch === true ? "Modificar Kml" : "Adicionar Kml"}</h2>
-      <form onSubmit={handleSubmit}>
-        <div className="form-group">
-          <label htmlFor="nome">Título do Kml</label>
-          <input
-            type="text"
-            id="nome"
-            name="nome"
-            value={formKml.nome}
-            onChange={handleChange}
-            placeholder={
-              formKml.nome === "" ? "Digite o título do kml" : formKml.nome
-            }
-            required={!patch}
-          />
-        </div>
+      <Form onSubmit={handleSubmit}>
+      <Form.Group controlId="nome">
+        <Form.Label>Título do KML</Form.Label>
+        <Form.Control
+          type="text"
+          name="nome"
+          value={formKml.nome}
+          onChange={handleChange}
+          placeholder="Digite o título do KML"
+        />
+        {nomeError && <Alert variant="danger" className="mt-2">{nomeError}</Alert>}
+      </Form.Group>
 
-        <div className="form-group">
-          <label htmlFor="link">Arquivo Kml</label>
-          {patch === true && <p>{`Arquivo atual: ${formKml.arquivo}`}</p>}
-          <input
-            type="file"
-            id="link"
-            name="link"
-            onChange={(e) =>
-              setFormKml({ ...formKml, arquivo: e.target.files![0] })
-            }
-            required={!patch}
-          />
-        </div>
+      <Form.Group controlId="arquivo" className="mt-3">
+        <Form.Label>Arquivo KML</Form.Label>
+        {patch && <p>{`Arquivo atual: ${formKml.arquivo}`}</p>}
+        <Form.Control
+          type="file"
+          name="arquivo"
+          onChange={handleChange}
+        />
+        {arquivoError && <Alert variant="danger" className="mt-2">{arquivoError}</Alert>}
+      </Form.Group>
 
-        <div className="form-actions">
-          <button
-            type="button"
-            className="btn-cancel"
-            onClick={() => navigate(`/admin/dimensao/${dimensao}/`)}
-          >
-            Cancelar
-          </button>
-          <button type="submit" className="btn-submit" disabled={isSubmitting}>
-            {patch ? "Atualizando Modificar" : "Adicionar Kml"}
-          </button>
-        </div>
-      </form>
+      <div className="d-flex justify-content-between mt-4">
+        <Button
+          variant="secondary"
+          type="button"
+          onClick={() => navigate(`/admin/dimensao/${dimensao}/`)}
+        >
+          Cancelar
+        </Button>
+
+        <Button variant="primary" type="submit" disabled={isSubmitting}>
+          {isSubmitting ? "Enviando..." : patch ? "Atualizar Modificar" : "Adicionar KML"}
+        </Button>
+      </div>
+    </Form>
     </div>
   );
 };
