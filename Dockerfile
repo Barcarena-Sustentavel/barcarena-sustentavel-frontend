@@ -28,7 +28,7 @@ FROM nginx:stable-alpine
 
 # Copia a configuração personalizada do Nginx (opcional)
 COPY nginx.conf /etc/nginx/nginx.conf
-
+RUN mkdir -p /etc/nginx/certbot/
 # Remove arquivos padrão do Nginx (opcional)
 RUN rm -rf /usr/share/nginx/html/*
 
