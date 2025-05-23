@@ -25,11 +25,13 @@
 
 # Etapa única: apenas servir os arquivos prontos com Nginx
 FROM nginx:stable-alpine
-
 # Copia a configuração personalizada do Nginx (opcional)
 COPY nginx.conf /etc/nginx/nginx.conf
-RUN mkdir -p /etc/nginx/certbot/
+#RUN mkdir /etc/nginx/sites-enabled && touch /etc/nginx/sites-enabled/client-config
 # Remove arquivos padrão do Nginx (opcional)
+COPY etc/ssl/certs/nginx-selfsigned.crt etc/ssl/certs/nginx-selfsigned.crt
+COPY etc/ssl/private/nginx-selfsigned.key etc/ssl/private/nginx-selfsigned.key
+COPY self-signed.conf /etc/nginx/snippets/self-signed.conf
 RUN rm -rf /usr/share/nginx/html/*
 
 # Copia os arquivos estáticos já buildados da pasta local `dist`
