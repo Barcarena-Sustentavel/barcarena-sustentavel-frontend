@@ -10,8 +10,7 @@ createRoot(document.getElementById("root")!).render(
       domain="dev-f1qyob65m0k20xwn.us.auth0.com"
       clientId="S3jhCiFPBWxdOjh5chUd7bWDggNk53e6"
       authorizationParams={{
-        redirect_uri: "http://localhost:3000/admin/dimensao/",
-       
+        redirect_uri: "https://localhost:3000/admin/dimensao/",
       }}
       cacheLocation="localstorage"
       useRefreshTokens={true}

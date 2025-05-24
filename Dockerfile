@@ -29,9 +29,9 @@ FROM nginx:stable-alpine
 COPY nginx.conf /etc/nginx/nginx.conf
 #RUN mkdir /etc/nginx/sites-enabled && touch /etc/nginx/sites-enabled/client-config
 # Remove arquivos padrão do Nginx (opcional)
-COPY etc/ssl/certs/nginx-selfsigned.crt etc/ssl/certs/nginx-selfsigned.crt
-COPY etc/ssl/private/nginx-selfsigned.key etc/ssl/private/nginx-selfsigned.key
-COPY self-signed.conf /etc/nginx/snippets/self-signed.conf
+COPY /certs/nginx-selfsigned.crt /etc/ssl/certs/nginx-selfsigned.crt
+COPY /certs/nginx-selfsigned.key /etc/ssl/private/nginx-selfsigned.key
+#COPY self-signed.conf /etc/nginx/snippets/self-signed.conf
 RUN rm -rf /usr/share/nginx/html/*
 
 # Copia os arquivos estáticos já buildados da pasta local `dist`
@@ -40,5 +40,6 @@ COPY dist/ /usr/share/nginx/html/
 # (Opcional) Copia imagem se não estiver dentro do dist
 COPY src/assets/images/icons/LogoNoLabel.png /usr/share/nginx/html/
 
-EXPOSE 80
+#EXPOSE 80
+EXPOSE 443
 CMD ["nginx", "-g", "daemon off;"]
