@@ -33,9 +33,7 @@ export const CreateIndicador: FC<{
   const url = `admin/dimensoes/${dimensao}/indicador/${indicador}/`;
   const [errorIndicador, setErrorIndicador] = useState<string | null>(null);
   const [msgsErrorGrafico, setMsgsErrorGrafico] = useState<Array<string>>([]);
-  //const [graficoNodeReturn, setGraficoNodeReturn] = useState<boolean>(
-  //  false,
-  //);
+
   const [graficoPronto, setGraficoPronto] = useState<boolean>(false);
   const chaveValorGraficos: { [key: string]: string } = useMemo(
     () => ({

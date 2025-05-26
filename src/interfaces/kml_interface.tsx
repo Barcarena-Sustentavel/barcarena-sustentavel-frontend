@@ -4,5 +4,5 @@ export interface KMLInterface {
 }
 
 export interface CreateKML extends KMLInterface {
-  arquivo: string | File;
+  arquivo: File;
 }

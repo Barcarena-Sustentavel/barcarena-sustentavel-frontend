@@ -10,4 +10,4 @@ chmod 400 "$file_path"
 npm run build
 
 #scp -i /home/marrior/Desktop/acesso.pem -r ./dist ubuntu@3.148.173.110:~/barcarena_sustentavel/barcarena-sustentavel-frontend/
-scp -i "$file_path" -r ./dist ubuntu@3.148.173.110:~/barcarena_sustentavel/barcarena-sustentavel-frontend/
+scp -i "$file_path" -r ./dist ubuntu@52.15.236.100:~/barcarena_sustentavel/barcarena-sustentavel-frontend/
