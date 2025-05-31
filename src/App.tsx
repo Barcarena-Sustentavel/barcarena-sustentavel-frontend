@@ -22,24 +22,25 @@ const App: FC = () => {
         {/*Página de cada indicador referente a uma dimensão*/}
         <Route path="/:dimensao/:indicador/" element={<IndicadorComponent />} />
         {/*Página que mostra todas as dimensões*/}
-        <Route element={<PrivateRoutes />}>
-          <Route path="/admin/dimensao/" element={<DimensaoAdmin />} />
-          {/*Página que mostra todas as contribuições, indicadores e referências de uma dimensão*/}
-          <Route
-            path="/admin/dimensao/:dimensao/"
-            element={<DimensaoPageComponent />}
-          />
-          {/*Página para criação de qualquer entidade referente a uma dimensão*/}
-          <Route
-            path="/admin/dimensao/:dimensao/create/:activeTab/"
-            element={<CreatePage />}
-          />
+        {/*Rota com autenticação foi cancelada por motivos de segurança até que se consiga realizar a autenticação de forma segura*/}
+        {/*<Route element={<PrivateRoutes />}>*/}
+        <Route path="/admin/dimensao/" element={<DimensaoAdmin />} />
+        {/*Página que mostra todas as contribuições, indicadores e referências de uma dimensão*/}
+        <Route
+          path="/admin/dimensao/:dimensao/"
+          element={<DimensaoPageComponent />}
+        />
+        {/*Página para criação de qualquer entidade referente a uma dimensão*/}
+        <Route
+          path="/admin/dimensao/:dimensao/create/:activeTab/"
+          element={<CreatePage />}
+        />
 
-          <Route
-            path="/admin/dimensao/:dimensao/update/:activeTab/:elementName/"
-            element={<CreatePage />}
-          />
-        </Route>
+        <Route
+          path="/admin/dimensao/:dimensao/update/:activeTab/:elementName/"
+          element={<CreatePage />}
+        />
+        {/*</Route>*/}
         <Route path="/about/" element={<About />} />
       </Routes>
     </BrowserRouter>
