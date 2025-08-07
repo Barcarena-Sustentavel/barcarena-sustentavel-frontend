@@ -5,7 +5,7 @@ import Swal from "sweetalert2";
 export const postKML = async (
   dimensao: string | undefined,
   kml: string | undefined,
-  kml_arquivo: File | string,
+  kml_arquivo: File,
 ) => {
   const kmlNovo: KMLInterface = {
     nome: kml,
@@ -15,6 +15,7 @@ export const postKML = async (
     const endpoit = `/api/admin/dimensoes/${dimensao}/kml/${kml}/anexos/`;
     const formData = new FormData();
     formData.append("arquivoKml", kml_arquivo);
+    console.log(kml_arquivo);
     console.log(formData);
     await fetch(endpoit, {
       method: "POST",

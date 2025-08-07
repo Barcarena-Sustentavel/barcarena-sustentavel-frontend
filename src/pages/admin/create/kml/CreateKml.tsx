@@ -20,7 +20,7 @@ const CreateKml: FC<{
   const [arquivoError, setArquivoError] = useState<string | null>(null);
   const [formKml, setFormKml] = useState<CreateKML>({
     nome: "",
-    arquivo: "",
+    arquivo: new File([], ""),
   });
  const {
      dimensoesColumn1,
@@ -51,6 +51,7 @@ const CreateKml: FC<{
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+
     formKml.nome && setNomeError(null)
     formKml.arquivo && setArquivoError(null)
 
@@ -71,7 +72,7 @@ const CreateKml: FC<{
   }
 
     setIsSubmitting(true);
-
+    console.log(formKml);
     if (patch) {
       patchKML(dimensao, kml, formKml.nome!, formKml.arquivo);
     } else {
@@ -80,7 +81,7 @@ const CreateKml: FC<{
     // Reset form
     setFormKml({
       nome: "",
-      arquivo: "",
+      arquivo: new File([], ""),
     });
 
     // Navigate back to the dimension page

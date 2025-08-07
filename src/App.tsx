@@ -23,6 +23,8 @@ const App: FC = () => {
         <Route path="/:dimensao/:indicador/" element={<IndicadorComponent />} />
         {/*Página que mostra todas as dimensões*/}
         {/* <Route element={<PrivateRoutes />}> */}
+        {/*Rota com autenticação foi cancelada por motivos de segurança até que se consiga realizar a autenticação de forma segura*/}
+        {/*<Route element={<PrivateRoutes />}>*/}
         <Route path="/admin/dimensao/" element={<DimensaoAdmin />} />
         {/*Página que mostra todas as contribuições, indicadores e referências de uma dimensão*/}
         <Route
