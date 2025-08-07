@@ -6,7 +6,7 @@ interface GraficoComponentProps {
   chaveValorGraficos: { [key: string]: string };
   grafico: GraficosIndicador | undefined;
   arrayIndicadorResponse: GraficosIndicador[];
-  graficoPronto: boolean
+  graficoPronto: boolean;
   setGraficoPronto: React.Dispatch<React.SetStateAction<boolean>>;
 }
 export const GraficoComponent: FC<GraficoComponentProps> = ({
@@ -17,7 +17,9 @@ export const GraficoComponent: FC<GraficoComponentProps> = ({
   setGraficoPronto,
 }) => {
   //verifica se o grafico já foi adicionado para ser modificado ou não
-  const [graficoAdicionado, setGraficoAdicionado] = useState<boolean>(false);
+  const [graficoAdicionado, setGraficoAdicionado] = useState<boolean>(
+    graficoPronto === true ? true : false,
+  );
   const [errorTitulo, setErrorTitulo] = useState<string | null>(null);
   const [errorArquivo, setErrorArquivo] = useState<string | null>(null);
   const [errorTipo, setErrorTipo] = useState<string | null>(null);
@@ -49,15 +51,17 @@ export const GraficoComponent: FC<GraficoComponentProps> = ({
           placeholder="Título do gráfico"
           value={newIndicadorResponse.tituloGrafico}
           onChange={(e) => {
-        
             setNewIndicadorResponse((prevState) => ({
               ...prevState,
               tituloGrafico: e.target.value,
             }));
           }} //}
         />
-        {errorTitulo && <Alert variant="danger" className="mt-2">{errorTitulo}</Alert>}
-        
+        {errorTitulo && (
+          <Alert variant="danger" className="mt-2">
+            {errorTitulo}
+          </Alert>
+        )}
       </div>
 
       <div className="form-group">
@@ -79,8 +83,11 @@ export const GraficoComponent: FC<GraficoComponentProps> = ({
             }));
           }}
         />
-        {errorArquivo && <Alert variant="danger" className="mt-2">{errorArquivo}</Alert>}
-        
+        {errorArquivo && (
+          <Alert variant="danger" className="mt-2">
+            {errorArquivo}
+          </Alert>
+        )}
       </div>
 
       <div className="form-group">
@@ -126,33 +133,39 @@ export const GraficoComponent: FC<GraficoComponentProps> = ({
             </option>
           ))}
         </Form.Select>
-        {errorTipo && <Alert variant="danger" className="mt-2">{errorTipo}</Alert>}
+        {errorTipo && (
+          <Alert variant="danger" className="mt-2">
+            {errorTipo}
+          </Alert>
+        )}
       </div>
 
       <button
         type="button"
         className={`btn ${graficoAdicionado ? "btn-success" : "btn-apply"}`}
         onClick={() => {
-
           newIndicadorResponse.arquivo.size > 0 && setErrorArquivo(null);
           newIndicadorResponse.tituloGrafico && setErrorTitulo(null);
           newIndicadorResponse.tipoGrafico && setErrorTipo(null);
 
-          if(newIndicadorResponse.arquivo.size === 0 || !newIndicadorResponse.tituloGrafico || !newIndicadorResponse.tipoGrafico) {
-            setGraficoPronto(false);
-            if(newIndicadorResponse.arquivo.size === 0) {
+          if (
+            newIndicadorResponse.arquivo.size === 0 ||
+            !newIndicadorResponse.tituloGrafico ||
+            !newIndicadorResponse.tipoGrafico
+          ) {
+            //setGraficoPronto(false);
+            if (newIndicadorResponse.arquivo.size === 0) {
               setErrorArquivo("O arquivo é obrigatório");
             }
-            if(!newIndicadorResponse.tituloGrafico) {
+            if (!newIndicadorResponse.tituloGrafico) {
               setErrorTitulo("O título é obrigatório");
             }
-            if(!newIndicadorResponse.tipoGrafico) {
+            if (!newIndicadorResponse.tipoGrafico) {
               setErrorTipo("Escolha por favor o tipo do gráfico");
             }
-            return
+            return;
           }
           if (graficoAdicionado === true) {
-            //setGraficoPronto(true);
             arrayIndicadorResponse.map((indicador) => {
               if (indicador === cacheIndicadorResponse) {
                 indicador = newIndicadorResponse;
@@ -162,7 +175,6 @@ export const GraficoComponent: FC<GraficoComponentProps> = ({
               }
             });
           } else {
-            setGraficoPronto(true);
             setCacheIndicadorResponse(newIndicadorResponse);
             arrayIndicadorResponse.push(newIndicadorResponse);
             setGraficoAdicionado(true);

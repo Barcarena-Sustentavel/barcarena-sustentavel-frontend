@@ -21,20 +21,17 @@ export const CreateIndicador: FC<{
   const [indicador, setIndicador] = useState<string>(
     indicadorNome !== undefined ? indicadorNome : "",
   );
-  const {
-      dimensoesColumn1,
-      dimensoesColumn2,
-      dimensoesCores12,
-      } = dimensoes.GetAllConst();
+  const { dimensoesColumn1, dimensoesColumn2, dimensoesCores12 } =
+    dimensoes.GetAllConst();
   const dimensoesColumn12 = {
-        ...dimensoesColumn1,
-        ...dimensoesColumn2,
-      };
+    ...dimensoesColumn1,
+    ...dimensoesColumn2,
+  };
   const url = `admin/dimensoes/${dimensao}/indicador/${indicador}/`;
   const [errorIndicador, setErrorIndicador] = useState<string | null>(null);
   const [msgsErrorGrafico, setMsgsErrorGrafico] = useState<Array<string>>([]);
-
   const [graficoPronto, setGraficoPronto] = useState<boolean>(false);
+
   const chaveValorGraficos: { [key: string]: string } = useMemo(
     () => ({
       "Selecione um tipo de gráfico": "",
@@ -46,7 +43,7 @@ export const CreateIndicador: FC<{
       Barra: "bar",
       Bolha: "bubble",
       "Mapa de Calor": "heatmap",
-      Pizza:"pie"
+      Pizza: "pie",
     }),
     [],
   );
@@ -55,39 +52,41 @@ export const CreateIndicador: FC<{
       chaveValorGraficos={chaveValorGraficos}
       grafico={undefined}
       arrayIndicadorResponse={arrayIndicadorResponse}
-      graficoPronto={graficoPronto}
+      graficoPronto={graficoPronto} //{false}
       setGraficoPronto={setGraficoPronto}
     />,
   ]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    setMsgsErrorGrafico([])
-    indicador && setErrorIndicador(null)
-    let graficoNodeReturn = false
-     graficoNode.map(async(grafico, index) => {
-      index += 1
+    setMsgsErrorGrafico([]);
+    indicador && setErrorIndicador(null);
+    let graficoNodeReturn = false;
+    graficoNode.map(async (grafico, index) => {
+      index += 1;
       if (grafico.props.graficoPronto === false) {
-        setMsgsErrorGrafico(prev => [...prev, "Preencha todos os campos obrigatórios do gráfico " + index + "."]);
-        graficoNodeReturn = true
-        console.log("erro aq")
+        setMsgsErrorGrafico((prev) => [
+          ...prev,
+          "Preencha todos os campos obrigatórios do gráfico " + index + ".",
+        ]);
+        //graficoNodeReturn = true;
+        console.log("erro aq");
       }
     });
 
-    if (!indicador){
+    if (!indicador) {
       setErrorIndicador("O campo de nome do indicador é obrigatório.");
-      console.log("erro aq")
-      return
+      console.log("erro aq");
+      return;
     }
 
-    if(graficoNodeReturn){
-      graficoNodeReturn = false
-      console.log("erro aq")
-      return
-      }
+    if (graficoNodeReturn) {
+      graficoNodeReturn = false;
+      console.log("erro aq");
+      return;
+    }
 
     if (patch === true) {
-      //console.log(arrayIndicadorResponse)
       patchIndicador(
         dimensao,
         indicadorAntigo,
@@ -103,7 +102,6 @@ export const CreateIndicador: FC<{
 
   useEffect(() => {
     if (indicadorNome != undefined) {
-      setGraficoPronto(true);
       setPatch(true);
       api
         .get(url)
@@ -125,7 +123,7 @@ export const CreateIndicador: FC<{
                   chaveValorGraficos={chaveValorGraficos}
                   grafico={graficoPatch}
                   arrayIndicadorResponse={arrayIndicadorResponse}
-                  graficoPronto={graficoPronto}
+                  graficoPronto={graficoPronto} //{true}
                   setGraficoPronto={setGraficoPronto}
                 />
               );
@@ -144,14 +142,14 @@ export const CreateIndicador: FC<{
   //Função para adicionar um novo gráfico
   const addGrafico = (e: React.MouseEvent) => {
     e.preventDefault();
-    setGraficoPronto(false);
+    //setGraficoPronto(false);
     setGraficoNode([
       ...graficoNode,
       <GraficoComponent
         chaveValorGraficos={chaveValorGraficos}
         grafico={undefined}
         arrayIndicadorResponse={arrayIndicadorResponse}
-        graficoPronto={graficoPronto}
+        graficoPronto={graficoPronto} //{false}
         setGraficoPronto={setGraficoPronto}
       />,
     ]);
@@ -191,11 +189,16 @@ export const CreateIndicador: FC<{
               setIndicador(e.target.value);
             }}
           />
-          {errorIndicador && <Alert variant="danger" className="mt-2">{errorIndicador}</Alert>}
+          {errorIndicador && (
+            <Alert variant="danger" className="mt-2">
+              {errorIndicador}
+            </Alert>
+          )}
         </div>
 
         <h3>Gráficos</h3>
         <div id="graficos">
+          {/*Pega os gráficos que já existem em graficoNode e plota os seus atributos*/}
           {graficoNode.map((grafico, index) => (
             <div key={index} className="grafico-component">
               <h3>Gráfico {index + 1}</h3>
@@ -203,29 +206,33 @@ export const CreateIndicador: FC<{
             </div>
           ))}
 
-        {msgsErrorGrafico.length > 0 && msgsErrorGrafico.map((mensagem) => <Alert variant="danger" className="mt-2">{mensagem}</Alert>) }
+          {msgsErrorGrafico.length > 0 &&
+            msgsErrorGrafico.map((mensagem) => (
+              <Alert variant="danger" className="mt-2">
+                {mensagem}
+              </Alert>
+            ))}
         </div>
         <button className="btn btn-add btn-primary" onClick={addGrafico}>
           <span>+</span> Adicionar Gráfico
         </button>
         <div className="d-flex justify-content-between mt-4">
-
-          <button type="button" 
-          onClick={() => navigate(`/admin/dimensao/${dimensao}/`)}>
-            
-          Cancelar
+          <button
+            type="button"
+            onClick={() => navigate(`/admin/dimensao/${dimensao}/`)}
+          >
+            Cancelar
           </button>
 
-            <button
-              type="button"
-              className="btn btn-success"
-              onClick={(e) => {
-                handleSubmit(e)
-              }}
-            >
-
-              {patch === false ? "Criar Indicador" : "Modificar Indicador"}
-            </button>
+          <button
+            type="button"
+            className="btn btn-success"
+            onClick={(e) => {
+              handleSubmit(e);
+            }}
+          >
+            {patch === false ? "Criar Indicador" : "Modificar Indicador"}
+          </button>
         </div>
       </form>
     </div>
