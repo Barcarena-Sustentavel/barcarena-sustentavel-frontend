@@ -2,9 +2,10 @@ import { Outlet } from "react-router-dom";
 import logoNoLabel from "@assets/images/icons/LogoNoLabel.png";
 import BouncingDotsLoader from "./animation/BouncingDotsLoader.tsx";
 import { useNavigate } from "react-router-dom";
-import { fetchToken } from "./Token.ts";
+import { setToken } from "./Token.ts";
 import "./css/private_route.css";
 import { useState } from "react";
+import axios from "axios";
 
 const PrivateRoutes: React.FC = () => {
   const [loading, setLoading] = useState<boolean>(false);
@@ -16,27 +17,25 @@ const PrivateRoutes: React.FC = () => {
   const [error, setError] = useState("");
 
   const handleLogin = async (e: React.FormEvent) => {
-    e.preventDefault();
-    setLoading(true);
-    setError("");
-
-    try {
-      // Replace with your actual authentication logic
-      const token = await fetchToken();
-      if (token) {
-        setIsAuthenticated(true);
-        // Optional: Redirect to intended page or dashboard
-        const from = "/admin/dimensao";
-        navigate(from, { replace: true });
-      } else {
-        setError("Invalid username or password");
-      }
-    } catch (err) {
-      if (err instanceof Error) {
-        setError("Login failed. Please try again.");
-      }
-    } finally {
-      setLoading(false);
+    if (username == "" || password == "") {
+      return;
+    } else {
+      // make api call to our backend. we'll leave thisfor later
+      axios
+        .post("/api/login", {
+          nome_usuario: username,
+          senha: password,
+        })
+        .then(function (response) {
+          console.log(response.data.token, "response.data.token");
+          if (response.data.token) {
+            setToken(response.data.token);
+            navigate("/profile");
+          }
+        })
+        .catch(function (error) {
+          console.log(error, "error");
+        });
     }
   };
 

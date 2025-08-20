@@ -1,15 +1,15 @@
 import { useLocation, Navigate } from "react-router-dom";
 import { fetchToken } from "./Token.ts";
-const RequireToken: React.FC<{
-  children: React.ReactElement;
-}> = ({ children }) => {
+import { Outlet } from "react-bootstrap-icons";
+const RequireToken: React.FC = () => {
   const auth = fetchToken();
   const location = useLocation();
-  if (!auth) {
-    return <Navigate to="/admin/dimensao" state={{ from: location }} />;
-  }
 
-  return children;
+  return auth ? (
+    <Outlet />
+  ) : (
+    <Navigate to="/admin/" state={{ from: location }} />
+  );
 };
 
 export default RequireToken;
