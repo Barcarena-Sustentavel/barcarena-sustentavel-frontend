@@ -70,19 +70,21 @@ export const patchIndicador = async (
       indicador.nome = antigoIndicador;
     }
     const formData = new FormData();
-    //console.log(arrayGrafico);
     for (let i = 0; i < arrayGrafico.length; i++) {
-      console.log(arrayGrafico[i].id);
-      const endpoit = `/api/admin/dimensoes/${dimensao}/indicador/${indicador.nome}/anexos/${arrayGrafico[i].id}/`;
-      void (arrayGrafico[i].arquivo instanceof File
-        ? formData.append("grafico", arrayGrafico[i].arquivo)
-        : null);
+      console.log(arrayGrafico[i]);
+      const endpoit =
+        arrayGrafico[i].id != null
+          ? `/api/admin/dimensoes/${dimensao}/indicador/${indicador.nome}/anexos/${arrayGrafico[i].id}/`
+          : `/api/admin/dimensoes/${dimensao}/indicador/${indicador.nome}/anexos/`;
+      //void (arrayGrafico[i].arquivo instanceof File
+      //  ? formData.append("grafico", arrayGrafico[i].arquivo)
+      //  : null);
+      formData.append("grafico", arrayGrafico[i].arquivo);
       formData.append("descricaoGrafico", arrayGrafico[i].descricaoGrafico);
       formData.append("tituloGrafico", arrayGrafico[i].tituloGrafico);
       formData.append("tipoGrafico", arrayGrafico[i].tipoGrafico);
-      console.log(formData);
       await fetch(endpoit, {
-        method: "PATCH",
+        method: arrayGrafico[i].id != null ? "PATCH" : "POST",
         body: formData,
       }).catch((error) => {
         console.log(error);

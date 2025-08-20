@@ -1,5 +1,5 @@
 #!/bin/bash
-file_name="acesso.pem"
+file_name="novo_acesso.pem"
 file_path=$(find / -name "$file_name" 2>/dev/null)
 
 if [ -z "$file_path" ]; then

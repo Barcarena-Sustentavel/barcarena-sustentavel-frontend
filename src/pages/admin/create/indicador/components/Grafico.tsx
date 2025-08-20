@@ -6,19 +6,19 @@ interface GraficoComponentProps {
   chaveValorGraficos: { [key: string]: string };
   grafico: GraficosIndicador | undefined;
   arrayIndicadorResponse: GraficosIndicador[];
-  graficoPronto: boolean;
-  setGraficoPronto: React.Dispatch<React.SetStateAction<boolean>>;
+  //graficoPronto: boolean;
+  //setGraficoPronto: React.Dispatch<React.SetStateAction<boolean>>;
 }
 export const GraficoComponent: FC<GraficoComponentProps> = ({
   chaveValorGraficos,
   grafico,
   arrayIndicadorResponse,
-  graficoPronto,
+  //graficoPronto,
   //setGraficoPronto,
 }) => {
   //verifica se o grafico já foi adicionado para ser modificado ou não
   const [graficoAdicionado, setGraficoAdicionado] = useState<boolean>(
-    graficoPronto === true ? true : false,
+    grafico !== undefined ? true : false,
   );
   const [errorTitulo, setErrorTitulo] = useState<string | null>(null);
   const [errorArquivo, setErrorArquivo] = useState<string | null>(null);

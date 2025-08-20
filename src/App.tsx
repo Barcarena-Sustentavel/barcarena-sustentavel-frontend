@@ -1,6 +1,6 @@
 import { FC } from "react";
-import { BrowserRouter, Routes, Route } from "react-router-dom";
-//import PrivateRoutes from "./utils/private_route/ProvideRoutes.tsx";
+import { BrowserRouter, Route, Routes } from "react-router-dom";
+import PrivateRoutes from "./utils/private_route/ProvideRoutes.tsx";
 import "bootstrap-icons/font/bootstrap-icons.css";
 import DimensaoAdmin from "./pages/admin/dimensaoAdmin.tsx";
 import DimensaoComponent from "./pages/dimension/dimensao.tsx";
@@ -10,6 +10,7 @@ import Home from "./pages/home/home.tsx";
 import CreatePage from "./pages/admin/create/createPage.tsx";
 import About from "./pages/about/about.tsx";
 import "leaflet/dist/leaflet.css";
+import RequireToken from "./utils/private_route/Auth.tsx";
 
 const App: FC = () => {
   return (
@@ -22,8 +23,6 @@ const App: FC = () => {
         {/*Página de cada indicador referente a uma dimensão*/}
         <Route path="/:dimensao/:indicador/" element={<IndicadorComponent />} />
         {/*Página que mostra todas as dimensões*/}
-        {/* <Route element={<PrivateRoutes />}> */}
-        {/*Rota com autenticação foi cancelada por motivos de segurança até que se consiga realizar a autenticação de forma segura*/}
         {/*<Route element={<PrivateRoutes />}>*/}
         <Route path="/admin/dimensao/" element={<DimensaoAdmin />} />
         {/*Página que mostra todas as contribuições, indicadores e referências de uma dimensão*/}
