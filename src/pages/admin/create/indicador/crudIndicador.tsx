@@ -62,10 +62,23 @@ export const patchIndicador = async (
     const novoIndicadorBool: boolean = novoIndicador !== antigoIndicador;
     if (novoIndicadorBool) {
       indicador.nome = novoIndicador;
-      const response = await api.put(
-        `/admin/dimensoes/${dimensao}/indicador/${antigoIndicador}/`,
-        { indicadorNovo: novoIndicador },
-      );
+      //const response = await api.put(
+      //  `/admin/dimensoes/${dimensao}/indicador/${encodeURIComponent(antigoIndicador)}/`,
+      //  { indicadorNovo: novoIndicador },
+      //);
+      const formData = new FormData();
+      const endpoint = `/api/admin/dimensoes/${dimensao}/indicador/${encodeURIComponent(antigoIndicador)}/`;
+      formData.append("indicadorNovo", novoIndicador);
+      const response = await fetch(endpoint, {
+        method: "PUT",
+        header: {
+          "Content-Type": "application/json",
+          Accept: "application/json",
+        },
+        body: formData,
+      }).catch((error) => {
+        console.log(error);
+      });
       if (response.status === 200) {
         console.log("Indicador alterado com sucesso");
       }
