@@ -31,7 +31,6 @@ export const CreateIndicador: FC<{
   const url = `admin/dimensoes/${dimensao}/indicador/${indicador}/`;
   const [errorIndicador, setErrorIndicador] = useState<string | null>(null);
   const [msgsErrorGrafico, setMsgsErrorGrafico] = useState<Array<string>>([]);
-  const [graficoPronto, setGraficoPronto] = useState<boolean>(false);
 
   const chaveValorGraficos: { [key: string]: string } = useMemo(
     () => ({
@@ -45,6 +44,7 @@ export const CreateIndicador: FC<{
       Bolha: "bubble",
       "Mapa de Calor": "heatmap",
       Pizza: "pie",
+      Tabela: "tabela",
     }),
     [],
   );
@@ -53,8 +53,6 @@ export const CreateIndicador: FC<{
       chaveValorGraficos={chaveValorGraficos}
       grafico={undefined}
       arrayIndicadorResponse={arrayIndicadorResponse}
-      //graficoPronto={graficoPronto} //{false}
-      //setGraficoPronto={setGraficoPronto}
     />,
   ]);
 
@@ -62,7 +60,6 @@ export const CreateIndicador: FC<{
     e.preventDefault();
     setMsgsErrorGrafico([]);
     indicador && setErrorIndicador(null);
-    //let graficoNodeReturn = false;
     graficoNode.map(async (grafico, index) => {
       index += 1;
       if (grafico.props.graficoPronto === false) {
@@ -70,7 +67,6 @@ export const CreateIndicador: FC<{
           ...prev,
           "Preencha todos os campos obrigatórios do gráfico " + index + ".",
         ]);
-        //graficoNodeReturn = true;
         console.log("erro aq");
       }
     });
@@ -80,14 +76,8 @@ export const CreateIndicador: FC<{
       console.log("erro aq");
       return;
     }
-    /*
-    if (graficoNodeReturn) {
-      graficoNodeReturn = false;
-      console.log("erro aq");
-      return;
-    }
- */
     if (patch === true) {
+      console.log(arrayIndicadorResponse);
       patchIndicador(
         dimensao,
         indicadorAntigo,
@@ -124,6 +114,7 @@ export const CreateIndicador: FC<{
                   chaveValorGraficos={chaveValorGraficos}
                   grafico={graficoPatch}
                   arrayIndicadorResponse={arrayIndicadorResponse}
+
                   //graficoPronto={graficoPronto} //{true}
                   //setGraficoPronto={setGraficoPronto}
                 />
@@ -138,13 +129,7 @@ export const CreateIndicador: FC<{
           console.log(error);
         });
     }
-  }, [
-    url,
-    chaveValorGraficos,
-    indicadorNome,
-    arrayIndicadorResponse,
-    //graficoPronto,
-  ]);
+  }, [url, chaveValorGraficos, indicadorNome, arrayIndicadorResponse, patch]);
 
   //Função para adicionar um novo gráfico
   const addGrafico = (e: React.MouseEvent) => {

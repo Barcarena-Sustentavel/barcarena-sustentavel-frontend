@@ -62,27 +62,30 @@ export const patchIndicador = async (
     const novoIndicadorBool: boolean = novoIndicador !== antigoIndicador;
     if (novoIndicadorBool) {
       indicador.nome = novoIndicador;
-      await api.patch(
-        `/admin/dimensoes/${dimensao}/indicador/${antigoIndicador}`,
-        { indicadorNovo: indicador.nome },
+      const response = await api.put(
+        `/admin/dimensoes/${dimensao}/indicador/${antigoIndicador}/`,
+        { indicadorNovo: novoIndicador },
       );
+      if (response.status === 200) {
+        console.log("Indicador alterado com sucesso");
+      }
     } else {
       indicador.nome = antigoIndicador;
     }
     const formData = new FormData();
     for (let i = 0; i < arrayGrafico.length; i++) {
-      console.log(arrayGrafico[i]);
       const endpoit =
         arrayGrafico[i].id != null
           ? `/api/admin/dimensoes/${dimensao}/indicador/${indicador.nome}/anexos/${arrayGrafico[i].id}/`
           : `/api/admin/dimensoes/${dimensao}/indicador/${indicador.nome}/anexos/`;
-      //void (arrayGrafico[i].arquivo instanceof File
-      //  ? formData.append("grafico", arrayGrafico[i].arquivo)
-      //  : null);
-      formData.append("grafico", arrayGrafico[i].arquivo);
+      console.log(arrayGrafico[i].arquivo.size);
+      if (arrayGrafico[i].arquivo.size !== undefined) {
+        formData.append("grafico", arrayGrafico[i].arquivo);
+      }
       formData.append("descricaoGrafico", arrayGrafico[i].descricaoGrafico);
       formData.append("tituloGrafico", arrayGrafico[i].tituloGrafico);
       formData.append("tipoGrafico", arrayGrafico[i].tipoGrafico);
+      console.log(formData);
       await fetch(endpoit, {
         method: arrayGrafico[i].id != null ? "PATCH" : "POST",
         body: formData,

@@ -2,53 +2,58 @@ import * as Highcharts from "highcharts";
 import HighchartsReact from "highcharts-react-official";
 import { FC, useRef } from "react";
 import { DashboardProps } from "./interface/dashboard_interface.tsx";
-import { PlotSeries, TreeMapSeries, PizzaSeries } from "./interface/dados_graficos_interface.tsx";
+import {
+  PlotSeries,
+  TreeMapSeries,
+  PizzaSeries,
+} from "./interface/dados_graficos_interface.tsx";
 
 const plotOptions = (dashboard: DashboardProps) => {
-  
-  if (dashboard.tipoGrafico === "pie"){
-    console.log(dashboard.dados)
-    return  {
+  if (dashboard.tipoGrafico === "pie") {
+    console.log(dashboard.dados);
+    return {
       chart: {
-          plotBackgroundColor: null,
-          plotBorderWidth: null,
-          plotShadow: false,
-          type: 'pie'
+        plotBackgroundColor: null,
+        plotBorderWidth: null,
+        plotShadow: false,
+        type: "pie",
       },
       title: {
-          text: dashboard.tituloGrafico ?? ""
+        text: dashboard.tituloGrafico ?? "",
       },
       plotOptions: {
-          pie: {
-              allowPointSelect: true,
-              cursor: 'pointer'
-          }
+        pie: {
+          allowPointSelect: true,
+          cursor: "pointer",
+        },
       },
-      series: [{
-          name: 'Valor',
-          data: dashboard.dados
-      }]
-  }
+      series: [
+        {
+          name: "Valor",
+          data: dashboard.dados,
+        },
+      ],
+    };
   }
 
   if (dashboard.tipoGrafico === "xy") {
     console.log(dashboard.dados);
-    const dadoColuna =  {
+    const dadoColuna = {
       name: dashboard.dados[0].name,
       data: dashboard.dados[0].data,
       type: "spline",
-    }//Salva somente o primeiro array para que este seja a linha
-    dashboard.dados.splice(0, 1);//Remove o primeiro array, e modifica permanentemente o array original
-    const dadosLinha = dashboard.dados
+    }; //Salva somente o primeiro array para que este seja a linha
+    dashboard.dados.splice(0, 1); //Remove o primeiro array, e modifica permanentemente o array original
+    const dadosLinha = dashboard.dados;
     for (let index = 0; index < dadosLinha.length; index++) {
-      dadosLinha[index].type = "column"
+      dadosLinha[index].type = "column";
     }
-    const dadosSeries = [dadoColuna, ...dadosLinha]
+    const dadosSeries = [dadoColuna, ...dadosLinha];
     return {
       chart: {
         zooming: {
           type: "xy",
-        }
+        },
       },
       title: {
         text: dashboard.tituloGrafico ?? "",
@@ -107,19 +112,15 @@ export const DashboardComponent: FC<{
       });
     }
     finalDadosGraficos = dadosGraficosTrees;
-  } 
-  
-  else if (tipoGrafico === "pie") {
+  } else if (tipoGrafico === "pie") {
     for (let i = 0; i < dados.length; i++) {
       dadosGraficosPizza.push({
-        name: colunas[i], 
+        name: colunas[i],
         y: dados[i][0],
       });
     }
     finalDadosGraficos = dadosGraficosPizza;
-  }
-  
-  else {
+  } else {
     dados.forEach((dado, index) => {
       dadosGraficoPlots.push({
         name: colunas[index], //`Dado ${index + 1}`,
@@ -128,7 +129,21 @@ export const DashboardComponent: FC<{
     });
     finalDadosGraficos = dadosGraficoPlots;
   }
-
+  const dashboard: DashboardProps = {
+    tipoGrafico,
+    dados: finalDadosGraficos,
+    tituloGrafico,
+    categorias,
+  };
+  if (dashboard.tipoGrafico === "tabela") {
+    const inicioTh = "<table><tr>";
+    for (let i = 0; i < dashboard.categorias.length; i++) {
+      if (i === dashboard.categorias.length - 1) {
+        inicioTh.concat(`<th> ${dashboard.categorias[i]}</th> </tr>`);
+      }
+      inicioTh.concat(`<th> ${dashboard.categorias[i]}</th>`);
+    }
+  }
   return (
     <HighchartsReact
       highcharts={Highcharts}

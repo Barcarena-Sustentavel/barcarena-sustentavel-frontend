@@ -6,14 +6,12 @@ interface GraficoComponentProps {
   chaveValorGraficos: { [key: string]: string };
   grafico: GraficosIndicador | undefined;
   arrayIndicadorResponse: GraficosIndicador[];
-  //graficoPronto: boolean;
   //setGraficoPronto: React.Dispatch<React.SetStateAction<boolean>>;
 }
 export const GraficoComponent: FC<GraficoComponentProps> = ({
   chaveValorGraficos,
   grafico,
   arrayIndicadorResponse,
-  //graficoPronto,
   //setGraficoPronto,
 }) => {
   //verifica se o grafico já foi adicionado para ser modificado ou não
@@ -23,6 +21,7 @@ export const GraficoComponent: FC<GraficoComponentProps> = ({
   const [errorTitulo, setErrorTitulo] = useState<string | null>(null);
   const [errorArquivo, setErrorArquivo] = useState<string | null>(null);
   const [errorTipo, setErrorTipo] = useState<string | null>(null);
+  const [modified, setModified] = useState<boolean>(false);
   //Objeto com atributos do grafico
   const [newIndicadorResponse, setNewIndicadorResponse] =
     useState<GraficosIndicador>(
@@ -170,10 +169,23 @@ export const GraficoComponent: FC<GraficoComponentProps> = ({
               if (indicador === cacheIndicadorResponse) {
                 indicador = newIndicadorResponse;
                 setCacheIndicadorResponse(newIndicadorResponse);
-                console.log(arrayIndicadorResponse);
+
                 return;
               }
             });
+            if (modified === false) {
+              arrayIndicadorResponse.push(newIndicadorResponse);
+              console.log(arrayIndicadorResponse);
+              setModified(true);
+            } else {
+              arrayIndicadorResponse.map((array) => {
+                if (array === newIndicadorResponse) {
+                  const index = arrayIndicadorResponse.indexOf(array);
+                  arrayIndicadorResponse[index] = newIndicadorResponse;
+                }
+              });
+            }
+            return;
           } else {
             setCacheIndicadorResponse(newIndicadorResponse);
             arrayIndicadorResponse.push(newIndicadorResponse);
