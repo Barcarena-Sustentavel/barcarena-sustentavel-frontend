@@ -1,17 +1,16 @@
 import * as Highcharts from "highcharts";
 import HighchartsReact from "highcharts-react-official";
 import React, { FC, useRef } from "react";
-import { DashboardProps } from "./interface/dashboard_interface.tsx";
+import { DashboardProps } from "../../../../../indicador/dashboard/interface/dashboard_interface.tsx";
 import { MaterialReactTable } from "material-react-table";
 import {
   PlotSeries,
-  TreeMapSeries,
   PizzaSeries,
-} from "./interface/dados_graficos_interface.tsx";
+  TreeMapSeries,
+} from "../../../../../indicador/dashboard/interface/dados_graficos_interface.tsx";
 
 const plotOptions = (dashboard: DashboardProps) => {
   if (dashboard.tipoGrafico === "pie") {
-    console.log(dashboard.dados);
     return {
       chart: {
         plotBackgroundColor: null,
@@ -38,7 +37,6 @@ const plotOptions = (dashboard: DashboardProps) => {
   }
 
   if (dashboard.tipoGrafico === "xy") {
-    console.log(dashboard.dados);
     const dadoColuna = {
       name: dashboard.dados[0].name,
       data: dashboard.dados[0].data,
@@ -90,20 +88,29 @@ const plotOptions = (dashboard: DashboardProps) => {
   };
 };
 
-export const DashboardComponent: FC<{
+export const DashboardComponentPreview: FC<{
   tipoGrafico: string;
-  dados: number[][];
-  colunas: string[];
-  tituloGrafico: string | null;
-  categorias: string[] | number[];
-}> = ({ tipoGrafico, dados, tituloGrafico, categorias, colunas }) => {
+}> = ({ tipoGrafico }) => {
   const chartComponentRef = useRef<HighchartsReact.RefObject>(null);
 
   const dadosGraficoPlots: PlotSeries[] = [];
   const dadosGraficosTrees: TreeMapSeries[] = [];
   const dadosGraficosPizza: PizzaSeries[] = [];
   let finalDadosGraficos: any[] = [];
-
+  const tituloGrafico = "Grafico Exemplo";
+  const colunas: string[] = ["ex1, ex2, ex3, exx4"];
+  const categorias: string[] | number[] = [
+    "categoria1",
+    "categoria2",
+    "categoria3",
+    "categoria4",
+  ];
+  const dados: number[][] = [
+    [10, 20, 30, 40],
+    [15, 25, 35, 45],
+    [20, 30, 40, 50],
+    [25, 35, 45, 55],
+  ];
   if (tipoGrafico === "treemap") {
     for (let i = 0; i < dados.length; i++) {
       dadosGraficosTrees.push({
@@ -136,8 +143,6 @@ export const DashboardComponent: FC<{
     tituloGrafico,
     categorias,
   };
-  console.log(dashboard.categorias);
-  console.log(dashboard.dados);
   if (dashboard.tipoGrafico === "tabela") {
     const cols = colunas.map((categoria) => ({
       header: categoria,
@@ -165,6 +170,9 @@ export const DashboardComponent: FC<{
         },
       }),
     });
+  }
+  if (dashboard.tipoGrafico === "") {
+    return;
   }
   return (
     <HighchartsReact

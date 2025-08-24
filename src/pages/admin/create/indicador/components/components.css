@@ -1,0 +1,68 @@
+.atualizar {
+    display: flex;
+    width: 100%;
+    justify-content: space-between;
+}
+/* Oculta a checkbox nativa */
+.checkbox-container input[type="checkbox"] {
+    /* Oculta o elemento visualmente, mas mantém a acessibilidade */
+    position: absolute;
+    opacity: 0;
+    cursor: pointer;
+    height: 0;
+    width: 0;
+}
+
+/* Cria o contêiner e o quadrado visual da checkbox */
+.checkmark {
+    position: relative;
+    display: inline-block;
+    width: 20px;
+    height: 20px;
+    background-color: #eee;
+    border: 2px solid #ccc;
+    border-radius: 4px;
+    margin-top: 6px;
+    margin-left: 5px;
+}
+
+/* Quando a checkbox nativa é focada, adiciona um anel para acessibilidade */
+.checkbox-container input[type="checkbox"]:focus + .checkmark {
+    outline: 2px solid #d9534f; /* Vermelho mais claro para o foco */
+    outline-offset: 2px;
+}
+
+/* Estilo do quadrado quando a checkbox é marcada */
+.checkbox-container input[type="checkbox"]:checked + .checkmark {
+    background-color: #d9534f; /* Cor vermelha para o fundo */
+    border-color: #d9534f; /* Borda vermelha */
+}
+
+/* Cria o "V" (check) da checkbox marcada */
+.checkmark::after {
+    content: "";
+    position: absolute;
+    display: none;
+    left: 6px;
+    top: 2px;
+    width: 6px;
+    height: 12px;
+    border: solid white; /* Cor do "V" */
+    border-width: 0 3px 3px 0;
+    transform: rotate(45deg);
+}
+
+/* Mostra o "V" quando a checkbox está marcada */
+.checkbox-container input[type="checkbox"]:checked + .checkmark::after {
+    display: block;
+}
+
+/* Estiliza o rótulo */
+.checkbox-container {
+    display: flex;
+    position: relative;
+    padding-left: 35px;
+    cursor: pointer;
+    font-size: 18px;
+    user-select: none;
+}

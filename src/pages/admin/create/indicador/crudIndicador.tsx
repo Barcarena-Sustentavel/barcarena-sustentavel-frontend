@@ -71,7 +71,7 @@ export const patchIndicador = async (
       formData.append("indicadorNovo", novoIndicador);
       const response = await fetch(endpoint, {
         method: "PUT",
-        header: {
+        headers: {
           "Content-Type": "application/json",
           Accept: "application/json",
         },

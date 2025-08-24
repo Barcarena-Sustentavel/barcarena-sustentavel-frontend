@@ -31,7 +31,8 @@ export const CreateIndicador: FC<{
   const url = `admin/dimensoes/${dimensao}/indicador/${indicador}/`;
   const [errorIndicador, setErrorIndicador] = useState<string | null>(null);
   const [msgsErrorGrafico, setMsgsErrorGrafico] = useState<Array<string>>([]);
-
+  const [deleteArray, setDeleteArray] = useState<Array<GraficosIndicador>>([]);
+  //Array utilizado para guardar o último estado anterior do array de deleção
   const chaveValorGraficos: { [key: string]: string } = useMemo(
     () => ({
       "Selecione um tipo de gráfico": "",
@@ -53,9 +54,43 @@ export const CreateIndicador: FC<{
       chaveValorGraficos={chaveValorGraficos}
       grafico={undefined}
       arrayIndicadorResponse={arrayIndicadorResponse}
+      setDeleteArray={setDeleteArray}
     />,
   ]);
+  const handleDeleteGrafico = (e: React.MouseEvent<HTMLButtonElement>) => {
+    e.preventDefault();
+    graficoNode.map((graficoDelete, index) => {
+      console.log(graficoDelete);
+      console.log(graficoNode);
+      if (graficoDelete.props.grafico !== undefined) {
+        if (graficoDelete.props.grafico.id !== null) {
+          const url = `/api/admin/dimensoes/${dimensao}/indicador/${indicadorNome}/anexos/${graficoDelete.props.grafico.id}/`;
 
+          fetch(url, { method: "DELETE" })
+            .then((response) => {
+              if (!response.ok) {
+                throw new Error("Erro na requisição: " + response.statusText);
+              }
+            })
+            .catch((error) => {
+              console.error("Houve um problema com a operação fetch:", error);
+            });
+          setGraficoNode((prev) =>
+            prev.filter((prev) => prev !== graficoDelete),
+          );
+        } else {
+          setGraficoNode((prev) =>
+            prev.filter((prev) => prev !== graficoDelete),
+          );
+        }
+      } else {
+        setGraficoNode((prev) => prev.filter((prev) => prev !== graficoDelete));
+        setDeleteArray((prev) =>
+          prev.filter((prev) => prev !== deleteArray[index]),
+        );
+      }
+    });
+  };
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setMsgsErrorGrafico([]);
@@ -114,9 +149,7 @@ export const CreateIndicador: FC<{
                   chaveValorGraficos={chaveValorGraficos}
                   grafico={graficoPatch}
                   arrayIndicadorResponse={arrayIndicadorResponse}
-
-                  //graficoPronto={graficoPronto} //{true}
-                  //setGraficoPronto={setGraficoPronto}
+                  setDeleteArray={setDeleteArray}
                 />
               );
             },
@@ -141,6 +174,7 @@ export const CreateIndicador: FC<{
         chaveValorGraficos={chaveValorGraficos}
         grafico={undefined}
         arrayIndicadorResponse={arrayIndicadorResponse}
+        setDeleteArray={setDeleteArray}
         //graficoPronto={graficoPronto} //{false}
         //setGraficoPronto={setGraficoPronto}
       />,
@@ -224,6 +258,9 @@ export const CreateIndicador: FC<{
             }}
           >
             {patch === false ? "Criar Indicador" : "Modificar Indicador"}
+          </button>
+          <button type="button" onClick={(e) => handleDeleteGrafico(e)}>
+            Deletar Gráficos
           </button>
         </div>
       </form>
