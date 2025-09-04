@@ -9,11 +9,11 @@ interface FormContribuicaoProps {
 }
 
 const FormContribuicao: React.FC<FormContribuicaoProps> = ({ dimensaoId , formStyle = {}}) => {
-    const [formData, setFormData] = useState<Omit<Contribuicao, 'id' | 'fkDimensao'> & { file: File | null }>({
-        nome: '',
+    const [formData, setFormData] = useState<Omit<Contribuicao, 'id' | 'fkDimensao'> & { file: File | null}>({
+        nome: null,
         email: '',
-        telefone: '',
-        comentario: '',
+        telefone: null,
+        comentario: null,
         file: null
     });
 
@@ -35,10 +35,10 @@ const FormContribuicao: React.FC<FormContribuicaoProps> = ({ dimensaoId , formSt
         e.preventDefault();
         
         const data = new FormData();
-        data.append('nome', formData.nome);
-        data.append('email', formData.email);
-        data.append('telefone', formData.telefone);
-        data.append('comentario', formData.comentario);
+        data.append('nome', formData.nome ?? "");
+        data.append('email', formData.email ?? "");
+        data.append('telefone', formData.telefone ?? "");
+        data.append('comentario', formData.comentario ?? "");
         data.append('fkDimensao', dimensaoId.toString());
         if (formData.file) {
             data.append('file', formData.file);
@@ -89,9 +89,8 @@ const FormContribuicao: React.FC<FormContribuicaoProps> = ({ dimensaoId , formSt
                         name="nome" 
                         id="nome" 
                         placeholder="Nome"
-                        value={formData.nome}
+                        value={formData.nome ?? ""}
                         onChange={handleChange}
-                        required
                         style={{backgroundColor: "white", color:"var(--p-color)"}}
                     />
                     
@@ -113,7 +112,7 @@ const FormContribuicao: React.FC<FormContribuicaoProps> = ({ dimensaoId , formSt
                         name="telefone" 
                         id="telefone" 
                         placeholder="Telefone (DDD+número)"
-                        value={formData.telefone}
+                        value={formData.telefone ?? ""}
                         onChange={handleChange}
                         style={{backgroundColor: "white", color:"var(--p-color)"}}
                     />
@@ -123,9 +122,8 @@ const FormContribuicao: React.FC<FormContribuicaoProps> = ({ dimensaoId , formSt
                         name="comentario" 
                         id="comentario" 
                         placeholder="Deixe aqui seu comentário"
-                        value={formData.comentario}
+                        value={formData.comentario ?? ""}
                         onChange={handleChange}
-                        required
                         style={{backgroundColor: "white", color:"var(--p-color)", marginLeft:"18px"}}
                     />
                     

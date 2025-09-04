@@ -1,9 +1,9 @@
 export interface Contribuicao {
     id: number;
-    nome: string;
+    nome?: string | null;
     email: string;
-    telefone: string;
-    comentario: string;
+    telefone?: string | null;
+    comentario?: string | null;
     fkDimensao: number;
 }
 
