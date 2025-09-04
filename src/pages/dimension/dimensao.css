@@ -23,6 +23,10 @@ p {
     padding: 0 !important;
 }
 
+.dimension-details-container > h1{
+    text-align: left;
+}
+
 .dimension-details-container > a{
     padding-left: 16px;
 }
