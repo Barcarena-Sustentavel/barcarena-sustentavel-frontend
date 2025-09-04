@@ -87,22 +87,10 @@ const DimensaoComponent: FC = () => {
       <NavbarComponent />
       <SubmenuDimensao dimensaoAtiva={dimensaoJson?.nome || ""} />
       <div className="container dimension-details-container">
-        <h1>{dimensaoJson?.nome}</h1>
         <div className="descricao">
           <p style={{ borderLeft: `5px solid ${getProximaCor()}` }}>
             {dimensaoJson?.descricao}
           </p>
-        </div>
-        <h1 className="mt-2">Indicadores mais importantes</h1>
-        <div className="descricao">
-          {indicadores.length > 0 && (
-            <p style={{ borderLeft: `5px solid ${getProximaCor()}` }}>
-              {indicadores.reduce(
-                (acc, indicador) => (acc ? `${acc}; ${indicador}` : indicador),
-                "",
-              )}
-            </p>
-          )}
         </div>
       </div>
       <div className="container dimension-details-container">
