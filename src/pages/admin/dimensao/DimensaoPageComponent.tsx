@@ -1,5 +1,5 @@
 import { FC, useState } from "react";
-import { useParams } from "react-router-dom";
+import { useParams, useNavigate, Link } from "react-router-dom";
 import { TabContentComponent } from "../tab/TabContentComponent.tsx";
 import "../css/dimensaoPage.css";
 import dimensoes from "../../../utils/const.tsx";
@@ -16,6 +16,13 @@ const DimensaoPageComponent: FC = () => {
     ...dimensoesColumn1,
     ...dimensoesColumn2,
   };
+  // botão para voltar página
+  const navigate = useNavigate();
+
+  function handleBack() {
+    navigate("/admin/dimensao");
+  }
+
   return (
     <div className="home-container">
       <div
@@ -57,12 +64,12 @@ const DimensaoPageComponent: FC = () => {
             Referências
           </button>
 
-          <button
+          {/* <button
             className={`admin-tab-button ${activeTab === "Contribuições" ? "active" : ""}`}
             onClick={() => setActiveTab("Contribuições")}
           >
             Contribuições
-          </button>
+          </button> */}
 
           <button
             className={`admin-tab-button ${activeTab === "Kmls" ? "active" : ""}`}
@@ -71,6 +78,10 @@ const DimensaoPageComponent: FC = () => {
             Kmls
           </button>
         </nav>
+        <button className="voltar-button"
+          onClick={() => handleBack()}>
+          Voltar
+        </button>
 
         <div className="admin-tab-content">
           <TabContentComponent dimensao={dimensao} activeTab={activeTab} />
