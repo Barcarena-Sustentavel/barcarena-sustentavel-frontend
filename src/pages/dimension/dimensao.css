@@ -31,8 +31,9 @@ p {
     padding-left: 16px;
 }
 
-.dimension-details-container ul.indicadores, 
-.dimension-details-container ul.referencias {
+.dimension-details-container ul.indicadores
+/* , .dimension-details-container ul.referencias  */
+{
     list-style-type: none !important;
     padding: 16px;
     margin: 0 !important;
@@ -48,7 +49,7 @@ p {
 }
 
 .dimension-details-container ul.indicadores li,
-.dimension-details-container ul.referencias li,
+/* .dimension-details-container ul.referencias li, */
 .dimension-details-container .descricao p,
 .dimension-details-container .contribuicao form{
     padding: 16px;

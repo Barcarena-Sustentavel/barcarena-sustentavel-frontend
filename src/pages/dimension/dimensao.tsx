@@ -122,12 +122,16 @@ const DimensaoComponent: FC = () => {
             ))}
         </ul>
       </div>
-      <div className="container dimension-details-container mt-5 d-flex flex-column">
-        <h1>Referências</h1>
+      {/* <div className="container dimension-details-container mt-5 d-flex flex-column"> */}
+      <div className="container dimension-details-container d-flex flex-column">
+        <h1 style={{borderBottom: "solid 1px #ddd"}}>Referências</h1>
         {referencias.length > 0 &&
           referencias.map((referencia) => (
-            <ul className="referencias mt-5">
-              <li style={{ borderLeft: `5px solid ${getProximaCor()}` }}>
+            // <ul className="referencias mt-5">
+            <ul className="referencias">
+              {/* <li style={{ borderLeft: `5px solid ${getProximaCor()}` }}> */}
+              <li>
+
                 <a
                   className="custom-link-tooplate-gotto-job"
                   href={`${referencia?.link}`}
