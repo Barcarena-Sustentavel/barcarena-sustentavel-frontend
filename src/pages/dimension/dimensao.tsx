@@ -107,7 +107,7 @@ const DimensaoComponent: FC = () => {
         </div>
       </div>
       <div className="container dimension-details-container">
-        <h1>Dados Levantados</h1>
+        <h1>Indicadores</h1>
         <ul className="indicadores">
           {indicadores.length > 0 &&
             indicadores.map((indicador) => (
