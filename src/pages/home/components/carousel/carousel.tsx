@@ -1,10 +1,16 @@
-import { FC, useState } from 'react';
-import { Carousel } from 'react-bootstrap';
-import 'bootstrap/dist/css/bootstrap.min.css';
-import './carousel.css';
-import image1 from "@assets/images/carousel/Barcarena1.jpg";
-import image2 from "@assets/images/carousel/Barcarena2.webp";
-import image3 from "@assets/images/carousel/praiaDoCaripi.jpg";
+import { FC, useState } from "react";
+import { Carousel } from "react-bootstrap";
+import "bootstrap/dist/css/bootstrap.min.css";
+import "./carousel.css";
+import image1 from "@assets/images/carousel/Banner Barcarena/1.png";
+import image2 from "@assets/images/carousel/Banner Barcarena/2.png";
+import image3 from "@assets/images/carousel/Banner Barcarena/3.png";
+import image4 from "@assets/images/carousel/Banner Barcarena/4.png";
+import image5 from "@assets/images/carousel/Banner Barcarena/5.png";
+import image6 from "@assets/images/carousel/Banner Barcarena/6.png";
+//import image1 from "@assets/images/carousel/Barcarena1.jpg";
+//import image2 from "@assets/images/carousel/Barcarena2.webp";
+//import image3 from "@assets/images/carousel/praiaDoCaripi.jpg";
 const ImageCarousel: FC = () => {
   const [index, setIndex] = useState(0);
 
@@ -12,22 +18,23 @@ const ImageCarousel: FC = () => {
     setIndex(selectedIndex);
   };
 
-  const images = [image1, image2, image3];
+  const images = [image1, image2, image3, image4, image5, image6];
   return (
     <div id="carouselExampleControls">
       <div className="backgroundCarousel"></div>
-      <Carousel 
-        activeIndex={index} 
+      <Carousel
+        activeIndex={index}
         onSelect={handleSelect}
         interval={5000}
-        style={{ display: "flex", justifyContent: "center", alignItems: "center" }}
+        style={{
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+        }}
       >
         {images.map((image, idx) => (
           <Carousel.Item key={idx}>
-            <img
-              className="w-100"
-              src={image}
-            />
+            <img className="w-100" src={image} />
           </Carousel.Item>
         ))}
       </Carousel>
