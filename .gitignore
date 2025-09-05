@@ -24,3 +24,4 @@ src/api.tsx
 *.njsproj
 *.sln
 *.sw?
+.env

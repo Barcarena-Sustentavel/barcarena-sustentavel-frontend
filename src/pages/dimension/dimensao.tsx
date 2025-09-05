@@ -71,14 +71,26 @@ const DimensaoComponent: FC = () => {
   //const pathHtml =
   //"/home/marrior/Desktop/projects/testeMapa/odsb_escolas/index.html/";
   const [pathHtml, setPathHtml] = useState<string>("");
-  //"https://victorsantiago.github.io/odsb_escolas/",
+  const mapasConectividade = ["Cobertura", "Escola", "Saúde"];
+  const [botaoConectividade, setBotaoConectividade] = useState<string>("");
+  console.log(botaoConectividade);
+  console.log(pathHtml);
+  const handleOnCick = (event: any) => {
+    setBotaoConectividade(event.target.value);
+  };
   useEffect(() => {
     if (dimensao === "Segurança") {
       setPathHtml("https://victorsantiago.github.io/odsb_kmls/");
-    } else if (dimensao === "Saúde") {
-      setPathHtml("https://victorsantiago.github.io/odsb_saude/");
     } else if (dimensao === "Conectividade") {
-      setPathHtml("https://victorsantiago.github.io/odsb_escolas/");
+      if (botaoConectividade === "Escola") {
+        setPathHtml("https://victorsantiago.github.io/odsb_escolas/");
+      } else if (botaoConectividade === "Cobertura") {
+        setPathHtml("https://victorsantiago.github.io/odsb_cobertura/");
+      } else if (botaoConectividade === "Saúde") {
+        setPathHtml("https://victorsantiago.github.io/odsb_saude/");
+      } else {
+        setPathHtml("https://victorsantiago.github.io/odsb_escolas/");
+      }
     } else {
       setPathHtml("");
     }
@@ -93,7 +105,7 @@ const DimensaoComponent: FC = () => {
         setReferencias(response.data.referencias);
       });
     }
-  }, [url, dimensao]);
+  }, [url, dimensao, botaoConectividade]);
 
   return (
     <div className="home-container">
@@ -124,14 +136,13 @@ const DimensaoComponent: FC = () => {
       </div>
       {/* <div className="container dimension-details-container mt-5 d-flex flex-column"> */}
       <div className="container dimension-details-container d-flex flex-column">
-        <h1 style={{borderBottom: "solid 1px #ddd"}}>Referências</h1>
+        <h1 style={{ borderBottom: "solid 1px #ddd" }}>Referências</h1>
         {referencias.length > 0 &&
           referencias.map((referencia) => (
             // <ul className="referencias mt-5">
             <ul className="referencias">
               {/* <li style={{ borderLeft: `5px solid ${getProximaCor()}` }}> */}
               <li>
-
                 <a
                   className="custom-link-tooplate-gotto-job"
                   href={`${referencia?.link}`}
@@ -143,6 +154,17 @@ const DimensaoComponent: FC = () => {
       </div>
       {pathHtml !== "" && (
         <div style={{ margin: "0 auto", width: "70%" }}>
+          {dimensao === "Conectividade" &&
+            mapasConectividade.map((mapa) => {
+              return (
+                <button
+                  value={mapa}
+                  onClick={(event: any) => handleOnCick(event)}
+                >
+                  {mapa}
+                </button>
+              );
+            })}
           <HTMLFileIframe htmlFilePath={pathHtml} />
         </div>
       )}
