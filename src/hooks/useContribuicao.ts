@@ -20,7 +20,7 @@ export const useContribuicao = () => {
       nome: form.get('nome'),
       email: form.get('email'),
       telefone: form.get('telefone'),
-      comentario: form.get('formulario')
+      comentario: form.get('comentario')
     }
 
     try{
@@ -49,13 +49,13 @@ export const useContribuicao = () => {
     onError 
   }: SubmitContribuicaoParams) => {
     try {
-      alert(getPathAtual());
+      console.log(getPathAtual());
       await api.post(`/dimensoes/contribuicao/${getPathAtual()}/`, formData, {
         headers: {
           'Content-Type': 'multipart/form-data',
         }
       });
-      enviarEmail(formData);
+      // enviarEmail(formData);
       onSuccess?.();
     } catch (error) {
         let userFriendlyMessage = 'Não foi possível enviar sua contribuição';
