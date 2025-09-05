@@ -9,6 +9,7 @@ import api from "../../api.tsx";
 import Footer from "../../components/layout/footer/footer.tsx";
 import SubmenuDimensao from "./components/submenuDimensao.tsx";
 import FormContribuicao from "./components/formContribuicao.tsx";
+import HTMLFileIframe from "../kml/mapa/map4.tsx";
 const NODE_ENV = import.meta.env.VITE_NODE_ENV;
 
 const DimensaoComponent: FC = () => {
@@ -67,8 +68,20 @@ const DimensaoComponent: FC = () => {
     const url = encodeURI(`/${dimensao}/${indicador}/`);
     navigate(url);
   };
-
+  //const pathHtml =
+  //"/home/marrior/Desktop/projects/testeMapa/odsb_escolas/index.html/";
+  const [pathHtml, setPathHtml] = useState<string>("");
+  //"https://victorsantiago.github.io/odsb_escolas/",
   useEffect(() => {
+    if (dimensao === "Segurança") {
+      setPathHtml("https://victorsantiago.github.io/odsb_kmls/");
+    } else if (dimensao === "Saúde") {
+      setPathHtml("https://victorsantiago.github.io/odsb_saude/");
+    } else if (dimensao === "Conectividade") {
+      setPathHtml("https://victorsantiago.github.io/odsb_escolas/");
+    } else {
+      setPathHtml("");
+    }
     if (NODE_ENV == "development") {
       setDimensao(mockData.dimensao);
       setIndicadores(mockData.indicadores);
@@ -124,6 +137,11 @@ const DimensaoComponent: FC = () => {
             </ul>
           ))}
       </div>
+      {pathHtml !== "" && (
+        <div style={{ margin: "0 auto", width: "70%" }}>
+          <HTMLFileIframe htmlFilePath={pathHtml} />
+        </div>
+      )}
       <FormContribuicao
         dimensaoId={0}
         formStyle={{ borderLeft: `5px solid ${getProximaCor()}` }}
