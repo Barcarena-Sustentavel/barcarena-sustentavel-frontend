@@ -15,20 +15,32 @@ export const postIndicador = async (
   };
   try {
     await api.post(`/admin/dimensoes/${dimensao}/indicador/`, Indicador);
-    const endpoit = `/api/admin/dimensoes/${dimensao}/indicador/${indicador}/anexos/`;
-    const formData = new FormData();
+    const endpoint = `/api/admin/dimensoes/${dimensao}/indicador/${indicador}/anexos/`;
+    let formData = new FormData();
     for (let i = 0; i < arrayGrafico.length; i++) {
       formData.append("grafico", arrayGrafico[i].arquivo);
       formData.append("descricaoGrafico", arrayGrafico[i].descricaoGrafico);
       formData.append("tituloGrafico", arrayGrafico[i].tituloGrafico);
       formData.append("tipoGrafico", arrayGrafico[i].tipoGrafico);
       console.log(formData);
-      await fetch(endpoit, {
+      await fetch(endpoint, {
         method: "POST",
         body: formData,
       }).catch((error) => {
         console.log(error);
       });
+      // try{
+      //   await api.post(endpoint, formData)
+    // }catch(error){
+    //   console.error('Error submitting attachment:', error);
+    //   await Swal.fire({
+    //               title: 'Erro!',
+    //               text: 'Ocorreu um erro ao adicionar o anexo. Por favor, tente novamente.',
+    //               icon: 'error',
+    //               confirmButtonColor: 'var(--primary-color)',
+    //             });
+    // };
+      formData = new FormData();
     }
     await Swal.fire({
       title: "Sucesso!",
@@ -62,24 +74,27 @@ export const patchIndicador = async (
     const novoIndicadorBool: boolean = novoIndicador !== antigoIndicador;
     if (novoIndicadorBool) {
       indicador.nome = novoIndicador;
-      //const response = await api.put(
-      //  `/admin/dimensoes/${dimensao}/indicador/${encodeURIComponent(antigoIndicador)}/`,
-      //  { indicadorNovo: novoIndicador },
-      //);
+      // modificação: parâmetro novoIndicador enviado com query por compatibilidade com o back-end
+      const response_dimensao = await api.put(
+       `/admin/dimensoes/${dimensao}/indicador/${encodeURIComponent(antigoIndicador)}/?indicadorNovo=${encodeURIComponent(novoIndicador)}`,
+      //  { indicadorNovo: novoIndicador ,
+      //  },
+      );
       const formData = new FormData();
-      const endpoint = `/api/admin/dimensoes/${dimensao}/indicador/${encodeURIComponent(antigoIndicador)}/`;
+      const endpoint_anexo = `/api/admin/dimensoes/${dimensao}/indicador/${encodeURIComponent(novoIndicador)}/`;
       formData.append("indicadorNovo", novoIndicador);
-      const response = await fetch(endpoint, {
+      const response_anexo = await fetch(endpoint_anexo, {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",
           Accept: "application/json",
         },
         body: formData,
-      }).catch((error) => {
+      }
+      ).catch((error) => {
         console.log(error);
       });
-      if (response.status === 200) {
+      if (response_anexo.status === 200) {
         console.log("Indicador alterado com sucesso");
       }
     } else {
