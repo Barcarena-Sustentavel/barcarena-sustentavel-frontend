@@ -154,17 +154,33 @@ const DimensaoComponent: FC = () => {
       </div>
       {pathHtml !== "" && (
         <div style={{ margin: "0 auto", width: "70%" }}>
-          {dimensao === "Conectividade" &&
-            mapasConectividade.map((mapa) => {
-              return (
-                <button
-                  value={mapa}
-                  onClick={(event: any) => handleOnCick(event)}
-                >
-                  {mapa}
-                </button>
-              );
-            })}
+          {dimensao === "Conectividade" && (
+            <div
+              style={{
+                margin: "10px auto 5px auto",
+                width: "30%",
+                display: "flex",
+                justifyContent: "space-between",
+              }}
+            >
+              {mapasConectividade.map((mapa) => {
+                return (
+                  <button
+                    style={{
+                      padding: "10px",
+                      border: "1px solid",
+                      borderRadius: "8px",
+                      backgroundColor: "var(--primary-blue)",
+                    }}
+                    value={mapa}
+                    onClick={(event: any) => handleOnCick(event)}
+                  >
+                    {mapa}
+                  </button>
+                );
+              })}
+            </div>
+          )}
           <HTMLFileIframe htmlFilePath={pathHtml} />
         </div>
       )}
