@@ -7,6 +7,7 @@ import "../../css/createIndicador.css";
 import { GraficoComponent } from "./components/Grafico.tsx";
 import dimensoes from "../../../../utils/const.tsx";
 import "../../css/dimensaoPage.css";
+import { useLocation } from "react-router-dom";
 import { Alert } from "react-bootstrap";
 //array com gráficos a serem inseridos
 
@@ -32,6 +33,7 @@ export const CreateIndicador: FC<{
   const [errorIndicador, setErrorIndicador] = useState<string | null>(null);
   const [msgsErrorGrafico, setMsgsErrorGrafico] = useState<Array<string>>([]);
   const [deleteArray, setDeleteArray] = useState<Array<GraficosIndicador>>([]);
+  const location = useLocation();
   //Array utilizado para guardar o último estado anterior do array de deleção
   const chaveValorGraficos: { [key: string]: string } = useMemo(
     () => ({
@@ -57,6 +59,17 @@ export const CreateIndicador: FC<{
       setDeleteArray={setDeleteArray}
     />,
   ]);
+
+  // handler para mudança do campo nome do indicador
+  const handleChangeIndicador = (event: React.ChangeEvent<HTMLInputElement>) => {    
+    setIndicador(event.target.value);
+  }
+
+  // handler para variável patch
+  const handlePatch = () => {
+    if(location.pathname.includes("update"))
+      setPatch(true);
+  }
   const handleDeleteGrafico = (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
     graficoNode.map((graficoDelete, index) => {
@@ -113,6 +126,8 @@ export const CreateIndicador: FC<{
     }
     if (patch === true) {
       console.log(arrayIndicadorResponse);
+      console.log(indicador);
+      console.log(indicadorAntigo);
       patchIndicador(
         dimensao,
         indicadorAntigo,
@@ -126,10 +141,11 @@ export const CreateIndicador: FC<{
     }
   };
 
+  // modificado: remoção de condicional e execução única 
   useEffect(() => {
-    if (indicadorNome != undefined) {
-      setPatch(true);
-      api
+    handlePatch();
+    setIndicadorAntigo(indicador);
+    api
         .get(url)
         .then((response) => {
           setIndicadorAntigo(response.data.nome);
@@ -161,8 +177,8 @@ export const CreateIndicador: FC<{
         .catch((error) => {
           console.log(error);
         });
-    }
-  }, [url, chaveValorGraficos, indicadorNome, arrayIndicadorResponse, patch]);
+    
+  }, [])
 
   //Função para adicionar um novo gráfico
   const addGrafico = (e: React.MouseEvent) => {
@@ -212,7 +228,8 @@ export const CreateIndicador: FC<{
             name="nomeIndicador"
             value={indicador}
             onChange={(e) => {
-              setIndicador(e.target.value);
+              // modificado: funcionalidade delegada à função handler 
+              handleChangeIndicador(e);
             }}
           />
           {errorIndicador && (
