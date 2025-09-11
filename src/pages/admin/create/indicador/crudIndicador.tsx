@@ -29,17 +29,7 @@ export const postIndicador = async (
       }).catch((error) => {
         console.log(error);
       });
-      // try{
-      //   await api.post(endpoint, formData)
-    // }catch(error){
-    //   console.error('Error submitting attachment:', error);
-    //   await Swal.fire({
-    //               title: 'Erro!',
-    //               text: 'Ocorreu um erro ao adicionar o anexo. Por favor, tente novamente.',
-    //               icon: 'error',
-    //               confirmButtonColor: 'var(--primary-color)',
-    //             });
-    // };
+
       formData = new FormData();
     }
     await Swal.fire({
