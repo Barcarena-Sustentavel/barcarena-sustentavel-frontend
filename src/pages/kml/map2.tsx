@@ -11,24 +11,21 @@ const Map2: FC = () => {
   const [geojsonList, setGeojsonList] = useState<any[]>([]);
   const [kmls, setKml] = useState<KMLInterface[]>([]);
   const [checkboxSetores, setCheckboxSetores] = useState<ChaveSetores>({
-    Todos: true,
-    Barcarena: true,
-    Estradas: true,
-    Ilhas: true,
-    Murucupi: true,
-    "Vila do Conde": true,
+    Todos: false,
+    Barcarena: false,
+    Estradas: false,
+    Ilhas: false,
+    Murucupi: false,
+    "Vila do Conde": false,
   });
-  const setores: Record<string, string> = useMemo(
-    () => ({
-      Todos: "",
-      Barcarena: "barcarena_dissolved_lines.kml",
-      Estradas: "estradas_dissolved_lines.kml",
-      Ilhas: "ilhas_dissolved_lines.kml",
-      Murucupi: "murucupi_dissolved_lines.kml",
-      "Vila do Conde": "viladoconde_dissolved_lines.kml",
-    }),
-    [],
-  );
+  const setores: Record<string, string> = {
+    Todos: "",
+    Barcarena: "barcarena_dissolved_lines.kml",
+    Estradas: "estradas_dissolved_lines.kml",
+    Ilhas: "ilhas_dissolved_lines.kml",
+    Murucupi: "murucupi_dissolved_lines.kml",
+    "Vila do Conde": "viladoconde_dissolved_lines.kml",
+  };
 
   interface ChaveSetores {
     [key: string]: boolean;
@@ -37,6 +34,7 @@ const Map2: FC = () => {
   const handleChangeSetores = async (
     item: keyof ChaveSetores,
   ): Promise<void> => {
+    console.log(item);
     if (item === "Todos") {
       const todos: boolean = !checkboxSetores.Todos;
       setCheckboxSetores((prevState) => ({
@@ -60,38 +58,29 @@ const Map2: FC = () => {
     }
   };
 
-  const setGeoJsonToKml = useCallback(
-    async (item: string) => {
-      const kmlUrl = `/setoresBarcarena/${setores[item]}`;
-      try {
-        console.log(kmlUrl);
-        const response = await fetch(kmlUrl);
-        const kmlText = await response.text();
-        console.log(kmlText);
-        const parser = new DOMParser();
-        const kmlXml = parser.parseFromString(kmlText, "text/xml");
+  const setGeoJsonToKml = async (item: string) => {
+    const kmlUrl = item === "Todos" ? "" : `/setoresBarcarena/${setores[item]}`;
+    if (kmlUrl === "") {
+      return;
+    }
+    try {
+      //console.log(kmlUrl);
+      const response = await fetch(kmlUrl);
+      const kmlText = await response.text();
+      //console.log(kmlText);
+      const parser = new DOMParser();
+      const kmlXml = parser.parseFromString(kmlText, "text/xml");
 
-        // Aqui você pode usar o kmlXml com toGeoJSON ou outro parser
-        const geojson = toGeoJSON.kml(kmlXml);
-        if (checkboxSetores[item.toString()] === false) {
-          setGeojsonList((prev) =>
-            [...prev].slice(geojsonList.indexOf(geojson)),
-          );
-          return;
-        }
-        setGeojsonList((prev) => [...prev, geojson]);
-      } catch (error) {
-        console.error("Erro ao carregar KML:", error);
-      }
-    },
-    [checkboxSetores, geojsonList, setores],
-  );
-
-  useEffect(() => {
-    Object.entries(checkboxSetores).forEach(([key]) => {
-      setGeoJsonToKml(key);
-    });
-  }, []);
+      // Aqui você pode usar o kmlXml com toGeoJSON ou outro parser
+      const geojson = toGeoJSON.kml(kmlXml);
+      if (!checkboxSetores[item.toString()] === false) {
+        console.log("removendo geojson");
+        setGeojsonList((prev) => [...prev].slice(geojsonList.indexOf(geojson)));
+      } else setGeojsonList((prev) => [...prev, geojson]);
+    } catch (error) {
+      console.error("Erro ao carregar KML:", error);
+    }
+  };
 
   return (
     <div style={{ height: "100%", width: "100%" }}>
@@ -100,7 +89,7 @@ const Map2: FC = () => {
           <label key={key} style={{ display: "block", marginBottom: "8px" }}>
             <input
               type="checkbox"
-              checked={!checkboxSetores[key]}
+              checked={checkboxSetores[key]}
               onChange={() => handleChangeSetores(key)}
             />
             {key}
