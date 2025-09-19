@@ -10,6 +10,7 @@ import Footer from "../../components/layout/footer/footer.tsx";
 import SubmenuDimensao from "./components/submenuDimensao.tsx";
 import FormContribuicao from "./components/formContribuicao.tsx";
 import HTMLFileIframe from "../kml/mapa/map4.tsx";
+import Map2 from "../kml/map2.tsx";
 const NODE_ENV = import.meta.env.VITE_NODE_ENV;
 
 const DimensaoComponent: FC = () => {
@@ -152,7 +153,7 @@ const DimensaoComponent: FC = () => {
             </ul>
           ))}
       </div>
-      {pathHtml !== "" && (
+      {/*pathHtml !== "" && (
         <div style={{ margin: "0 auto", width: "70%" }}>
           {dimensao === "Conectividade" && (
             <div
@@ -183,7 +184,10 @@ const DimensaoComponent: FC = () => {
           )}
           <HTMLFileIframe htmlFilePath={pathHtml} />
         </div>
-      )}
+      ) */}
+      <div style={{ width: "50%", height: "50%" }}>
+        <Map2 />
+      </div>
       <FormContribuicao
         dimensaoId={0}
         formStyle={{ borderLeft: `5px solid ${getProximaCor()}` }}

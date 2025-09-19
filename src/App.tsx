@@ -1,6 +1,6 @@
 import { FC } from "react";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
-import PrivateRoutes from "./utils/private_route/ProvideRoutes.tsx";
+//import PrivateRoutes from "./utils/private_route/ProvideRoutes.tsx";
 import "bootstrap-icons/font/bootstrap-icons.css";
 import DimensaoAdmin from "./pages/admin/dimensaoAdmin.tsx";
 import DimensaoComponent from "./pages/dimension/dimensao.tsx";
@@ -10,7 +10,7 @@ import Home from "./pages/home/home.tsx";
 import CreatePage from "./pages/admin/create/createPage.tsx";
 import About from "./pages/about/about.tsx";
 import "leaflet/dist/leaflet.css";
-import RequireToken from "./utils/private_route/Auth.tsx";
+//import RequireToken from "./utils/private_route/Auth.tsx";
 
 const App: FC = () => {
   return (
@@ -24,6 +24,7 @@ const App: FC = () => {
         <Route path="/:dimensao/:indicador/" element={<IndicadorComponent />} />
         {/*Página que mostra todas as dimensões*/}
         {/*<Route element={<PrivateRoutes />}>*/}
+        {/*{<RequireToken>}*/}
         <Route path="/admin/dimensao/" element={<DimensaoAdmin />} />
         {/*Página que mostra todas as contribuições, indicadores e referências de uma dimensão*/}
         <Route
@@ -40,7 +41,9 @@ const App: FC = () => {
           path="/admin/dimensao/:dimensao/update/:activeTab/:elementName/"
           element={<CreatePage />}
         />
+        {/*{</RequireToken>}*/}
         {/*</Route>*/}
+
         <Route path="/about/" element={<About />} />
       </Routes>
     </BrowserRouter>

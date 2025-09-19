@@ -1,16 +1,38 @@
 import { Outlet } from "react-router-dom";
 import logoNoLabel from "@assets/images/icons/LogoNoLabel.png";
 import BouncingDotsLoader from "./animation/BouncingDotsLoader.tsx";
+import React, { createContext, useContext, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { fetchToken } from "./Token.ts";
 import "./css/private_route.css";
-import { useState } from "react";
 
-const PrivateRoutes: React.FC = () => {
+const AuthContext = createContext();
+
+const AuthProvider: React.FC = ({ children }) => {
+  const [token, setToken] = useState(null);
+  const login = (userToken) => {
+    setToken(userToken);
+  };
+  const logout = () => {
+    setToken(null);
+  };
+  const isAuthenticated = !!token;
+  return (
+    <AuthContext.Provider value={{ isAuthenticated, login, logout }}>
+      {children}
+    </AuthContext.Provider>
+  );
+};
+export const useAuth = () => {
+  const context = useContext(AuthContext);
+  if (!context) {
+    throw new Error("useAuth must be used within an AuthProvider");
+  }
+  return context;
+  /*
   const [loading, setLoading] = useState<boolean>(false);
   const [isAuthenticated, setIsAuthenticated] = useState<boolean>(false);
   const navigate = useNavigate();
-  //const location = useLocation();
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
@@ -63,15 +85,12 @@ const PrivateRoutes: React.FC = () => {
   return (
     <div className="min-h-screen flex items-center justify-center bg-gray-50 py-12 px-4 sm:px-6 lg:px-8">
       <div className="max-w-md w-full space-y-8">
-        {/* Logo */}
         <div className="flex justify-center">
           <img src={logoNoLabel} alt="Company Logo" className="h-20 w-auto" />
         </div>
 
-        {/* Login Form */}
         <form className="mt-8 space-y-6" onSubmit={handleLogin}>
           <div className="rounded-md shadow-sm -space-y-px">
-            {/* Username Field */}
             <div>
               <label htmlFor="username" className="sr-only">
                 Email
@@ -88,8 +107,6 @@ const PrivateRoutes: React.FC = () => {
                 disabled={loading}
               />
             </div>
-
-            {/* Password Field */}
             <div>
               <label htmlFor="password" className="sr-only">
                 Senha
@@ -108,12 +125,9 @@ const PrivateRoutes: React.FC = () => {
             </div>
           </div>
 
-          {/* Error Message */}
           {error && (
             <div className="text-red-600 text-sm text-center">{error}</div>
           )}
-
-          {/* Login Button */}
           <div>
             <button
               type="submit"
@@ -126,7 +140,7 @@ const PrivateRoutes: React.FC = () => {
         </form>
       </div>
     </div>
-  );
+    ); */
 };
 
-export default PrivateRoutes;
+export default AuthProvider;
