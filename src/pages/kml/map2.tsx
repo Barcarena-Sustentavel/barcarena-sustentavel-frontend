@@ -31,10 +31,7 @@ const Map2: FC = () => {
     [key: string]: boolean;
   }
 
-  const handleChangeSetores = async (
-    item: keyof ChaveSetores,
-  ): Promise<void> => {
-    console.log(item);
+  const handleChangeSetores = (item: keyof ChaveSetores): void => {
     if (item === "Todos") {
       const todos: boolean = !checkboxSetores.Todos;
       setCheckboxSetores((prevState) => ({
@@ -46,6 +43,10 @@ const Map2: FC = () => {
         Murucupi: todos,
         "Vila do Conde": todos,
       }));
+      if (todos === false) {
+        setGeojsonList([]);
+        return;
+      }
       Object.entries(checkboxSetores).forEach(([key]) => {
         setGeoJsonToKml(key);
       });
@@ -64,24 +65,28 @@ const Map2: FC = () => {
       return;
     }
     try {
-      //console.log(kmlUrl);
       const response = await fetch(kmlUrl);
       const kmlText = await response.text();
-      //console.log(kmlText);
       const parser = new DOMParser();
       const kmlXml = parser.parseFromString(kmlText, "text/xml");
 
       // Aqui você pode usar o kmlXml com toGeoJSON ou outro parser
       const geojson = toGeoJSON.kml(kmlXml);
+      console.log(geojson.features[0].properties!.name);
       if (!checkboxSetores[item.toString()] === false) {
-        console.log("removendo geojson");
-        setGeojsonList((prev) => [...prev].slice(geojsonList.indexOf(geojson)));
+        setGeojsonList((prev) =>
+          prev.filter(
+            (g) =>
+              g.features[0].properties!.name !==
+              geojson.features[0].properties!.name,
+          ),
+        );
       } else setGeojsonList((prev) => [...prev, geojson]);
     } catch (error) {
       console.error("Erro ao carregar KML:", error);
     }
   };
-
+  console.log(geojsonList);
   return (
     <div style={{ height: "100%", width: "100%" }}>
       <div>
