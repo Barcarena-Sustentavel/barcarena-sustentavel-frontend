@@ -156,6 +156,7 @@ const Map2: FC<{ dimensao: string | undefined }> = ({ dimensao }) => {
   };
 
   //UseEffect para carregar as coberturas quando as tecnologias e operadoras forem escolhidas
+
   useEffect(() => {
     const tecnologiasAtivas = Object.keys(tecnologiasCoberturas).filter(
       (tec) => tecnologiasCoberturas[tec] === true,
@@ -198,20 +199,23 @@ const Map2: FC<{ dimensao: string | undefined }> = ({ dimensao }) => {
           }),
         );
         console.log("results: ", results);
-        // filtra erros (null) e atualiza estado
         setGeojsonListConectividade(results.filter((r) => r !== null));
-        //console.log("geojsonlist - 1: ", geojsonList);
       } catch (err) {
         console.error("Erro ao carregar KMLs:", err);
       }
     };
 
-    //if (novosPaths.length > 0) {
     carregarKmls();
-    console.log(novosPaths);
-    //}
   }, [tecnologiasCoberturas, operadorasCoberturas]);
-  //console.log("geojsonlist - 2: ", geojsonList);
+
+  useEffect(() => {
+    if (botaoConectividade === "Cobertura") {
+      setOperadorasCoberturas((prev) => ({ ...prev, Todas: true }));
+      setTecnologiasCoberturas((prev) => ({ ...prev, "3G4G5G": true }));
+    }
+    handleChangeSetores("Todos");
+  }, []);
+
   return (
     <div style={{ height: "100%", width: "100%" }}>
       {dimensao === "Conectividade" && (
