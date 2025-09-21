@@ -33,6 +33,7 @@ export const CreateIndicador: FC<{
   const [errorIndicador, setErrorIndicador] = useState<string | null>(null);
   const [msgsErrorGrafico, setMsgsErrorGrafico] = useState<Array<string>>([]);
   const [deleteArray, setDeleteArray] = useState<Array<GraficosIndicador>>([]);
+
   const location = useLocation();
   //Array utilizado para guardar o último estado anterior do array de deleção
   const chaveValorGraficos: { [key: string]: string } = useMemo(
@@ -72,35 +73,29 @@ export const CreateIndicador: FC<{
   }
   const handleDeleteGrafico = (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
-    graficoNode.map((graficoDelete, index) => {
-      console.log(graficoDelete);
+    deleteArray.map((graficoDelete, index) => {
       console.log(graficoNode);
-      if (graficoDelete.props.grafico !== undefined) {
-        if (graficoDelete.props.grafico.id !== null) {
-          const url = `/api/admin/dimensoes/${dimensao}/indicador/${indicadorNome}/anexos/${graficoDelete.props.grafico.id}/`;
+      console.log(deleteArray);
+      if (graficoDelete !== undefined) {
+        if (graficoDelete.id !== null) {
+          const url = `/api/admin/dimensoes/${dimensao}/indicador/${indicadorNome}/anexos/${graficoDelete.id}/`;
 
           fetch(url, { method: "DELETE" })
             .then((response) => {
               if (!response.ok) {
                 throw new Error("Erro na requisição: " + response.statusText);
               }
+              // retira gráfico deletado do array de gráficos da página
+              setGraficoNode((prev) => 
+                prev.filter((prev => prev.props.grafico.id !== graficoDelete.id)));
+              // retira o gráfico deletado da lista de gráficos a deletar
+              setDeleteArray((prev) =>
+                prev.filter((prev => prev.id != graficoDelete.id)))
             })
             .catch((error) => {
               console.error("Houve um problema com a operação fetch:", error);
             });
-          setGraficoNode((prev) =>
-            prev.filter((prev) => prev !== graficoDelete),
-          );
-        } else {
-          setGraficoNode((prev) =>
-            prev.filter((prev) => prev !== graficoDelete),
-          );
         }
-      } else {
-        setGraficoNode((prev) => prev.filter((prev) => prev !== graficoDelete));
-        setDeleteArray((prev) =>
-          prev.filter((prev) => prev !== deleteArray[index]),
-        );
       }
     });
   };
