@@ -186,7 +186,7 @@ const DimensaoComponent: FC = () => {
         </div>
       ) */}
       <div style={{ width: "50%", height: "50%" }}>
-        <Map2 />
+        <Map2 dimensao={dimensao} />
       </div>
       <FormContribuicao
         dimensaoId={0}

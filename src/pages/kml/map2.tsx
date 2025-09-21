@@ -1,15 +1,17 @@
-import { FC, useEffect, useState, useCallback, useMemo } from "react";
+import { FC, useEffect, useState } from "react";
 import { MapContainer, TileLayer, GeoJSON } from "react-leaflet";
 import { KMLInterface } from "../../interfaces/kml_interface.tsx";
 import * as toGeoJSON from "@tmcw/togeojson";
 import "leaflet/dist/leaflet.css";
 
-const Map2: FC = () => {
-  const [dimensoes, setDimensoes] = useState<string[]>([]);
-  const [formIndicadoresAble, setformIndicadoresAble] = useState<boolean>(true);
+const Map2: FC<{ dimensao: string | undefined }> = () => {
+  //const [formIndicadoresAble, setformIndicadoresAble] = useState<boolean>(true);
   //const [geojsonData, setGeojsonData] = useState<any>(null);
   const [geojsonList, setGeojsonList] = useState<any[]>([]);
-  const [kmls, setKml] = useState<KMLInterface[]>([]);
+
+  interface ChaveSetores {
+    [key: string]: boolean;
+  }
   const [checkboxSetores, setCheckboxSetores] = useState<ChaveSetores>({
     Todos: false,
     Barcarena: false,
@@ -26,10 +28,7 @@ const Map2: FC = () => {
     Murucupi: "murucupi_dissolved_lines.kml",
     "Vila do Conde": "viladoconde_dissolved_lines.kml",
   };
-
-  interface ChaveSetores {
-    [key: string]: boolean;
-  }
+  //const [kmls, setKml] = useState<KMLInterface[]>([]);
 
   const handleChangeSetores = (item: keyof ChaveSetores): void => {
     if (item === "Todos") {
@@ -60,32 +59,47 @@ const Map2: FC = () => {
   };
 
   const setGeoJsonToKml = async (item: string) => {
+    console.log(item);
     const kmlUrl = item === "Todos" ? "" : `/setoresBarcarena/${setores[item]}`;
     if (kmlUrl === "") {
       return;
     }
+    console.log(kmlUrl);
     try {
       const response = await fetch(kmlUrl);
+
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+
       const kmlText = await response.text();
       const parser = new DOMParser();
       const kmlXml = parser.parseFromString(kmlText, "text/xml");
-
+      const parseError = kmlXml.getElementsByTagName("parsererror");
+      if (parseError.length > 0) {
+        console.error("XML Parse Error:", parseError[0].textContent);
+        throw new Error("Failed to parse KML as XML");
+      }
       // Aqui você pode usar o kmlXml com toGeoJSON ou outro parser
       const geojson = toGeoJSON.kml(kmlXml);
-      console.log(geojson.features[0].properties!.name);
-      if (!checkboxSetores[item.toString()] === false) {
+      if (checkboxSetores[item.toString()] === false) {
+        // checkbox está desmarcado, adicionar
+        setGeojsonList((prev) => [...prev, geojson]);
+      } else {
+        // checkbox está marcado, remover
         setGeojsonList((prev) =>
           prev.filter(
             (g) =>
-              g.features[0].properties!.name !==
-              geojson.features[0].properties!.name,
+              g.features[0]?.properties?.name !==
+              geojson.features[0]?.properties?.name,
           ),
         );
-      } else setGeojsonList((prev) => [...prev, geojson]);
+      }
     } catch (error) {
       console.error("Erro ao carregar KML:", error);
     }
   };
+
   console.log(geojsonList);
   return (
     <div style={{ height: "100%", width: "100%" }}>
@@ -112,7 +126,6 @@ const Map2: FC = () => {
           attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
           url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
         />
-        {/*{geojsonData && <GeoJSON data={geojsonData} />}*/}
         {geojsonList.map((geojson, index) => (
           <GeoJSON key={index} data={geojson} />
         ))}
