@@ -59,18 +59,16 @@ const CreateReferencias: FC<{
     formRef.nome && setErrorNome(null)
     formRef.link && setErrorLink(null)
 
-    if (!formRef.nome || !formRef.link) {
+    // modificação: campo de link não é mais obrigatório
+    if (!formRef.nome) {
       if (!formRef.nome) {
       setErrorNome("O campo nome é obrigatório.");
     } else {
       setErrorNome(null);
     }
 
-    if (!formRef.link) {
-      setErrorLink("O campo link é obrigatório.");
-    } else {
-      setErrorLink(null);
-    }
+    setErrorLink(null);
+    
     return
   }
     /*
