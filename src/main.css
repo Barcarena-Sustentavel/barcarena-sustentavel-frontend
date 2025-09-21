@@ -1,79 +1,79 @@
 :root {
-  font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
-  line-height: 1.5;
-  font-weight: 400;
+    font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
+    line-height: 1.5;
+    font-weight: 400;
 
-  color-scheme: light dark;
-  color: rgba(255, 255, 255, 0.87);
-  background-color: #242424;
+    color-scheme: light dark;
+    color: rgba(255, 255, 255, 0.87);
+    background-color: #242424;
 
-  font-synthesis: none;
-  text-rendering: optimizeLegibility;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  --secondary-green: rgb(159, 196, 72);
-  --primary-blue: rgb(16, 92, 168);
-  --secondary-darkblue: rgb(26, 66, 110);
-  --secondary-light-blue: rgb(87, 197, 229);
-  --secondary-black: rgb(0, 0, 0);
-  --secondary-orange: rgb(233, 92, 46);
-  --secondary-gray: rgb(237, 239, 238);
+    font-synthesis: none;
+    text-rendering: optimizeLegibility;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    --secondary-green: rgb(159, 196, 72);
+    --primary-blue: rgb(16, 92, 168);
+    --secondary-darkblue: rgb(26, 66, 110);
+    --secondary-light-blue: rgb(87, 197, 229);
+    --secondary-black: rgb(0, 0, 0);
+    --secondary-orange: rgb(233, 92, 46);
+    --secondary-gray: rgb(237, 239, 238);
 
-  /* Cores para as dimensões */
-  --dark-red-d: rgba(173, 18, 18, 0.9);
-  --red-d: rgba(213, 49, 40, 0.9);
-  --orange-d: rgba(245, 109, 67, 0.9);
-  --yellow-d: rgba(250, 181, 77, 0.9);
-  --dark-green-d: rgba(212, 201, 61, 0.9);
-  --green-d: rgba(121, 194, 98, 0.9);
-  --green-light-d: rgba(61, 222, 163, 0.9);
-  --blue-d: rgba(69, 117, 181, 0.9);
-  --dark-blue-d: rgba(41, 54, 122, 0.9);
+    /* Cores para as dimensões */
+    --dark-red-d: rgba(173, 18, 18, 0.9);
+    --red-d: rgba(213, 49, 40, 0.9);
+    --orange-d: rgba(245, 109, 67, 0.9);
+    --yellow-d: rgba(250, 181, 77, 0.9);
+    --dark-green-d: rgba(212, 201, 61, 0.9);
+    --green-d: rgba(121, 194, 98, 0.9);
+    --green-light-d: rgba(61, 222, 163, 0.9);
+    --blue-d: rgba(69, 117, 181, 0.9);
+    --dark-blue-d: rgba(41, 54, 122, 0.9);
 }
 
 a {
-  font-weight: 500;
-  color: #646cff;
-  text-decoration: inherit;
+    font-weight: 500;
+    color: #646cff;
+    text-decoration: inherit;
 }
 a:hover {
-  color: #535bf2;
+    color: #535bf2;
 }
 
 h1 {
-  font-size: 3.2em;
-  line-height: 1.1;
-  text-align: center;
+    font-size: 3.2em;
+    line-height: 1.1;
+    text-align: center;
 }
 
 button {
-  border-radius: 8px;
-  border: 1px solid transparent;
-  padding: 0.6em 1.2em;
-  font-size: 1em;
-  font-weight: 500;
-  font-family: inherit;
-  background-color: #1a1a1a;
-  cursor: pointer;
-  transition: border-color 0.25s;
+    border-radius: 8px;
+    border: 1px solid transparent;
+    padding: 0.6em 1.2em;
+    font-size: 1em;
+    font-weight: 500;
+    font-family: inherit;
+    background-color: #1a1a1a;
+    cursor: pointer;
+    transition: border-color 0.25s;
 }
 button:hover {
-  border-color: #646cff;
+    border-color: #646cff;
 }
 button:focus,
 button:focus-visible {
-  outline: 4px auto -webkit-focus-ring-color;
+    outline: 4px auto -webkit-focus-ring-color;
 }
 
 @media (prefers-color-scheme: light) {
-  :root {
-    color: #213547;
-    background-color: #ffffff;
-  }
-  a:hover {
-    color: #747bff;
-  }
-  button {
-    background-color: #f9f9f9;
-  }
+    :root {
+        color: #213547;
+        background-color: #ffffff;
+    }
+    a:hover {
+        color: #747bff;
+    }
+    button {
+        background-color: #f9f9f9;
+    }
 }

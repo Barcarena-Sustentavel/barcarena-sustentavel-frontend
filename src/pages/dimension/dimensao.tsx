@@ -185,7 +185,7 @@ const DimensaoComponent: FC = () => {
           <HTMLFileIframe htmlFilePath={pathHtml} />
         </div>
       ) */}
-      <div style={{ width: "50%", height: "50%" }}>
+      <div className="divMapa">
         <Map2 dimensao={dimensao} />
       </div>
       <FormContribuicao
