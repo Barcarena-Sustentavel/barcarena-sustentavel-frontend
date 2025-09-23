@@ -1,17 +1,40 @@
 import { ChangeEvent, FC, MouseEvent, useEffect, useState } from "react";
-import { MapContainer, TileLayer, GeoJSON } from "react-leaflet";
+import { MapContainer, TileLayer, GeoJSON, Marker, Popup } from "react-leaflet";
 import "./mapa.css";
 import * as toGeoJSON from "@tmcw/togeojson";
 import "leaflet/dist/leaflet.css";
+import { UnidadeSaude } from "./interfaces/mapa.ts";
+import { EscolaBarcarena } from "./interfaces/mapa.ts";
+import Papa from "papaparse";
 
 const Map2: FC<{ dimensao: string | undefined }> = ({ dimensao }) => {
   interface ChavesBooleanas {
     [key: string]: boolean;
   }
+
   const mapasConectividade = ["Cobertura", "Escola", "Saúde"];
   const [botaoConectividade, setBotaoConectividade] =
     useState<string>("Cobertura");
-
+  //Escola e saúde ------------------------------------------------------
+  const [statusInternet, setStatusInternet] = useState<ChavesBooleanas>({
+    "Com internet": true,
+    "Sem internet": true,
+  });
+  const [dadosEscolasBarcarena, setDadosEscolasBarcarena] = useState<
+    EscolaBarcarena[]
+  >([]);
+  const [dadosSaudeBarcarena, setDadosSaudeBarcarena] = useState<
+    UnidadeSaude[]
+  >([]);
+  const [marcadorComInternet, setMarcadorComInternet] = useState<
+    (UnidadeSaude | EscolaBarcarena)[]
+  >([]);
+  const [marcadorSemInternet, setMarcadorSemInternet] = useState<
+    (UnidadeSaude | EscolaBarcarena)[]
+  >([]);
+  const [tipoDependencia, setTipoDependencia] = useState<string>("Todas");
+  const [tipoLocalizacao, setTipoLocalizacao] = useState<string>("Todas");
+  //Escola e saúde ------------------------------------------------------
   const [tecnologiasCoberturas, setTecnologiasCoberturas] =
     useState<ChavesBooleanas>({
       "2G": false,
@@ -61,6 +84,8 @@ const Map2: FC<{ dimensao: string | undefined }> = ({ dimensao }) => {
   const onClickConectividade = (e: MouseEvent<HTMLButtonElement>) => {
     setBotaoConectividade(e.currentTarget.value);
     if (e.currentTarget.value === "Cobertura") {
+      setMarcadorComInternet([]);
+      setMarcadorSemInternet([]);
       setOperadorasCoberturas((prev) => ({ ...prev, Todas: true }));
       setTecnologiasCoberturas((prev) => ({
         ...prev,
@@ -86,6 +111,19 @@ const Map2: FC<{ dimensao: string | undefined }> = ({ dimensao }) => {
         ...prev,
         [key]: !prev[key],
       }));
+    }
+
+    if (e.currentTarget.name === "internetes") {
+      setStatusInternet((prev) => ({
+        ...prev,
+        [key]: !prev[key],
+      }));
+      if (key === "Com internet") {
+        setMarcadorComInternet([]);
+      }
+      if (key === "Sem internet") {
+        setMarcadorSemInternet([]);
+      }
     }
   };
 
@@ -216,6 +254,119 @@ const Map2: FC<{ dimensao: string | undefined }> = ({ dimensao }) => {
     handleChangeSetores("Todos");
   }, []);
 
+  useEffect(() => {
+    if (botaoConectividade === "Escola") {
+      fetch("/Conectividade/Escola/escolas_barcarena.csv")
+        .then((res) => res.text())
+        .then((csvText) => {
+          const result = Papa.parse<EscolaBarcarena>(csvText, {
+            header: true,
+            dynamicTyping: true, // converte números automaticamente
+            skipEmptyLines: true,
+          });
+          if (result.data) {
+            setDadosEscolasBarcarena(result.data);
+          }
+        });
+    }
+
+    if (botaoConectividade === "Saúde") {
+      fetch("/Conectividade/Saúde/unidades_saude.csv")
+        .then((res) => res.text())
+        .then((csvText) => {
+          const result = Papa.parse<UnidadeSaude>(csvText, {
+            header: true,
+            dynamicTyping: true,
+            skipEmptyLines: true,
+          });
+          if (result.data) {
+            setDadosSaudeBarcarena(result.data);
+          }
+        });
+    }
+
+    const preencharCoordenadasMarcadores = (botaoConectividade: string) => {
+      const arrayDados: (UnidadeSaude | EscolaBarcarena)[] =
+        botaoConectividade === "Saúde"
+          ? dadosSaudeBarcarena
+          : botaoConectividade === "Escola"
+            ? dadosEscolasBarcarena
+            : [];
+      const novosMarcadoresComInternet: (UnidadeSaude | EscolaBarcarena)[] = [];
+      const novosMarcadoresSemInternet: (UnidadeSaude | EscolaBarcarena)[] = [];
+      if (arrayDados.length > 0) {
+        for (let i = 0; i < arrayDados.length; i++) {
+          if (
+            arrayDados[i].Internet === "Sim" &&
+            statusInternet["Com internet"] === true
+          ) {
+            novosMarcadoresComInternet.push(arrayDados[i]);
+          }
+          if (
+            arrayDados[i].Internet === "Não" &&
+            statusInternet["Sem internet"] === true
+          ) {
+            novosMarcadoresSemInternet.push(arrayDados[i]);
+          }
+        }
+      }
+      if (novosMarcadoresComInternet.length > 0) {
+        setMarcadorComInternet(novosMarcadoresComInternet);
+      }
+      if (novosMarcadoresSemInternet.length > 0) {
+        setMarcadorSemInternet(novosMarcadoresSemInternet);
+      }
+    };
+
+    preencharCoordenadasMarcadores(botaoConectividade);
+  }, [
+    botaoConectividade,
+    statusInternet,
+    tipoDependencia,
+    tipoLocalizacao,
+    //dadosSaudeBarcarena,
+    //dadosEscolasBarcarena,
+    //marcadorComInternet,
+    //marcadorSemInternet,
+  ]); // dispara quando tipoDado muda
+  /*
+  const preencharCoordenadasMarcadores = (botaoConectividade: string) => {
+    const arrayDados: (UnidadeSaude | EscolaBarcarena)[] =
+      botaoConectividade === "Saúde"
+        ? dadosSaudeBarcarena
+        : botaoConectividade === "Escola"
+          ? dadosEscolasBarcarena
+          : [];
+    const novosMarcadoresComInternet: (UnidadeSaude | EscolaBarcarena)[] = [];
+    const novosMarcadoresSemInternet: (UnidadeSaude | EscolaBarcarena)[] = [];
+    if (arrayDados.length > 0) {
+      for (let i = 0; i < arrayDados.length; i++) {
+        if (
+          arrayDados[i].Internet === "Sim" &&
+          statusInternet["Com internet"] === true
+        ) {
+          novosMarcadoresComInternet.push(arrayDados[i]);
+        }
+        if (
+          arrayDados[i].Internet === "Não" &&
+          statusInternet["Sem internet"] === true
+        ) {
+          novosMarcadoresSemInternet.push(arrayDados[i]);
+        }
+      }
+    }
+    if (novosMarcadoresComInternet.length > 0) {
+      setMarcadorComInternet(novosMarcadoresComInternet);
+    }
+    if (novosMarcadoresSemInternet.length > 0) {
+      setMarcadorSemInternet(novosMarcadoresSemInternet);
+    }
+  }; */
+  console.log(marcadorComInternet);
+  console.log(marcadorSemInternet);
+  function isEscolaBarcarena(item: any): item is EscolaBarcarena {
+    return "Localização" in item && "Dependência" in item;
+  }
   return (
     <div style={{ height: "100%", width: "100%" }}>
       {dimensao === "Conectividade" && (
@@ -269,6 +420,59 @@ const Map2: FC<{ dimensao: string | undefined }> = ({ dimensao }) => {
             </div>
           </span>
         )}
+        {(botaoConectividade === "Saúde" ||
+          botaoConectividade === "Escola") && (
+          <span>
+            {Object.entries(statusInternet).map(([key]) => {
+              return (
+                <label>
+                  <input
+                    type="checkbox"
+                    name="internetes"
+                    checked={statusInternet[key]}
+                    onChange={(e) => handleChange(e, key)}
+                  />
+                  {key}
+                </label>
+              );
+            })}
+          </span>
+        )}
+        {botaoConectividade === "Escola" && (
+          <div className="flex gap-4">
+            {/* Dropdown 1 - Gestão */}
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-1">
+                Tipo de Gestão
+              </label>
+              <select
+                value={tipoDependencia}
+                onChange={(e) => setTipoDependencia(e.target.value)}
+                className="border rounded-md px-3 py-2 text-sm"
+              >
+                <option value="Todas">Todas</option>
+                <option value="Estadual">Estadual</option>
+                <option value="Municipal">Municipal</option>
+              </select>
+            </div>
+
+            {/* Dropdown 2 - Local */}
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-1">
+                Tipo de Local
+              </label>
+              <select
+                value={tipoLocalizacao}
+                onChange={(e) => setTipoLocalizacao(e.target.value)}
+                className="border rounded-md px-3 py-2 text-sm"
+              >
+                <option value="Todas">Todas</option>
+                <option value="Rural">Rural</option>
+                <option value="Urbana">Urbana</option>
+              </select>
+            </div>
+          </div>
+        )}
         <div className="setores">
           {Object.entries(setores).map(([key]) => (
             <label
@@ -305,6 +509,39 @@ const Map2: FC<{ dimensao: string | undefined }> = ({ dimensao }) => {
 
           {geojsonListConectividade.map((geojson, index) => (
             <GeoJSON key={index} data={geojson} />
+          ))}
+          {botaoConectividade === "Escola"
+            ? marcadorComInternet
+                .filter(isEscolaBarcarena)
+                .filter(
+                  (m) =>
+                    m.Localização === tipoLocalizacao &&
+                    m.Dependência === tipoDependencia, // ajuste os valores desejados aqui
+                )
+                .map((m, index) => (
+                  <Marker key={index} position={[m.Latitude, m.Longitude]}>
+                    <Popup>
+                      <div>
+                        Localização: {m.Localização} <br />
+                        Dependência: {m.Dependência}
+                      </div>
+                    </Popup>
+                  </Marker>
+                ))
+            : marcadorComInternet.map((m, index) => (
+                <Marker key={index} position={[m.Latitude, m.Longitude]}>
+                  <Popup>
+                    <div>
+                      Localização: {m.Latitude} <br />
+                      Dependência: {m.Longitude}
+                    </div>
+                  </Popup>
+                </Marker>
+              ))}
+          {marcadorSemInternet.map((m, index) => (
+            <Marker key={index} position={[m.Latitude, m.Longitude]}>
+              <Popup>Pop up marcdor sem internet</Popup>
+            </Marker>
           ))}
         </MapContainer>
       </div>
