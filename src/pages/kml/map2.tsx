@@ -329,39 +329,6 @@ const Map2: FC<{ dimensao: string | undefined }> = ({ dimensao }) => {
     //marcadorComInternet,
     //marcadorSemInternet,
   ]); // dispara quando tipoDado muda
-  /*
-  const preencharCoordenadasMarcadores = (botaoConectividade: string) => {
-    const arrayDados: (UnidadeSaude | EscolaBarcarena)[] =
-      botaoConectividade === "Saúde"
-        ? dadosSaudeBarcarena
-        : botaoConectividade === "Escola"
-          ? dadosEscolasBarcarena
-          : [];
-    const novosMarcadoresComInternet: (UnidadeSaude | EscolaBarcarena)[] = [];
-    const novosMarcadoresSemInternet: (UnidadeSaude | EscolaBarcarena)[] = [];
-    if (arrayDados.length > 0) {
-      for (let i = 0; i < arrayDados.length; i++) {
-        if (
-          arrayDados[i].Internet === "Sim" &&
-          statusInternet["Com internet"] === true
-        ) {
-          novosMarcadoresComInternet.push(arrayDados[i]);
-        }
-        if (
-          arrayDados[i].Internet === "Não" &&
-          statusInternet["Sem internet"] === true
-        ) {
-          novosMarcadoresSemInternet.push(arrayDados[i]);
-        }
-      }
-    }
-    if (novosMarcadoresComInternet.length > 0) {
-      setMarcadorComInternet(novosMarcadoresComInternet);
-    }
-    if (novosMarcadoresSemInternet.length > 0) {
-      setMarcadorSemInternet(novosMarcadoresSemInternet);
-    }
-  }; */
   console.log(marcadorComInternet);
   console.log(marcadorSemInternet);
   function isEscolaBarcarena(item: any): item is EscolaBarcarena {
