@@ -1,6 +1,6 @@
 import { FC } from "react";
 
-const BouncingDotsLoader:FC = (props) => {
+const BouncingDotsLoader: FC = () => {
   return (
     <>
       <div className="bouncing-loader">
