@@ -1,6 +1,5 @@
 import React, { useState } from "react";
 import { AuthContext } from "./Authcontext.ts";
-import "./css/private_route.css";
 import { fetchToken } from "./Token.ts";
 const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
   children,

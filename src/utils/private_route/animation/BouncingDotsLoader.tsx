@@ -1,5 +1,5 @@
 import { FC } from "react";
-
+import "../css/private_route.css";
 const BouncingDotsLoader: FC = () => {
   return (
     <>

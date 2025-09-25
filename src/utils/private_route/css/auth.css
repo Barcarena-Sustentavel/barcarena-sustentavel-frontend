@@ -1,0 +1,93 @@
+.logo {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    margin: 15px auto;
+}
+
+.logo > img {
+    width: 50%;
+    height: auto;
+}
+
+.logo > h1 {
+    text-align: center;
+    color: #0056a3; /* azul do logo */
+    margin-bottom: 24px;
+}
+.loginContainer {
+    max-width: 380px;
+    margin: 80px auto;
+    padding: 32px;
+    border-radius: 12px;
+    background: #ffffff;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
+    font-family: "Segoe UI", Arial, sans-serif;
+}
+.loginContainer > label {
+    display: block;
+    margin-bottom: 6px;
+    font-weight: 600;
+    color: #333;
+}
+
+/* Inputs com ícones */
+.inputIcon {
+    display: flex;
+    align-items: center;
+    background: #f5f7fa;
+    border: 1px solid #cfd8dc;
+    border-radius: 8px;
+    padding: 8px 12px;
+    margin-bottom: 16px;
+    transition: border-color 0.3s ease;
+}
+
+.inputIcon:focus-within {
+    border-color: #0056a3; /* azul */
+}
+
+.loginContainer > input {
+    flex: 1;
+    border: none;
+    outline: none;
+    background: transparent;
+    font-size: 15px;
+    color: #333;
+}
+
+.loginContainer > input::placeholder {
+    color: #aaa;
+}
+
+/* Ícones (SVGs) */
+.inputIcon svg {
+    color: #ff6600; /* laranja do logo */
+    width: 20px;
+    height: 20px;
+    cursor: pointer;
+    transition: color 0.3s ease;
+}
+
+.inputIcon svg:hover {
+    color: #66bb6a; /* verde do logo */
+}
+
+/* Botão de login */
+.loginContainer > button {
+    width: 100%;
+    padding: 12px;
+    font-size: 16px;
+    font-weight: 600;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    background: #0056a3; /* azul do logo */
+    color: #fff;
+    transition: background 0.3s ease;
+}
+
+.loginContainer > button:hover {
+    background: #004080;
+}

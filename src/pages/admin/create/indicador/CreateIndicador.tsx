@@ -7,6 +7,7 @@ import "../../css/createIndicador.css";
 import { GraficoComponent } from "./components/Grafico.tsx";
 import dimensoes from "../../../../utils/const.tsx";
 import "../../css/dimensaoPage.css";
+import { useLocation } from "react-router-dom";
 import { Alert } from "react-bootstrap";
 
 export const CreateIndicador: FC<{
@@ -338,6 +339,8 @@ export const CreateIndicador: FC<{
   const [errorIndicador, setErrorIndicador] = useState<string | null>(null);
   const [msgsErrorGrafico, setMsgsErrorGrafico] = useState<Array<string>>([]);
   const [deleteArray, setDeleteArray] = useState<Array<GraficosIndicador>>([]);
+
+  const location = useLocation();
   //Array utilizado para guardar o último estado anterior do array de deleção
   const chaveValorGraficos: { [key: string]: string } = useMemo(
     () => ({
@@ -355,48 +358,31 @@ export const CreateIndicador: FC<{
     }),
     [],
   );
-
-  // const [graficoNode, setGraficoNode] = useState<React.ReactElement[]>([
-  //   <GraficoComponent
-  //     chaveValorGraficos={chaveValorGraficos}
-  //     grafico={undefined}
-  //     arrayIndicadorResponse={arrayIndicadorResponse}
-  //     setDeleteArray={setDeleteArray}
-  //   />,
-  // ]);
-  const [graficosData, setGraficosData] = useState<GraficosIndicador[]>([]);
-  const [nextId, setNextId] = useState(1); // Para novos gráficos
   const handleDeleteGrafico = (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
-    graficoNode.map((graficoDelete, index) => {
-      console.log(graficoDelete);
+    deleteArray.map((graficoDelete, index) => {
       console.log(graficoNode);
-      if (graficoDelete.props.grafico !== undefined) {
-        if (graficoDelete.props.grafico.id !== null) {
-          const url = `/api/admin/dimensoes/${dimensao}/indicador/${indicadorNome}/anexos/${graficoDelete.props.grafico.id}/`;
+      console.log(deleteArray);
+      if (graficoDelete !== undefined) {
+        if (graficoDelete.id !== null) {
+          const url = `/api/admin/dimensoes/${dimensao}/indicador/${indicadorNome}/anexos/${graficoDelete.id}/`;
 
           fetch(url, { method: "DELETE" })
             .then((response) => {
               if (!response.ok) {
                 throw new Error("Erro na requisição: " + response.statusText);
               }
+              // retira gráfico deletado do array de gráficos da página
+              setGraficoNode((prev) =>
+                prev.filter((prev => prev.props.grafico.id !== graficoDelete.id)));
+              // retira o gráfico deletado da lista de gráficos a deletar
+              setDeleteArray((prev) =>
+                prev.filter((prev => prev.id != graficoDelete.id)))
             })
             .catch((error) => {
               console.error("Houve um problema com a operação fetch:", error);
             });
-          setGraficoNode((prev) =>
-            prev.filter((prev) => prev !== graficoDelete),
-          );
-        } else {
-          setGraficoNode((prev) =>
-            prev.filter((prev) => prev !== graficoDelete),
-          );
         }
-      } else {
-        setGraficoNode((prev) => prev.filter((prev) => prev !== graficoDelete));
-        setDeleteArray((prev) =>
-          prev.filter((prev) => prev !== deleteArray[index]),
-        );
       }
     });
   };
@@ -422,6 +408,8 @@ export const CreateIndicador: FC<{
     }
     if (patch === true) {
       console.log(arrayIndicadorResponse);
+      console.log(indicador);
+      console.log(indicadorAntigo);
       patchIndicador(
         dimensao,
         indicadorAntigo,
@@ -435,10 +423,11 @@ export const CreateIndicador: FC<{
     }
   };
 
+  // modificado: remoção de condicional e execução única
   useEffect(() => {
-    if (indicadorNome != undefined) {
-      setPatch(true);
-      api
+    handlePatch();
+    setIndicadorAntigo(indicador);
+    api
         .get(url)
         .then((response) => {
           setIndicadorAntigo(response.data.nome);
@@ -470,8 +459,8 @@ export const CreateIndicador: FC<{
         .catch((error) => {
           console.log(error);
         });
-    }
-  }, [url, chaveValorGraficos, indicadorNome, arrayIndicadorResponse, patch]);
+
+  }, [])
 
   //Função para adicionar um novo gráfico
   const addGrafico = (e: React.MouseEvent) => {
@@ -518,7 +507,8 @@ export const CreateIndicador: FC<{
             name="nomeIndicador"
             value={indicador}
             onChange={(e) => {
-              setIndicador(e.target.value);
+              // modificado: funcionalidade delegada à função handler
+              handleChangeIndicador(e);
             }}
           />
           {errorIndicador && (
