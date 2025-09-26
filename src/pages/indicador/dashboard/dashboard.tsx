@@ -146,10 +146,7 @@ export const DashboardComponent: FC<{
     colunas.map((coluna: string) => {
       tableDataCols[coluna] = "";
     });
-    // for (let i = 0; i < dashboard.dados[0].data.length; i++) {
-    //   tableData.push(tableDataCols);
-    // }
-    // cria objetos novos a cada iteração
+
     for (let i = 0; i < dashboard.dados[0].data.length; i++) {
       const row: Record<string, string | number> = {};
       for (const coluna of colunas) {
@@ -158,21 +155,6 @@ export const DashboardComponent: FC<{
       tableData.push(row);
     }
 
-    /*
-    const tableDataCopy: Array<Record<string, string | number>> = colunas.map(
-      (obj, index) => {
-        const name: string = obj;
-        dashboard.dados[index].data.map(
-          (dado: string | number, indexDentro: number) => {
-            console.log(indexDentro);
-            console.log(dado);
-            console.log(name);
-            tableData[indexDentro][name] = dado;
-            console.log(tableData[indexDentro][name]);
-          },
-        );
-      },
-      ); */
     for (let index = 0; index < colunas.length; index++) {
       const name: string = colunas[index];
 
