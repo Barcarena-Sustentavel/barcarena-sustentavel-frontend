@@ -13,9 +13,11 @@ const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
   const logout = () => {
     setToken(null);
   };
-  const isAuthenticated = !!token;
+  const [isAuthenticated, setIsAuthenticated] = useState<boolean>(!!token);
   return (
-    <AuthContext.Provider value={{ isAuthenticated, login, logout }}>
+    <AuthContext.Provider
+      value={{ isAuthenticated, setIsAuthenticated, login, logout }}
+    >
       {children}
     </AuthContext.Provider>
   );

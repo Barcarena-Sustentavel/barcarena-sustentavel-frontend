@@ -36,12 +36,21 @@
 .inputIcon {
     display: flex;
     align-items: center;
-    background: #f5f7fa;
+    justify-content: space-between;
+    background-color: #f5f7fa;
     border: 1px solid #cfd8dc;
     border-radius: 8px;
     padding: 8px 12px;
     margin-bottom: 16px;
     transition: border-color 0.3s ease;
+}
+
+.inputIcon > input {
+    width: 80%;
+    color: var(--secondary-darkblue);
+    background-color: #f5f7fa;
+    border: none;
+    outline: none;
 }
 
 .inputIcon:focus-within {

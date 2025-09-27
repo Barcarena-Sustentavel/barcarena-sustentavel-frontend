@@ -1,6 +1,6 @@
 import { Outlet } from "react-router-dom";
 import { AuthContext, AuthContextType } from "./Authcontext.ts";
-import { useContext, useState } from "react";
+import { useContext, useState, useEffect } from "react";
 import BouncingDotsLoader from "./animation/BouncingDotsLoader.tsx";
 import api from "../../api.tsx";
 import { LogIn } from "lucide-react";
@@ -9,7 +9,8 @@ import logoNoLabel from "../../assets/images/icons/LogoNoLabel.png";
 import { setToken } from "./Token.ts";
 import "./css/auth.css";
 const PrivateRoutes = () => {
-  const { isAuthenticated } = useContext<AuthContextType>(AuthContext);
+  const { isAuthenticated, setIsAuthenticated } =
+    useContext<AuthContextType>(AuthContext);
   const [userName, setUserName] = useState<string>("");
   const [password, setPassword] = useState<string>("");
   const [loading, setLoading] = useState<boolean>(true);
@@ -19,12 +20,17 @@ const PrivateRoutes = () => {
       username: userName,
       hashed_password: password,
     });
-    if (token) {
-      setLoading(false);
+    if (token.status === 200 && token.data) {
       setToken(token.data);
-      return <Outlet />;
+      setIsAuthenticated(true);
+      //return <Outlet />;
     }
   };
+  useEffect(() => {
+    if (!isAuthenticated) {
+      setLoading(true);
+    }
+  }, [isAuthenticated]);
   if (!isAuthenticated) {
     return (
       <div className="loginContainer">
