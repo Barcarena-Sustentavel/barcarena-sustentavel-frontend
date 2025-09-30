@@ -23,7 +23,6 @@ const PrivateRoutes = () => {
     if (token.status === 200 && token.data) {
       setToken(token.data);
       setIsAuthenticated(true);
-      //return <Outlet />;
     }
   };
   useEffect(() => {
