@@ -4,16 +4,74 @@ import "./mapa.css";
 import * as toGeoJSON from "@tmcw/togeojson";
 import "leaflet/dist/leaflet.css";
 import { UnidadeSaude } from "./interfaces/mapa.ts";
+import L from "leaflet";
 import { EscolaBarcarena } from "./interfaces/mapa.ts";
 import Papa from "papaparse";
-
 interface Marcador extends UnidadeSaude, EscolaBarcarena {}
+
+const Table: FC<{ botaoConectividade: string; dadosTabela: Marcador[] }> = ({
+  botaoConectividade,
+  dadosTabela,
+}) => {
+  const colunas: string[] =
+    botaoConectividade === "Saúde"
+      ? ["Unidade", "Tipo", "Internet"]
+      : ["Escola", "Dependência", "Internet"];
+  return (
+    <table style={{ width: "400px", margin: "20px auto" }}>
+      <thead>
+        <tr>
+          {colunas.map((coluna) => (
+            <th key={coluna}>{coluna}</th>
+          ))}
+        </tr>
+      </thead>
+      <tbody>
+        {dadosTabela.map((dado) => (
+          <tr>
+            <td>
+              {botaoConectividade === "Escola"
+                ? dado["Nome Escola"]
+                : dado["Tipo Unidade"]}
+            </td>
+            <td>
+              {botaoConectividade === "Escola"
+                ? dado.Dependência
+                : dado["Tipo Unidade"]}
+            </td>
+            <td>{dado.Internet}</td>
+          </tr>
+        ))}
+      </tbody>
+    </table>
+  );
+};
 
 const Map2: FC<{ dimensao: string | undefined }> = ({ dimensao }) => {
   interface ChavesBooleanas {
     [key: string]: boolean;
   }
+  const blueIcon = new L.Icon({
+    iconUrl:
+      "https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-blue.png",
+    shadowUrl:
+      "https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/images/marker-shadow.png",
+    iconSize: [25, 41],
+    iconAnchor: [12, 41],
+    popupAnchor: [1, -34],
+    shadowSize: [41, 41],
+  });
 
+  const redIcon = new L.Icon({
+    iconUrl:
+      "https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-red.png",
+    shadowUrl:
+      "https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/images/marker-shadow.png",
+    iconSize: [25, 41],
+    iconAnchor: [12, 41],
+    popupAnchor: [1, -34],
+    shadowSize: [41, 41],
+  });
   const mapasConectividade = ["Cobertura", "Escola", "Saúde"];
   const [botaoConectividade, setBotaoConectividade] =
     useState<string>("Cobertura");
@@ -34,6 +92,7 @@ const Map2: FC<{ dimensao: string | undefined }> = ({ dimensao }) => {
   const [marcadorSemInternet, setMarcadorSemInternet] = useState<Marcador[]>(
     [],
   );
+  const [tabela, setTabela] = useState<Marcador[]>([]);
   //Escola somente
   const [tipoDependencia, setTipoDependencia] = useState<string>("Todas");
   const [tipoLocalizacao, setTipoLocalizacao] = useState<string>("Todas");
@@ -269,6 +328,48 @@ const Map2: FC<{ dimensao: string | undefined }> = ({ dimensao }) => {
   }, []);
 
   useEffect(() => {
+    if (botaoConectividade === "Escola") {
+      const resultDadosEscola = async () => {
+        try {
+          const fetchCsv = await fetch(
+            "/Conectividade/Escola/escolas_barcarena.csv",
+          );
+          const resText = await fetchCsv.text();
+          const result = Papa.parse<EscolaBarcarena>(resText, {
+            header: true,
+            dynamicTyping: true, // converte números automaticamente
+            skipEmptyLines: true,
+          });
+          setDadosEscolasBarcarena(result.data);
+        } catch (err) {
+          console.error(err);
+        }
+      };
+      resultDadosEscola();
+    }
+
+    if (botaoConectividade === "Saúde") {
+      const resultDadosSaude = async () => {
+        try {
+          const fetchCsv = await fetch(
+            "/Conectividade/Saúde/unidades_saude.csv",
+          );
+          const resText = await fetchCsv.text();
+          const result = Papa.parse<UnidadeSaude>(resText, {
+            header: true,
+            dynamicTyping: true, // converte números automaticamente
+            skipEmptyLines: true,
+          });
+          setDadosSaudeBarcarena(result.data);
+        } catch (err) {
+          console.error(err);
+        }
+      };
+      resultDadosSaude();
+    }
+  }, [botaoConectividade]);
+
+  useEffect(() => {
     setMarcadorComInternet([]);
     setMarcadorSemInternet([]);
     const semInternet: string | undefined =
@@ -344,44 +445,10 @@ const Map2: FC<{ dimensao: string | undefined }> = ({ dimensao }) => {
     };
 
     if (botaoConectividade === "Saúde") {
-      const resultDadosSaude = async () => {
-        try {
-          const fetchCsv = await fetch(
-            "/Conectividade/Saúde/unidades_saude.csv",
-          );
-          const resText = await fetchCsv.text();
-          const result = Papa.parse<UnidadeSaude>(resText, {
-            header: true,
-            dynamicTyping: true, // converte números automaticamente
-            skipEmptyLines: true,
-          });
-          setDadosSaudeBarcarena(result.data);
-        } catch (err) {
-          console.error(err);
-        }
-      };
-      resultDadosSaude();
       preencherMarcadoresSaude(comInternet, semInternet);
     }
 
     if (botaoConectividade === "Escola") {
-      const resultDadosEscola = async () => {
-        try {
-          const fetchCsv = await fetch(
-            "/Conectividade/Escola/escolas_barcarena.csv",
-          );
-          const resText = await fetchCsv.text();
-          const result = Papa.parse<EscolaBarcarena>(resText, {
-            header: true,
-            dynamicTyping: true, // converte números automaticamente
-            skipEmptyLines: true,
-          });
-          setDadosEscolasBarcarena(result.data);
-        } catch (err) {
-          console.error(err);
-        }
-      };
-      resultDadosEscola();
       preencharMarcadoresEscola(comInternet, semInternet);
     }
   }, [
@@ -389,11 +456,13 @@ const Map2: FC<{ dimensao: string | undefined }> = ({ dimensao }) => {
     statusInternet,
     tipoDependencia,
     tipoLocalizacao,
-    marcadorComInternet,
-    marcadorSemInternet,
     dadosEscolasBarcarena,
     dadosSaudeBarcarena,
   ]); // dispara quando tipoDado muda
+
+  useEffect(() => {
+    setTabela([...marcadorComInternet, ...marcadorSemInternet]);
+  }, [marcadorComInternet, marcadorSemInternet]);
   return (
     <div style={{ height: "100%", width: "100%" }}>
       {dimensao === "Conectividade" && (
@@ -539,12 +608,18 @@ const Map2: FC<{ dimensao: string | undefined }> = ({ dimensao }) => {
           ))}
           {botaoConectividade === "Escola" && marcadorComInternet.length > 0 ? (
             marcadorComInternet.map((item, index) => (
-              <Marker key={index} position={[item.Latitude, item.Longitude]}>
+              <Marker
+                key={index}
+                position={[item.Latitude, item.Longitude]}
+                icon={blueIcon}
+              >
                 <Popup>
-                  <div>
-                    Localização: {item.Localização}
-                    Dependência: {item.Dependência}
-                  </div>
+                  {Object.entries(item).map(([key, value]) => (
+                    <div key={key}>
+                      <b>{key}:</b> {value}
+                      <br />
+                    </div>
+                  ))}
                 </Popup>
               </Marker>
             ))
@@ -552,13 +627,20 @@ const Map2: FC<{ dimensao: string | undefined }> = ({ dimensao }) => {
             <></>
           )}
           {botaoConectividade === "Escola" && marcadorSemInternet.length > 0 ? (
-            marcadorComInternet.map((item, index) => (
-              <Marker key={index} position={[item.Latitude, item.Longitude]}>
+            marcadorSemInternet.map((item, index) => (
+              <Marker
+                key={index}
+                position={[item.Latitude, item.Longitude]}
+                icon={redIcon}
+              >
                 <Popup>
-                  <div>
-                    Localização: {item.Localização}
-                    Dependência: {item.Dependência}
-                  </div>
+                  {Object.entries(item).map(([key, value]) => (
+                    <div key={key}>
+                      <b>{key}:</b>
+                      {value}
+                      <br />
+                    </div>
+                  ))}
                 </Popup>
               </Marker>
             ))
@@ -567,12 +649,19 @@ const Map2: FC<{ dimensao: string | undefined }> = ({ dimensao }) => {
           )}
           {botaoConectividade === "Saúde" && marcadorComInternet.length > 0 ? (
             marcadorComInternet.map((item, index) => (
-              <Marker key={index} position={[item.Latitude, item.Longitude]}>
+              <Marker
+                key={index}
+                position={[item.Latitude, item.Longitude]}
+                icon={blueIcon}
+              >
                 <Popup>
-                  <div>
-                    Localização: {item.Localização}
-                    Dependência: {item.Dependência}
-                  </div>
+                  {Object.entries(item).map(([key, value]) => (
+                    <div key={key}>
+                      <b>{key}:</b>
+                      {value}
+                      <br />
+                    </div>
+                  ))}
                 </Popup>
               </Marker>
             ))
@@ -580,12 +669,20 @@ const Map2: FC<{ dimensao: string | undefined }> = ({ dimensao }) => {
             <></>
           )}
           {botaoConectividade === "Saúde" && marcadorSemInternet.length > 0 ? (
-            marcadorComInternet.map((item, index) => (
-              <Marker key={index} position={[item.Latitude, item.Longitude]}>
+            marcadorSemInternet.map((item, index) => (
+              <Marker
+                key={index}
+                position={[item.Latitude, item.Longitude]}
+                icon={redIcon}
+              >
                 <Popup>
                   <div>
-                    Localização: {item.Localização}
-                    Dependência: {item.Dependência}
+                    {Object.entries(item).map(([key, value]) => (
+                      <div key={key}>
+                        <b>{key}:</b> {value}
+                        <br />
+                      </div>
+                    ))}
                   </div>
                 </Popup>
               </Marker>
@@ -593,13 +690,8 @@ const Map2: FC<{ dimensao: string | undefined }> = ({ dimensao }) => {
           ) : (
             <></>
           )}
-
-          {marcadorSemInternet.map((m, index) => (
-            <Marker key={index} position={[m.Latitude, m.Longitude]}>
-              <Popup>Pop up marcdor sem internet</Popup>
-            </Marker>
-          ))}
         </MapContainer>
+        {}
       </div>
     </div>
   );
