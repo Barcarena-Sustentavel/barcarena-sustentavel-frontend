@@ -1,5 +1,19 @@
-import { ChangeEvent, FC, MouseEvent, useEffect, useState } from "react";
-import { MapContainer, TileLayer, GeoJSON, Marker, Popup } from "react-leaflet";
+import {
+  ChangeEvent,
+  FC,
+  MouseEvent,
+  useEffect,
+  useState,
+  useRef,
+} from "react";
+import {
+  MapContainer,
+  TileLayer,
+  GeoJSON,
+  Marker,
+  Popup,
+  useMap,
+} from "react-leaflet";
 import "./mapa.css";
 import * as toGeoJSON from "@tmcw/togeojson";
 import "leaflet/dist/leaflet.css";
@@ -8,43 +22,100 @@ import L from "leaflet";
 import { EscolaBarcarena } from "./interfaces/mapa.ts";
 import Papa from "papaparse";
 interface Marcador extends UnidadeSaude, EscolaBarcarena {}
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableContainer,
+  TableHead,
+  TableRow,
+  Paper,
+} from "@mui/material";
 
-const Table: FC<{ botaoConectividade: string; dadosTabela: Marcador[] }> = ({
-  botaoConectividade,
-  dadosTabela,
-}) => {
+const Tabela: FC<{
+  botaoConectividade: string;
+  dadosTabela: Marcador[];
+  setFitBounds: (fitBound: L.LatLngBoundsExpression) => void;
+  refsMarcador: React.MutableRefObject<any>;
+}> = ({ botaoConectividade, dadosTabela, setFitBounds, refsMarcador }) => {
   const colunas: string[] =
     botaoConectividade === "Saúde"
       ? ["Unidade", "Tipo", "Internet"]
       : ["Escola", "Dependência", "Internet"];
   return (
-    <table style={{ width: "400px", margin: "20px auto" }}>
-      <thead>
-        <tr>
-          {colunas.map((coluna) => (
-            <th key={coluna}>{coluna}</th>
+    <TableContainer
+      component={Paper}
+      sx={{ maxWidth: 600, margin: "20px auto" }}
+    >
+      <Table>
+        <TableHead>
+          <TableRow>
+            {colunas.map((coluna) => (
+              <TableCell key={coluna} sx={{ fontWeight: "bold" }}>
+                {coluna}
+              </TableCell>
+            ))}
+          </TableRow>
+        </TableHead>
+
+        <TableBody>
+          {dadosTabela.map((dado, index) => (
+            <TableRow key={index}>
+              <TableCell>
+                <button
+                  type="button"
+                  style={{
+                    backgroundColor: "white",
+                    color: "black",
+                    textAlign: "left",
+                  }}
+                  onClick={() => {
+                    const novoFitBound: L.LatLngBoundsExpression = [
+                      [-1.5113, -48.61914],
+                      [dado.Latitude, dado.Longitude],
+                    ];
+                    setFitBounds(novoFitBound);
+                    refsMarcador.current = dado;
+                    console.log(refsMarcador.current);
+                    refsMarcador.current.openPopup();
+                  }}
+                  value={
+                    dado["Nome Escola"]
+                      ? dado["Nome Escola"]
+                      : dado["Tipo Unidade"]
+                  }
+                >
+                  {botaoConectividade === "Escola"
+                    ? dado["Nome Escola"]
+                    : dado["Tipo Unidade"]}
+                </button>
+              </TableCell>
+              <TableCell>
+                {botaoConectividade === "Escola"
+                  ? dado.Dependência
+                  : dado["Tipo Unidade"]}
+              </TableCell>
+              <TableCell>{dado.Internet}</TableCell>
+            </TableRow>
           ))}
-        </tr>
-      </thead>
-      <tbody>
-        {dadosTabela.map((dado) => (
-          <tr>
-            <td>
-              {botaoConectividade === "Escola"
-                ? dado["Nome Escola"]
-                : dado["Tipo Unidade"]}
-            </td>
-            <td>
-              {botaoConectividade === "Escola"
-                ? dado.Dependência
-                : dado["Tipo Unidade"]}
-            </td>
-            <td>{dado.Internet}</td>
-          </tr>
-        ))}
-      </tbody>
-    </table>
+        </TableBody>
+      </Table>
+    </TableContainer>
   );
+};
+
+const UpdateBounds: FC<{ bounds: L.LatLngBoundsExpression | undefined }> = ({
+  bounds,
+}) => {
+  const map = useMap();
+
+  useEffect(() => {
+    if (bounds) {
+      map.fitBounds(bounds);
+    }
+  }, [bounds, map]);
+
+  return null;
 };
 
 const Map2: FC<{ dimensao: string | undefined }> = ({ dimensao }) => {
@@ -72,6 +143,9 @@ const Map2: FC<{ dimensao: string | undefined }> = ({ dimensao }) => {
     popupAnchor: [1, -34],
     shadowSize: [41, 41],
   });
+  const [fitBounds, setFitBounds] = useState<
+    L.LatLngBoundsExpression | undefined
+  >(undefined);
   const mapasConectividade = ["Cobertura", "Escola", "Saúde"];
   const [botaoConectividade, setBotaoConectividade] =
     useState<string>("Cobertura");
@@ -86,6 +160,9 @@ const Map2: FC<{ dimensao: string | undefined }> = ({ dimensao }) => {
   const [dadosSaudeBarcarena, setDadosSaudeBarcarena] = useState<
     UnidadeSaude[]
   >([]);
+  const refsMarcadorComInternet = useRef<(typeof Marker | null)[]>([]);
+  const refsMarcadorSemInternet = useRef<(typeof Marker | null)[]>([]);
+
   const [marcadorComInternet, setMarcadorComInternet] = useState<Marcador[]>(
     [],
   );
@@ -599,19 +676,24 @@ const Map2: FC<{ dimensao: string | undefined }> = ({ dimensao }) => {
             attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
             url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
           />
+          {(botaoConectividade === "Saúde" ||
+            botaoConectividade === "Escola") && (
+            <UpdateBounds bounds={fitBounds} />
+          )}
           {geojsonListSetores.map((geojson, index) => (
             <GeoJSON key={index} data={geojson} />
           ))}
-
           {geojsonListConectividade.map((geojson, index) => (
             <GeoJSON key={index} data={geojson} />
           ))}
+
           {botaoConectividade === "Escola" && marcadorComInternet.length > 0 ? (
             marcadorComInternet.map((item, index) => (
               <Marker
                 key={index}
                 position={[item.Latitude, item.Longitude]}
                 icon={blueIcon}
+                ref={refsMarcadorComInternet[index]}
               >
                 <Popup>
                   {Object.entries(item).map(([key, value]) => (
@@ -691,7 +773,16 @@ const Map2: FC<{ dimensao: string | undefined }> = ({ dimensao }) => {
             <></>
           )}
         </MapContainer>
-        {}
+        {botaoConectividade === "Saúde" || botaoConectividade === "Escola" ? (
+          <Tabela
+            botaoConectividade={botaoConectividade}
+            dadosTabela={tabela}
+            setFitBounds={setFitBounds}
+            refsMarcador={refsMarcador}
+          />
+        ) : (
+          <></>
+        )}
       </div>
     </div>
   );
