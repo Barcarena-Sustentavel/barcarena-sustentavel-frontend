@@ -38,21 +38,22 @@ const IndicadorComponent: FC = () => {
   const handleDownloadCSV = (grafico: DadosGrafico) => {
     //Cria o header das colunas na primeira linha do arquivo CSV
     let csvContent = grafico.colunas.join(",") + "\n";
+    csvContent = "Ano," + csvContent;
+    let categoria;
+    let row = "";
 
     //Adicionando outras linhas com os dados do gráfico
-    grafico.dados.forEach((row, rowIndex) => {
-      //pega os valores dentro de cada linha e transforma em array com strings
-      const rowData = row.map(value => String(value));
+    //fix: agora os dados da tabela são transpostos para o csv de maneira correta
+    grafico.dados[0].forEach((row, rowIndex) => {
+      categoria = grafico.categoria[rowIndex];
+      csvContent += categoria;
 
-      // categorias são sempre as primeiras colunas
-      if (grafico.categoria && grafico.categoria.length > rowIndex) {
-        //Adiciona os valores da categoria ao início da linha, após isso insere uma vírgula e pula uma linha
-        csvContent += `${grafico.categoria[rowIndex]},${rowData.join(",")}\n`;
-        //console.log(csvContent);
-      } else {
-        csvContent += rowData.join(",") + "\n";
-        //console.log(csvContent);
+      for(let columnIndex = 0; columnIndex <  grafico.dados.length; columnIndex++){
+        csvContent += "," + grafico.dados[columnIndex][rowIndex];
       }
+
+      csvContent += "\n";
+
     });
     
     // O blob é uma interface para representar um objeto de dados imutáveis em um formato de arquivo
