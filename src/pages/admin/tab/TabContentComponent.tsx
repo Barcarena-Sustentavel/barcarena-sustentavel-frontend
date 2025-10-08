@@ -95,12 +95,18 @@ export const TabContentComponent: FC<RenderContentInterface> = ({
   };
 
   const handleDeleteArtigo = async (e: any) => {
-    if (formDataArtigo.name != "") deleteArtigoDimensao(dimensao as string);
+    e.preventDefault();
+    if (formDataArtigo.name !== "") deleteArtigoDimensao(dimensao as string);
     setPatchArtigo(false);
+    setFormDataArtigo((prev) => ({
+      ...prev,
+      name: "",
+    }));
   };
 
   const handleDownloadArtigo = async (e: any) => {
-    if (formDataArtigo.name != "") getArtigoDimensao(dimensao as string);
+    e.preventDefault();
+    if (formDataArtigo.name !== "") getArtigoDimensao(dimensao as string);
   };
 
   useEffect(() => {
@@ -183,10 +189,10 @@ export const TabContentComponent: FC<RenderContentInterface> = ({
           </Form.Group>
           <div className="button-container">
             <button type="submit">Salvar Alterações</button>
-            <button onClick={(e: any) => handleDownloadArtigo(e)}>
+            <button type="button" onClick={(e: any) => handleDownloadArtigo(e)}>
               Baixar Artigo
             </button>
-            <button onClick={(e: any) => handleDeleteArtigo(e)}>
+            <button type="button" onClick={(e: any) => handleDeleteArtigo(e)}>
               Deletar Artigo
             </button>
           </div>

@@ -17,7 +17,7 @@
     height: 90px;
 }
 
-.submenu-dimensao-item{
+.submenu-dimensao-item {
     display: flex;
     flex-direction: row;
     justify-content: space-between;
@@ -38,12 +38,12 @@
     width: 86%;
 }
 
-.label-dimensao{
+.label-dimensao {
     color: white;
     font-size: 40px;
 }
 
-.label-icon-dimensao{
+.label-icon-dimensao {
     min-width: 100px;
     min-height: 100px;
     max-width: 110px;
@@ -63,4 +63,10 @@
     margin: 0; /* Remove margem padrão */
     text-align: center; /* Centraliza o texto */
     font-size: 13px;
+}
+
+.tituloDimensao {
+    width: 30%;
+    display: flex;
+    justify-content: space-between;
 }
