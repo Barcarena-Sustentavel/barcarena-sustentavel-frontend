@@ -5,7 +5,13 @@ import { RenderContentInterface } from "../../../interfaces/admin_interfaces/ren
 import { Form, Alert } from "react-bootstrap";
 import api from "../../../api.tsx";
 import AddDelete from "../addDelete.tsx";
-
+import "./tabComponent.css";
+import {
+  getArtigoDimensao,
+  uploadArtigoDimensao,
+  updateArtigoDimensao,
+  deleteArtigoDimensao,
+} from "../create/artigo/crudArtigo.tsx";
 export const TabContentComponent: FC<RenderContentInterface> = ({
   dimensao,
   activeTab,
@@ -18,7 +24,7 @@ export const TabContentComponent: FC<RenderContentInterface> = ({
   const [nomeContribuicoes, setNomeContribuicoes] = useState<string[]>([]);
   const [nomeKmls, setNomeKmls] = useState<string[]>([]);
 
-  const [error,setError] = useState<string | null>(null);
+  const [error, setError] = useState<string | null>(null);
   const url: string = `/admin/dimensoes/${dimensao}/`;
   const activeTabDict: { [key: string]: string[] } = {
     Indicadores: nomeIndicadores,
@@ -28,49 +34,73 @@ export const TabContentComponent: FC<RenderContentInterface> = ({
   };
 
   //Lista de dados dos indicadores relacionados a dimensão
-  const [formData, setFormData] = useState({
+  const [formDataDimensao, setFormDataDimensao] = useState({
     nome: undefined,
     descricao: undefined,
   });
+  const [formDataArtigo, setFormDataArtigo] = useState<File>(new File([], ""));
+  const [patchArtigo, setPatchArtigo] = useState<boolean>(false);
   //Função para atualizar o estado do formulário
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     //Desestruturação do evento em nome e valor do input
     const { name, value } = e.target;
     //Atualiza o estado do formulário
-    setFormData((prev) => ({
-      ...prev,
-      [name]: value,
-    }));
+    if (name === "nome" || name === "descricao") {
+      setFormDataDimensao((prev) => ({
+        ...prev,
+        [name]: value,
+      }));
+      return;
+    }
+    setFormDataArtigo(e.target.files![0]);
   };
 
-  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault()
-    if (formData.nome === undefined && formData.descricao === undefined){
-      setError("Para fazer modificações, preencha os campos que deseja modificar.")
-      return
+  const handleSubmitDimensao = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    if (
+      formDataDimensao.nome === undefined &&
+      formDataDimensao.descricao === undefined
+    ) {
+      setError(
+        "Para fazer modificações, preencha os campos que deseja modificar.",
+      );
+      return;
     }
     try {
-      const patchDimensao:Record<string, string> = {};
-      if (formData.nome !== undefined) {
-        patchDimensao["nome"] = formData.nome;
+      const patchDimensao: Record<string, string> = {};
+      if (formDataDimensao.nome !== undefined) {
+        patchDimensao["nome"] = formDataDimensao.nome;
       }
-      if (formData.descricao !== undefined) {
-        patchDimensao["descricao"] = formData.descricao;
+      if (formDataDimensao.descricao !== undefined) {
+        patchDimensao["descricao"] = formDataDimensao.descricao;
       }
-
 
       const response = await api.patch(
         `/admin/dimensoes/${dimensaoJson?.nome}/`,
-        patchDimensao
-        //{
-        //  nome: formData.nome,
-        //  descricao: formData.descricao,
-        //},
+        patchDimensao,
       );
       setDimensao(response.data);
     } catch (error) {
       console.log(error);
     }
+  };
+
+  const handleSubmitArtigo = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    if (patchArtigo === false) {
+      uploadArtigoDimensao(dimensao as string, formDataArtigo);
+      return;
+    }
+    updateArtigoDimensao(dimensao as string, formDataArtigo);
+  };
+
+  const handleDeleteArtigo = async (e: any) => {
+    if (formDataArtigo.name != "") deleteArtigoDimensao(dimensao as string);
+    setPatchArtigo(false);
+  };
+
+  const handleDownloadArtigo = async (e: any) => {
+    if (formDataArtigo.name != "") getArtigoDimensao(dimensao as string);
   };
 
   useEffect(() => {
@@ -82,6 +112,13 @@ export const TabContentComponent: FC<RenderContentInterface> = ({
         setNomeReferencias(response.data.referencias || []);
         setNomeContribuicoes(response.data.contribuicoes || []);
         setNomeKmls(response.data.kmls || []);
+        if (response.data.artigo != "") {
+          setFormDataArtigo((prev) => ({
+            ...prev,
+            name: response.data.artigo,
+          }));
+          setPatchArtigo(true);
+        }
       })
       .catch((error) => {
         setDimensao(undefined);
@@ -97,40 +134,66 @@ export const TabContentComponent: FC<RenderContentInterface> = ({
   if (activeTab === "Dimensão") {
     return (
       <div className="admin-forms">
-        <Form onSubmit={handleSubmit}>
-                <Form.Group controlId="nome">
-                  <Form.Label>Nome</Form.Label>
-                  <Form.Control
-                    type="text"
-                    name="nome"
-                    value={formData.nome}
-                    placeholder={dimensaoJson?.nome}
-                    onChange={handleInputChange}
-                  />
-                </Form.Group>
+        <Form onSubmit={handleSubmitDimensao}>
+          <Form.Group controlId="nome">
+            <Form.Label>Nome</Form.Label>
+            <Form.Control
+              type="text"
+              name="nome"
+              value={formDataDimensao.nome}
+              placeholder={dimensaoJson?.nome}
+              onChange={handleInputChange}
+            />
+          </Form.Group>
 
-                <Form.Group controlId="descricao" className="mt-3">
-                  <Form.Label>Descrição</Form.Label>
-                  <Form.Control
-                    type="text"
-                    name="descricao"
-                    value={formData.descricao}
-                    placeholder={dimensaoJson?.descricao}
-                    onChange={handleInputChange}
-                  />
-                </Form.Group>
+          <Form.Group controlId="descricao" className="mt-3">
+            <Form.Label>Descrição</Form.Label>
+            <Form.Control
+              type="text"
+              name="descricao"
+              value={formDataDimensao.descricao}
+              placeholder={dimensaoJson?.descricao}
+              onChange={handleInputChange}
+            />
+          </Form.Group>
 
-                {error && (
-                  <Alert variant="danger" className="mt-3">
-                    {error}
-                  </Alert>
-                )}
-                <button /*onClick={handleSubmit}*/>Salvar Alterações</button>
-                </Form>    
-        </div>
+          {error && (
+            <Alert variant="danger" className="mt-3">
+              {error}
+            </Alert>
+          )}
+          <button>Salvar Alterações</button>
+        </Form>
+      </div>
+    );
+  } else if (activeTab === "Artigo") {
+    return (
+      <div className="admin-forms">
+        <Form onSubmit={handleSubmitArtigo}>
+          <Form.Group controlId="nome">
+            {formDataArtigo.name === "" && <Form.Label>Artigo</Form.Label>}
+            {formDataArtigo.name !== "" && (
+              <Form.Label>Artigo Atual: {formDataArtigo.name}</Form.Label>
+            )}
+            <Form.Control
+              type="file"
+              name="artigo"
+              onChange={handleInputChange}
+            />
+          </Form.Group>
+          <div className="button-container">
+            <button type="submit">Salvar Alterações</button>
+            <button onClick={(e: any) => handleDownloadArtigo(e)}>
+              Baixar Artigo
+            </button>
+            <button onClick={(e: any) => handleDeleteArtigo(e)}>
+              Deletar Artigo
+            </button>
+          </div>
+        </Form>
+      </div>
     );
   } else {
-    console.log(activeTabDict[activeTab]);
     return (
       <div>
         <div>
@@ -164,11 +227,7 @@ export const TabContentComponent: FC<RenderContentInterface> = ({
                     }}
                     onClick={(e) => e.stopPropagation()}
                   />
-                  <Link
-                    //Modificação de itens antigo
-                    //to={`/admin/dimensao/${dimensao}/update/${activeTab}/${elementName}/`}
-                    to={encodedURI}
-                  >
+                  <Link to={encodedURI}>
                     <label
                       htmlFor={`checkbox-${elementName}`}
                       className="checkbox-label"

@@ -87,10 +87,10 @@ export const patchIndicador = async (
     if (arrayGrafico.length > 0) {
       const formData = new FormData();
       for (let i = 0; i < arrayGrafico.length; i++) {
-        const endpoit =
-          arrayGrafico[i].id != null
-            ? `/api/admin/dimensoes/${dimensao}/indicador/${indicador.nome}/anexos/${arrayGrafico[i].id}/`
-            : `/api/admin/dimensoes/${dimensao}/indicador/${indicador.nome}/anexos/`;
+        //const endpoit =
+        //  arrayGrafico[i].id != null
+        //    ? `/api/admin/dimensoes/${dimensao}/indicador/${indicador.nome}/anexos/${arrayGrafico[i].id}/`
+        //    : `/api/admin/dimensoes/${dimensao}/indicador/${indicador.nome}/anexos/`;
         console.log(arrayGrafico[i].arquivo.size);
         if (arrayGrafico[i].arquivo.size !== undefined) {
           formData.append("grafico", arrayGrafico[i].arquivo);
@@ -98,9 +98,16 @@ export const patchIndicador = async (
         formData.append("descricaoGrafico", arrayGrafico[i].descricaoGrafico);
         formData.append("tituloGrafico", arrayGrafico[i].tituloGrafico);
         formData.append("tipoGrafico", arrayGrafico[i].tipoGrafico);
-        console.log(formData);
+        const method: string =
+          arrayGrafico[i].id! < 0 || arrayGrafico[i].id! === null
+            ? "POST"
+            : "PATCH";
+        const endpoit =
+          method === "PATCH"
+            ? `/api/admin/dimensoes/${dimensao}/indicador/${indicador.nome}/anexos/${arrayGrafico[i].id}/`
+            : `/api/admin/dimensoes/${dimensao}/indicador/${indicador.nome}/anexos/`;
         await fetch(endpoit, {
-          method: arrayGrafico[i].id != null ? "PATCH" : "POST",
+          method: method, //arrayGrafico[i].id != null ? "PATCH" : "POST",
           body: formData,
         }).catch((error) => {
           console.log(error);

@@ -7,7 +7,6 @@ import "../../css/createIndicador.css";
 import { GraficoComponent } from "./components/Grafico.tsx";
 import dimensoes from "../../../../utils/const.tsx";
 import "../../css/dimensaoPage.css";
-import { useLocation } from "react-router-dom";
 import { Alert } from "react-bootstrap";
 
 export const CreateIndicador: FC<{
