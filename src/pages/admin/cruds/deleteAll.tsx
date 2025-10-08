@@ -11,6 +11,7 @@ export const deleteAll = async (
     Contribuições: "contribuicao",
     Indicadores: "indicador",
     Anexos: "anexos",
+    EstudosComplementares: "estudo_complementar",
   };
   const nomeEncoded = encodeURIComponent(nome);
   const url = `/admin/dimensoes/${dimensao}/${dictionary[activeTab]}/${nomeEncoded}/`;
