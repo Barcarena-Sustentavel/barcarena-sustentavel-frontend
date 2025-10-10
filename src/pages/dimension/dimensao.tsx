@@ -2,6 +2,7 @@ import { FC, useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { Referencia } from "../../interfaces/referencia_interface.tsx";
 import { Dimensao } from "../../interfaces/dimensao_interface.tsx";
+import { EstudoComplementar } from "../../interfaces/estudo_complementar_interface.tsx";
 import NavbarComponent from "../../components/layout/navbar/navbar.tsx";
 import "@assets/styles/index.css";
 import "./dimensao.css";
@@ -16,6 +17,7 @@ const DimensaoComponent: FC = () => {
   const [indicadores, setIndicadores] = useState<string[]>([]);
   const [referencias, setReferencias] = useState<Referencia[]>([]);
   const [dimensaoJson, setDimensao] = useState<Dimensao | null>(null);
+  const [estudosComplementares, setEstudosComplementares] = useState<string[]>([]);
   const url: string = `/dimensoes/${dimensao}/`;
   const navigate = useNavigate();
   const coresBordas = [
@@ -47,6 +49,9 @@ const DimensaoComponent: FC = () => {
       "Anos médios de estudo",
       "Investimento em educação (% do PIB)",
     ],
+    estudos_complementares: [
+      "Pesquisa de evasão escolar"
+    ],
     referencias: [
       {
         id: 1,
@@ -63,21 +68,28 @@ const DimensaoComponent: FC = () => {
     ],
   };
 
-  const handleNavigate = (indicador: string) => {
+  const handleNavigateIndicador = (indicador: string) => {
     const url = encodeURI(`/${dimensao}/${indicador}/`);
     navigate(url);
   };
+
+  const handleDownloadEstudo =( estudo: string ) => {
+    const url = `api/dimensoes/${dimensao}/estudo_complementar/${estudo}/anexo/`
+    window.open(url, "_blank");
+  }
 
   useEffect(() => {
     if (NODE_ENV == "development") {
       setDimensao(mockData.dimensao);
       setIndicadores(mockData.indicadores);
       setReferencias(mockData.referencias);
+      setEstudosComplementares(mockData.estudos_complementares);
     } else {
       api.get(url).then((response) => {
         setDimensao(response.data.dimensao);
         setIndicadores(response.data.indicadores);
         setReferencias(response.data.referencias);
+        setEstudosComplementares(response.data.estudos_complementares);
       });
     }
   }, [url, dimensao]);
@@ -113,9 +125,26 @@ const DimensaoComponent: FC = () => {
               <li style={{ borderLeft: `5px solid ${getProximaCor()}` }}>
                 <button
                   className="button-as-link"
-                  onClick={() => handleNavigate(indicador)}
+                  onClick={() => handleNavigateIndicador(indicador)}
                 >
                   {indicador}
+                </button>
+              </li>
+            ))}
+        </ul>
+      </div>
+
+      <div className="container dimension-details-container">
+        <h1>Estudos Complementares</h1>
+        <ul className="indicadores">
+          {estudosComplementares.length > 0 &&
+            estudosComplementares.map((estudoComplementar) => (
+              <li style={{ borderLeft: `5px solid ${getProximaCor()}` }}>
+                <button
+                  className="button-as-link"
+                  onClick={() => handleDownloadEstudo(estudoComplementar)}
+                >
+                  {estudoComplementar}
                 </button>
               </li>
             ))}
