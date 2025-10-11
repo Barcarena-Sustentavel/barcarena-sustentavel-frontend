@@ -60,6 +60,21 @@ const DimensaoPageComponent: FC = () => {
           >
             Referências
           </button>
+
+          <button
+            className={`admin-tab-button ${activeTab === "Estudos Complementares" ? "active" : ""}`}
+            onClick={() => setActiveTab("EstudosComplementares")}
+          >
+            Estudos Complementares
+          </button>
+
+          {/* <button
+            className={`admin-tab-button ${activeTab === "Contribuições" ? "active" : ""}`}
+            onClick={() => setActiveTab("Contribuições")}
+          >
+            Contribuições
+          </button> */}
+
           <button
             className={`admin-tab-button ${activeTab === "Artigo" ? "active" : ""}`}
             onClick={() => setActiveTab("Artigo")}

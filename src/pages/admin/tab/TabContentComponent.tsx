@@ -23,6 +23,7 @@ export const TabContentComponent: FC<RenderContentInterface> = ({
   const [nomeReferencias, setNomeReferencias] = useState<string[]>([]);
   const [nomeContribuicoes, setNomeContribuicoes] = useState<string[]>([]);
   const [nomeKmls, setNomeKmls] = useState<string[]>([]);
+  const [nomeEstCompl, setEstCompl] = useState<string[]>([]);
 
   const [error, setError] = useState<string | null>(null);
   const url: string = `/admin/dimensoes/${dimensao}/`;
@@ -31,6 +32,7 @@ export const TabContentComponent: FC<RenderContentInterface> = ({
     Referências: nomeReferencias,
     Contribuições: nomeContribuicoes,
     Kmls: nomeKmls,
+    EstudosComplementares: nomeEstCompl,
   };
 
   //Lista de dados dos indicadores relacionados a dimensão
@@ -125,6 +127,7 @@ export const TabContentComponent: FC<RenderContentInterface> = ({
           }));
           setPatchArtigo(true);
         }
+        setEstCompl(response.data.estudos_complementares || []);
       })
       .catch((error) => {
         setDimensao(undefined);
