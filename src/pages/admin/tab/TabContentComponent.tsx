@@ -12,6 +12,14 @@ import {
   updateArtigoDimensao,
   deleteArtigoDimensao,
 } from "../create/artigo/crudArtigo.tsx";
+import {DndContext, closestCenter} from '@dnd-kit/core';
+import {
+  SortableContext,
+  arrayMove,
+  verticalListSortingStrategy,
+  useSortable
+} from '@dnd-kit/sortable';
+import {CSS} from '@dnd-kit/utilities';
 export const TabContentComponent: FC<RenderContentInterface> = ({
   dimensao,
   activeTab,
@@ -19,19 +27,26 @@ export const TabContentComponent: FC<RenderContentInterface> = ({
   const [toDelete, setToDelete] = useState<string[]>([]);
   const [checkedItems, setCheckedItems] = useState<Record<string, boolean>>({});
   const [dimensaoJson, setDimensao] = useState<Dimensao>();
-  const [nomeIndicadores, setNomeIndicadores] = useState<string[]>([]);
-  const [nomeReferencias, setNomeReferencias] = useState<string[]>([]);
-  const [nomeContribuicoes, setNomeContribuicoes] = useState<string[]>([]);
-  const [nomeKmls, setNomeKmls] = useState<string[]>([]);
-  const [nomeEstCompl, setEstCompl] = useState<string[]>([]);
-
+  const [nomeIndicadores, setNomeIndicadores] = useState<
+    Array<Record<string, string | number | null>>
+  >([]);
+  const [nomeReferencias, setNomeReferencias] = useState<
+    Array<Record<string, string | number | null>>
+  >([]);
+  const [nomeContribuicoes, setNomeContribuicoes] = useState<
+    Array<Record<string, string | number | null>>
+  >([]);
+  const [nomeEstCompl, setEstCompl] = useState<
+    Array<Record<string, string | number | null>>
+  >([]);
   const [error, setError] = useState<string | null>(null);
   const url: string = `/admin/dimensoes/${dimensao}/`;
-  const activeTabDict: { [key: string]: string[] } = {
+  const activeTabDict: {
+    [key: string]: Array<Record<string, string | number | null>>;
+  } = {
     Indicadores: nomeIndicadores,
     Referências: nomeReferencias,
     Contribuições: nomeContribuicoes,
-    Kmls: nomeKmls,
     EstudosComplementares: nomeEstCompl,
   };
 
@@ -111,6 +126,39 @@ export const TabContentComponent: FC<RenderContentInterface> = ({
     if (formDataArtigo.name !== "") getArtigoDimensao(dimensao as string);
   };
 
+  function SortableItem(id:number, children:React.ReactNode) {
+  const {
+    attributes,
+    listeners,
+    setNodeRef,
+    transform,
+    transition,
+  } = useSortable({id});
+
+  const style = {
+    transform: CSS.Transform.toString(transform),
+    transition,
+  };
+
+  return (
+    <div ref={setNodeRef} style={style} {...attributes} {...listeners}>
+      {children}
+    </div>
+  );
+}
+function handleDragEnd(event) {
+    const {active, over} = event;
+
+    if (active.id !== over.id) {
+      setNomeIndicadores((items) => {
+        const oldIndex = items.indexOf(active.id);
+        const newIndex = items.indexOf(over.id);
+        
+        // arrayMove é um helper que reordena o array
+        return arrayMove(items, oldIndex, newIndex);
+      });
+    }
+}
   useEffect(() => {
     api
       .get(url)
@@ -119,7 +167,6 @@ export const TabContentComponent: FC<RenderContentInterface> = ({
         setNomeIndicadores(response.data.indicadores || []);
         setNomeReferencias(response.data.referencias || []);
         setNomeContribuicoes(response.data.contribuicoes || []);
-        setNomeKmls(response.data.kmls || []);
         if (response.data.artigo != "") {
           setFormDataArtigo((prev) => ({
             ...prev,
@@ -135,7 +182,6 @@ export const TabContentComponent: FC<RenderContentInterface> = ({
         setNomeReferencias([]);
 
         setNomeContribuicoes([]);
-        setNomeKmls([]);
         console.log(error);
       });
   }, [url, dimensao]);
@@ -202,35 +248,48 @@ export const TabContentComponent: FC<RenderContentInterface> = ({
         </Form>
       </div>
     );
-  } else {
+  } else if (activeTab === "Indicadores") {
+    const indicadoresComPosicoes: Array<
+      Record<string, string | number | null>
+    > = [];
+    for (let i = 0; i < activeTabDict[activeTab].length; i++) {
+      indicadoresComPosicoes.splice(
+        activeTabDict[activeTab][i].posicao! as number,
+        0,
+        activeTabDict[activeTab][i],
+      );
+    }
+    setNomeIndicadores(indicadoresComPosicoes);
     return (
       <div>
         <div>
-          {activeTabDict[activeTab].map((elementName: string) => {
+          {activeTabDict[activeTab].map((element) => {
             const encodedURI = encodeURI(
-              `/admin/dimensao/${dimensao}/update/${activeTab}/${elementName}/`,
+              `/admin/dimensao/${dimensao}/update/${activeTab}/${element.nome}/`,
             );
-            console.log(encodedURI);
             return (
               <span>
                 <div className="checkbox-link-container">
                   <input
                     type="checkbox"
-                    id={`checkbox-${elementName}`}
-                    checked={!!checkedItems[elementName]}
+                    id={`checkbox-${element.nome}`}
+                    checked={!!checkedItems[element.nome!]}
                     onChange={(e) => {
                       e.stopPropagation();
                       setCheckedItems((prev) => ({
                         ...prev,
-                        [elementName]: e.target.checked,
+                        [element.nome!]: e.target.checked,
                       }));
 
                       if (e.target.checked) {
                         //Conserva os elementos anteriores(..prev) e adiciona o novo
-                        setToDelete((prev) => [...prev, elementName]);
+                        setToDelete((prev) => [
+                          ...prev,
+                          element.nome! as string,
+                        ]);
                       } else {
                         setToDelete((prev) =>
-                          prev.filter((item) => item !== elementName),
+                          prev.filter((item) => item !== element.nome),
                         );
                       }
                     }}
@@ -238,10 +297,10 @@ export const TabContentComponent: FC<RenderContentInterface> = ({
                   />
                   <Link to={encodedURI}>
                     <label
-                      htmlFor={`checkbox-${elementName}`}
+                      htmlFor={`checkbox-${element.nome}`}
                       className="checkbox-label"
                     >
-                      <p>{elementName}</p>
+                      <p>{element.nome}</p>
                     </label>
                   </Link>
                 </div>
@@ -257,4 +316,57 @@ export const TabContentComponent: FC<RenderContentInterface> = ({
       </div>
     );
   }
+  return (
+    <div>
+      <div>
+        {activeTabDict[activeTab].map((element) => {
+          const encodedURI = encodeURI(
+            `/admin/dimensao/${dimensao}/update/${activeTab}/${element.nome}/`,
+          );
+          console.log(encodedURI);
+          return (
+            <span>
+              <div className="checkbox-link-container">
+                <input
+                  type="checkbox"
+                  id={`checkbox-${element.nome}`}
+                  checked={!!checkedItems[element.nome!]}
+                  onChange={(e) => {
+                    e.stopPropagation();
+                    setCheckedItems((prev) => ({
+                      ...prev,
+                      [element.nome!]: e.target.checked,
+                    }));
+
+                    if (e.target.checked) {
+                      //Conserva os elementos anteriores(..prev) e adiciona o novo
+                      setToDelete((prev) => [...prev, element.nome! as string]);
+                    } else {
+                      setToDelete((prev) =>
+                        prev.filter((item) => item !== element.nome),
+                      );
+                    }
+                  }}
+                  onClick={(e) => e.stopPropagation()}
+                />
+                <Link to={encodedURI}>
+                  <label
+                    htmlFor={`checkbox-${element.nome}`}
+                    className="checkbox-label"
+                  >
+                    <p>{element.nome}</p>
+                  </label>
+                </Link>
+              </div>
+            </span>
+          );
+        })}
+      </div>
+      <AddDelete
+        dimensao={dimensao}
+        activeTab={activeTab}
+        deleteElement={toDelete}
+      />
+    </div>
+  );
 };
