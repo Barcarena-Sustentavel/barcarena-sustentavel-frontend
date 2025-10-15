@@ -20,6 +20,28 @@ import {
   useSortable
 } from '@dnd-kit/sortable';
 import {CSS} from '@dnd-kit/utilities';
+
+ function SortableItem({id, children}: {id: number, children: React.ReactNode}) {
+  const {
+    attributes,
+    listeners,
+    setNodeRef,
+    transform,
+    transition,
+  } = useSortable({id});
+
+  const style = {
+    transform: CSS.Transform.toString(transform),
+    transition,
+  };
+
+  return (
+    <div ref={setNodeRef} style={style} {...attributes} {...listeners}>
+      {children}
+    </div>
+  );
+}
+
 export const TabContentComponent: FC<RenderContentInterface> = ({
   dimensao,
   activeTab,
@@ -126,31 +148,12 @@ export const TabContentComponent: FC<RenderContentInterface> = ({
     if (formDataArtigo.name !== "") getArtigoDimensao(dimensao as string);
   };
 
-  function SortableItem(id:number, children:React.ReactNode) {
-  const {
-    attributes,
-    listeners,
-    setNodeRef,
-    transform,
-    transition,
-  } = useSortable({id});
-
-  const style = {
-    transform: CSS.Transform.toString(transform),
-    transition,
-  };
-
-  return (
-    <div ref={setNodeRef} style={style} {...attributes} {...listeners}>
-      {children}
-    </div>
-  );
-}
 function handleDragEnd(event) {
     const {active, over} = event;
 
     if (active.id !== over.id) {
       setNomeIndicadores((items) => {
+        console.log(items)
         const oldIndex = items.indexOf(active.id);
         const newIndex = items.indexOf(over.id);
         
@@ -249,25 +252,33 @@ function handleDragEnd(event) {
       </div>
     );
   } else if (activeTab === "Indicadores") {
-    const indicadoresComPosicoes: Array<
-      Record<string, string | number | null>
-    > = [];
-    for (let i = 0; i < activeTabDict[activeTab].length; i++) {
-      indicadoresComPosicoes.splice(
-        activeTabDict[activeTab][i].posicao! as number,
-        0,
-        activeTabDict[activeTab][i],
-      );
-    }
-    setNomeIndicadores(indicadoresComPosicoes);
+    //console.log(nomeIndicadores)
+    // const indicadoresComPosicoes: Array<
+    //   Record<string, string | number | null>
+    // > = [];
+    // for (let i = 0; i < activeTabDict[activeTab].length; i++) {
+    //   indicadoresComPosicoes.splice(
+    //     activeTabDict[activeTab][i].posicao! as number,
+    //     0,
+    //     activeTabDict[activeTab][i],
+    //   );
+    // }
     return (
       <div>
-        <div>
+        {/* {<div>} */}
+        <DndContext 
+      collisionDetection={closestCenter}
+      onDragEnd={handleDragEnd}
+    ><SortableContext 
+        items={nomeIndicadores.map((item) => item.posicao as number)}
+        strategy={verticalListSortingStrategy}
+      >
           {activeTabDict[activeTab].map((element) => {
             const encodedURI = encodeURI(
               `/admin/dimensao/${dimensao}/update/${activeTab}/${element.nome}/`,
             );
             return (
+            <SortableItem key={element.posicao} id={element.posicao as number}>
               <span>
                 <div className="checkbox-link-container">
                   <input
@@ -305,9 +316,14 @@ function handleDragEnd(event) {
                   </Link>
                 </div>
               </span>
+                        </SortableItem>
+
             );
           })}
-        </div>
+                </SortableContext>
+
+        {/* {</div>} */}
+     </DndContext>
         <AddDelete
           dimensao={dimensao}
           activeTab={activeTab}
