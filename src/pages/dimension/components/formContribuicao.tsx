@@ -2,6 +2,9 @@ import { useState } from 'react';
 import { Contribuicao } from '../../../interfaces/contribuicao_interface.tsx';
 import { useContribuicao } from '../../../hooks/useContribuicao.ts';
 import Swal from 'sweetalert2';
+import ReCAPTCHA from "react-google-recaptcha";
+
+
 
 interface FormContribuicaoProps {
     dimensaoId: number;
@@ -18,12 +21,18 @@ const FormContribuicao: React.FC<FormContribuicaoProps> = ({ dimensaoId , formSt
     });
 
     const [isSubmitting, setIsSubmitting] = useState(false);
+    const [captchaValido, setCaptchaValido] = useState(false);
     const { submitContribuicao } = useContribuicao();
+    const SITE_KEY_RECAPTCHA = import.meta.env.SITE_KEY_RECAPTCHA;
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
         const { name, value } = e.target;
         setFormData(prev => ({ ...prev, [name]: value }));
     };
+    const onChangeRecaptcha = (value: string | null) => {
+        console.log("Token recebido:", value);
+        setCaptchaValido(!!value);
+    }
 
     const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         if (e.target.files && e.target.files[0]) {
@@ -133,6 +142,11 @@ const FormContribuicao: React.FC<FormContribuicaoProps> = ({ dimensaoId , formSt
                         name="file" 
                         id="file"
                         onChange={handleFileChange}
+                    />
+
+                    <ReCAPTCHA
+                        sitekey="6LflLu0rAAAAALfA0ds3sDVpsf8CRbY8gUmOJf5q"
+                        onChange={onChangeRecaptcha}
                     />
                     
                     <button type="submit" style={{
