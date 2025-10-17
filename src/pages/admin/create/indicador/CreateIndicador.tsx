@@ -11,7 +11,6 @@ import { Alert } from "react-bootstrap";
 
 import { DndContext, closestCorners, closestCenter, PointerSensor, useSensor, useSensors} from "@dnd-kit/core";
 import { SortableContext, verticalListSortingStrategy, useSortable, arrayMove } from "@dnd-kit/sortable";
-import { restrictToVerticalAxis, restrictToFirstScrollableAncestor, restrictToWindowEdges} from "@dnd-kit/modifiers";
 import { CSS } from "@dnd-kit/utilities";
 
 export const CreateIndicador: FC<{
@@ -153,7 +152,7 @@ export const CreateIndicador: FC<{
               descricaoGrafico: grafico.descricaoGrafico,
               tituloGrafico: grafico.tituloGrafico,
               tipoGrafico: grafico.tipoGrafico,
-              posicao: grafico.posicao ?? index
+              posicao: grafico.posicaoGrafico ?? index
             }));
 
 
@@ -259,6 +258,11 @@ export const CreateIndicador: FC<{
     }
 
     const view = [...graficosData].sort((a,b) => a.posicao - b.posicao);
+
+    view.forEach((element, index, array) => {
+      if(view[index].posicao != index)
+        view[index].posicao = index
+    });
 
     return (
       <DndContext sensors={sensors}
