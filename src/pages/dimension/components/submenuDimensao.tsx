@@ -15,7 +15,7 @@ const SubmenuDimensao: React.FC<SubmenuDimensaoProps> = ({ dimensaoAtiva }) => {
   const {
     dimensoesColumn1,
     dimensoesColumn2,
-    dimensoesCores12,
+    dimensoesCores123,
     dimensaoAumentaIcone,
   } = dimensoes.GetAllConst();
   const todasDimensoes = { ...dimensoesColumn1, ...dimensoesColumn2 };
@@ -24,7 +24,7 @@ const SubmenuDimensao: React.FC<SubmenuDimensaoProps> = ({ dimensaoAtiva }) => {
     <div
       className="submenu-dimensao d-flex flex-column align-items-center"
       style={{
-        backgroundColor: `var(--${dimensoesCores12[dimensaoAtiva || activeDimensionFromPath] || "default-color"})`,
+        backgroundColor: `var(--${dimensoesCores123[dimensaoAtiva || activeDimensionFromPath] || "default-color"})`,
       }}
     >
       <div className="cards-row d-flex flex-row justify-content-center flex-wrap">
@@ -32,7 +32,7 @@ const SubmenuDimensao: React.FC<SubmenuDimensaoProps> = ({ dimensaoAtiva }) => {
           const isAtiva =
             nomeDimensao === (dimensaoAtiva || activeDimensionFromPath);
           //const cor = dimensoes.dimensaoCores[nomeDimensao] || 'default-color';
-          const cor = dimensoesCores12[nomeDimensao] || "default-color";
+          const cor = dimensoesCores123[nomeDimensao] || "default-color";
           //const aumentaIcone = dimensoes.dimensaoAumentaIcone[nomeDimensao] || false;
           const aumentaIcone = dimensaoAumentaIcone[nomeDimensao] || false;
 

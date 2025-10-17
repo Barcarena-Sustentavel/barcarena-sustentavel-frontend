@@ -9,7 +9,7 @@ const DimensaoAdmin: FC = () => {
   const handleClick = (dimensao: string) => {
     navigate(`/admin/dimensao/${dimensao}/`);
   };
-  const { dimensoesColumn1, dimensoesColumn2, dimensoesCores12 } =
+  const { dimensoesColumn1, dimensoesColumn2, dimensoesCores123 } =
     dimensoes.GetAllConst();
 
   return (
@@ -24,13 +24,13 @@ const DimensaoAdmin: FC = () => {
               <div
                 className="dimensao-card"
                 style={{
-                  backgroundColor: `var(--${dimensoesCores12[key]})`,
+                  backgroundColor: `var(--${dimensoesCores123[key]})`,
                 }}
                 key={key}
               >
                 <button
                   style={{
-                    backgroundColor: `var(--${dimensoesCores12[key]})`,
+                    backgroundColor: `var(--${dimensoesCores123[key]})`,
                   }}
                   className="dimensao-button"
                   onClick={() => handleClick(key)}
@@ -52,14 +52,14 @@ const DimensaoAdmin: FC = () => {
             {Object.entries(dimensoesColumn2).map(([key, value]) => (
               <div
                 style={{
-                  backgroundColor: `var(--${dimensoesCores12[key]})`,
+                  backgroundColor: `var(--${dimensoesCores123[key]})`,
                 }}
                 className="dimensao-card"
                 key={key}
               >
                 <button
                   style={{
-                    backgroundColor: `var(--${dimensoesCores12[key]})`,
+                    backgroundColor: `var(--${dimensoesCores123[key]})`,
                   }}
                   className="dimensao-button"
                   onClick={() => handleClick(key)}

@@ -1,24 +1,23 @@
-import { Container, Row, Col } from 'react-bootstrap';
-import { 
-  Envelope, 
+import { Container, Row, Col } from "react-bootstrap";
+import {
+  Envelope,
   Telephone,
   Globe,
   Instagram,
-  ArrowUp 
-} from 'react-bootstrap-icons'; // Ícones do React-Bootstrap
+  ArrowUp,
+} from "react-bootstrap-icons"; // Ícones do React-Bootstrap
 
 // Importe as imagens (ajuste os caminhos conforme sua estrutura)
-import logo from '@assets/images/icons/Logo2.png';
-import hydroLogo from '@assets/images/icons/FundoDeSustentabilidadeHydro.png';
-import barcarenaLogo from '@assets/images/icons/IniciativaBarcarenaSustentavel.png';
-import ufpaLogo from '@assets/images/icons/logoUFPA.png';
-import '@assets/styles/tooplate-gotto-job.css'
-import './footer.css'
-import { color } from 'highcharts';
+import logo from "@assets/images/icons/Logo2.png";
+import hydroLogo from "@assets/images/icons/FundoDeSustentabilidadeHydro.png";
+import barcarenaLogo from "@assets/images/icons/IniciativaBarcarenaSustentavel.png";
+import ufpaLogo from "@assets/images/icons/logoUFPA.png";
+import "@assets/styles/tooplate-gotto-job.css";
+import "./footer.css";
 
 const Footer = () => {
   const scrollToTop = () => {
-    window.scrollTo({ top: 0, behavior: 'smooth' });
+    window.scrollTo({ top: 0, behavior: "smooth" });
   };
 
   return (
@@ -31,10 +30,10 @@ const Footer = () => {
             <Col lg={3} xs={6} className="mb-3">
               <h6 className="site-footer-title">Contato</h6>
               <div className="d-flex align-items-center mb-3">
-                <img 
-                  src={logo} 
-                  alt="Logo ODSB" 
-                  className="img-fluid logo-footer" 
+                <img
+                  src={logo}
+                  alt="Logo ODSB"
+                  className="img-fluid logo-footer"
                 />
               </div>
               <p className="mb-2">
@@ -45,7 +44,10 @@ const Footer = () => {
               </p>
               <p>
                 <Envelope className="custom-icon me-1" />
-                <a href="mailto:faleconosco@odsb.org" className="site-footer-link">
+                <a
+                  href="mailto:faleconosco@odsb.org"
+                  className="site-footer-link"
+                >
                   faleconosco@odsb.org
                 </a>
               </p>
@@ -54,15 +56,15 @@ const Footer = () => {
             {/* Coluna Realização */}
             <Col lg={3} xs={6} className="ms-lg-auto">
               <h6 className="site-footer-title">Realização</h6>
-              <a 
-                href="https://fundosustentabilidadehydro.org/" 
-                target="_blank" 
+              <a
+                href="https://fundosustentabilidadehydro.org/"
+                target="_blank"
                 rel="noopener noreferrer"
               >
-                <img 
-                  src={hydroLogo} 
-                  alt="Fundo de Sustentabilidade Hydro" 
-                  className="img-fluid" 
+                <img
+                  src={hydroLogo}
+                  alt="Fundo de Sustentabilidade Hydro"
+                  className="img-fluid"
                 />
               </a>
             </Col>
@@ -70,15 +72,15 @@ const Footer = () => {
             {/* Coluna Apoio */}
             <Col lg={3} xs={6}>
               <h6 className="site-footer-title">Apoio</h6>
-              <a 
-                href="https://www.barcarenasustentavel.org/" 
-                target="_blank" 
+              <a
+                href="https://www.barcarenasustentavel.org/"
+                target="_blank"
                 rel="noopener noreferrer"
               >
-                <img 
-                  src={barcarenaLogo} 
-                  alt="Iniciativa Barcarena Sustentável" 
-                  className="img-fluid" 
+                <img
+                  src={barcarenaLogo}
+                  alt="Iniciativa Barcarena Sustentável"
+                  className="img-fluid"
                 />
               </a>
             </Col>
@@ -86,15 +88,15 @@ const Footer = () => {
             {/* Coluna Execução */}
             <Col lg={3} xs={6} className="mt-3 mt-lg-0">
               <h6 className="site-footer-title">Execução</h6>
-              <a 
-                href="https://ufpa.br/" 
-                target="_blank" 
+              <a
+                href="https://ufpa.br/"
+                target="_blank"
                 rel="noopener noreferrer"
               >
-                <img 
-                  src={ufpaLogo} 
-                  alt="Universidade Federal do Pará" 
-                  className="img-fluid" 
+                <img
+                  src={ufpaLogo}
+                  alt="Universidade Federal do Pará"
+                  className="img-fluid"
                 />
               </a>
             </Col>
@@ -111,23 +113,33 @@ const Footer = () => {
               <p className="copyright-text mb-0">Copyright © ODSB 2024</p>
               <ul className="social-icon list-unstyled d-flex mb-0 ms-3">
                 <li className="social-icon-item mx-2">
-                  <a 
-                    href="https://portalbarcarena.com.br/" 
-                    target="_blank" 
+                  <a
+                    href="https://portalbarcarena.com.br/"
+                    target="_blank"
                     rel="noopener noreferrer"
                     className="social-icon-link"
-                    style={{display:"flex", flexDirection: "column", justifyContent: "center", alignItems: "center"}}
+                    style={{
+                      display: "flex",
+                      flexDirection: "column",
+                      justifyContent: "center",
+                      alignItems: "center",
+                    }}
                   >
                     <Globe />
                   </a>
                 </li>
                 <li className="social-icon-item mx-2">
-                  <a 
-                    href="https://www.instagram.com/portalbarcarena/" 
-                    target="_blank" 
+                  <a
+                    href="https://www.instagram.com/portalbarcarena/"
+                    target="_blank"
                     rel="noopener noreferrer"
                     className="social-icon-link"
-                    style={{display:"flex", flexDirection: "column", justifyContent: "center", alignItems: "center"}}
+                    style={{
+                      display: "flex",
+                      flexDirection: "column",
+                      justifyContent: "center",
+                      alignItems: "center",
+                    }}
                   >
                     <Instagram />
                   </a>
@@ -138,11 +150,11 @@ const Footer = () => {
             {/* Créditos */}
             <Col lg={1} className="mt-2 d-flex align-items-center mt-lg-0">
               <p className="mb-0">
-                Design: {' '}
-                <a 
-                  className="sponsored-link" 
-                  href="https://www.tooplate.com" 
-                  target="_blank" 
+                Design:{" "}
+                <a
+                  className="sponsored-link"
+                  href="https://www.tooplate.com"
+                  target="_blank"
                   rel="noopener noreferrer"
                 >
                   ODSB
@@ -152,15 +164,15 @@ const Footer = () => {
 
             {/* Botão Voltar ao Topo */}
             <Col lg={3}>
-                <button
-                  onClick={scrollToTop}
-                  className="bg-color-secondary-green back-top-icon d-flex justify-content-center align-items-center border-0"
-                  aria-label="Voltar ao topo"
-                >
-                  <div>
-                    <ArrowUp/>
-                  </div>
-                </button>
+              <button
+                onClick={scrollToTop}
+                className="bg-color-secondary-green back-top-icon d-flex justify-content-center align-items-center border-0"
+                aria-label="Voltar ao topo"
+              >
+                <div>
+                  <ArrowUp />
+                </div>
+              </button>
             </Col>
           </Row>
         </Container>

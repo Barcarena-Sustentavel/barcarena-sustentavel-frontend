@@ -7,7 +7,7 @@ import dimensoes from "../../../utils/const.tsx";
 const DimensaoPageComponent: FC = () => {
   const { dimensao } = useParams();
   const [activeTab, setActiveTab] = useState<string>("Dimensão");
-  const { dimensoesColumn1, dimensoesColumn2, dimensoesCores12 } =
+  const { dimensoesColumn1, dimensoesColumn2, dimensoesCores123 } =
     dimensoes.GetAllConst();
   const dimensoesColumn12 = {
     ...dimensoesColumn1,
@@ -24,7 +24,7 @@ const DimensaoPageComponent: FC = () => {
     <div className="home-container">
       <div
         style={{
-          backgroundColor: `var(--${dimensoesCores12[dimensao!]})`,
+          backgroundColor: `var(--${dimensoesCores123[dimensao!]})`,
         }}
         className="admin-header-dimensao-page"
       >

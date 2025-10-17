@@ -12,7 +12,10 @@
 #dimensoes {
     padding: 10% 0 10% 0;
 }
-  
+.col-30 {
+  flex: 0 0 30%;
+  max-width: 30%;
+}
 .dimensao-item {
   background-color: #f8f9fa;
   border-radius: 8px;

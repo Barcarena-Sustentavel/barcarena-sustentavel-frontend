@@ -2,7 +2,7 @@ import { FC, useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { Referencia } from "../../interfaces/referencia_interface.tsx";
 import { Dimensao } from "../../interfaces/dimensao_interface.tsx";
-//import { EstudoComplementar } from "../../interfaces/estudo_complementar_interface.tsx";
+import { EstudoComplementar } from "../../interfaces/estudo_complementar_interface.tsx";
 import NavbarComponent from "../../components/layout/navbar/navbar.tsx";
 import "@assets/styles/index.css";
 import "./dimensao.css";
@@ -117,7 +117,7 @@ const DimensaoComponent: FC = () => {
     });
     //}
   }, [url, dimensao, botaoConectividade]);
-
+  console.log(estudosComplementares.length);
   return (
     <div className="home-container">
       <NavbarComponent />

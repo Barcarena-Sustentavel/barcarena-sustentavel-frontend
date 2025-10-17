@@ -12,32 +12,33 @@ import {
   updateArtigoDimensao,
   deleteArtigoDimensao,
 } from "../create/artigo/crudArtigo.tsx";
-import {DndContext, closestCenter} from '@dnd-kit/core';
+import { DndContext, closestCenter } from "@dnd-kit/core";
 import {
   SortableContext,
   arrayMove,
   verticalListSortingStrategy,
-  useSortable
-} from '@dnd-kit/sortable';
-import {CSS} from '@dnd-kit/utilities';
+  useSortable,
+} from "@dnd-kit/sortable";
+import { CSS } from "@dnd-kit/utilities";
 
- function SortableItem({id, children}: {id: number, children: React.ReactNode}) {
-  const {
-    attributes,
-    listeners,
-    setNodeRef,
-    transform,
-    transition,
-  } = useSortable({id});
-
+const SortableItem:FC<{
+  id: number;
+  children: (props: { dragHandleProps: any }) => React.ReactNode;//React.ReactNode;
+  //dragHandleProps?: any;
+}> = ({
+  id,
+  children,
+  //dragHandleProps,
+}) =>{
+  const { setNodeRef, transform, transition, attributes, listeners } = useSortable({ id });
   const style = {
     transform: CSS.Transform.toString(transform),
     transition,
   };
-
+  const dragHandleProps = { ...attributes, ...listeners };
   return (
-    <div ref={setNodeRef} style={style} {...attributes} {...listeners}>
-      {children}
+    <div ref={setNodeRef} style={style}>
+      {children({ dragHandleProps })}
     </div>
   );
 }
@@ -148,20 +149,19 @@ export const TabContentComponent: FC<RenderContentInterface> = ({
     if (formDataArtigo.name !== "") getArtigoDimensao(dimensao as string);
   };
 
-function handleDragEnd(event) {
-    const {active, over} = event;
+  const handleDragEnd = (event:any) => {
+    const { active, over } = event;
 
     if (active.id !== over.id) {
       setNomeIndicadores((items) => {
-        console.log(items)
-        const oldIndex = items.indexOf(active.id);
-        const newIndex = items.indexOf(over.id);
-        
+        const oldIndex = items.findIndex((item) => item.posicao === active.id);
+        const newIndex = items.findIndex((item) => item.posicao === over.id);
+
         // arrayMove é um helper que reordena o array
         return arrayMove(items, oldIndex, newIndex);
       });
     }
-}
+  }
   useEffect(() => {
     api
       .get(url)
@@ -252,78 +252,79 @@ function handleDragEnd(event) {
       </div>
     );
   } else if (activeTab === "Indicadores") {
-    //console.log(nomeIndicadores)
-    // const indicadoresComPosicoes: Array<
-    //   Record<string, string | number | null>
-    // > = [];
-    // for (let i = 0; i < activeTabDict[activeTab].length; i++) {
-    //   indicadoresComPosicoes.splice(
-    //     activeTabDict[activeTab][i].posicao! as number,
-    //     0,
-    //     activeTabDict[activeTab][i],
-    //   );
-    // }
     return (
       <div>
         {/* {<div>} */}
-        <DndContext 
-      collisionDetection={closestCenter}
-      onDragEnd={handleDragEnd}
-    ><SortableContext 
-        items={nomeIndicadores.map((item) => item.posicao as number)}
-        strategy={verticalListSortingStrategy}
-      >
-          {activeTabDict[activeTab].map((element) => {
-            const encodedURI = encodeURI(
-              `/admin/dimensao/${dimensao}/update/${activeTab}/${element.nome}/`,
-            );
-            return (
-            <SortableItem key={element.posicao} id={element.posicao as number}>
-              <span>
-                <div className="checkbox-link-container">
-                  <input
-                    type="checkbox"
-                    id={`checkbox-${element.nome}`}
-                    checked={!!checkedItems[element.nome!]}
-                    onChange={(e) => {
-                      e.stopPropagation();
-                      setCheckedItems((prev) => ({
-                        ...prev,
-                        [element.nome!]: e.target.checked,
-                      }));
+        <DndContext
+          collisionDetection={closestCenter}
+          onDragEnd={handleDragEnd}
+        >
+          <SortableContext
+            items={nomeIndicadores.map((item) => item.posicao as number)}
+            strategy={verticalListSortingStrategy}
+          >
+            {nomeIndicadores.map((element) => {
+              console.log(element.posicao);
+              //const { attributes, listeners } = useSortable({ id: element.posicao as number });
+              const encodedURI = encodeURI(
+                `/admin/dimensao/${dimensao}/update/${activeTab}/${element.nome}/`,
+              );
+              return (
+                <SortableItem
+                  key={element.posicao}
+                  id={element.posicao as number}
+                  //dragHandleProps={{ ...attributes, ...listeners }}
+                >
+                  {(props) => (<div><span className="d-flex align-items-center">
+                    <div className="checkbox-link-container">
+                      <input
+                        type="checkbox"
+                        id={`checkbox-${element.nome}`}
+                        checked={!!checkedItems[element.nome!]}
+                        onChange={(e) => {
+                          e.stopPropagation();
+                          setCheckedItems((prev) => ({
+                            ...prev,
+                            [element.nome!]: e.target.checked,
+                          }));
 
-                      if (e.target.checked) {
-                        //Conserva os elementos anteriores(..prev) e adiciona o novo
-                        setToDelete((prev) => [
-                          ...prev,
-                          element.nome! as string,
-                        ]);
-                      } else {
-                        setToDelete((prev) =>
-                          prev.filter((item) => item !== element.nome),
-                        );
-                      }
-                    }}
-                    onClick={(e) => e.stopPropagation()}
-                  />
-                  <Link to={encodedURI}>
-                    <label
-                      htmlFor={`checkbox-${element.nome}`}
-                      className="checkbox-label"
-                    >
-                      <p>{element.nome}</p>
-                    </label>
-                  </Link>
-                </div>
-              </span>
-                        </SortableItem>
-
-            );
-          })}
-                </SortableContext>
-
-        {/* {</div>} */}
-     </DndContext>
+                          if (e.target.checked) {
+                            //Conserva os elementos anteriores(..prev) e adiciona o novo
+                            setToDelete((prev) => [
+                              ...prev,
+                              element.nome! as string,
+                            ]);
+                          } else {
+                            setToDelete((prev) =>
+                              prev.filter((item) => item !== element.nome),
+                            );
+                          }
+                        }}
+                        onClick={(e) => e.stopPropagation()}
+                      />
+                      <Link to={encodedURI}>
+                        <label
+                          htmlFor={`checkbox-${element.nome}`}
+                          className="checkbox-label"
+                        >
+                          <p>{element.nome}</p>
+                        </label>
+                      </Link>
+                    </div>  
+                    <span
+            {...(props.dragHandleProps || {})}
+          style={{ cursor: "grab", marginRight: 8 }}
+          aria-label="Arrastar"
+        >
+          ☰
+        </span>   
+                  </span>
+                  </div>)}
+                </SortableItem>
+              );
+            })}
+          </SortableContext>
+        </DndContext>
         <AddDelete
           dimensao={dimensao}
           activeTab={activeTab}
