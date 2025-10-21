@@ -9,6 +9,11 @@ import dimensoes from "../../../../utils/const.tsx";
 import "../../css/dimensaoPage.css";
 import { Alert } from "react-bootstrap";
 
+import { DndContext, closestCorners, closestCenter, PointerSensor, useSensor, useSensors} from "@dnd-kit/core";
+import { SortableContext, verticalListSortingStrategy, useSortable, arrayMove } from "@dnd-kit/sortable";
+import { restrictToVerticalAxis, restrictToFirstScrollableAncestor, restrictToWindowEdges} from "@dnd-kit/modifiers";
+import { CSS } from "@dnd-kit/utilities";
+
 export const CreateIndicador: FC<{
   dimensao: string | undefined;
   indicadorNome: string | undefined;
@@ -139,15 +144,18 @@ export const CreateIndicador: FC<{
         .then((response) => {
           setIndicadorAntigo(response.data.nome);
           arrayIndicadorResponse.length = 0;
+          console.log(response.data.graficos);
 
           const graficosFromApi: GraficosIndicador[] =
-            response.data.graficos.map((grafico: any) => ({
+            response.data.graficos.map((grafico: any, index: any) => ({
               id: grafico.id,
               arquivo: grafico.path,
               descricaoGrafico: grafico.descricaoGrafico,
               tituloGrafico: grafico.tituloGrafico,
               tipoGrafico: grafico.tipoGrafico,
+              posicao: grafico.posicao ?? index
             }));
+
 
           setGraficosData(graficosFromApi);
 
@@ -164,6 +172,10 @@ export const CreateIndicador: FC<{
     }
   }, [url, indicadorNome, arrayIndicadorResponse]);
 
+  useEffect(() => {
+    console.log(graficosData);
+  }, [graficosData, ]);
+
   const addGrafico = (e: React.MouseEvent) => {
     e.preventDefault();
 
@@ -173,6 +185,7 @@ export const CreateIndicador: FC<{
       descricaoGrafico: "",
       tituloGrafico: "",
       tipoGrafico: "",
+      posicao: graficosData.length
     };
 
     setGraficosData((prev) => [...prev, novoGrafico]);
@@ -180,6 +193,7 @@ export const CreateIndicador: FC<{
   };
 
   const updateGrafico = (index: number, updatedGrafico: GraficosIndicador) => {
+    console.log(graficosData);
     setGraficosData((prev) =>
       prev.map((grafico, i) => (i === index ? updatedGrafico : grafico)),
     );
@@ -201,6 +215,91 @@ export const CreateIndicador: FC<{
     // Remover do array de deleção se estiver lá
     setDeleteArray((prev) => prev.filter((g) => g.id !== grafico.id));
   };
+
+  function SortableGrafico({
+    id, 
+    children
+  }: { id: string; children: React.ReactNode }) {
+    const {attributes, listeners, setNodeRef, transform, transition} = useSortable({id});
+    const style = { transform: CSS.Transform.toString(transform), transition };
+    return (
+      <div ref={setNodeRef} style={style} {...attributes}>
+        <button type="button" {...listeners} style={{ cursor: "grab", marginRight: 8 }}>⠿</button>
+      {children}
+      </div>
+        // { children })
+    );
+
+  }
+
+  function SortableList() {
+    function normalizarPosicoes(arr: GraficosIndicador[]) {
+      return arr.map((grafico: GraficosIndicador, index: number) => ({
+        ...grafico,
+        posicao: index,
+      }));
+    }
+
+    const sensors = useSensors(useSensor(PointerSensor, { activationConstraint: { distance: 8 } }));
+
+    function onDragEnd(event: any) {
+      const { active, over } = event;
+      if (!over || active.id === over.id) return;
+
+      setGraficosData((prev) => {
+        const ordenados = [...prev].sort((a,b) => a.posicao - b.posicao);
+        const oldIndex = ordenados.findIndex(x => x.id.toString() === active.id);
+        const newIndex = ordenados.findIndex(y => y.id.toString() === over.id);
+        // console.log(typeof(oldIndex));
+        const movidos = arrayMove(ordenados, oldIndex, newIndex);
+        console.log(normalizarPosicoes(movidos));
+        return normalizarPosicoes(movidos);       // ✅ atualiza posicao
+          });
+        console.log(graficosData);
+    }
+
+    const view = [...graficosData].sort((a,b) => a.posicao - b.posicao);
+
+    return (
+      <DndContext sensors={sensors}
+        collisionDetection={closestCenter}
+        //  modifiers={[
+          // restrictToVerticalAxis,            // só vertical
+        //   restrictToFirstScrollableAncestor, // usa o 1º contêiner rolável, não o body
+        //   restrictToWindowEdges,             // não sai da janela
+        // ]}
+        onDragEnd={onDragEnd}>
+        <SortableContext items={graficosData.map((i) => i.id.toString())} strategy={verticalListSortingStrategy}>
+          <div style={{ display: "grid", gap: 8 }}>
+            {view.map((grafico, index) => (
+              // <SortableItem key={i.id} id={i.id}>
+              //   {i.label}
+              // </SortableItem>
+              <SortableGrafico id={grafico.id.toString()}>
+                <div
+                  key={grafico.id || `new-${index}`}
+                  className="grafico-component"
+                >
+                  
+                  <h3>Gráfico {index + 1}</h3>
+                  <GraficoComponent
+                    chaveValorGraficos={chaveValorGraficos}
+                    grafico={grafico}
+                    arrayIndicadorResponse={arrayIndicadorResponse}
+                    setDeleteArray={setDeleteArray}
+                    onUpdate={(updatedGrafico) =>
+                      updateGrafico(index, updatedGrafico)
+                    }
+                    onDelete={() => deleteSingleGrafico(grafico)}
+                  />
+                </div>
+              </SortableGrafico>
+            ))}
+          </div>
+        </SortableContext>
+      </DndContext>
+    );
+  }
 
   return (
     <div className="create-indicador-container">
@@ -245,7 +344,7 @@ export const CreateIndicador: FC<{
 
         <h3>Gráficos</h3>
         <div id="graficos">
-          {graficosData.map((grafico, index) => (
+          {/* {graficosData.map((grafico, index) => (
             <div
               key={grafico.id || `new-${index}`}
               className="grafico-component"
@@ -262,7 +361,8 @@ export const CreateIndicador: FC<{
                 onDelete={() => deleteSingleGrafico(grafico)}
               />
             </div>
-          ))}
+            ))} */}
+            <SortableList />
 
           {msgsErrorGrafico.length > 0 &&
             msgsErrorGrafico.map((mensagem, index) => (

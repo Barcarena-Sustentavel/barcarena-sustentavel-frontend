@@ -23,12 +23,10 @@ import { CSS } from "@dnd-kit/utilities";
 
 const SortableItem:FC<{
   id: number;
-  children: (props: { dragHandleProps: any }) => React.ReactNode;//React.ReactNode;
-  //dragHandleProps?: any;
+  children: (props: { dragHandleProps: any }) => React.ReactNode;
 }> = ({
   id,
   children,
-  //dragHandleProps,
 }) =>{
   const { setNodeRef, transform, transition, attributes, listeners } = useSortable({ id });
   const style = {
@@ -154,11 +152,17 @@ export const TabContentComponent: FC<RenderContentInterface> = ({
 
     if (active.id !== over.id) {
       setNomeIndicadores((items) => {
-        const oldIndex = items.findIndex((item) => item.posicao === active.id);
-        const newIndex = items.findIndex((item) => item.posicao === over.id);
+        const oldIndex = items.find((item) => item.posicao === active.id)
+        const newIndex = items.find((item) => item.posicao === over.id);
+        //const handleOldIndex = oldIndex?.posicao as number;
+        api.patch(`/admin/dimensoes/${dimensao}/indicador/trocar_posicao`, {
+          indicador1: oldIndex,
+          indicador2: newIndex,
+        });
+        //items[items.indexOf(oldIndex!)].posicao = newIndex!.posicao;
+        //items[items.indexOf(newIndex!)].posicao = handleOldIndex;
 
-        // arrayMove é um helper que reordena o array
-        return arrayMove(items, oldIndex, newIndex);
+        return arrayMove(items, items.findIndex((item) => item === oldIndex), items.findIndex((item) => item === newIndex));
       });
     }
   }
@@ -167,7 +171,8 @@ export const TabContentComponent: FC<RenderContentInterface> = ({
       .get(url)
       .then((response) => {
         setDimensao(response.data.dimensao);
-        setNomeIndicadores(response.data.indicadores || []);
+        setNomeIndicadores(response.data.indicadores.sort((item1:any, item2:any) => item1.posicao as number - item2.posicao as number) || []);
+        //setNomeIndicadores(response.data.indicadores || []);
         setNomeReferencias(response.data.referencias || []);
         setNomeContribuicoes(response.data.contribuicoes || []);
         if (response.data.artigo != "") {
@@ -189,6 +194,7 @@ export const TabContentComponent: FC<RenderContentInterface> = ({
       });
   }, [url, dimensao]);
 
+  console.log(nomeIndicadores);
   if (activeTab === "Dimensão") {
     return (
       <div className="admin-forms">
@@ -264,8 +270,6 @@ export const TabContentComponent: FC<RenderContentInterface> = ({
             strategy={verticalListSortingStrategy}
           >
             {nomeIndicadores.map((element) => {
-              console.log(element.posicao);
-              //const { attributes, listeners } = useSortable({ id: element.posicao as number });
               const encodedURI = encodeURI(
                 `/admin/dimensao/${dimensao}/update/${activeTab}/${element.nome}/`,
               );
@@ -273,9 +277,9 @@ export const TabContentComponent: FC<RenderContentInterface> = ({
                 <SortableItem
                   key={element.posicao}
                   id={element.posicao as number}
-                  //dragHandleProps={{ ...attributes, ...listeners }}
                 >
-                  {(props) => (<div><span className="d-flex align-items-center">
+                  {(props) => (
+                  <div><span className="d-flex align-items-center justify-content-between">
                     <div className="checkbox-link-container">
                       <input
                         type="checkbox"

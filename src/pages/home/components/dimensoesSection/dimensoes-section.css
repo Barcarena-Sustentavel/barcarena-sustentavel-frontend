@@ -45,6 +45,10 @@
   background-color: #f0f0f0;
 }
 
+.dimensao-item:hover p {
+  color: white;
+}
+
 .dimensao-item p {
   margin: 0;
   font-weight: 500;
