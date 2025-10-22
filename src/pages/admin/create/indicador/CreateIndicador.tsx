@@ -9,7 +9,11 @@ import dimensoes from "../../../../utils/const.tsx";
 import "../../css/dimensaoPage.css";
 import { Alert } from "react-bootstrap";
 
+<<<<<<< Updated upstream
 import { DndContext, closestCorners, closestCenter, PointerSensor, useSensor, useSensors} from "@dnd-kit/core";
+=======
+import { DndContext, closestCorners, closestCenter, PointerSensor, useSensor, useSensors, pointerWithin} from "@dnd-kit/core";
+>>>>>>> Stashed changes
 import { SortableContext, verticalListSortingStrategy, useSortable, arrayMove } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
 
@@ -266,7 +270,11 @@ export const CreateIndicador: FC<{
 
     return (
       <DndContext sensors={sensors}
+<<<<<<< Updated upstream
         collisionDetection={closestCenter}
+=======
+        collisionDetection={pointerWithin}
+>>>>>>> Stashed changes
         //  modifiers={[
           // restrictToVerticalAxis,            // só vertical
         //   restrictToFirstScrollableAncestor, // usa o 1º contêiner rolável, não o body
