@@ -24,7 +24,11 @@ const IndicadorComponent: FC = () => {
     api
       .get(url)
       .then((response) => {
-        //console.log(response.request);
+        console.log(response.request);
+        setIndicadorJson( (prev) => {
+          const responseData = response.data;
+          return responseData.graficos.sort((a: any, b: any) => a.posicao - b.posicao);
+        });
         setIndicadorJson(response.data);
         setLoading(false);
       })
@@ -89,35 +93,35 @@ const IndicadorComponent: FC = () => {
         ) : (
           <div className="graficos-container">
             {indicadorJson.graficos.length > 0 ? (
-  indicadorJson.graficos.map((grafico: DadosGrafico, index) => (
-    <div className="grafico-card" key={index}>
-      <div className="grafico-content">
-        <div className="dashboard-container">
-          <DashboardComponent
-            tipoGrafico={grafico.tipoGrafico}
-            dados={grafico.dados}
-            colunas={grafico.colunas}
-            tituloGrafico={grafico.tituloGrafico}
-            categorias={grafico.categoria}
-          />
-        </div>
-        {grafico.descricaoGrafico && (
-          <div className="grafico-description">
-            <p>{grafico.descricaoGrafico}</p>
-          </div>
-        )}
-        <div className="grafico-download">
-          <button 
-            className="download-btn"
-            onClick={() => handleDownloadCSV(grafico)}
-          >
-            Baixar dados (CSV)
-          </button>
-        </div>
-      </div>
-    </div>
-  ))
-) : (
+              indicadorJson.graficos.map((grafico: DadosGrafico, index) => (
+                <div className="grafico-card" key={index}>
+                  <div className="grafico-content">
+                    <div className="dashboard-container">
+                      <DashboardComponent
+                        tipoGrafico={grafico.tipoGrafico}
+                        dados={grafico.dados}
+                        colunas={grafico.colunas}
+                        tituloGrafico={grafico.tituloGrafico}
+                        categorias={grafico.categoria}
+                      />
+                    </div>
+                    {grafico.descricaoGrafico && (
+                      <div className="grafico-description">
+                        <p>{grafico.descricaoGrafico}</p>
+                      </div>
+                    )}
+                    <div className="grafico-download">
+                      <button 
+                        className="download-btn"
+                        onClick={() => handleDownloadCSV(grafico)}
+                      >
+                        Baixar dados (CSV)
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              ))
+          ) : (
 
               <div className="no-data">
                 <h3>Nenhum gráfico disponível para este indicador</h3>

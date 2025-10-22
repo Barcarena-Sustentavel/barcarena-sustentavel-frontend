@@ -22,11 +22,11 @@ export interface DadosGrafico{
     dados: number[][],
     colunas: string[], 
     categoria: string[] | number[]
+    posicao: number
 }
 
 export interface IndicadorDadosGrafico extends Indicador{
     graficos: DadosGrafico[]
 }
-
 
 

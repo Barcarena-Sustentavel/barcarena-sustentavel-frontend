@@ -1,6 +1,5 @@
 import api from '../api.tsx';
 import axios from 'axios';
-import emailjs from "@emailjs/browser";
 import { useLocation } from "react-router-dom";
 
 interface SubmitContribuicaoParams {
@@ -10,35 +9,9 @@ interface SubmitContribuicaoParams {
 }
 
 export const useContribuicao = () => {
-  async function enviarEmail(form: FormData){
-    
-    const SERVICE_ID = import.meta.env.VITE_EMAILJS_SERVICE_ID;
-    const TEMPLATE_ID = import.meta.env.VITE_EMAILJS_TEMPLATE_ID;
-    const PUBLIC_KEY = import.meta.env.VITE_EMAILJS_PUBLIC_KEY;
-
-    const formParameters = {
-      nome: form.get('nome'),
-      email: form.get('email'),
-      telefone: form.get('telefone'),
-      comentario: form.get('comentario')
-    }
-
-    try{
-      const resultado = await emailjs.send(
-      SERVICE_ID, TEMPLATE_ID, formParameters, {publicKey: PUBLIC_KEY}
-      );
-
-      alert("E-mail enviado com sucesso!");
-    } catch (err) {
-      console.error("Erro:", err);
-      alert("Erro ao enviar a mensagem.");
-    }
-    
-  }
+  const pathAtual = useLocation().pathname;
 
   function getPathAtual(){
-    const pathAtual = useLocation().pathname;
-
     // retira acentos da string do path atual
     return pathAtual.normalize("NFD").replace(/[\u0300-\u036f]/g, "");
   }
@@ -49,13 +22,11 @@ export const useContribuicao = () => {
     onError 
   }: SubmitContribuicaoParams) => {
     try {
-      console.log(getPathAtual());
-      await api.post(`/dimensoes/contribuicao/${getPathAtual()}/`, formData, {
+      await api.post(`/dimensoes/contribuicao${getPathAtual()}/`, formData, {
         headers: {
           'Content-Type': 'multipart/form-data',
         }
       });
-      // enviarEmail(formData);
       onSuccess?.();
     } catch (error) {
         let userFriendlyMessage = 'Não foi possível enviar sua contribuição';
