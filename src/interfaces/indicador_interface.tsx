@@ -3,11 +3,12 @@ export interface Indicador{
 }
 
 export interface GraficosIndicador{
-    id: number | null,
+    id: number,
     arquivo: File //| string, //| null
     descricaoGrafico: string, //| null,
     tituloGrafico: string, //| undefined,
     tipoGrafico: string //| undefined
+    posicao: number
 }
 
 export interface IndicadorResponse{
@@ -21,11 +22,11 @@ export interface DadosGrafico{
     dados: number[][],
     colunas: string[], 
     categoria: string[] | number[]
+    posicao: number
 }
 
 export interface IndicadorDadosGrafico extends Indicador{
     graficos: DadosGrafico[]
 }
-
 
 

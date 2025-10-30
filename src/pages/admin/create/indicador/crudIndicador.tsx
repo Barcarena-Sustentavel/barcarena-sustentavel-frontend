@@ -22,6 +22,7 @@ export const postIndicador = async (
       formData.append("descricaoGrafico", arrayGrafico[i].descricaoGrafico);
       formData.append("tituloGrafico", arrayGrafico[i].tituloGrafico);
       formData.append("tipoGrafico", arrayGrafico[i].tipoGrafico);
+      formData.append("posicaoGrafico", arrayGrafico[i].posicao.toString());
       console.log(formData);
       await fetch(endpoint, {
         method: "POST",
@@ -57,31 +58,23 @@ export const patchIndicador = async (
   arrayGrafico: GraficosIndicador[],
 ) => {
   const indicador: Indicador = {
-    nome: "",
+    nome: novoIndicador,
   };
 
   try {
     const novoIndicadorBool: boolean = novoIndicador !== antigoIndicador;
     if (novoIndicadorBool) {
       indicador.nome = novoIndicador;
-      // modificação: parâmetro novoIndicador enviado com query por compatibilidade com o back-end
       const response_dimensao = await api.put(
-       `/admin/dimensoes/${dimensao}/indicador/${encodeURIComponent(antigoIndicador)}/?indicadorNovo=${encodeURIComponent(novoIndicador)}`,
-      //  { indicadorNovo: novoIndicador ,
-      //  },
+        `/admin/dimensoes/${dimensao}/indicador/${encodeURIComponent(antigoIndicador)}/?indicadorNovo=${encodeURIComponent(novoIndicador)}`,
       );
       const formData = new FormData();
       const endpoint_anexo = `/api/admin/dimensoes/${dimensao}/indicador/${encodeURIComponent(novoIndicador)}/`;
       formData.append("indicadorNovo", novoIndicador);
       const response_anexo = await fetch(endpoint_anexo, {
         method: "PUT",
-        headers: {
-          "Content-Type": "application/json",
-          Accept: "application/json",
-        },
         body: formData,
-      }
-      ).catch((error) => {
+      }).catch((error) => {
         console.log(error);
       });
       if (response_anexo.status === 200) {
@@ -90,26 +83,38 @@ export const patchIndicador = async (
     } else {
       indicador.nome = antigoIndicador;
     }
-    const formData = new FormData();
-    for (let i = 0; i < arrayGrafico.length; i++) {
-      const endpoit =
-        arrayGrafico[i].id != null
-          ? `/api/admin/dimensoes/${dimensao}/indicador/${indicador.nome}/anexos/${arrayGrafico[i].id}/`
-          : `/api/admin/dimensoes/${dimensao}/indicador/${indicador.nome}/anexos/`;
-      console.log(arrayGrafico[i].arquivo.size);
-      if (arrayGrafico[i].arquivo.size !== undefined) {
-        formData.append("grafico", arrayGrafico[i].arquivo);
+
+    //Anexos
+    if (arrayGrafico.length > 0) {
+      const formData = new FormData();
+      for (let i = 0; i < arrayGrafico.length; i++) {
+        //const endpoit =
+        //  arrayGrafico[i].id != null
+        //    ? `/api/admin/dimensoes/${dimensao}/indicador/${indicador.nome}/anexos/${arrayGrafico[i].id}/`
+        //    : `/api/admin/dimensoes/${dimensao}/indicador/${indicador.nome}/anexos/`;
+        console.log(arrayGrafico[i].arquivo.size);
+        if (arrayGrafico[i].arquivo.size !== undefined) {
+          formData.append("grafico", arrayGrafico[i].arquivo);
+        }
+        formData.append("descricaoGrafico", arrayGrafico[i].descricaoGrafico);
+        formData.append("tituloGrafico", arrayGrafico[i].tituloGrafico);
+        formData.append("tipoGrafico", arrayGrafico[i].tipoGrafico);
+        formData.append("posicaoGrafico", arrayGrafico[i].posicao.toString());
+        const method: string =
+          arrayGrafico[i].id! < 0 || arrayGrafico[i].id! === null
+            ? "POST"
+            : "PATCH";
+        const endpoit =
+          method === "PATCH"
+            ? `/api/admin/dimensoes/${dimensao}/indicador/${indicador.nome}/anexos/${arrayGrafico[i].id}/`
+            : `/api/admin/dimensoes/${dimensao}/indicador/${indicador.nome}/anexos/`;
+        await fetch(endpoit, {
+          method: method, //arrayGrafico[i].id != null ? "PATCH" : "POST",
+          body: formData,
+        }).catch((error) => {
+          console.log(error);
+        });
       }
-      formData.append("descricaoGrafico", arrayGrafico[i].descricaoGrafico);
-      formData.append("tituloGrafico", arrayGrafico[i].tituloGrafico);
-      formData.append("tipoGrafico", arrayGrafico[i].tipoGrafico);
-      console.log(formData);
-      await fetch(endpoit, {
-        method: arrayGrafico[i].id != null ? "PATCH" : "POST",
-        body: formData,
-      }).catch((error) => {
-        console.log(error);
-      });
     }
     await Swal.fire({
       title: "Sucesso!",

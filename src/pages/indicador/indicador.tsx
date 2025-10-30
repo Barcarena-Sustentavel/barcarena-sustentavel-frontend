@@ -26,6 +26,11 @@ const IndicadorComponent: FC = () => {
     api
       .get(url)
       .then((response) => {
+        console.log(response.request);
+        setIndicadorJson( (prev) => {
+          const responseData = response.data;
+          return responseData.graficos.sort((a: any, b: any) => a.posicao - b.posicao);
+        });
         setIndicadorJson(response.data);
         setLoading(false);
       })
@@ -37,14 +42,22 @@ const IndicadorComponent: FC = () => {
 
   const handleDownloadCSV = (grafico: DadosGrafico) => {
     let csvContent = grafico.colunas.join(",") + "\n";
+    csvContent = "Ano," + csvContent;
+    let categoria;
+    let row = "";
 
-    grafico.dados.forEach((row, rowIndex) => {
-      const rowData = row.map(value => String(value));
-      if (grafico.categoria && grafico.categoria.length > rowIndex) {
-        csvContent += `${grafico.categoria[rowIndex]},${rowData.join(",")}\n`;
-      } else {
-        csvContent += rowData.join(",") + "\n";
+    //Adicionando outras linhas com os dados do gráfico
+    //fix: agora os dados da tabela são transpostos para o csv de maneira correta
+    grafico.dados[0].forEach((row, rowIndex) => {
+      categoria = grafico.categoria[rowIndex];
+      csvContent += categoria;
+
+      for(let columnIndex = 0; columnIndex <  grafico.dados.length; columnIndex++){
+        csvContent += "," + grafico.dados[columnIndex][rowIndex];
       }
+
+      csvContent += "\n";
+
     });
 
     const blob = new Blob([csvContent], { type: "text/csv;charset=utf-8" });
@@ -112,7 +125,8 @@ const IndicadorComponent: FC = () => {
                   </div>
                 </div>
               ))
-            ) : (
+          ) : (
+
               <div className="no-data">
                 <h3>Nenhum gráfico disponível para este indicador</h3>
                 <p>Novos dados serão adicionados em breve.</p>
