@@ -9,6 +9,7 @@ import api from "../../api.tsx";
 import Footer from "../../components/layout/footer/footer.tsx";
 import SubmenuDimensao from "./components/submenuDimensao.tsx";
 import FormContribuicao from "./components/formContribuicao.tsx";
+import BackButton from "../../components/layout/backButton/backButton.tsx";
 const NODE_ENV = import.meta.env.VITE_NODE_ENV;
 
 const DimensaoComponent: FC = () => {
@@ -86,6 +87,7 @@ const DimensaoComponent: FC = () => {
     <div className="home-container">
       <NavbarComponent />
       <SubmenuDimensao dimensaoAtiva={dimensaoJson?.nome || ""} />
+      <BackButton />
       <div className="container dimension-details-container">
         <h1>{dimensaoJson?.nome}</h1>
         <div className="descricao">
