@@ -2,14 +2,15 @@
 FROM nginx:stable-alpine
 # Copia a configuração personalizada do Nginx (opcional)
 COPY nginx.conf /etc/nginx/nginx.conf
-#RUN mkdir -p /etc/nginx/certbot/
 # Remove arquivos padrão do Nginx (opcional)
 RUN rm -rf /usr/share/nginx/html/*
-#RUN mkdir /etc/ssl/certs/ && mkdir /etc/ssl/private/
 
-#COPY etc/ssl/certs/selfsigned.crt /etc/ssl/certs/
-COPY ./ssl/selfsigned.crt /etc/ssl/certs/
-COPY ./ssl/selfsigned.key /etc/ssl/private/
+#COPY  /etc/letsencrypt/live/observatoriodebarcarena.com.br /etc/letsencrypt/live
+ COPY ./ssl/observatoriodebarcarena.com.br /etc/letsencrypt/live/observatoriodebarcarena.com.br
+
+
+#COPY ./ssl/selfsigned.crt /etc/ssl/certs/
+#COPY ./ssl/selfsigned.key /etc/ssl/private/
 # Copia os arquivos estáticos já buildados da pasta local `dist`
 COPY dist/ /usr/share/nginx/html/
 
