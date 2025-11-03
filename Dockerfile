@@ -17,5 +17,5 @@ COPY dist/ /usr/share/nginx/html/
 # (Opcional) Copia imagem se não estiver dentro do dist
 COPY src/assets/images/icons/LogoNoLabel.png /usr/share/nginx/html/
 
-EXPOSE 80
+EXPOSE 80 443
 CMD ["nginx", "-g", "daemon off;"]
