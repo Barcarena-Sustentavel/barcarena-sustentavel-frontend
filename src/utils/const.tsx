@@ -109,10 +109,12 @@ const GetAllConst = () => {
   useEffect(() => {
     api.get(url).then((response) => {
       const dimensoesList = response.data.dimensoes;
-            const tempDimensoesColumn1: Record<string, string> = {};
-            const tempDimensoesColumn2: Record<string, string> = {};
-            const tempDimensoesCores12: Record<string, string> = {};
-            const tempDimensaoAumentaIcone: Record<string, boolean> = {};
+      console.log(dimensoesList);
+      const tempDimensoesColumn1: Record<string, string> = {};
+      const tempDimensoesColumn2: Record<string, string> = {};
+      const tempDimensoesColumn3: Record<string, string> = {};
+      const tempdimensoesCores123: Record<string, string> = {};
+        const tempDimensaoAumentaIcone: Record<string, boolean> = {};
        for (let index = 0; index < dimensoesList.length; index++) {
               if(index < 5){
                 tempDimensoesColumn1[dimensoesList[index]] = dimensoesColumn1Array[index];
