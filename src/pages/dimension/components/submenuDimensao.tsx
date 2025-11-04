@@ -8,16 +8,18 @@ interface SubmenuDimensaoProps {
 }
 
 const SubmenuDimensao: React.FC<SubmenuDimensaoProps> = ({ dimensaoAtiva }) => {
-    const location = useLocation();
-    const activeDimensionFromPath = decodeURIComponent(location.pathname.split('/')[1]);
-    const {
-        dimensoesColumn1,
-        dimensoesColumn2,
-        dimensoesCores12,
-        dimensaoAumentaIcone,
-        
-      } = dimensoes.GetAllConst();
-      const todasDimensoes = { ...dimensoesColumn1, ...dimensoesColumn2 };
+  const location = useLocation();
+  const activeDimensionFromPath = decodeURIComponent(
+    location.pathname.split("/")[1],
+  );
+  const {
+    dimensoesColumn1,
+    dimensoesColumn2,
+    dimensoesColumn3,
+    dimensoesCores123,
+    dimensaoAumentaIcone,
+  } = dimensoes.GetAllConst();
+  const todasDimensoes = { ...dimensoesColumn1, ...dimensoesColumn2, ...dimensoesColumn3 };
 
     return (
         <div 
