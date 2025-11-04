@@ -85,15 +85,19 @@ const DimensaoComponent: FC = () => {
       setReferencias(mockData.referencias);
       setEstudosComplementares(mockData.estudos_complementares);
     } else {
-      api.get(url).then((response) => {
-        setDimensao(response.data.dimensao);
-        setIndicadores(response.data.indicadores);
-        setReferencias(response.data.referencias);
-        setEstudosComplementares(response.data.estudos_complementares);
-      });
+      setPathHtml("");
     }
-  }, [url, dimensao]);
-
+    api.get(url).then((response) => {
+      console.log(response.data.indicadores);
+      setIndicadores([...response.data.indicadores].sort((a: any, b: any) => a.posicao - b.posicao));
+      setDimensao(response.data.dimensao);
+      setIndicadores(response.data.indicadores);
+      setReferencias(response.data.referencias);
+      setEstudosComplementares(response.data.estudos_complementares);
+    });
+    //}
+  }, [url, dimensao, botaoConectividade]);
+  console.log(estudosComplementares.length);
   return (
     <div className="home-container">
       <NavbarComponent />
