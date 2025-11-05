@@ -1,11 +1,9 @@
-import api from "../../../../api.tsx"
-import {EstudoComplementar} from "../../../../interfaces/estudo_complementar_interface.tsx"
 import Swal from "sweetalert2"
 
 export const postEstudoComplementar = async (dimensao:string | undefined, nomeEstudoComplementar:string | undefined, arquivoEstudoComplementar: File | undefined) => {
     const form = new FormData();
 
-    form.append("name", nomeEstudoComplementar ?? "");
+    form.append("nome", nomeEstudoComplementar ?? "");
     form.append("pdf", arquivoEstudoComplementar ?? new Blob([], { type: "application/pdf" }));
     console.log(form)
 

@@ -15,6 +15,7 @@ export const deleteAll = async (
   };
   const nomeEncoded = encodeURIComponent(nome);
   const url = `/admin/dimensoes/${dimensao}/${dictionary[activeTab]}/${nomeEncoded}/`;
+  console.log(url)
   const response = await api.delete(url);
   return response;
 };

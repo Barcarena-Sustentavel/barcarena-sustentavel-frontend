@@ -154,13 +154,13 @@ export const TabContentComponent: FC<RenderContentInterface> = ({
       setNomeIndicadores((items) => {
         const oldIndex = items.find((item) => item.posicao === active.id)
         const newIndex = items.find((item) => item.posicao === over.id);
-        //const handleOldIndex = oldIndex?.posicao as number;
+        const handleOldIndex = oldIndex?.posicao as number;
         api.patch(`/admin/dimensoes/${dimensao}/indicador/trocar_posicao`, {
           indicador1: oldIndex,
           indicador2: newIndex,
         });
-        //items[items.indexOf(oldIndex!)].posicao = newIndex!.posicao;
-        //items[items.indexOf(newIndex!)].posicao = handleOldIndex;
+        items[items.indexOf(oldIndex!)].posicao = newIndex!.posicao;
+        items[items.indexOf(newIndex!)].posicao = handleOldIndex;
 
         return arrayMove(items, items.findIndex((item) => item === oldIndex), items.findIndex((item) => item === newIndex));
       });
@@ -172,7 +172,6 @@ export const TabContentComponent: FC<RenderContentInterface> = ({
       .then((response) => {
         setDimensao(response.data.dimensao);
         setNomeIndicadores(response.data.indicadores.sort((item1:any, item2:any) => item1.posicao as number - item2.posicao as number) || []);
-        //setNomeIndicadores(response.data.indicadores || []);
         setNomeReferencias(response.data.referencias || []);
         setNomeContribuicoes(response.data.contribuicoes || []);
         if (response.data.artigo != "") {
