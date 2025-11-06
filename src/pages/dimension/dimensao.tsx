@@ -10,14 +10,21 @@ import api from "../../api.tsx";
 import Footer from "../../components/layout/footer/footer.tsx";
 import SubmenuDimensao from "./components/submenuDimensao.tsx";
 import FormContribuicao from "./components/formContribuicao.tsx";
+import HTMLFileIframe from "../kml/mapa/map4.tsx";
+//import Map2 from "../kml/map2.tsx";
 const NODE_ENV = import.meta.env.VITE_NODE_ENV;
 
 const DimensaoComponent: FC = () => {
   const { dimensao } = useParams();
-  const [indicadores, setIndicadores] = useState<string[]>([]);
+  //const [indicadores, setIndicadores] = useState<string[]>([]);
+  const [indicadores, setIndicadores] = useState<
+    Array<Record<string, string | number | null>>
+  >([]);
   const [referencias, setReferencias] = useState<Referencia[]>([]);
   const [dimensaoJson, setDimensao] = useState<Dimensao | null>(null);
-  const [estudosComplementares, setEstudosComplementares] = useState<string[]>([]);
+  const [estudosComplementares, setEstudosComplementares] = useState<string[]>(
+    [],
+  );
   const url: string = `/dimensoes/${dimensao}/`;
   const navigate = useNavigate();
   const coresBordas = [
@@ -49,9 +56,7 @@ const DimensaoComponent: FC = () => {
       "Anos médios de estudo",
       "Investimento em educação (% do PIB)",
     ],
-    estudos_complementares: [
-      "Pesquisa de evasão escolar"
-    ],
+    estudos_complementares: ["Pesquisa de evasão escolar"],
     referencias: [
       {
         id: 1,
@@ -72,18 +77,35 @@ const DimensaoComponent: FC = () => {
     const url = encodeURI(`/${dimensao}/${indicador}/`);
     navigate(url);
   };
+  //const pathHtml =
+  //"/home/marrior/Desktop/projects/testeMapa/odsb_escolas/index.html/";
+  const [pathHtml, setPathHtml] = useState<string>("");
+  const mapasConectividade = ["Cobertura", "Escola", "Saúde"];
+  const [botaoConectividade, setBotaoConectividade] = useState<string>("");
+  console.log(botaoConectividade);
+  console.log(pathHtml);
+  const handleOnCick = (event: any) => {
+    setBotaoConectividade(event.target.value);
+  };
 
-  const handleDownloadEstudo =( estudo: string ) => {
-    const url = `api/dimensoes/${dimensao}/estudo_complementar/${estudo}/anexo/`
+  const handleDownloadEstudo = (estudo: string) => {
+    const url = `api/dimensoes/${dimensao}/estudo_complementar/${estudo}/anexo/`;
     window.open(url, "_blank");
-  }
+  };
 
   useEffect(() => {
-    if (NODE_ENV == "development") {
-      setDimensao(mockData.dimensao);
-      setIndicadores(mockData.indicadores);
-      setReferencias(mockData.referencias);
-      setEstudosComplementares(mockData.estudos_complementares);
+    if (dimensao === "Segurança") {
+      setPathHtml("https://victorsantiago.github.io/odsb_kmls/");
+    } else if (dimensao === "Conectividade") {
+      if (botaoConectividade === "Escola") {
+        setPathHtml("https://victorsantiago.github.io/odsb_escolas/");
+      } else if (botaoConectividade === "Cobertura") {
+        setPathHtml("https://victorsantiago.github.io/odsb_cobertura/");
+      } else if (botaoConectividade === "Saúde") {
+        setPathHtml("https://victorsantiago.github.io/odsb_saude/");
+      } else {
+        setPathHtml("https://victorsantiago.github.io/odsb_escolas/");
+      }
     } else {
       setPathHtml("");
     }
@@ -103,35 +125,25 @@ const DimensaoComponent: FC = () => {
       <NavbarComponent />
       <SubmenuDimensao dimensaoAtiva={dimensaoJson?.nome || ""} />
       <div className="container dimension-details-container">
-        <h1>{dimensaoJson?.nome}</h1>
         <div className="descricao">
           <p style={{ borderLeft: `5px solid ${getProximaCor()}` }}>
             {dimensaoJson?.descricao}
           </p>
         </div>
-        <h1 className="mt-2">Indicadores mais importantes</h1>
-        <div className="descricao">
-          {indicadores.length > 0 && (
-            <p style={{ borderLeft: `5px solid ${getProximaCor()}` }}>
-              {indicadores.reduce(
-                (acc, indicador) => (acc ? `${acc}; ${indicador}` : indicador),
-                "",
-              )}
-            </p>
-          )}
-        </div>
       </div>
       <div className="container dimension-details-container">
-        <h1>Dados Levantados</h1>
+        <h1>Indicadores</h1>
         <ul className="indicadores">
           {indicadores.length > 0 &&
             indicadores.map((indicador) => (
               <li style={{ borderLeft: `5px solid ${getProximaCor()}` }}>
                 <button
                   className="button-as-link"
-                  onClick={() => handleNavigateIndicador(indicador)}
+                  onClick={() =>
+                    handleNavigateIndicador(indicador.nome as string)
+                  }
                 >
-                  {indicador}
+                  {indicador.nome}
                 </button>
               </li>
             ))}
@@ -156,14 +168,13 @@ const DimensaoComponent: FC = () => {
       </div>
       {/* <div className="container dimension-details-container mt-5 d-flex flex-column"> */}
       <div className="container dimension-details-container d-flex flex-column">
-        <h1 style={{borderBottom: "solid 1px #ddd"}}>Referências</h1>
+        <h1 style={{ borderBottom: "solid 1px #ddd" }}>Referências</h1>
         {referencias.length > 0 &&
           referencias.map((referencia) => (
             // <ul className="referencias mt-5">
             <ul className="referencias">
               {/* <li style={{ borderLeft: `5px solid ${getProximaCor()}` }}> */}
               <li>
-
                 <a
                   className="custom-link-tooplate-gotto-job"
                   href={`${referencia?.link}`}
@@ -173,6 +184,42 @@ const DimensaoComponent: FC = () => {
             </ul>
           ))}
       </div>
+      {pathHtml !== "" && (
+        <div style={{ margin: "0 auto", width: "70%" }}>
+          {dimensao === "Conectividade" && (
+            <div
+              style={{
+                margin: "10px auto 5px auto",
+                width: "30%",
+                display: "flex",
+                justifyContent: "space-between",
+              }}
+            >
+              {mapasConectividade.map((mapa) => {
+                return (
+                  <button
+                    style={{
+                      padding: "10px",
+                      border: "1px solid",
+                      borderRadius: "8px",
+                      backgroundColor: "var(--primary-blue)",
+                    }}
+                    value={mapa}
+                    onClick={(event: any) => handleOnCick(event)}
+                  >
+                    {mapa}
+                  </button>
+                );
+              })}
+            </div>
+          )}
+          <HTMLFileIframe htmlFilePath={pathHtml} />
+        </div>
+      )}
+      {/*
+        <div className="divMapa">
+          <Map2 dimensao={dimensao} />
+          </div>*/}
       <FormContribuicao
         dimensaoId={0}
         formStyle={{ borderLeft: `5px solid ${getProximaCor()}` }}

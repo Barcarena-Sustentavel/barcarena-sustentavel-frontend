@@ -25,7 +25,7 @@ export const CreateIndicador: FC<{
   const [indicador, setIndicador] = useState<string>(
     indicadorNome !== undefined ? indicadorNome : "",
   );
-  const { dimensoesColumn1, dimensoesColumn2, dimensoesCores12 } =
+  const { dimensoesColumn1, dimensoesColumn2, dimensoesCores123 } =
     dimensoes.GetAllConst();
   const dimensoesColumn12 = {
     ...dimensoesColumn1,
@@ -332,7 +332,7 @@ export const CreateIndicador: FC<{
     <div className="create-indicador-container">
       <div
         style={{
-          backgroundColor: `var(--${dimensoesCores12[dimensao!]})`,
+          backgroundColor: `var(--${dimensoesCores123[dimensao!]})`,
         }}
         className="admin-header-dimensao-page"
       >
@@ -456,7 +456,7 @@ export const CreateIndicador: FC<{
   const [indicador, setIndicador] = useState<string>(
     indicadorNome !== undefined ? indicadorNome : "",
   );
-  const { dimensoesColumn1, dimensoesColumn2, dimensoesCores12 } =
+  const { dimensoesColumn1, dimensoesColumn2, dimensoesCores123 } =
     dimensoes.GetAllConst();
   const dimensoesColumn12 = {
     ...dimensoesColumn1,
@@ -607,7 +607,7 @@ export const CreateIndicador: FC<{
     <div className="create-indicador-container">
       <div
         style={{
-          backgroundColor: `var(--${dimensoesCores12[dimensao!]})`,
+          backgroundColor: `var(--${dimensoesCores123[dimensao!]})`,
         }}
         className="admin-header-dimensao-page"
       >

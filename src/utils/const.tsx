@@ -21,8 +21,12 @@ const dimensoesColumn1Array: any[] = [
   logoConectividade,
   logoOrdenamento,
   logoEducacao,
+];
+
+const dimensoesColumn2Array: any[] = [
   logoMeioAmbiente,
   logoSegurança,
+  logoSaude,
 ];
 
 // Original Record
@@ -32,8 +36,7 @@ const dimensoesColumn1Array: any[] = [
 //   Educação: logoEducacao,
 //   Conectividade: logoConectividade,
 // };
-const dimensoesColumn2Array: any[] = [
-  logoSaude,
+const dimensoesColumn3Array: any[] = [
   logoEmprego,
   logoInstituicoes,
   logoMobilidade,
@@ -45,9 +48,10 @@ const dimensoesColumn2Array: any[] = [
 //   dimensoesColumn1,
 //   dimensoesColumn2,
 // );
-const dimensoesColumn12Array: any[] = [
+const dimensoesColumn123Array: any[] = [
   ...dimensoesColumn1Array,
   ...dimensoesColumn2Array,
+  ...dimensoesColumn3Array,
 ];
 
 // Original Record
@@ -101,7 +105,8 @@ const dimensaoAumentaIconeArray: boolean[] = [
 const GetAllConst = () => {
   const [dimensoesColumn1, setDimensoesColumn1] = useState<Record<string, string>>({});
   const [dimensoesColumn2, setDimensoesColumn2] = useState<Record<string, string>>({});
-  const [dimensoesCores12, setDimensoesCores12] = useState<Record<string, string>>({});
+  const [dimensoesColumn3, setDimensoesColumn3] = useState<Record<string, string>>({});
+  const [dimensoesCores123, setdimensoesCores123] = useState<Record<string, string>>({});
   const [dimensaoAumentaIcone, setDimensaoAumentaIcone] = useState<Record<string, boolean>>({});
   const [isLoaded, setIsLoaded] = useState<boolean>(false);
   const url = '/dimensoes/';
@@ -109,26 +114,35 @@ const GetAllConst = () => {
   useEffect(() => {
     api.get(url).then((response) => {
       const dimensoesList = response.data.dimensoes;
-      console.log(dimensoesList);
-      const tempDimensoesColumn1: Record<string, string> = {};
-      const tempDimensoesColumn2: Record<string, string> = {};
-      const tempDimensoesColumn3: Record<string, string> = {};
-      const tempdimensoesCores123: Record<string, string> = {};
-        const tempDimensaoAumentaIcone: Record<string, boolean> = {};
+            const tempDimensoesColumn1: Record<string, string> = {};
+            const tempDimensoesColumn2: Record<string, string> = {};
+            const tempDimensoesColumn3: Record<string, string> = {};
+            const tempdimensoesCores123: Record<string, string> = {};
+            const tempDimensaoAumentaIcone: Record<string, boolean> = {};
        for (let index = 0; index < dimensoesList.length; index++) {
-              if(index < 5){
+              if(index < 3){
                 tempDimensoesColumn1[dimensoesList[index]] = dimensoesColumn1Array[index];
-              } else {
-                tempDimensoesColumn2[dimensoesList[index]] = dimensoesColumn2Array[index - 5];
+              } 
+              else if(index >= 3 && index <= 5) {
+                tempDimensoesColumn2[dimensoesList[index]] = dimensoesColumn2Array[index - 3];
               }
-              tempDimensoesCores12[dimensoesList[index]] = dimensaoCoresArray[index];
+              else {
+                console.log(index-6)
+                tempDimensoesColumn3[dimensoesList[index]] = dimensoesColumn3Array[index - 6];
+              }
+              tempdimensoesCores123[dimensoesList[index]] = dimensaoCoresArray[index];
               tempDimensaoAumentaIcone[dimensoesList[index]] = 
                 dimensoesList[index] === 'Mobilidade' || dimensoesList[index] === 'Educação' ? true : false;
             }
 
+console.log(tempDimensoesColumn1);
+console.log(tempDimensoesColumn2);
+console.log(tempDimensoesColumn3);
+
             setDimensoesColumn1(tempDimensoesColumn1);
             setDimensoesColumn2(tempDimensoesColumn2);
-            setDimensoesCores12(tempDimensoesCores12);
+            setDimensoesColumn3(tempDimensoesColumn3);
+            setdimensoesCores123(tempdimensoesCores123);
             setDimensaoAumentaIcone(tempDimensaoAumentaIcone);
             setIsLoaded(true);
     });
@@ -136,7 +150,8 @@ const GetAllConst = () => {
   return {
     dimensoesColumn1,
     dimensoesColumn2,
-    dimensoesCores12,
+    dimensoesColumn3,
+    dimensoesCores123,
     dimensaoAumentaIcone,
     isLoaded,
   };

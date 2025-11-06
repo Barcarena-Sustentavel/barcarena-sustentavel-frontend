@@ -1,5 +1,5 @@
 import { FC, useState } from "react";
-import { useParams, useNavigate, Link } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 import { TabContentComponent } from "../tab/TabContentComponent.tsx";
 import "../css/dimensaoPage.css";
 import dimensoes from "../../../utils/const.tsx";
@@ -7,11 +7,8 @@ import dimensoes from "../../../utils/const.tsx";
 const DimensaoPageComponent: FC = () => {
   const { dimensao } = useParams();
   const [activeTab, setActiveTab] = useState<string>("Dimensão");
-  const {
-        dimensoesColumn1,
-        dimensoesColumn2,
-        dimensoesCores12,
-      } = dimensoes.GetAllConst();
+  const { dimensoesColumn1, dimensoesColumn2, dimensoesCores123 } =
+    dimensoes.GetAllConst();
   const dimensoesColumn12 = {
     ...dimensoesColumn1,
     ...dimensoesColumn2,
@@ -27,7 +24,7 @@ const DimensaoPageComponent: FC = () => {
     <div className="home-container">
       <div
         style={{
-          backgroundColor: `var(--${dimensoesCores12[dimensao!]})`,
+          backgroundColor: `var(--${dimensoesCores123[dimensao!]})`,
         }}
         className="admin-header-dimensao-page"
       >
@@ -79,14 +76,13 @@ const DimensaoPageComponent: FC = () => {
           </button> */}
 
           <button
-            className={`admin-tab-button ${activeTab === "Kmls" ? "active" : ""}`}
-            onClick={() => setActiveTab("Kmls")}
+            className={`admin-tab-button ${activeTab === "Artigo" ? "active" : ""}`}
+            onClick={() => setActiveTab("Artigo")}
           >
-            Kmls
+            Artigo
           </button>
         </nav>
-        <button className="voltar-button"
-          onClick={() => handleBack()}>
+        <button className="voltar-button" onClick={() => handleBack()}>
           Voltar
         </button>
 

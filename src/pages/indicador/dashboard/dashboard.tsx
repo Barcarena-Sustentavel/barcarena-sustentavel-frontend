@@ -136,22 +136,49 @@ export const DashboardComponent: FC<{
     tituloGrafico,
     categorias,
   };
-  console.log(dashboard.categorias);
-  console.log(dashboard.dados);
   if (dashboard.tipoGrafico === "tabela") {
-    const cols = colunas.map((categoria) => ({
-      header: categoria,
-      accessorKey: "data",
+    const cols = dashboard.dados.map((coluna) => ({
+      header: coluna.name,
+      accessorKey: coluna.name,
     }));
+    const tableData: Array<Record<string, string | number>> = [];
+    const tableDataCols: Record<string, string | number> = {};
+    colunas.map((coluna: string) => {
+      tableDataCols[coluna] = "";
+    });
 
-    const employeeData = dashboard.dados.map((dado, index) => ({
-      id: index + 1,
-      ...dado,
-    }));
+    for (let i = 0; i < dashboard.dados[0].data.length; i++) {
+      const row: Record<string, string | number> = {};
+      for (const coluna of colunas) {
+        row[coluna] = ""; // inicializa vazio
+      }
+      tableData.push(row);
+    }
 
+    for (let index = 0; index < colunas.length; index++) {
+      const name: string = colunas[index];
+
+      for (
+        let indexDentro = 0;
+        indexDentro < dashboard.dados[index].data.length;
+        indexDentro++
+      ) {
+        const dado: string | number = dashboard.dados[index].data[indexDentro];
+
+        console.log(indexDentro);
+        console.log(dado);
+        console.log(name);
+
+        tableData[indexDentro][name] = dado;
+
+        console.log(tableData[indexDentro][name]);
+      }
+    }
+
+    console.log(tableData);
     return React.createElement(MaterialReactTable, {
       columns: cols,
-      data: employeeData,
+      data: tableData,
       enableColumnActions: false,
       enableColumnFilters: false,
       enablePagination: true,
