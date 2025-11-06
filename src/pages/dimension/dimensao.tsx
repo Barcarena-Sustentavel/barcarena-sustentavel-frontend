@@ -83,8 +83,8 @@ const DimensaoComponent: FC = () => {
   const [pathHtml, setPathHtml] = useState<string>("");
   const mapasConectividade = ["Cobertura", "Escola", "Saúde"];
   const [botaoConectividade, setBotaoConectividade] = useState<string>("");
-  console.log(botaoConectividade);
-  console.log(pathHtml);
+  // console.log(botaoConectividade);
+  // console.log(pathHtml);
   const handleOnCick = (event: any) => {
     setBotaoConectividade(event.target.value);
   };
@@ -111,16 +111,15 @@ const DimensaoComponent: FC = () => {
       setPathHtml("");
     }
     api.get(url).then((response) => {
-      console.log(response.data.indicadores);
       setIndicadores([...response.data.indicadores].sort((a: any, b: any) => a.posicao - b.posicao));
       setDimensao(response.data.dimensao);
-      setIndicadores(response.data.indicadores);
+      // setIndicadores(response.data.indicadores);
       setReferencias(response.data.referencias);
       setEstudosComplementares(response.data.estudos_complementares);
     });
     //}
   }, [url, dimensao, botaoConectividade]);
-  console.log(estudosComplementares.length);
+
   return (
     <div className="home-container">
       <NavbarComponent />
