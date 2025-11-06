@@ -14,6 +14,7 @@ const DimensoesSection: FC = () => {
     isLoaded,
   } = dimensoes.GetAllConst();
   const dimensoesColumn12 ={...dimensoesColumn1, ...dimensoesColumn2}
+  
   useEffect(() => {
     console.log("reload")
     const observer = new IntersectionObserver(
@@ -32,7 +33,7 @@ const DimensoesSection: FC = () => {
       dimensionItems.forEach((item) => {
         observer.observe(item);
       });
-    }, 500);
+    }, 100);
 
     return () => {
       const dimensionItems = document.querySelectorAll('.dimensao-item');
