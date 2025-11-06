@@ -88,7 +88,7 @@ const SubmenuDimensao: React.FC<SubmenuDimensaoProps> = ({ dimensaoAtiva }) => {
               getArtigoDimensao(dimensaoAtiva || activeDimensionFromPath)
             }
           >
-            Baixar Artigo
+            Resumo da dimensão <i className="bi bi-download"></i>
           </button>
         </div>
       </div>
