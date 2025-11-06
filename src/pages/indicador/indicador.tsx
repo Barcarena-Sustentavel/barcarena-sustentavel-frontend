@@ -1,4 +1,4 @@
-import { FC, useEffect, useState } from "react";
+import { FC, useEffect, useState } from "react"; 
 import {
   IndicadorDadosGrafico,
   DadosGrafico,
@@ -9,17 +9,19 @@ import { useParams } from "react-router-dom";
 import NavbarComponent from "../../components/layout/navbar/navbar.tsx";
 import "./indicador.css";
 import Footer from "../../components/layout/footer/footer.tsx";
+import BackButton from "../../components/layout/backButton/backButton.tsx";
+import Location from "../../components/layout/location/location.tsx";
 
 const IndicadorComponent: FC = () => {
   const { dimensao, indicador } = useParams();
   const url: string = `/dimensoes/${dimensao}/indicador/${indicador}/`;
+  
   const [indicadorJson, setIndicadorJson] = useState<IndicadorDadosGrafico>({
     nome: "",
     graficos: [],
   });
   const [loading, setLoading] = useState<boolean>(true);
-  //console.log(`${indicador}`);
-  //console.log(indicador);
+
   useEffect(() => {
     api
       .get(url)
@@ -37,10 +39,8 @@ const IndicadorComponent: FC = () => {
         setLoading(false);
       });
   }, [url]);
-  //console.log(indicadorJson);
-  //console.log(DashboardComponent);
+
   const handleDownloadCSV = (grafico: DadosGrafico) => {
-    //Cria o header das colunas na primeira linha do arquivo CSV
     let csvContent = grafico.colunas.join(",") + "\n";
     csvContent = "Ano," + csvContent;
     let categoria;
@@ -59,26 +59,30 @@ const IndicadorComponent: FC = () => {
       csvContent += "\n";
 
     });
-    
-    // O blob é uma interface para representar um objeto de dados imutáveis em um formato de arquivo
+
     const blob = new Blob([csvContent], { type: "text/csv;charset=utf-8" });
-    //Precisamos criar o link de download
     const url = window.URL.createObjectURL(blob);
-    //Precisamos criar um tag de ancora que possui um atributo com o link e um atributo de download para acessar o link
     const link = document.createElement("a");
-    //console.log(link);
     link.setAttribute("href", url);
     link.setAttribute("download", `${grafico.tituloGrafico || "dados"}.csv`);
     document.body.appendChild(link);
-    
-    //após isso o link é clicado para iniciar o download
     link.click();
     document.body.removeChild(link);
     window.URL.revokeObjectURL(url);
   };
+
   return (
     <div>
       <NavbarComponent />
+
+      {/* Cabeçalho com botão e localização */}
+      <div className="header-location">
+        <BackButton />
+        <Location
+          parentName={decodeURIComponent(dimensao || "")}
+          childName={indicadorJson?.nome}
+        />
+      </div>
 
       <div className="indicador-container">
         <div className="indicador-header">
@@ -131,6 +135,7 @@ const IndicadorComponent: FC = () => {
           </div>
         )}
       </div>
+
       <Footer />
     </div>
   );

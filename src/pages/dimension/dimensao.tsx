@@ -10,6 +10,7 @@ import api from "../../api.tsx";
 import Footer from "../../components/layout/footer/footer.tsx";
 import SubmenuDimensao from "./components/submenuDimensao.tsx";
 import FormContribuicao from "./components/formContribuicao.tsx";
+import BackButton from "../../components/layout/backButton/backButton.tsx";
 import HTMLFileIframe from "../kml/mapa/map4.tsx";
 //import Map2 from "../kml/map2.tsx";
 const NODE_ENV = import.meta.env.VITE_NODE_ENV;
@@ -82,8 +83,8 @@ const DimensaoComponent: FC = () => {
   const [pathHtml, setPathHtml] = useState<string>("");
   const mapasConectividade = ["Cobertura", "Escola", "Saúde"];
   const [botaoConectividade, setBotaoConectividade] = useState<string>("");
-  console.log(botaoConectividade);
-  console.log(pathHtml);
+  // console.log(botaoConectividade);
+  // console.log(pathHtml);
   const handleOnCick = (event: any) => {
     setBotaoConectividade(event.target.value);
   };
@@ -110,20 +111,20 @@ const DimensaoComponent: FC = () => {
       setPathHtml("");
     }
     api.get(url).then((response) => {
-      console.log(response.data.indicadores);
       setIndicadores([...response.data.indicadores].sort((a: any, b: any) => a.posicao - b.posicao));
       setDimensao(response.data.dimensao);
-      setIndicadores(response.data.indicadores);
+      // setIndicadores(response.data.indicadores);
       setReferencias(response.data.referencias);
       setEstudosComplementares(response.data.estudos_complementares);
     });
     //}
   }, [url, dimensao, botaoConectividade]);
-  console.log(estudosComplementares.length);
+
   return (
     <div className="home-container">
       <NavbarComponent />
       <SubmenuDimensao dimensaoAtiva={dimensaoJson?.nome || ""} />
+      <BackButton />
       <div className="container dimension-details-container">
         <div className="descricao">
           <p style={{ borderLeft: `5px solid ${getProximaCor()}` }}>
