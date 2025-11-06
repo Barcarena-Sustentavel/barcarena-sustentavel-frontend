@@ -8,12 +8,9 @@ import Footer from "../../components/layout/footer/footer.tsx";
 
 const Home: FC = () => {
   const navigate = useNavigate();
-  //const { isAuthenticated, isLoading } = useAuth0();
   const handleClick = (dimensao: string) => {
     navigate(`/${dimensao}/`);
   };
-  //console.log(isAuthenticated);
-  //console.log(isLoading);
   return (
     <div className="home-container">
       <NavbarComponent />

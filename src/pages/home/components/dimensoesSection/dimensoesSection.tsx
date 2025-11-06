@@ -49,7 +49,7 @@ const DimensoesSection: FC = () => {
       <div id="dimensoes" className="d-flex flex-wrap px-md-5 py-1"  ref={dimensoesRef}>
         {/* First column */}
         <div className="col-30 d-flex flex-column px-md-5" style={{marginLeft: "auto"}}>
-          {isLoaded && Object.entries(dimensoesColumn1).map(([item, value]) => (
+          {/*isLoaded &&*/ Object.entries(dimensoesColumn1).map(([item, value]) => (
             <DimensionLinkButton 
               to={`/${item}`} 
               color={dimensoesCores123[item]} 
@@ -76,7 +76,7 @@ const DimensoesSection: FC = () => {
         
         {/* Second column */}
         <div className="col-30 d-flex flex-column px-md-5">
-          {isLoaded && Object.entries(dimensoesColumn2).map(([item, value]) => (
+          {/*isLoaded &&*/ Object.entries(dimensoesColumn2).map(([item, value]) => (
             <DimensionLinkButton 
               to={`/${item}`} 
               color={dimensoesCores123[item]} 
@@ -102,7 +102,7 @@ const DimensoesSection: FC = () => {
         </div>
 
         <div className="col-30 d-flex flex-column px-md-5" style={{marginRight: "auto"}}>
-          {isLoaded && Object.entries(dimensoesColumn3).map(([item, value]) => (
+          {/*isLoaded &&*/ Object.entries(dimensoesColumn3).map(([item, value]) => (
             <DimensionLinkButton 
               to={`/${item}`} 
               color={dimensoesCores123[item]} 
