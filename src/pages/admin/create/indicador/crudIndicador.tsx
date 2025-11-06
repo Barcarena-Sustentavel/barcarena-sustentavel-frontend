@@ -88,10 +88,6 @@ export const patchIndicador = async (
     if (arrayGrafico.length > 0) {
       const formData = new FormData();
       for (let i = 0; i < arrayGrafico.length; i++) {
-        //const endpoit =
-        //  arrayGrafico[i].id != null
-        //    ? `/api/admin/dimensoes/${dimensao}/indicador/${indicador.nome}/anexos/${arrayGrafico[i].id}/`
-        //    : `/api/admin/dimensoes/${dimensao}/indicador/${indicador.nome}/anexos/`;
         console.log(arrayGrafico[i].arquivo.size);
         if (arrayGrafico[i].arquivo.size !== undefined) {
           formData.append("grafico", arrayGrafico[i].arquivo);

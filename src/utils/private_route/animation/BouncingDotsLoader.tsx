@@ -1,6 +1,6 @@
 import { FC } from "react";
-
-const BouncingDotsLoader:FC = (props) => {
+import "../css/private_route.css";
+const BouncingDotsLoader: FC = () => {
   return (
     <>
       <div className="bouncing-loader">

@@ -1,0 +1,37 @@
+.botaoDivConectividade {
+    margin: 20px auto 0 auto;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+.botaoDivConectividade > h2 {
+    text-align: center;
+}
+
+.setores {
+    width: 80%;
+    display: flex;
+}
+
+.setores > label {
+    margin-right: 10px;
+}
+
+.mapa {
+    margin: 10px auto 0 auto;
+    width: 800px;
+}
+
+.botoesConectividade {
+    width: 60%;
+    margin: 0 auto;
+    display: flex;
+    justify-content: space-between;
+}
+
+.botoesConectividade > button {
+    border-radius: 10px;
+    background-color: var(--primary-blue);
+    width: 30%;
+}

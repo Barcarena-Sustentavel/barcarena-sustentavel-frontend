@@ -8,12 +8,9 @@ import { GraficoComponent } from "./components/Grafico.tsx";
 import dimensoes from "../../../../utils/const.tsx";
 import "../../css/dimensaoPage.css";
 import { Alert } from "react-bootstrap";
+import { Collapse } from "react-bootstrap"
 
-<<<<<<< Updated upstream
-import { DndContext, closestCorners, closestCenter, PointerSensor, useSensor, useSensors} from "@dnd-kit/core";
-=======
 import { DndContext, closestCorners, closestCenter, PointerSensor, useSensor, useSensors, pointerWithin} from "@dnd-kit/core";
->>>>>>> Stashed changes
 import { SortableContext, verticalListSortingStrategy, useSortable, arrayMove } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
 
@@ -28,7 +25,7 @@ export const CreateIndicador: FC<{
   const [indicador, setIndicador] = useState<string>(
     indicadorNome !== undefined ? indicadorNome : "",
   );
-  const { dimensoesColumn1, dimensoesColumn2, dimensoesCores12 } =
+  const { dimensoesColumn1, dimensoesColumn2, dimensoesCores123 } =
     dimensoes.GetAllConst();
   const dimensoesColumn12 = {
     ...dimensoesColumn1,
@@ -57,6 +54,14 @@ export const CreateIndicador: FC<{
     }),
     [],
   );
+
+  const [openStates, setOpenStates] = useState<Record<number, boolean>>({});
+      const toggle = (id: number) => {
+        setOpenStates(prev => ({
+          ...prev,
+          [id]: !(prev[id] ?? true),
+        }));
+      };
 
   const handleDeleteGrafico = (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
@@ -168,6 +173,14 @@ export const CreateIndicador: FC<{
             0,
           );
           setNextId(maxId + 1);
+
+          for(const grafico of graficosFromApi){
+            setOpenStates(prev =>({
+                ...prev,
+              [grafico.id]: false,
+          }))
+          }
+
         })
         .catch((error) => {
           console.log(error);
@@ -176,8 +189,8 @@ export const CreateIndicador: FC<{
   }, [url, indicadorNome, arrayIndicadorResponse]);
 
   useEffect(() => {
-    console.log(graficosData);
-  }, [graficosData, ]);
+    console.log(openStates);
+  }, [openStates]);
 
   const addGrafico = (e: React.MouseEvent) => {
     e.preventDefault();
@@ -221,21 +234,38 @@ export const CreateIndicador: FC<{
 
   function SortableGrafico({
     id, 
+    index,
+    open,
+    tituloGrafico,
     children
-  }: { id: string; children: React.ReactNode }) {
+  }: { id: string; index: number, open: boolean, tituloGrafico: string, children: React.ReactNode }) {
     const {attributes, listeners, setNodeRef, transform, transition} = useSortable({id});
     const style = { transform: CSS.Transform.toString(transform), transition };
     return (
       <div ref={setNodeRef} style={style} {...attributes}>
-        <button type="button" {...listeners} style={{ cursor: "grab", marginRight: 8 }}>⠿</button>
-      {children}
+        <div
+          key={id || `new-${index}`}
+          className="grafico-component"
+        >
+          <i
+          className={openStates[Number(id)] ? ("bi bi-arrows-angle-contract collapse-icon"): 
+            ("bi bi-arrows-angle-expand collapse-icon")
+          }
+          onClick={() => toggle(Number(id))}
+          aria-expanded={openStates[Number(id)]}
+          >
+          </i>
+          <span className="move-icon" {...listeners} style={{ cursor: "grab", marginRight: 8 }}>⠿</span>
+          <h3>Gráfico {index + 1} { !open ? (" - " + tituloGrafico): ("")}</h3>
+        {children}
       </div>
-        // { children })
+      </div>
     );
 
   }
-
+  
   function SortableList() {
+
     function normalizarPosicoes(arr: GraficosIndicador[]) {
       return arr.map((grafico: GraficosIndicador, index: number) => ({
         ...grafico,
@@ -270,44 +300,29 @@ export const CreateIndicador: FC<{
 
     return (
       <DndContext sensors={sensors}
-<<<<<<< Updated upstream
-        collisionDetection={closestCenter}
-=======
         collisionDetection={pointerWithin}
->>>>>>> Stashed changes
-        //  modifiers={[
-          // restrictToVerticalAxis,            // só vertical
-        //   restrictToFirstScrollableAncestor, // usa o 1º contêiner rolável, não o body
-        //   restrictToWindowEdges,             // não sai da janela
-        // ]}
         onDragEnd={onDragEnd}>
         <SortableContext items={graficosData.map((i) => i.id.toString())} strategy={verticalListSortingStrategy}>
-          <div style={{ display: "grid", gap: 8 }}>
-            {view.map((grafico, index) => (
-              // <SortableItem key={i.id} id={i.id}>
-              //   {i.label}
-              // </SortableItem>
-              <SortableGrafico id={grafico.id.toString()}>
-                <div
-                  key={grafico.id || `new-${index}`}
-                  className="grafico-component"
-                >
-                  
-                  <h3>Gráfico {index + 1}</h3>
-                  <GraficoComponent
-                    chaveValorGraficos={chaveValorGraficos}
-                    grafico={grafico}
-                    arrayIndicadorResponse={arrayIndicadorResponse}
-                    setDeleteArray={setDeleteArray}
-                    onUpdate={(updatedGrafico) =>
-                      updateGrafico(index, updatedGrafico)
-                    }
-                    onDelete={() => deleteSingleGrafico(grafico)}
-                  />
-                </div>
-              </SortableGrafico>
-            ))}
-          </div>
+            <div style={{ display: "grid", gap: 8 }}>
+              {view.map((grafico, index) => (
+                <SortableGrafico id={grafico.id.toString()} index={index} open={openStates[grafico.id]} tituloGrafico={grafico.tituloGrafico}>
+                    <Collapse in={openStates[grafico.id]}>
+                    <div>
+                    <GraficoComponent
+                      chaveValorGraficos={chaveValorGraficos}
+                      grafico={grafico}
+                      arrayIndicadorResponse={arrayIndicadorResponse}
+                      setDeleteArray={setDeleteArray}
+                      onUpdate={(updatedGrafico) =>
+                        updateGrafico(index, updatedGrafico)
+                      }
+                      onDelete={() => deleteSingleGrafico(grafico)}
+                    />
+                    </div>
+                    </Collapse>
+                </SortableGrafico>
+              ))}
+            </div>
         </SortableContext>
       </DndContext>
     );
@@ -317,7 +332,7 @@ export const CreateIndicador: FC<{
     <div className="create-indicador-container">
       <div
         style={{
-          backgroundColor: `var(--${dimensoesCores12[dimensao!]})`,
+          backgroundColor: `var(--${dimensoesCores123[dimensao!]})`,
         }}
         className="admin-header-dimensao-page"
       >
@@ -375,6 +390,7 @@ export const CreateIndicador: FC<{
             </div>
             ))} */}
             <SortableList />
+            
 
           {msgsErrorGrafico.length > 0 &&
             msgsErrorGrafico.map((mensagem, index) => (
@@ -440,7 +456,7 @@ export const CreateIndicador: FC<{
   const [indicador, setIndicador] = useState<string>(
     indicadorNome !== undefined ? indicadorNome : "",
   );
-  const { dimensoesColumn1, dimensoesColumn2, dimensoesCores12 } =
+  const { dimensoesColumn1, dimensoesColumn2, dimensoesCores123 } =
     dimensoes.GetAllConst();
   const dimensoesColumn12 = {
     ...dimensoesColumn1,
@@ -591,7 +607,7 @@ export const CreateIndicador: FC<{
     <div className="create-indicador-container">
       <div
         style={{
-          backgroundColor: `var(--${dimensoesCores12[dimensao!]})`,
+          backgroundColor: `var(--${dimensoesCores123[dimensao!]})`,
         }}
         className="admin-header-dimensao-page"
       >

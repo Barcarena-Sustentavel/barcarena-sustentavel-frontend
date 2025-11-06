@@ -1,30 +1,27 @@
 import { FC } from "react";
-import { useNavigate } from "react-router-dom";    
-import '@assets/styles/index.css';
+import { useNavigate } from "react-router-dom";
+import "@assets/styles/index.css";
 import NavbarComponent from "../../components/layout/navbar/navbar.tsx";
 import ImageCarousel from "./components/carousel/carousel.tsx";
 import DimensoesSection from "./components/dimensoesSection/dimensoesSection.tsx";
 import Footer from "../../components/layout/footer/footer.tsx";
-import Map2 from "../kml/map2.tsx";
-
 
 const Home: FC = () => {
-    const navigate = useNavigate();
-    //const { isAuthenticated, isLoading } = useAuth0();
-    const handleClick = (dimensao: string) => {
-        navigate(`/${dimensao}/`);
-    }
-    //console.log(isAuthenticated);
-    //console.log(isLoading);
-    return (
-        <div className="home-container">
-            <NavbarComponent />
-            <ImageCarousel />
-            <DimensoesSection />
-            <Map2 />
-            <Footer/>
-        </div>
-    );
-}
+  const navigate = useNavigate();
+  //const { isAuthenticated, isLoading } = useAuth0();
+  const handleClick = (dimensao: string) => {
+    navigate(`/${dimensao}/`);
+  };
+  //console.log(isAuthenticated);
+  //console.log(isLoading);
+  return (
+    <div className="home-container">
+      <NavbarComponent />
+      <ImageCarousel />
+      <DimensoesSection />
+      <Footer />
+    </div>
+  );
+};
 
 export default Home;

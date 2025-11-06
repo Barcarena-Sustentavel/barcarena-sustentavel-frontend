@@ -25,7 +25,7 @@ const CreateKml: FC<{
  const {
      dimensoesColumn1,
      dimensoesColumn2,
-     dimensoesCores12,
+     dimensoesCores123,
    } = dimensoes.GetAllConst();
    const dimensoesColumn12 = {
      ...dimensoesColumn1,
@@ -93,7 +93,7 @@ const CreateKml: FC<{
     <div className="post-referencias-container">
       <div
         style={{
-          backgroundColor: `var(--${dimensoesCores12[dimensao!]})`,
+          backgroundColor: `var(--${dimensoesCores123[dimensao!]})`,
         }}
         className="admin-header-dimensao-page"
       >
