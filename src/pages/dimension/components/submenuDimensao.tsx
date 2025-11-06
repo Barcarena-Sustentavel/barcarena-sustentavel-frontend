@@ -63,7 +63,7 @@ const SubmenuDimensao: React.FC<SubmenuDimensaoProps> = ({ dimensaoAtiva }) => {
         })}
       </div>
 
-      <div className="label d-flex flex-row align-items-center mt-3">
+      <div className="label d-flex flex-row align-items-center pt-3 pb-3">
         <div
           className={`label-icon-dimensao icon-color-submenu-dimensao ${
             /*dimensoes.*/ dimensaoAumentaIcone[
@@ -78,12 +78,12 @@ const SubmenuDimensao: React.FC<SubmenuDimensaoProps> = ({ dimensaoAtiva }) => {
             backgroundColor: "white",
           }}
         />
-        <div className="tituloDimensao">
-          <p className="label-dimensao mb-2 ml-5">
+        <div className="align-items-center tituloDimensao">
+          <p className="label-dimensao ml-5">
             {dimensaoAtiva || activeDimensionFromPath}
           </p>
           <button
-            className="btn btn-primary"
+            className="btn btn-primary botao-download-resumo"
             onClick={() =>
               getArtigoDimensao(dimensaoAtiva || activeDimensionFromPath)
             }

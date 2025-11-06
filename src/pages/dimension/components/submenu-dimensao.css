@@ -41,6 +41,8 @@
 .label-dimensao {
     color: white;
     font-size: 40px;
+    margin-left: 2rem;
+    margin-bottom: 0;
 }
 
 .label-icon-dimensao {
@@ -48,7 +50,7 @@
     min-height: 100px;
     max-width: 110px;
     max-height: 110px;
-    margin: 15px;
+    /* margin: 15px; */
 }
 
 .submenu-dimensao-item:hover {
@@ -69,4 +71,10 @@
     width: 30%;
     display: flex;
     justify-content: space-between;
+}
+
+.botao-download-resumo {
+    margin: 0 !important;
+    min-width: 16em;
+    padding: 1.5em 0 !important;
 }
