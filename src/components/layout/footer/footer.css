@@ -1,3 +1,8 @@
+.image-footer {
+    max-width: 80%;
+    height: auto;
+}
+
 .logo-footer {
     max-width: 50% !important;
 }
@@ -29,6 +34,8 @@ footer.site-footer .bg-color-secondary-darkblue{
 footer button.back-top-icon:hover{
     background-color: var(--custom-btn-bg-color);
 }
+
+
 
 @media (max-width: 991px){
     body footer img.logo-footer {
