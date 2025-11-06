@@ -48,7 +48,7 @@ const Footer = () => {
                   href="mailto:faleconosco@odsb.org"
                   className="site-footer-link"
                 >
-                  faleconosco@odsb.org
+                  faleconosco@fundohydro.org
                 </a>
               </p>
             </Col>
