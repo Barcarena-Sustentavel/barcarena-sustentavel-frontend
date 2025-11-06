@@ -13,6 +13,8 @@ dist-ssr
 *.local
 src/apt.js
 src/api.tsx
+./Dockerfile
+./nginx.conf
 
 # Editor directories and files
 .vscode/*
