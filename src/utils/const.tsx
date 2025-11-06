@@ -144,7 +144,7 @@ console.log(tempDimensoesColumn3);
             setDimensoesColumn3(tempDimensoesColumn3);
             setdimensoesCores123(tempdimensoesCores123);
             setDimensaoAumentaIcone(tempDimensaoAumentaIcone);
-            setIsLoaded(true);
+            //setIsLoaded(true);
     });
   },[])
   return {
@@ -154,6 +154,7 @@ console.log(tempDimensoesColumn3);
     dimensoesCores123,
     dimensaoAumentaIcone,
     isLoaded,
+    setIsLoaded
   };
 };
 

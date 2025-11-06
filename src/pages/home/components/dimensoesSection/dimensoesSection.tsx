@@ -12,11 +12,11 @@ const DimensoesSection: FC = () => {
     dimensoesCores123,
     dimensaoAumentaIcone,
     isLoaded,
+    setIsLoaded
   } = dimensoes.GetAllConst();
   const dimensoesColumn12 ={...dimensoesColumn1, ...dimensoesColumn2}
   
   useEffect(() => {
-    console.log("reload")
     const observer = new IntersectionObserver(
       (entries) => {
         entries.forEach((entry) => {
@@ -28,13 +28,13 @@ const DimensoesSection: FC = () => {
       { threshold: 0.1 }
     );
 
-    setTimeout(() => {
+     setTimeout(() => {
       const dimensionItems = document.querySelectorAll('.dimensao-item');
       dimensionItems.forEach((item) => {
         observer.observe(item);
       });
-    }, 100);
-
+     }, 100);
+    setIsLoaded(true)
     return () => {
       const dimensionItems = document.querySelectorAll('.dimensao-item');
       dimensionItems.forEach((item) => {

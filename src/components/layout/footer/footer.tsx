@@ -9,8 +9,9 @@ import {
 
 // Importe as imagens (ajuste os caminhos conforme sua estrutura)
 import logo from "@assets/images/icons/Logo2.png";
-import hydroLogo from "@assets/images/icons/FundoDeSustentabilidadeHydro.png";
-import barcarenaLogo from "@assets/images/icons/IniciativaBarcarenaSustentavel.png";
+import hydroLogo from "@assets/images/icons/SELO Fundo Hydro-09.png";
+//import barcarenaLogo from "@assets/images/icons/IniciativaBarcarenaSustentavel.png";
+import barcarenaLogo from "@assets/images/icons/WhatsApp Image 2025-11-04 at 10.56.50.jpeg";
 import ufpaLogo from "@assets/images/icons/logoUFPA.png";
 import "@assets/styles/tooplate-gotto-job.css";
 import "./footer.css";
@@ -64,7 +65,8 @@ const Footer = () => {
                 <img
                   src={hydroLogo}
                   alt="Fundo de Sustentabilidade Hydro"
-                  className="img-fluid"
+                  //className="img-fluid"
+                  className="image-footer"
                 />
               </a>
             </Col>
@@ -80,7 +82,8 @@ const Footer = () => {
                 <img
                   src={barcarenaLogo}
                   alt="Iniciativa Barcarena Sustentável"
-                  className="img-fluid"
+                  //className="img-fluid"
+                  className="image-footer"
                 />
               </a>
             </Col>
