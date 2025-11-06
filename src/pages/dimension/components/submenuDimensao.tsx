@@ -15,10 +15,11 @@ const SubmenuDimensao: React.FC<SubmenuDimensaoProps> = ({ dimensaoAtiva }) => {
   const {
     dimensoesColumn1,
     dimensoesColumn2,
+    dimensoesColumn3,
     dimensoesCores123,
     dimensaoAumentaIcone,
   } = dimensoes.GetAllConst();
-  const todasDimensoes = { ...dimensoesColumn1, ...dimensoesColumn2 };
+  const todasDimensoes = { ...dimensoesColumn1, ...dimensoesColumn2, ...dimensoesColumn3 };
 
   return (
     <div

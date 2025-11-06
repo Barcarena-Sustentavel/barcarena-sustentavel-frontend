@@ -59,6 +59,7 @@
     padding: 1.5rem;
     margin-bottom: 1.5rem;
     border: 1px solid #e0e0e0;
+    position: relative;
   }
   
   .grafico-component h3 {
@@ -168,5 +169,26 @@
       width: 100%;
       margin-right: 0;
     }
+  }
+
+  .collapse-icon {
+    background-color: #e8e8e8;
+    padding: 4px;
+    border-radius: 6px;
+    padding-left: 10px;
+    padding-right: 10px;
+    position: absolute;
+    top: 10px;
+    left: 647px;
+  }
+
+  .move-icon {
+    cursor: grab;
+    background-color: #e8e8e8;
+    border-radius: 6px;
+    padding: 4px 11px;
+    position: absolute;
+    top: 10px;
+    left: 691px;
   }
   

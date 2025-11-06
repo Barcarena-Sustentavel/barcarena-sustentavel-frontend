@@ -1,8 +1,9 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Contribuicao } from '../../../interfaces/contribuicao_interface.tsx';
 import { useContribuicao } from '../../../hooks/useContribuicao.ts';
 import Swal from 'sweetalert2';
 import ReCAPTCHA from "react-google-recaptcha";
+import { Alert } from "react-bootstrap";
 
 
 
@@ -23,7 +24,12 @@ const FormContribuicao: React.FC<FormContribuicaoProps> = ({ dimensaoId , formSt
     const [isSubmitting, setIsSubmitting] = useState(false);
     const [captchaValido, setCaptchaValido] = useState(false);
     const { submitContribuicao } = useContribuicao();
-    const SITE_KEY_RECAPTCHA = import.meta.env.SITE_KEY_RECAPTCHA;
+    const [errorNome, setErrorNome] = useState<string>("");
+    const [errorTelefone, setErrorTelefone] = useState<string>("");
+    const [errorEmail, setErrorEmail] = useState<string>("");
+    const [errorArquivo, setErrorArquivo] = useState<string>("");
+
+    const SITE_KEY_RECAPTCHA = import.meta.env.VITE_SITE_KEY_RECAPTCHA;
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
         const { name, value } = e.target;
@@ -33,22 +39,65 @@ const FormContribuicao: React.FC<FormContribuicaoProps> = ({ dimensaoId , formSt
         console.log("Token recebido:", value);
         setCaptchaValido(!!value);
     }
-
     const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        if (e.target.files && e.target.files[0]) {
-            setFormData(prev => ({ ...prev, file: e.target.files![0] }));
+        const file = e.target.files ? e.target.files[0]: null;
+        if (!file) return; // nada selecionado
+
+        // ✅ Validação de tipo (MIME)
+        if (file.type !== "application/pdf") {
+        setErrorArquivo("O arquivo deve ser um PDF.");
+        e.target.value = ""; // limpa o campo
+        return;
         }
+
+        // ✅ Validação de tamanho (em bytes)
+        const maxSizeMB = 25;
+        const maxSizeBytes = maxSizeMB * 1024 * 1024;
+
+        if (file.size > maxSizeBytes) {
+        setErrorArquivo(`O arquivo deve ter no máximo ${maxSizeMB} MB.`);
+        e.target.value = "";
+        return;
+        }
+
+        setFormData(prev => ({ ...prev, file: e.target.files![0] }));
+
     };
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
+
+        if(formData.nome){
+            if(formData.nome.length > 100){
+                setErrorNome(prev => ("Insira um nome menor que 100 caracteres."));
+                return;
+            }
+        }
+        
+        if(formData.email){
+            if(formData.email.length > 250){
+                setErrorEmail(prev => ("Insira um email menor que 250 caracteres."));
+                return;
+            }
+        }
+
+        if(formData.telefone){
+            if(formData.telefone.length != 11){
+                setErrorTelefone(prev => ("Insira um número de telefone no formato XX9XXXXXXXX."));
+                return;
+            }
+            if(/[a-z]/i.test(formData.telefone)){
+                setErrorTelefone(prev => ("Insira apenas números."));
+                return;
+            }
+        }
         
         const data = new FormData();
         data.append('nome', formData.nome ?? "");
         data.append('email', formData.email ?? "");
         data.append('telefone', formData.telefone ?? "");
         data.append('comentario', formData.comentario ?? "");
-        data.append('fkDimensao', dimensaoId.toString());
+        // data.append('fkDimensao', dimensaoId.toString());
         if (formData.file) {
             data.append('file', formData.file);
         }
@@ -102,6 +151,12 @@ const FormContribuicao: React.FC<FormContribuicaoProps> = ({ dimensaoId , formSt
                         onChange={handleChange}
                         style={{backgroundColor: "white", color:"var(--p-color)"}}
                     />
+
+                    {errorNome && (
+                        <Alert variant="danger" className="mt-2">
+                            {errorNome}
+                        </Alert>
+                    )}
                     
                     <label htmlFor="email">Email</label>
                     <input 
@@ -114,6 +169,11 @@ const FormContribuicao: React.FC<FormContribuicaoProps> = ({ dimensaoId , formSt
                         required
                         style={{backgroundColor: "white", color:"var(--p-color)"}}
                     />
+                    {errorEmail && (
+                        <Alert variant="danger" className="mt-2">
+                            {errorEmail}
+                        </Alert>
+                    )}
                     
                     <label htmlFor="telefone">Telefone</label>
                     <input 
@@ -125,6 +185,11 @@ const FormContribuicao: React.FC<FormContribuicaoProps> = ({ dimensaoId , formSt
                         onChange={handleChange}
                         style={{backgroundColor: "white", color:"var(--p-color)"}}
                     />
+                    {errorTelefone && (
+                        <Alert variant="danger" className="mt-2">
+                            {errorTelefone}
+                        </Alert>
+                    )}
                     
                     <label htmlFor="comentario">Comentário</label>
                     <textarea 
@@ -143,9 +208,14 @@ const FormContribuicao: React.FC<FormContribuicaoProps> = ({ dimensaoId , formSt
                         id="file"
                         onChange={handleFileChange}
                     />
+                    {errorArquivo && (
+                        <Alert variant="danger" className="mt-2">
+                            {errorArquivo}
+                        </Alert>
+                    )}
 
                     <ReCAPTCHA
-                        sitekey="6LflLu0rAAAAALfA0ds3sDVpsf8CRbY8gUmOJf5q"
+                        sitekey={SITE_KEY_RECAPTCHA}
                         onChange={onChangeRecaptcha}
                     />
                     
