@@ -40,7 +40,7 @@
 
 .label-dimensao {
     color: white;
-    font-size: 40px;
+    /* font-size: 40px; */
     margin-left: 2rem;
     margin-bottom: 0;
 }
@@ -71,10 +71,12 @@
     width: 30%;
     display: flex;
     justify-content: space-between;
+    min-width: 352px;
 }
 
 .botao-download-resumo {
     margin: 0 !important;
     min-width: 16em;
     padding: 1.5em 0 !important;
+    margin-left: 1rem !important;
 }
