@@ -116,6 +116,7 @@ const DimensaoComponent: FC = () => {
       // setIndicadores(response.data.indicadores);
       setReferencias(response.data.referencias);
       setEstudosComplementares(response.data.estudos_complementares);
+      console.log(response.data.estudos_complementares);
     });
     //}
   }, [url, dimensao, botaoConectividade]);
@@ -150,8 +151,7 @@ const DimensaoComponent: FC = () => {
             ))}
         </ul>
       </div>
-
-      <div className="container dimension-details-container">
+      {estudosComplementares.length != 0 && (<div className="container dimension-details-container">
         <h1>Estudos Complementares</h1>
         <ul className="indicadores">
           {estudosComplementares.length > 0 &&
@@ -166,7 +166,7 @@ const DimensaoComponent: FC = () => {
               </li>
             ))}
         </ul>
-      </div>
+      </div>)}
       {/* <div className="container dimension-details-container mt-5 d-flex flex-column"> */}
       <div className="container dimension-details-container d-flex flex-column">
         <h1 style={{ borderBottom: "solid 1px #ddd" }}>Referências</h1>
