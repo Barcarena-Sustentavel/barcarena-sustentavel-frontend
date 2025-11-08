@@ -21,6 +21,19 @@ const SubmenuDimensao: React.FC<SubmenuDimensaoProps> = ({ dimensaoAtiva }) => {
   } = dimensoes.GetAllConst();
   const todasDimensoes = { ...dimensoesColumn1, ...dimensoesColumn2, ...dimensoesColumn3 };
 
+  function ajustarFonteTitulo(dimensaoAtiva: string){
+    const tamanhoString = dimensaoAtiva.length;
+
+    if(tamanhoString < 20){
+      return "40px";
+    }
+    else if(tamanhoString < 30){
+      return "30px";
+    }
+
+    return "20px";
+  }
+
   return (
     <div
       className="submenu-dimensao d-flex flex-column align-items-center"
@@ -79,7 +92,7 @@ const SubmenuDimensao: React.FC<SubmenuDimensaoProps> = ({ dimensaoAtiva }) => {
           }}
         />
         <div className="align-items-center tituloDimensao">
-          <p className="label-dimensao ml-5">
+          <p className="label-dimensao ml-5" style={{ fontSize: ajustarFonteTitulo(dimensaoAtiva)}}>
             {dimensaoAtiva || activeDimensionFromPath}
           </p>
           <button
