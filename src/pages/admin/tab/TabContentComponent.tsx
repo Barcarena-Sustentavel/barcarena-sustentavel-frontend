@@ -20,6 +20,7 @@ import {
   useSortable,
 } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
+import { loadIcon } from "../../../utils/const.tsx"
 
 const SortableItem:FC<{
   id: number;
@@ -219,13 +220,31 @@ export const TabContentComponent: FC<RenderContentInterface> = ({
               onChange={handleInputChange}
             />
           </Form.Group>
+          <Form.Group controlId="icone-dimensao" className="mt-3">
+            <Form.Label className="icone-dimensao-titulo">Ícone da Dimensão</Form.Label>
+            <div className="d-flex align-items-center imagem-icone-container">
+              <Form.Control
+              className="campo-input-icone"
+              type="file"
+              name="icone"
+              accept="image/svg+xml"
+              // onChange={handleIconeChange}
+              />
+              <div className="container-icone-atual">
+                <p className="nome-icone-atual">Ícone Atual: </p>
+                <div className="icone-atual">
+                  Ícone aqui
+                </div>
+              </div>
+            </div>
+          </Form.Group>
 
           {error && (
             <Alert variant="danger" className="mt-3">
               {error}
             </Alert>
           )}
-          <button>Salvar Alterações</button>
+          <button className="neutral-button">Salvar Alterações</button>
         </Form>
       </div>
     );
@@ -246,7 +265,7 @@ export const TabContentComponent: FC<RenderContentInterface> = ({
           </Form.Group>
           <div className="button-container">
             <button type="submit">Salvar Alterações</button>
-            <button type="button" onClick={(e: any) => handleDownloadArtigo(e)}>
+            <button className="neutral-button" type="button" onClick={(e: any) => handleDownloadArtigo(e)}>
               Baixar Artigo
             </button>
             <button type="button" onClick={(e: any) => handleDeleteArtigo(e)}>
