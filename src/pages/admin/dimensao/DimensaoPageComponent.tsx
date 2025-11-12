@@ -1,4 +1,4 @@
-import { FC, useState } from "react";
+import { FC, useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { TabContentComponent } from "../tab/TabContentComponent.tsx";
 import "../css/dimensaoPage.css";
@@ -6,6 +6,7 @@ import dimensoes from "../../../utils/const.tsx";
 
 const DimensaoPageComponent: FC = () => {
   const { dimensao } = useParams();
+  const [nomeDimensao, setNomeDimensao] = useState<string>(dimensao as string);
   const [activeTab, setActiveTab] = useState<string>("Dimensão");
   const { dimensoesColumn1, dimensoesColumn2, dimensoesCores123 } =
     dimensoes.GetAllConst();
@@ -19,7 +20,10 @@ const DimensaoPageComponent: FC = () => {
   function handleBack() {
     navigate("/admin/dimensao");
   }
-
+  function reloadPage(novoNomeDimensao: string) {
+    setNomeDimensao(novoNomeDimensao);
+    navigate(`/admin/dimensao/${novoNomeDimensao}`);
+  }
   return (
     <div className="home-container">
       <div
@@ -87,7 +91,7 @@ const DimensaoPageComponent: FC = () => {
         </button>
 
         <div className="admin-tab-content">
-          <TabContentComponent dimensao={dimensao} activeTab={activeTab} />
+          <TabContentComponent nomeDimensao={nomeDimensao} activeTab={activeTab} novoNomeDimensao={reloadPage} />
         </div>
       </div>
     </div>

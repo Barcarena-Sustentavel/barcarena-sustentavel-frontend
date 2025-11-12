@@ -6,7 +6,6 @@ import { Modal, Button, Form } from "react-bootstrap";
 
 const DimensaoAdmin: FC = () => {
   const navigate = useNavigate();
-  //const [logged, setLogged] = useState(false);
   const handleClick = (dimensao: string) => {
     navigate(`/admin/dimensao/${dimensao}/`);
   };
