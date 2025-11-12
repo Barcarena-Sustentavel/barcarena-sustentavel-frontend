@@ -1,7 +1,7 @@
 import React, { FC, useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import { Link } from "react-router-dom";
 import { Dimensao } from "../../../interfaces/dimensao_interface.tsx";
-import { RenderContentInterface } from "../../../interfaces/admin_interfaces/render_content_interface.tsx";
 import { Form, Alert } from "react-bootstrap";
 import api from "../../../api.tsx";
 import AddDelete from "../addDelete.tsx";
@@ -20,6 +20,7 @@ import {
   useSortable,
 } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
+import { loadIcon } from "../../../utils/const.tsx"
 
 const SortableItem:FC<{
   id: number;
@@ -41,10 +42,15 @@ const SortableItem:FC<{
   );
 }
 
-export const TabContentComponent: FC<RenderContentInterface> = ({
-  dimensao,
+export const TabContentComponent: FC<{nomeDimensao:string, activeTab: string, novoNomeDimensao:(name:string) => void}> = ({
+  nomeDimensao,
   activeTab,
+  novoNomeDimensao
 }) => {
+  const navigate = useNavigate();
+  const handleClick = (dimensao: string) => {
+    navigate(`/admin/dimensao/${dimensao}/`);
+  };
   const [toDelete, setToDelete] = useState<string[]>([]);
   const [checkedItems, setCheckedItems] = useState<Record<string, boolean>>({});
   const [dimensaoJson, setDimensao] = useState<Dimensao>();
@@ -61,7 +67,7 @@ export const TabContentComponent: FC<RenderContentInterface> = ({
     Array<Record<string, string | number | null>>
   >([]);
   const [error, setError] = useState<string | null>(null);
-  const url: string = `/admin/dimensoes/${dimensao}/`;
+  const url: string = `/admin/dimensoes/${nomeDimensao}/`;
   const activeTabDict: {
     [key: string]: Array<Record<string, string | number | null>>;
   } = {
@@ -117,7 +123,10 @@ export const TabContentComponent: FC<RenderContentInterface> = ({
         `/admin/dimensoes/${dimensaoJson?.nome}/`,
         patchDimensao,
       );
-      setDimensao(response.data);
+      if(response.data){
+        novoNomeDimensao(response.data.dimensao.nome);
+      }
+      
     } catch (error) {
       console.log(error);
     }
@@ -126,15 +135,15 @@ export const TabContentComponent: FC<RenderContentInterface> = ({
   const handleSubmitArtigo = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     if (patchArtigo === false) {
-      uploadArtigoDimensao(dimensao as string, formDataArtigo);
+      uploadArtigoDimensao(nomeDimensao as string, formDataArtigo);
       return;
     }
-    updateArtigoDimensao(dimensao as string, formDataArtigo);
+    updateArtigoDimensao(nomeDimensao as string, formDataArtigo);
   };
 
   const handleDeleteArtigo = async (e: any) => {
     e.preventDefault();
-    if (formDataArtigo.name !== "") deleteArtigoDimensao(dimensao as string);
+    if (formDataArtigo.name !== "") deleteArtigoDimensao(nomeDimensao as string);
     setPatchArtigo(false);
     setFormDataArtigo((prev) => ({
       ...prev,
@@ -144,7 +153,7 @@ export const TabContentComponent: FC<RenderContentInterface> = ({
 
   const handleDownloadArtigo = async (e: any) => {
     e.preventDefault();
-    if (formDataArtigo.name !== "") getArtigoDimensao(dimensao as string);
+    if (formDataArtigo.name !== "") getArtigoDimensao(nomeDimensao as string);
   };
 
   const handleDragEnd = (event:any) => {
@@ -155,7 +164,7 @@ export const TabContentComponent: FC<RenderContentInterface> = ({
         const oldIndex = items.find((item) => item.posicao === active.id)
         const newIndex = items.find((item) => item.posicao === over.id);
         const handleOldIndex = oldIndex?.posicao as number;
-        api.patch(`/admin/dimensoes/${dimensao}/indicador/trocar_posicao`, {
+        api.patch(`/admin/dimensoes/${nomeDimensao}/indicador/trocar_posicao`, {
           indicador1: oldIndex,
           indicador2: newIndex,
         });
@@ -191,9 +200,12 @@ export const TabContentComponent: FC<RenderContentInterface> = ({
         setNomeContribuicoes([]);
         console.log(error);
       });
-  }, [url, dimensao]);
+  }, [url, nomeDimensao]);
 
-  console.log(nomeIndicadores);
+  //useEffect(() => {
+  //  handleClick(dimensaoJson?.nome as string);
+  //}, [dimensaoJson?.nome]);
+
   if (activeTab === "Dimensão") {
     return (
       <div className="admin-forms">
@@ -219,13 +231,31 @@ export const TabContentComponent: FC<RenderContentInterface> = ({
               onChange={handleInputChange}
             />
           </Form.Group>
+          <Form.Group controlId="icone-dimensao" className="mt-3">
+            <Form.Label className="icone-dimensao-titulo">Ícone da Dimensão</Form.Label>
+            <div className="d-flex align-items-center imagem-icone-container">
+              <Form.Control
+              className="campo-input-icone"
+              type="file"
+              name="icone"
+              accept="image/svg+xml"
+              // onChange={handleIconeChange}
+              />
+              <div className="container-icone-atual">
+                <p className="nome-icone-atual">Ícone Atual: </p>
+                <div className="icone-atual">
+                  Ícone aqui
+                </div>
+              </div>
+            </div>
+          </Form.Group>
 
           {error && (
             <Alert variant="danger" className="mt-3">
               {error}
             </Alert>
           )}
-          <button>Salvar Alterações</button>
+          <button className="neutral-button">Salvar Alterações</button>
         </Form>
       </div>
     );
@@ -246,7 +276,7 @@ export const TabContentComponent: FC<RenderContentInterface> = ({
           </Form.Group>
           <div className="button-container">
             <button type="submit">Salvar Alterações</button>
-            <button type="button" onClick={(e: any) => handleDownloadArtigo(e)}>
+            <button className="neutral-button" type="button" onClick={(e: any) => handleDownloadArtigo(e)}>
               Baixar Artigo
             </button>
             <button type="button" onClick={(e: any) => handleDeleteArtigo(e)}>
@@ -270,7 +300,7 @@ export const TabContentComponent: FC<RenderContentInterface> = ({
           >
             {nomeIndicadores.map((element) => {
               const encodedURI = encodeURI(
-                `/admin/dimensao/${dimensao}/update/${activeTab}/${element.nome}/`,
+                `/admin/dimensao/${nomeDimensao}/update/${activeTab}/${element.nome}/`,
               );
               return (
                 <SortableItem
@@ -329,7 +359,7 @@ export const TabContentComponent: FC<RenderContentInterface> = ({
           </SortableContext>
         </DndContext>
         <AddDelete
-          dimensao={dimensao}
+          dimensao={nomeDimensao}
           activeTab={activeTab}
           deleteElement={toDelete}
         />
@@ -341,7 +371,7 @@ export const TabContentComponent: FC<RenderContentInterface> = ({
       <div>
         {activeTabDict[activeTab].map((element) => {
           const encodedURI = encodeURI(
-            `/admin/dimensao/${dimensao}/update/${activeTab}/${element.nome}/`,
+            `/admin/dimensao/${nomeDimensao}/update/${activeTab}/${element.nome}/`,
           );
           console.log(encodedURI);
           return (
@@ -383,7 +413,7 @@ export const TabContentComponent: FC<RenderContentInterface> = ({
         })}
       </div>
       <AddDelete
-        dimensao={dimensao}
+        dimensao={nomeDimensao}
         activeTab={activeTab}
         deleteElement={toDelete}
       />

@@ -66,3 +66,36 @@
         width: 100%;
     }
 }
+
+.neutral-button {
+    background-color: #d7d7d7 !important;
+    color: black !important;
+}
+
+.nome-icone-atual {
+    font-size: 0.8rem;
+    margin-bottom: 0 !important;
+}
+
+.icone-dimensao-titulo {
+    margin-bottom:0 !important;
+}
+
+.campo-input-icone {
+    width: 22rem !important;
+    margin-bottom: 0 !important;
+    height: 42px;
+}
+
+.icone-atual {
+    background-color: grey;
+    padding: 37px 20px;
+}
+
+.imagem-icone-container {
+    margin-bottom: 20px;
+}
+
+.container-icone-atual {
+    margin-left: 1rem;
+}
