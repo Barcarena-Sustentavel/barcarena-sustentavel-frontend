@@ -51,7 +51,7 @@ const DimensoesSection: FC = () => {
     <div id="dimensoesPai">
       <h2 className="text-center pt-3">Escolha uma dimensão</h2>
 
-      <div id="dimensoes" className="d-flex flex-wrap px-md-5 py-1">
+      <div id="dimensoes" className="px-md-5 py-1">
         {/* First column */}
         <div className="col-30 d-flex flex-column px-md-5" style={{marginLeft: "auto"}}>
           {isLoaded && Object.entries(dimensoesColumn1).map(([item, value]) => (
@@ -137,9 +137,9 @@ const DimensoesSection: FC = () => {
         className="dropdown-button" 
         onClick={() => setIsOpen(!isOpen)}
         >
-        <h2>Escolha uma Dimensão</h2>
-        <span className={`arrow ${isOpen ? 'up' : 'down'}`}>▼</span>
+        <span className={`arrow ${isOpen ? 'up' : 'down'}`}><h2>Escolha uma Dimensão</h2>▼</span>
         </button>
+        <div className="d-flex flex-column px-md-5" style={{marginRight: "auto"}}>
         {isOpen && isLoaded && Object.entries(dimensoesColumn123).map(([item, value]) => (
             <DimensionLinkButton
               to={`/${item}`}
@@ -163,6 +163,7 @@ const DimensoesSection: FC = () => {
               </div>
             </DimensionLinkButton>
           ))}
+          </div>
       </div>
     </div>
   );

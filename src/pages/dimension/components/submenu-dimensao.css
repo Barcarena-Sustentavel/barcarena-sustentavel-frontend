@@ -1,7 +1,12 @@
 .submenu-dimensao {
     background-color: var(--submenu-dimensao-color);
 }
-
+#mostrarDimensoes{
+    display: flex;
+}
+#dropDownSubmenuDimensao{
+    display: none;
+}
 .icon-color-submenu-dimensao {
     width: 60px;
     height: 60px;
@@ -40,14 +45,17 @@
 
 .label-dimensao {
     color: white;
-    /* font-size: 40px; */
+    font-size: calc(1rem + 1vw);
     margin-left: 2rem;
     margin-bottom: 0;
 }
 
 .label-icon-dimensao {
-    min-width: 100px;
-    min-height: 100px;
+    min-width: 50px;
+    min-height: 50px;
+    width: calc(2rem + 3vw);
+    height: calc(2rem + 3vw);
+    /*
     max-width: 110px;
     max-height: 110px;
     /* margin: 15px; */
@@ -68,15 +76,44 @@
 }
 
 .tituloDimensao {
-    width: 30%;
     display: flex;
     justify-content: space-between;
-    min-width: 352px;
 }
 
 .botao-download-resumo {
+    display: flex !important;
+    color: white !important;
+    align-items: center !important;
+    justify-content: center !important;
     margin: 0 !important;
-    min-width: 16em;
-    padding: 1.5em 0 !important;
+    max-width: 16em;
+    /* padding: 1.5em 0 !important; */
+    padding: 20px 5px 10px 5px !important;
     margin-left: 1rem !important;
+}
+
+@media (max-width:900px){
+    #mostrarDimensoes {
+        display: none;
+    }
+    #dropDownSubmenuDimensao {
+        display: block;
+    }
+    .dropdown-button-subdimensao{
+        background-color: var(--dark-blue-d);    
+        color: white;
+        border: 1px solid white;
+        border-radius: 6px;
+        padding: 10px 18px;
+        cursor: pointer;
+        transition: all 0.2s ease;
+        box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12);
+    }
+    .botao-download-resumo p{
+        display: none;
+        width: 3em;
+    }
+    .botao-download-resumo{
+        height: 20px;
+    }
 }
