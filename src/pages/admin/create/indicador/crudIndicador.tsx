@@ -65,14 +65,15 @@ export const patchIndicador = async (
     const novoIndicadorBool: boolean = novoIndicador !== antigoIndicador;
     if (novoIndicadorBool) {
       indicador.nome = novoIndicador;
-      const response_dimensao = await api.put(
-        `/admin/dimensoes/${dimensao}/indicador/${encodeURIComponent(antigoIndicador)}/?indicadorNovo=${encodeURIComponent(novoIndicador)}`,
-      );
+      //const response_dimensao = await api.put(
+      //  `/admin/dimensoes/${dimensao}/indicador/${encodeURIComponent(antigoIndicador)}/?indicadorNovo=${encodeURIComponent(novoIndicador)}`,
+      //);
       const formData = new FormData();
-      const endpoint_anexo = `/api/admin/dimensoes/${dimensao}/indicador/${encodeURIComponent(novoIndicador)}/`;
+      const endpoint_anexo = `/api/admin/dimensoes/${dimensao}/indicador/${encodeURIComponent(antigoIndicador)}/`;
       formData.append("indicadorNovo", novoIndicador);
       const response_anexo = await fetch(endpoint_anexo, {
-        method: "PUT",
+        //method: "PUT",
+        method: "PATCH",
         body: formData,
       }).catch((error) => {
         console.log(error);

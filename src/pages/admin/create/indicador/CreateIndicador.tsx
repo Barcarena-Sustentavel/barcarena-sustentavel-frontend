@@ -125,12 +125,13 @@ export const CreateIndicador: FC<{
     }
 
     // Atualizar arrayIndicadorResponse com os dados atuais
-    arrayIndicadorResponse.length = 0;
-    graficosData.forEach((grafico) => {
-      arrayIndicadorResponse.push(grafico);
-    });
+    //arrayIndicadorResponse.length = 0;
+    //graficosData.forEach((grafico) => {
+    //  arrayIndicadorResponse.push(grafico);
+    //});
 
     if (patch === true) {
+      console.log(arrayIndicadorResponse)
       patchIndicador(
         dimensao,
         indicadorAntigo,
@@ -186,7 +187,7 @@ export const CreateIndicador: FC<{
           console.log(error);
         });
     }
-  }, [url, indicadorNome, arrayIndicadorResponse]);
+  }, []);
 
   useEffect(() => {
     console.log(openStates);
