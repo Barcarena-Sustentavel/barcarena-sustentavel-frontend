@@ -14,7 +14,7 @@ const DimensoesSection: FC = () => {
     isLoaded,
     setIsLoaded
   } = dimensoes.GetAllConst();
-  const dimensoesColumn123 ={...dimensoesColumn1, ...dimensoesColumn2, dimensoesColumn3}
+  const dimensoesColumn123 ={...dimensoesColumn1, ...dimensoesColumn2, ...dimensoesColumn3}
   const [isOpen, setIsOpen] = useState(false);
 
   useEffect(() => {
