@@ -1,4 +1,4 @@
-import React, { FC, useEffect, useRef, useCallback } from 'react';
+import React, { FC, useEffect, useRef, useCallback, useState } from 'react';
 import './dimensoes-section.css';
 import dimensoes from '../../../../utils/const.tsx';
 import DimensionLinkButton from './dimensionLinkButton.tsx';
@@ -14,7 +14,8 @@ const DimensoesSection: FC = () => {
     isLoaded,
     setIsLoaded
   } = dimensoes.GetAllConst();
-  const dimensoesColumn12 ={...dimensoesColumn1, ...dimensoesColumn2}
+  const dimensoesColumn123 ={...dimensoesColumn1, ...dimensoesColumn2, dimensoesColumn3}
+  const [isOpen, setIsOpen] = useState(false);
 
   useEffect(() => {
     setIsLoaded(true)
@@ -130,6 +131,38 @@ const DimensoesSection: FC = () => {
             </DimensionLinkButton>
           ))}
         </div>
+      </div>
+      <div id="dimensoesDropdown">
+        <button 
+        className="dropdown-button" 
+        onClick={() => setIsOpen(!isOpen)}
+        >
+        <h2>Escolha uma Dimensão</h2>
+        <span className={`arrow ${isOpen ? 'up' : 'down'}`}>▼</span>
+        </button>
+        {isOpen && isLoaded && Object.entries(dimensoesColumn123).map(([item, value]) => (
+            <DimensionLinkButton
+              to={`/${item}`}
+              color={dimensoesCores123[item]}
+              key={item}
+              increaseIcon={dimensaoAumentaIcone[item]}
+            >
+              <div ref={dimensionItemRef} className="dimensao-item d-flex flex-row align-items-center justify-content-between my-2">
+                <p>{item}</p>
+                <div
+                  className="icon-color"
+                  style={{
+                    maskImage: `url(${value})`,
+                    WebkitMaskImage: `url(${value})`,
+                    maskRepeat: 'no-repeat',
+                    WebkitMaskRepeat: 'no-repeat',
+                    maskSize: 'contain',
+                    WebkitMaskSize: 'contain',
+                  }}
+                />
+              </div>
+            </DimensionLinkButton>
+          ))}
       </div>
     </div>
   );
