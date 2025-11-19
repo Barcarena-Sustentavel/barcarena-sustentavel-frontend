@@ -66,7 +66,7 @@ const DimensaoPageComponent: FC = () => {
           </button>
 
           <button
-            className={`admin-tab-button ${activeTab === "Estudos Complementares" ? "active" : ""}`}
+            className={`admin-tab-button ${activeTab === "EstudosComplementares" ? "active" : ""}`}
             onClick={() => setActiveTab("EstudosComplementares")}
           >
             Estudos Complementares
