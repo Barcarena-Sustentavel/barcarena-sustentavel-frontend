@@ -10,8 +10,8 @@ import "../../css/dimensaoPage.css";
 import { Alert } from "react-bootstrap";
 import { Collapse } from "react-bootstrap"
 
-import { DndContext, closestCorners, closestCenter, PointerSensor, useSensor, useSensors, pointerWithin} from "@dnd-kit/core";
-import { SortableContext, verticalListSortingStrategy, useSortable, arrayMove } from "@dnd-kit/sortable";
+import { DndContext, DragOverlay, PointerSensor, useSensor, useSensors, pointerWithin} from "@dnd-kit/core";
+import { SortableContext, verticalListSortingStrategy, useSortable, arrayMove, defaultAnimateLayoutChanges } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
 
 export const CreateIndicador: FC<{
@@ -109,6 +109,7 @@ export const CreateIndicador: FC<{
         !grafico.tipoGrafico ||
         (grafico.id &&
           grafico.id <= 0 &&
+          typeof(grafico.arquivo) === "object" &&
           (!grafico.arquivo || grafico.arquivo.size === 0)),
     );
 
@@ -233,6 +234,17 @@ export const CreateIndicador: FC<{
     setDeleteArray((prev) => prev.filter((g) => g.id !== grafico.id));
   };
 
+  const sensitiveAnimateLayoutChanges = (args: any) => {
+      const { isSorting, wasDragging } = args;
+
+      // Se estiver arrastando ou ordenando, bloqueie animações de layout (altura/largura)
+      if (isSorting || wasDragging) {
+        return false; // <--- Força bruta: não anima layout shifts, apenas transform
+      }
+
+      return defaultAnimateLayoutChanges(args);
+    };
+
   function SortableGrafico({
     id, 
     index,
@@ -240,8 +252,12 @@ export const CreateIndicador: FC<{
     tituloGrafico,
     children
   }: { id: string; index: number, open: boolean, tituloGrafico: string, children: React.ReactNode }) {
-    const {attributes, listeners, setNodeRef, transform, transition} = useSortable({id});
-    const style = { transform: CSS.Transform.toString(transform), transition };
+
+    const {attributes, listeners, setNodeRef, transform, transition, isDragging} = useSortable({id,
+       animateLayoutChanges: sensitiveAnimateLayoutChanges,
+      });
+    const style = { transform: CSS.Translate.toString(transform), transition, opacity: isDragging ? 0: 1 , };
+    
     return (
       <div ref={setNodeRef} style={style} {...attributes}>
         <div
@@ -258,7 +274,7 @@ export const CreateIndicador: FC<{
           </i>
           <span className="move-icon" {...listeners} style={{ cursor: "grab", marginRight: 8 }}>⠿</span>
           <h3>Gráfico {index + 1} { !open ? (" - " + tituloGrafico): ("")}</h3>
-        {children}
+          {children}
       </div>
       </div>
     );
@@ -275,21 +291,37 @@ export const CreateIndicador: FC<{
     }
 
     const sensors = useSensors(useSensor(PointerSensor, { activationConstraint: { distance: 8 } }));
+    const [activeId, setActiveId] = useState(null);
+    useEffect(() => {console.log(`activeId = ${activeId}\ntypeof(activeId) = ${typeof(activeId)}\n${graficosData.find(grafico => grafico.id === activeId)}`)}, [activeId]);
+
+    function onDragStart(event: any) {
+      setActiveId(event.active.id);
+    }
+
 
     function onDragEnd(event: any) {
       const { active, over } = event;
+
+      // Verificação básica
       if (!over || active.id === over.id) return;
 
       setGraficosData((prev) => {
-        const ordenados = [...prev].sort((a,b) => a.posicao - b.posicao);
-        const oldIndex = ordenados.findIndex(x => x.id.toString() === active.id);
-        const newIndex = ordenados.findIndex(y => y.id.toString() === over.id);
-        // console.log(typeof(oldIndex));
-        const movidos = arrayMove(ordenados, oldIndex, newIndex);
-        console.log(normalizarPosicoes(movidos));
-        return normalizarPosicoes(movidos);       // ✅ atualiza posicao
-          });
-        console.log(graficosData);
+        // 1. Encontre os índices no array ATUAL (sem reordenar antes)
+        // Usamos String() para garantir que comparação de número com string funcione
+        const oldIndex = prev.findIndex((item) => String(item.id) === String(active.id));
+        const newIndex = prev.findIndex((item) => String(item.id) === String(over.id));
+
+        // Se não encontrar algum dos índices (segurança), retorna o estado anterior sem mudar nada
+        if (oldIndex === -1 || newIndex === -1) return prev;
+
+        // 2. Move o item no array
+        const novoArray = arrayMove(prev, oldIndex, newIndex);
+
+        // 3. Só AGORA você normaliza as posições (atualiza a propriedade .posicao)
+        // para enviar ao backend ou salvar
+        return normalizarPosicoes(novoArray);
+      });
+      setActiveId(null);
     }
 
     const view = [...graficosData].sort((a,b) => a.posicao - b.posicao);
@@ -299,12 +331,16 @@ export const CreateIndicador: FC<{
         view[index].posicao = index
     });
 
+    const styleDragOverlay = { transform: 'scaleY(1)', zIndex: 9999,}
+
     return (
       <DndContext sensors={sensors}
         collisionDetection={pointerWithin}
-        onDragEnd={onDragEnd}>
+        onDragEnd={onDragEnd}
+        autoScroll={false}
+        onDragStart={onDragStart}>
         <SortableContext items={graficosData.map((i) => i.id.toString())} strategy={verticalListSortingStrategy}>
-            <div style={{ display: "grid", gap: 8 }}>
+            <div style={{ display: "grid", gap: 8, minHeight: '60px', height: 'auto' }}>
               {view.map((grafico, index) => (
                 <SortableGrafico id={grafico.id.toString()} index={index} open={openStates[grafico.id]} tituloGrafico={grafico.tituloGrafico}>
                     <Collapse in={openStates[grafico.id]}>
@@ -325,6 +361,15 @@ export const CreateIndicador: FC<{
               ))}
             </div>
         </SortableContext>
+        {/* --- DRAG OVERLAY --- */}
+        {/* Renderizado fora do fluxo normal (Portal) */}
+        {/* <DragOverlay adjustScale={false} style={styleDragOverlay}>
+         */}
+        <DragOverlay adjustScale={false}>
+          <div className="grafico-component" style={{minHeight: "100px !important"}}>
+            <h3>Gráfico - {graficosData.find(grafico => String(grafico.id) === String(activeId))?.tituloGrafico}</h3>
+          </div>
+        </DragOverlay>
       </DndContext>
     );
   }
