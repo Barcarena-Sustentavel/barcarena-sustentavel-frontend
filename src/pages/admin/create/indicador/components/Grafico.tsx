@@ -148,7 +148,7 @@ export const GraficoComponent: FC<GraficoComponentProps> = ({
           )} */}
         {typeof(newIndicadorResponse.arquivo) === "string" ? (
           <div>
-            <p>{`Arquivo atual: ${newIndicadorResponse.arquivo}`}</p>
+            <p>{`Arquivo atual: ${newIndicadorResponse.arquivo.split('/').pop()}`}</p>
           </div>
         ):(
           <div>
