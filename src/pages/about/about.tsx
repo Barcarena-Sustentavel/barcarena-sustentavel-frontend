@@ -111,16 +111,16 @@ const About: FC = () => {
                 O procedimento de diagnóstico baseado em indicadores é um processo sistemático de coleta, seleção, 
                 análise e interpretação de dados para identificar problemas nas dimensões previstas em nosso estudo. O processo envolve as seguintes etapas:
                 <ul>
-                  <li>Coleta de dados a partir de uma variedade de fontes disponíveis, na sua maioria, online.</li>
-                  <li>Definição dos Objetivos do diagnóstico. O que o estudo deseja identificar?</li>
-                  <li>
+                  <li className="section-texto">Coleta de dados a partir de uma variedade de fontes disponíveis, na sua maioria, online.</li>
+                  <li className="section-texto">Definição dos Objetivos do diagnóstico. O que o estudo deseja identificar?</li>
+                  <li className="section-texto"> 
                     Seleção dos indicadores segundo um critério de seleção ótimo, com o objetivo de garantir que eles 
                     sejam relevantes, válidos, confiáveis, sensíveis, específicos, acessíveis, eficientes, comparáveis, interpretáveis e úteis. 
                   </li>
-                  <li>
+                  <li className="section-texto">
                     Análise dos dados para identificação de tendências, padrões e discrepâncias, etapa realizada a partir de uma variedade de técnicas estatísticas ou qualitativas.
                   </li>
-                  <li>
+                  <li className="section-texto">
                     Interpretação dos resultados à luz dos objetivos do diagnóstico e dos indicadores selecionados previamente para este propósito. 
                     Ao considerar essas características, pretende-se garantir que resultados mais robustos e eficazes em relação as dimensões previstas nos estudos.
                   </li>
