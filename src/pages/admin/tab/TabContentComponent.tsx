@@ -230,7 +230,7 @@ export const TabContentComponent: FC<{nomeDimensao:string, activeTab: string, no
               onChange={handleInputChange}
             />
           </Form.Group>
-          <Form.Group controlId="icone-dimensao" className="mt-3">
+          {/* <Form.Group controlId="icone-dimensao" className="mt-3">
             <Form.Label className="icone-dimensao-titulo">Ícone da Dimensão</Form.Label>
             <div className="d-flex align-items-center imagem-icone-container">
               <Form.Control
@@ -247,7 +247,7 @@ export const TabContentComponent: FC<{nomeDimensao:string, activeTab: string, no
                 </div>
               </div>
             </div>
-          </Form.Group>
+          </Form.Group> */}
 
           {error && (
             <Alert variant="danger" className="mt-3">

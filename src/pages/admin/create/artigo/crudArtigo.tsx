@@ -11,7 +11,7 @@ export async function getArtigoDimensao(dimensaoNome: string): Promise<void> {
         const url = window.URL.createObjectURL(new Blob([response.data]));
         const link = document.createElement("a");
         link.href = url;
-        link.download = `${response.data.name}.pdf`;
+        link.download = `${dimensaoNome}.pdf`;
         document.body.appendChild(link);
         link.click();
         document.body.removeChild(link);

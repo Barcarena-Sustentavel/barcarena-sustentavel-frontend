@@ -31,7 +31,6 @@ export const GraficoComponent: FC<GraficoComponentProps> = ({
   const [checked, setChecked] = useState<boolean>(false);
   const [newIndicadorResponse, setNewIndicadorResponse] =
     useState<GraficosIndicador>(grafico);
-
   useEffect(() => {
     setNewIndicadorResponse(grafico);
     setGraficoAdicionado(grafico.id !== undefined && grafico.id! > 0);
@@ -61,6 +60,7 @@ export const GraficoComponent: FC<GraficoComponentProps> = ({
     }
 
     if (
+      (typeof(newIndicadorResponse.arquivo) === "object") &&
       (!newIndicadorResponse.id || newIndicadorResponse.id <= 0) &&
       (!newIndicadorResponse.arquivo || newIndicadorResponse.arquivo.size === 0)
     ) {
@@ -140,12 +140,21 @@ export const GraficoComponent: FC<GraficoComponentProps> = ({
 
       <div className="form-group">
         <label htmlFor="csvGrafico">Dados do gráfico</label>
-        {newIndicadorResponse.arquivo &&
-          newIndicadorResponse.arquivo.name !== "" && (
+        {/* {newIndicadorResponse.arquivo &&
+          newIndicadorResponse.arquivo !== "" && (
             <div>
-              <p>{`Arquivo atual: ${newIndicadorResponse.arquivo.name}`}</p>
+              <p>{`Arquivo atual: ${newIndicadorResponse.arquivo.split('/')}`}</p>
             </div>
-          )}
+          )} */}
+        {typeof(newIndicadorResponse.arquivo) === "string" ? (
+          <div>
+            <p>{`Arquivo atual: ${newIndicadorResponse.arquivo.split('/').pop()}`}</p>
+          </div>
+        ):(
+          <div>
+            <p>{`Arquivo atual: ${newIndicadorResponse.arquivo.name}`}</p>
+          </div>
+        ) }
         <input
           id="csvGrafico"
           name="csvGrafico"

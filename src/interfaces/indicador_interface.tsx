@@ -4,7 +4,7 @@ export interface Indicador{
 
 export interface GraficosIndicador{
     id: number,
-    arquivo: File //| string, //| null
+    arquivo: File | string, //| null
     descricaoGrafico: string, //| null,
     tituloGrafico: string, //| undefined,
     tipoGrafico: string //| undefined
