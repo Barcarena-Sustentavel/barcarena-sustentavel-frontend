@@ -9,7 +9,6 @@ import dimensoes from "../../../../utils/const.tsx";
 import "../../css/dimensaoPage.css";
 import { Alert } from "react-bootstrap";
 import { Collapse } from "react-bootstrap"
-
 import { DndContext, closestCorners, closestCenter, PointerSensor, useSensor, useSensors, pointerWithin} from "@dnd-kit/core";
 import { SortableContext, verticalListSortingStrategy, useSortable, arrayMove } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
@@ -47,7 +46,7 @@ export const CreateIndicador: FC<{
       Dispersão: "scatter",
       Coluna: "column",
       Barra: "bar",
-      Bolha: "bubble",
+      //Bolha: "bubble",
       "Mapa de Calor": "heatmap",
       Pizza: "pie",
       Tabela: "tabela",
@@ -125,10 +124,10 @@ export const CreateIndicador: FC<{
     }
 
     // Atualizar arrayIndicadorResponse com os dados atuais
-    //arrayIndicadorResponse.length = 0;
-    //graficosData.forEach((grafico) => {
-    //  arrayIndicadorResponse.push(grafico);
-    //});
+    arrayIndicadorResponse.length = 0;
+    graficosData.forEach((grafico) => {
+      arrayIndicadorResponse.push(grafico);
+    });
 
     if (patch === true) {
       console.log(arrayIndicadorResponse)

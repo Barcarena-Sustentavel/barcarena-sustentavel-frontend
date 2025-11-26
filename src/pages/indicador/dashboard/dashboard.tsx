@@ -1,5 +1,6 @@
 import * as Highcharts from "highcharts";
 import HighchartsReact from "highcharts-react-official";
+import '../../../utils/highcharts/heatmap.js';
 import React, { FC, useRef } from "react";
 import { DashboardProps } from "./interface/dashboard_interface.tsx";
 import { MaterialReactTable } from "material-react-table";
@@ -7,11 +8,11 @@ import {
   PlotSeries,
   TreeMapSeries,
   PizzaSeries,
+  ScatterProps
 } from "./interface/dados_graficos_interface.tsx";
 
 const plotOptions = (dashboard: DashboardProps) => {
   if (dashboard.tipoGrafico === "pie") {
-    console.log(dashboard.dados);
     return {
       chart: {
         plotBackgroundColor: null,
@@ -71,6 +72,35 @@ const plotOptions = (dashboard: DashboardProps) => {
     };
   }
 
+  if(dashboard.tipoGrafico === "scatter"){
+    return{
+      chart:{
+        type: dashboard.tipoGrafico,
+        zooming: {
+                type: 'xy'
+            }
+      },
+       title: {
+        text: dashboard.tituloGrafico ?? "",
+      },
+        xAxis: {
+            title: {
+                text: 'y'
+            },
+            gridLineWidth: 1,
+        },
+        yAxis: {
+            title: {
+                text: 'x'
+            },gridLineWidth: 1
+        },
+         legend: {
+            enabled: true
+        },
+        series: dashboard.dados,
+
+    }
+  }
   return {
     chart: {
       type: dashboard.tipoGrafico,
@@ -90,6 +120,15 @@ const plotOptions = (dashboard: DashboardProps) => {
   };
 };
 
+//Utilizada para gerar números inteiros para o rgb do rgba
+const randomInt = (min: number, max: number): number =>
+  Math.floor(Math.random() * (max - min + 1)) + min; 
+
+//Utilizada para gerar o 'a' do rgba
+const randomFloat = (min: number, max: number): number =>
+  Math.random() * (max - min) + min; 
+
+
 export const DashboardComponent: FC<{
   tipoGrafico: string;
   dados: number[][];
@@ -102,6 +141,7 @@ export const DashboardComponent: FC<{
   const dadosGraficoPlots: PlotSeries[] = [];
   const dadosGraficosTrees: TreeMapSeries[] = [];
   const dadosGraficosPizza: PizzaSeries[] = [];
+  const dadosGraficosScatter: ScatterProps[] = [];
   let finalDadosGraficos: any[] = [];
 
   if (tipoGrafico === "treemap") {
@@ -121,7 +161,33 @@ export const DashboardComponent: FC<{
       });
     }
     finalDadosGraficos = dadosGraficosPizza;
-  } else {
+  } 
+  else if( tipoGrafico === "scatter"){
+    for (let i = 0; i < dados.length; i++) {
+      const r = randomInt(0,255)
+      const g = randomInt(0,255)
+      const b = randomInt(0,255)
+      const a = Number(randomFloat(0.3, 1).toFixed(2)); 
+      const color = `rgba(${r}, ${g}, ${b}, ${a})`;
+
+      const dataScatter: number[][] = [];
+      dados[i].forEach((_, index) => {
+        dataScatter.push([dados[i][index], dados[i][index]]);
+      })
+      //dataScatter.push(dados[i]);
+
+      dadosGraficosScatter.push({
+        name: colunas[i],
+        //id: colunas[i],
+        color: color,
+        //marker: {symbol: 'circle'},
+        data: dataScatter,
+      });
+    }
+    console.log(dadosGraficosScatter)
+    finalDadosGraficos = dadosGraficosScatter;
+  }
+  else {
     dados.forEach((dado, index) => {
       dadosGraficoPlots.push({
         name: colunas[index], //`Dado ${index + 1}`,
@@ -175,7 +241,6 @@ export const DashboardComponent: FC<{
       }
     }
 
-    console.log(tableData);
     return React.createElement(MaterialReactTable, {
       columns: cols,
       data: tableData,
