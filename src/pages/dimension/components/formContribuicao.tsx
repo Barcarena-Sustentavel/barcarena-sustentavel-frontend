@@ -3,8 +3,9 @@ import { Contribuicao } from '../../../interfaces/contribuicao_interface.tsx';
 import { useContribuicao } from '../../../hooks/useContribuicao.ts';
 import Swal from 'sweetalert2';
 import ReCAPTCHA from "react-google-recaptcha";
-import { Alert } from "react-bootstrap";
-
+import { Alert, Form, Row, Col, Button } from "react-bootstrap";
+import "./formContribuicao.css";
+import info_icon from "@assets/images/icons/info-icon.png";
 
 
 interface FormContribuicaoProps {
@@ -102,6 +103,8 @@ const FormContribuicao: React.FC<FormContribuicaoProps> = ({ dimensaoId , formSt
             data.append('file', formData.file);
         }
 
+        console.log(data)
+
         await submitContribuicao({
             formData: data,
             onSuccess: async () => {
@@ -131,106 +134,115 @@ const FormContribuicao: React.FC<FormContribuicaoProps> = ({ dimensaoId , formSt
     };
 
     return (
-        <div className="d-flex flex-column justify-content-between container dimension-details-container mt-5">
-            <h1>Deixe aqui sua contribuição</h1>
-            <div className="contribuicao">
-                <p>Envie um comentário e/ou um arquivo contendo dados relevantes que possam contribuir com a plataforma</p>
-                <form 
-                    style={formStyle}
-                    onSubmit={handleSubmit}
-                    className="d-flex flex-column contribuicao"
-                    encType="multipart/form-data"
-                >
-                    <label htmlFor="nome">Nome</label>
-                    <input 
-                        type="text" 
-                        name="nome" 
-                        id="nome" 
-                        placeholder="Nome"
-                        value={formData.nome ?? ""}
-                        onChange={handleChange}
-                        style={{backgroundColor: "white", color:"var(--p-color)"}}
-                    />
-
-                    {errorNome && (
-                        <Alert variant="danger" className="mt-2">
-                            {errorNome}
-                        </Alert>
-                    )}
-                    
-                    <label htmlFor="email">Email</label>
-                    <input 
-                        type="email" 
-                        name="email" 
-                        id="email" 
-                        placeholder="Email"
-                        value={formData.email}
-                        onChange={handleChange}
-                        required
-                        style={{backgroundColor: "white", color:"var(--p-color)"}}
-                    />
-                    {errorEmail && (
-                        <Alert variant="danger" className="mt-2">
-                            {errorEmail}
-                        </Alert>
-                    )}
-                    
-                    <label htmlFor="telefone">Telefone</label>
-                    <input 
-                        type="tel" 
-                        name="telefone" 
-                        id="telefone" 
-                        placeholder="Telefone (DDD+número)"
-                        value={formData.telefone ?? ""}
-                        onChange={handleChange}
-                        style={{backgroundColor: "white", color:"var(--p-color)"}}
-                    />
-                    {errorTelefone && (
-                        <Alert variant="danger" className="mt-2">
-                            {errorTelefone}
-                        </Alert>
-                    )}
-                    
-                    <label htmlFor="comentario">Comentário</label>
-                    <textarea 
-                        name="comentario" 
-                        id="comentario" 
-                        placeholder="Deixe aqui seu comentário"
-                        value={formData.comentario ?? ""}
-                        onChange={handleChange}
-                        style={{backgroundColor: "white", color:"var(--p-color)", marginLeft:"18px"}}
-                    />
-                    
-                    <label htmlFor="file">Arquivo</label>
-                    <input 
-                        type="file" 
-                        name="file" 
-                        id="file"
-                        onChange={handleFileChange}
-                    />
-                    {errorArquivo && (
-                        <Alert variant="danger" className="mt-2">
-                            {errorArquivo}
-                        </Alert>
-                    )}
-
-                    <ReCAPTCHA
-                        sitekey={SITE_KEY_RECAPTCHA}
-                        onChange={onChangeRecaptcha}
-                    />
-                    
-                    <button type="submit" style={{
-                        color: "white",
-                        padding: "10px 50px",      
-                        width: "fit-content",     
-                        height: "auto",
-                        fontFamily: "sans-serif",            
-                    }}>
-                        Enviar
-                    </button>
-                </form>
+        <section className="mx-auto contribuicao-section">
+            <div className="d-flex justify-content-center align-items-center header-contribuicao">
+                <span>Deixe aqui sua contribuição</span>
             </div>
-        </div>
+            <div className="">
+                <div className="contribuicao-corpo">
+                    <Form onSubmit={handleSubmit}>
+                        {/* 1. Adicionei a Row principal para segurar as duas colunas */}
+                        <Row>
+                            {/* COLUNA DA ESQUERDA (Ocupa metade da tela: md={6}) */}
+                            <Col md={6}>
+                                <Form.Group className="mb-3" controlId="formNome">
+                                    <Form.Label>Nome</Form.Label>
+                                    <Form.Control 
+                                    type="text" 
+                                    className="border border-dark" 
+                                    placeholder="Digite seu nome"
+
+                                    name="nome"                 // 1. O "nome" da chave
+                                    value={formData.nome ?? ""}       // 2. O valor atual do estado
+                                    onChange={handleChange}
+                                    />
+                                    {errorNome && (
+                                        <Alert variant="danger" className="mt-2">
+                                            {errorNome}
+                                        </Alert>
+                                    )}
+                                </Form.Group>
+
+                                <Form.Group className="mb-3" controlId="formEmail">
+                                    <Form.Label>E-mail</Form.Label>
+                                    <Form.Control 
+                                    type="email" 
+                                    className="border border-dark" 
+                                    placeholder="Digite seu e-mail"
+
+                                    name="email"
+                                    value={formData.email ?? ""}
+                                    onChange={handleChange}
+                                    />
+                                    {errorEmail && (
+                                        <Alert variant="danger" className="mt-2">
+                                            {errorEmail}
+                                        </Alert>
+                                    )}
+                                </Form.Group>
+
+                                <Form.Group className="mb-3" controlId="formTel">
+                                    <Form.Label>Telefone</Form.Label>
+                                    <Form.Control 
+                                    type="tel" 
+                                    className="border border-dark" 
+                                    placeholder="Digite seu telefone"
+
+                                    name="telefone"
+                                    value={formData.telefone ?? ""}
+                                    onChange={handleChange}
+                                    />
+                                    {errorTelefone && (
+                                        <Alert variant="danger" className="mt-2">
+                                            {errorTelefone}
+                                        </Alert>
+                                    )}
+                                </Form.Group>
+                            </Col>
+
+                            {/* COLUNA DA DIREITA (Ocupa a outra metade: md={6}) */}
+                            <Col md={6}>
+                                <Form.Group className="mb-3" controlId="formComment">
+                                    <Form.Label>Comentário</Form.Label>
+                                    <Form.Control 
+                                    as="textarea" 
+                                    className="border border-dark campo-comentario" 
+                                    rows={3} 
+                                    placeholder="Digite seu comentário"
+
+                                    name="comentario"
+                                    value={formData.comentario ?? ""}
+                                    onChange={handleChange}
+                                    />
+                                </Form.Group>
+
+                                <Form.Group className="mb-3" controlId="formFile">
+                                    <Form.Label>Anexar Arquivo</Form.Label>
+                                    <Form.Control type="file" onChange={handleFileChange}/>
+                                    {errorArquivo && (
+                                        <Alert variant="danger" className="mt-2">
+                                            {errorArquivo}
+                                        </Alert>
+                                    )}
+                                </Form.Group>
+                            </Col>
+                        </Row>
+                        <div className="d-flex align-items-center mx-auto campo-informacao">
+                            <img src={info_icon} className="info-icone"></img>
+                             <span className="info-texto">Deixe um feedback ou um comentário para contribuir com a plataforma, caso queira adicionar um dado 
+                                interessante, anexe arquivos no botão indicado. (Máximo de 25mb)</span>
+                        </div>
+                        <div className="d-flex justify-content-center recaptcha">
+                            <ReCAPTCHA
+                            sitekey={SITE_KEY_RECAPTCHA}
+                            onChange={onChangeRecaptcha}
+                            />
+                        </div>
+                        <Button className="mx-auto botao-contribuicao" variant="primary" type="submit">Enviar</Button>
+                    </Form>
+                </div>
+            </div>
+        </section>
     );
 };
 
