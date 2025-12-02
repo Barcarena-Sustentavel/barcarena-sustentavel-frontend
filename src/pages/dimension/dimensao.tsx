@@ -78,13 +78,9 @@ const DimensaoComponent: FC = () => {
     const url = encodeURI(`/${dimensao}/${indicador}/`);
     navigate(url);
   };
-  //const pathHtml =
-  //"/home/marrior/Desktop/projects/testeMapa/odsb_escolas/index.html/";
   const [pathHtml, setPathHtml] = useState<string>("");
   const mapasConectividade = ["Cobertura", "Escola", "Saúde"];
   const [botaoConectividade, setBotaoConectividade] = useState<string>("");
-  // console.log(botaoConectividade);
-  // console.log(pathHtml);
   const handleOnCick = (event: any) => {
     setBotaoConectividade(event.target.value);
   };

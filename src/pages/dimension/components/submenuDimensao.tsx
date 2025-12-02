@@ -3,7 +3,6 @@ import "./submenu-dimensao.css";
 import dimensoes from "../../../utils/const.tsx"; // Ajuste o caminho conforme necessário
 import { useLocation } from "react-router-dom";
 import { getArtigoDimensao } from "../../admin/create/artigo/crudArtigo.tsx";
-import { color } from "highcharts";
 interface SubmenuDimensaoProps {
   dimensaoAtiva: string;
 }
@@ -142,7 +141,7 @@ const SubmenuDimensao: React.FC<SubmenuDimensaoProps> = ({ dimensaoAtiva }) => {
               getArtigoDimensao(dimensaoAtiva || activeDimensionFromPath)
             }
           >
-          <p style={{color:"white"}}>Resumo da dimensão</p> <i className="bi bi-download"></i>
+          <p style={{color:"white"}}>Resumo da dimensão</p> <i style={{marginBottom:'15px', marginLeft: '10px'}} className="bi bi-download"></i>
           </button>
         </div>
       </div>

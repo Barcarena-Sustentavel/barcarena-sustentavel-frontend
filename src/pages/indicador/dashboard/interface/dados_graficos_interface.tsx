@@ -14,3 +14,11 @@ export interface PlotSeries {
     name: string;
     y: number
   }
+
+  export interface ScatterProps{
+    name: string;
+    //id: string;
+    color: string;
+    //marker:{symbol:string};
+    data: number[][];
+  }

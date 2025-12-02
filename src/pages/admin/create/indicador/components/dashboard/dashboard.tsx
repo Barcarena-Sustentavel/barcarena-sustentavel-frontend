@@ -2,6 +2,7 @@ import * as Highcharts from "highcharts";
 import HighchartsReact from "highcharts-react-official";
 import React, { FC, useRef } from "react";
 import { DashboardProps } from "../../../../../indicador/dashboard/interface/dashboard_interface.tsx";
+import  '../../../../../../utils/highcharts/heatmap.js';
 import { MaterialReactTable } from "material-react-table";
 import {
   PlotSeries,
