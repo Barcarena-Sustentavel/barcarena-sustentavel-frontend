@@ -61,12 +61,13 @@ export const CreateIndicador: FC<{
   );
 
   const [openStates, setOpenStates] = useState<Record<number, boolean>>({});
-      const toggle = (id: number) => {
-        setOpenStates(prev => ({
-          ...prev,
-          [id]: !(prev[id] ?? true),
-        }));
-      };
+
+  const toggle = (id: number) => {
+    setOpenStates(prev => ({
+      ...prev,
+      [id]: !(prev[id] ?? true),
+    }));
+  };
 
   const handleDeleteGrafico = (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
@@ -212,6 +213,10 @@ export const CreateIndicador: FC<{
     };
 
     setGraficosData((prev) => [...prev, novoGrafico]);
+    setOpenStates(prev => ({
+      ...prev,
+      [novoGrafico.id]: true,
+    }));
     setNextId((prev) => prev + 1);
   };
 
