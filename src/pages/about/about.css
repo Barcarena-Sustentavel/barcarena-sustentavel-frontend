@@ -83,12 +83,11 @@ main {
 }
 
 .img-piramide {
-    height: auto;
-    flex-basis: 42%;
-    flex-shrink: 1;
-    flex-grow: 0;
-    max-width: 690px;
-    transform: scale(0.7);
+    width: 42%;
+    height: 100%;
+    object-fit: contain;
+    object-position: center;
+    transform: scale(.8);
 }
 
 .conceito-texto {
@@ -105,11 +104,14 @@ main {
     gap: 4%;
     margin-top: 3rem;
     margin-bottom: 2.5rem;
+    
 }
 
 .img-mandala {
-    height: auto;
-    max-width: 65rem;
+    width: 57%;
+    height: 100%;
+    object-fit: contain;
+    object-position: center;
     margin: 1rem 0;
 }
 
@@ -121,4 +123,39 @@ main {
 
 .dados-section {
     gap: 2rem;
+}
+
+@media (max-width: 768px) {
+    .objetivos-section,
+    .div-conceitos-grupo,
+    .dados-section,
+    .section-um {
+        flex-direction: column;
+    }
+
+    .objetivos-titulo {
+        max-height: 10rem;
+        margin: 1rem 0;
+        width: 88%;
+    }
+
+    .objetivos-texto {
+        margin: 1rem;
+    }
+
+    .img-piramide {
+        width: 150%;
+    }
+
+    .img-mandala {
+        width: 34rem;
+    }
+
+    .img-ibs {
+        max-width: 125%;
+    }
+
+    .section-um {
+        gap: 2rem;
+    }
 }

@@ -61,7 +61,7 @@ const About: FC = () => {
           </section>
           <section className="conceitos-section">
             <span className="text-center section-titulo">Conceitos Básicos (Dimensão, Indicadores e Variáveis)</span>
-            <div className="d-flex div-conceitos-grupo">
+            <div className="d-flex justify-content-center align-items-center div-conceitos-grupo">
               <img className="img-piramide" src={image_piramide}></img>
               <div className="conceito-texto">
                 <p className="section-titulo conceito-titulo">Dimensão:</p>
