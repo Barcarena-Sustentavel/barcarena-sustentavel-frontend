@@ -1,173 +1,185 @@
 /* Main container styling */
 .indicador-container {
-    margin: 0 auto;
-    padding: 2rem;
-    font-family: 'Roboto', sans-serif;
-    color: #333;
-    background-color: white;
-  }
-  
-  /* Header styling */
-  .indicador-header {
-    text-align: center;
-    margin-bottom: 3rem;
-    position: relative;
-    padding-bottom: 1.5rem;
+  margin: 0 auto;
+  padding: 2rem;
+  font-family: 'Roboto', sans-serif;
+  color: #333;
+  background-color: white;
+}
+
+/* Header styling */
+.indicador-header {
+  text-align: center;
+  margin-bottom: 3rem;
+  position: relative;
+  padding-bottom: 1.5rem;
+}
+
+.indicador-header h1 {
+  font-size: 2.5rem;
+  color: #2c3e50;
+  margin-bottom: 1rem;
+  font-weight: 700;
+}
+
+.indicador-header::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 100px;
+  height: 4px;
+  background-color: #3498db;
+  border-radius: 2px;
+}
+
+/* Graficos container */
+.graficos-container {
+  display: flex;
+  flex-direction: column;
+  gap: 3rem;
+  margin-bottom: 3rem;
+  display: grid;
+  gap: 20px;
+  grid-template-columns: repeat(auto-fit, minmax(450px, 1fr));
+}
+
+/* Individual grafico card */
+.grafico-card {
+  background-color: white;
+  border-radius: 10px;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+  overflow: hidden;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.grafico-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+}
+
+/* Grafico content */
+.grafico-content {
+  padding: 2rem;
+}
+
+/* Dashboard container */
+.dashboard-container {
+  width: 100%;
+  height: 400px;
+  margin-bottom: 1.5rem;
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+/* Grafico description */
+.grafico-description {
+  padding: 0 1rem 1.5rem;
+  color: #555;
+  font-size: 1rem;
+  line-height: 1.6;
+  border-top: 1px solid #eee;
+  margin-top: 1rem;
+  padding-top: 1.5rem;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .indicador-container {
+    padding: 1rem;
   }
   
   .indicador-header h1 {
-    font-size: 2.5rem;
-    color: #2c3e50;
-    margin-bottom: 1rem;
-    font-weight: 700;
+    font-size: 2rem;
   }
   
-  .indicador-header::after {
-    content: '';
-    position: absolute;
-    bottom: 0;
-    left: 50%;
-    transform: translateX(-50%);
-    width: 100px;
-    height: 4px;
-    background-color: #3498db;
-    border-radius: 2px;
-  }
-  
-  /* Graficos container */
-  .graficos-container {
-    display: flex;
-    flex-direction: column;
-    gap: 3rem;
-    margin-bottom: 3rem;
-  }
-  
-  /* Individual grafico card */
-  .grafico-card {
-    background-color: white;
-    border-radius: 10px;
-    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
-    overflow: hidden;
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
-  }
-  
-  .grafico-card:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
-  }
-  
-  /* Grafico content */
-  .grafico-content {
-    padding: 2rem;
-  }
-  
-  /* Dashboard container */
   .dashboard-container {
-    width: 100%;
-    height: 400px;
-    margin-bottom: 1.5rem;
-    border-radius: 8px;
-    overflow: hidden;
+    height: 300px;
   }
   
-  /* Grafico description */
-  .grafico-description {
-    padding: 0 1rem 1.5rem;
-    color: #555;
-    font-size: 1rem;
-    line-height: 1.6;
-    border-top: 1px solid #eee;
-    margin-top: 1rem;
-    padding-top: 1.5rem;
+  .graficos-container {
+    grid-template-columns: 1fr 1fr; /* Desktop: 2 colunas iguais */
   }
-  
-  /* Responsive adjustments */
-  @media (max-width: 768px) {
-    .indicador-container {
-      padding: 1rem;
-    }
-    
-    .indicador-header h1 {
-      font-size: 2rem;
-    }
-    
-    .dashboard-container {
-      height: 300px;
-    }
+}
+
+@media (min-width: 768px) {
+  .graficos-container {
+    grid-template-columns: 1fr 1fr; /* Desktop: 2 colunas iguais */
   }
-  
-  /* Background styling */
-  body {
-    background-color: #f8f9fa;
+}
+
+/* Background styling */
+body {
+  background-color: #f8f9fa;
+}
+
+/* Animation for page load */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
   }
-  
-  /* Animation for page load */
-  @keyframes fadeIn {
-    from {
-      opacity: 0;
-      transform: translateY(20px);
-    }
-    to {
-      opacity: 1;
-      transform: translateY(0);
-    }
+  to {
+    opacity: 1;
+    transform: translateY(0);
   }
-  
-  .indicador-container {
-    animation: fadeIn 0.5s ease-out;
-  }
-  
-  .grafico-card {
-    animation: fadeIn 0.5s ease-out;
-    animation-fill-mode: both;
-  }
-  
-  .grafico-card:nth-child(1) {
-    animation-delay: 0.1s;
-  }
-  
-  .grafico-card:nth-child(2) {
-    animation-delay: 0.2s;
-  }
-  
-  .grafico-card:nth-child(3) {
-    animation-delay: 0.3s;
-  }
-  
-  .grafico-card:nth-child(4) {
-    animation-delay: 0.4s;
-  }
-  
-  /* Empty state */
-  .no-data {
-    text-align: center;
-    padding: 3rem;
-    color: #7f8c8d;
-  }
-  
-  .no-data h3 {
-    font-size: 1.5rem;
-    margin-bottom: 1rem;
-  }
-  
-  .grafico-download {
-    display: flex;
-    justify-content: flex-end;
-    margin-top: 10px;
-  }
-  
-  .download-btn {
-    background-color: var(--primary-color);
-    color: white;
-    border: none;
-    border-radius: 4px;
-    padding: 8px 16px;
-    cursor: pointer;
-    font-size: 14px;
-    transition: background-color 0.3s;
-  }
-  
-  .download-btn:hover {
-    background-color: var(--primary-color-dark);
-  }
-  
+}
+
+.indicador-container {
+  animation: fadeIn 0.5s ease-out;
+}
+
+.grafico-card {
+  animation: fadeIn 0.5s ease-out;
+  animation-fill-mode: both;
+}
+
+.grafico-card:nth-child(1) {
+  animation-delay: 0.1s;
+}
+
+.grafico-card:nth-child(2) {
+  animation-delay: 0.2s;
+}
+
+.grafico-card:nth-child(3) {
+  animation-delay: 0.3s;
+}
+
+.grafico-card:nth-child(4) {
+  animation-delay: 0.4s;
+}
+
+/* Empty state */
+.no-data {
+  text-align: center;
+  padding: 3rem;
+  color: #7f8c8d;
+}
+
+.no-data h3 {
+  font-size: 1.5rem;
+  margin-bottom: 1rem;
+}
+
+.grafico-download {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 10px;
+}
+
+.download-btn {
+  background-color: var(--primary-color);
+  color: white;
+  border: none;
+  border-radius: 4px;
+  padding: 8px 16px;
+  cursor: pointer;
+  font-size: 14px;
+  transition: background-color 0.3s;
+}
+
+.download-btn:hover {
+  background-color: var(--primary-color-dark);
+}
