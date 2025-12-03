@@ -155,23 +155,30 @@ export const TabContentComponent: FC<{nomeDimensao:string, activeTab: string, no
     if (formDataArtigo.name !== "") getArtigoDimensao(nomeDimensao as string);
   };
 
-  const handleDragEnd = (event:any) => {
+  const handleDragEnd = async(event:any) => {
+    console.trace('handleDragEnd',event)
     const { active, over } = event;
 
+    if(!over || active.id === over.id) return;
+
     if (active.id !== over.id) {
+      const oldIndex = nomeIndicadores.find((item) => item.posicao === active.id);
+      const newIndex = nomeIndicadores.find((item) => item.posicao === over.id);
       setNomeIndicadores((items) => {
-        const oldIndex = items.find((item) => item.posicao === active.id)
-        const newIndex = items.find((item) => item.posicao === over.id);
-        const handleOldIndex = oldIndex?.posicao as number;
-        api.patch(`/admin/dimensoes/${nomeDimensao}/indicador/trocar_posicao`, {
+        // const copia = items.map(item => ({...item}));
+        // const novaPosicao = items.indexOf(oldIndex!) 
+        // const antigaPosicao = items.indexOf(newIndex!)
+        // const saveOldIndex = copia[novaPosicao].posicao;
+        // copia[novaPosicao].posicao = copia[antigaPosicao].posicao;
+        // copia[antigaPosicao].posicao = saveOldIndex;
+        // console.log('novaPosicao',novaPosicao)
+        // console.log('antigaPosicao',antigaPosicao)
+        return arrayMove(items, items.indexOf(oldIndex!), items.indexOf(newIndex!));
+      })
+       await api.patch(`/admin/dimensoes/${nomeDimensao}/indicador/trocar_posicao`, {
           indicador1: oldIndex,
           indicador2: newIndex,
         });
-        items[items.indexOf(oldIndex!)].posicao = newIndex!.posicao;
-        items[items.indexOf(newIndex!)].posicao = handleOldIndex;
-
-        return arrayMove(items, items.findIndex((item) => item === oldIndex), items.findIndex((item) => item === newIndex));
-      });
     }
   }
   useEffect(() => {
@@ -298,6 +305,7 @@ export const TabContentComponent: FC<{nomeDimensao:string, activeTab: string, no
             strategy={verticalListSortingStrategy}
           >
             {nomeIndicadores.map((element) => {
+              console.log(element)
               const encodedURI = encodeURI(
                 `/admin/dimensao/${nomeDimensao}/update/${activeTab}/${element.nome}/`,
               );
