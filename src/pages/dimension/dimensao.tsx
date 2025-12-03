@@ -107,6 +107,7 @@ const DimensaoComponent: FC = () => {
       setPathHtml("");
     }
     api.get(url).then((response) => {
+      console.log(response.data);
       setIndicadores([...response.data.indicadores].sort((a: any, b: any) => a.posicao - b.posicao));
       setDimensao(response.data.dimensao);
       // setIndicadores(response.data.indicadores);
