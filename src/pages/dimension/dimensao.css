@@ -59,7 +59,7 @@ p {
     overflow: hidden;
 }
 
-.contribuicao {
+/* .contribuicao {
     width: 100%;
 }
 
@@ -83,7 +83,7 @@ textarea {
     background-color: #3466f5;
     border-radius: 8px;
     border-width: none;
-}
+} */
 
 .button-as-link {
     color: var(--primary-color);

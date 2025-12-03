@@ -61,12 +61,13 @@ export const CreateIndicador: FC<{
   );
 
   const [openStates, setOpenStates] = useState<Record<number, boolean>>({});
-      const toggle = (id: number) => {
-        setOpenStates(prev => ({
-          ...prev,
-          [id]: !(prev[id] ?? true),
-        }));
-      };
+
+  const toggle = (id: number) => {
+    setOpenStates(prev => ({
+      ...prev,
+      [id]: !(prev[id] ?? true),
+    }));
+  };
 
   const handleDeleteGrafico = (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
@@ -172,7 +173,7 @@ export const CreateIndicador: FC<{
             }));
 
 
-          setGraficosData(graficosFromApi);
+          setGraficosData(graficosFromApi.sort((a: GraficosIndicador, b: GraficosIndicador) => a.posicao - b.posicao));
 
           // Configurar nextId baseado no maior ID da API
           const maxId = graficosFromApi.reduce(
@@ -199,6 +200,10 @@ export const CreateIndicador: FC<{
     console.log(openStates);
   }, [openStates]);
 
+  useEffect(() => {
+    console.table(graficosData);
+  }, [graficosData]);
+
   const addGrafico = (e: React.MouseEvent) => {
     e.preventDefault();
 
@@ -212,6 +217,10 @@ export const CreateIndicador: FC<{
     };
 
     setGraficosData((prev) => [...prev, novoGrafico]);
+    setOpenStates(prev => ({
+      ...prev,
+      [novoGrafico.id]: true,
+    }));
     setNextId((prev) => prev + 1);
   };
 
@@ -335,8 +344,6 @@ export const CreateIndicador: FC<{
       if(view[index].posicao != index)
         view[index].posicao = index
     });
-
-    const styleDragOverlay = { transform: 'scaleY(1)', zIndex: 9999,}
 
     return (
       <DndContext sensors={sensors}
