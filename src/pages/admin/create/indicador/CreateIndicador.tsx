@@ -9,14 +9,8 @@ import dimensoes from "../../../../utils/const.tsx";
 import "../../css/dimensaoPage.css";
 import { Alert } from "react-bootstrap";
 import { Collapse } from "react-bootstrap"
-//<<<<<<< HEAD
-//import { DndContext, closestCorners, closestCenter, PointerSensor, useSensor, useSensors, pointerWithin} from "@dnd-kit/core";
-//import { SortableContext, verticalListSortingStrategy, useSortable, arrayMove } from "@dnd-kit/sortable";
-//=======
-
 import { DndContext, DragOverlay, PointerSensor, useSensor, useSensors, pointerWithin} from "@dnd-kit/core";
 import { SortableContext, verticalListSortingStrategy, useSortable, arrayMove, defaultAnimateLayoutChanges } from "@dnd-kit/sortable";
-//>>>>>>> fe592cdbe51fecf08ce2b9fca87eb701f0d864f2
 import { CSS } from "@dnd-kit/utilities";
 
 export const CreateIndicador: FC<{
@@ -52,7 +46,6 @@ export const CreateIndicador: FC<{
       Dispersão: "scatter",
       Coluna: "column",
       Barra: "bar",
-      //Bolha: "bubble",
       "Mapa de Calor": "heatmap",
       Pizza: "pie",
       Tabela: "tabela",

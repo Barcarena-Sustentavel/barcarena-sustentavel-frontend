@@ -1,5 +1,5 @@
 #!/bin/bash
-file_name="novo_acesso.pem"
+file_name="fundohydro.pem"
 file_path=$(find / -name "$file_name" 2>/dev/null)
 
 if [ -z "$file_path" ]; then
@@ -10,4 +10,4 @@ chmod 400 "$file_path"
 npm run build
 
 #scp -i /home/marrior/Desktop/acesso.pem -r ./dist ubuntu@3.148.173.110:~/barcarena_sustentavel/barcarena-sustentavel-frontend/
-scp -i "$file_path" -r ./dist ubuntu@52.15.236.100:~/barcarena_sustentavel/barcarena-sustentavel-frontend/
+scp -i "$file_path" -r ./dist ubuntu@54.233.210.68:~/barcarena_sustentavel/barcarena-sustentavel-frontend/
