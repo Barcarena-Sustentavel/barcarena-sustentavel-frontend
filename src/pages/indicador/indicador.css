@@ -37,12 +37,11 @@
 /* Graficos container */
 .graficos-container {
   display: flex;
-  flex-direction: column;
+  /* flex-direction: column; */
+  flex-wrap: wrap;
+  justify-content: center;
   gap: 3rem;
   margin-bottom: 3rem;
-  display: grid;
-  gap: 20px;
-  grid-template-columns: repeat(auto-fit, minmax(450px, 1fr));
 }
 
 /* Individual grafico card */
@@ -52,6 +51,7 @@
   box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
   overflow: hidden;
   transition: transform 0.3s ease, box-shadow 0.3s ease;
+  width: 40%;
 }
 
 .grafico-card:hover {
@@ -97,15 +97,15 @@
   .dashboard-container {
     height: 300px;
   }
-  
-  .graficos-container {
-    grid-template-columns: 1fr 1fr; /* Desktop: 2 colunas iguais */
-  }
 }
 
-@media (min-width: 768px) {
+@media (max-width: 1200px) {
   .graficos-container {
-    grid-template-columns: 1fr 1fr; /* Desktop: 2 colunas iguais */
+    flex-direction: column;
+    align-items: center;
+  }
+  .grafico-card {
+    width: 70%;
   }
 }
 
