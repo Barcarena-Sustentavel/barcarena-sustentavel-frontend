@@ -1,8 +1,10 @@
-import { FC, useState } from "react";
+import { FC, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import dimensoes from "../../utils/const.tsx";
 import "./css/dimensaoAdmin.css";
 import { Modal, Button, Form } from "react-bootstrap";
+import api from "../../api.tsx"
+import {patchEmail, postEmail} from "./cruds/crudEmail.tsx"
 
 const DimensaoAdmin: FC = () => {
   const navigate = useNavigate();
@@ -18,7 +20,35 @@ const DimensaoAdmin: FC = () => {
   const handleShow = () => setShow(true);
 
   const [email, setEmail] = useState<string>("");
+
+  const [emailAtual, setEmailAtual] = useState<string>("");
   
+  useEffect(() => {
+    api
+      .get("/admin/email_contribuicao")
+      .then((response) => {
+        console.log(response.data.email_contribuicao);
+        if(response.data.email_contribuicao){
+          console.log("Existe email");
+          setEmail(response.data.email_contribuicao.email);
+          setEmailAtual(response.data.email_contribuicao.email);
+        }
+
+      })
+      .catch((error) => {
+        console.error("Error fetching indicador data:", error);
+      });
+  }, [])
+
+  const handleSubmitEmail = (e: any) => {
+    e.preventDefault();
+
+
+    emailAtual && emailAtual != "" ? patchEmail(email): postEmail(email);
+
+    console.log("handlesubmitemail");
+    
+  }
 
 
   return (
@@ -32,19 +62,19 @@ const DimensaoAdmin: FC = () => {
           <Modal.Title className="email-config-title">Destinatário de Contribuições</Modal.Title>
         </Modal.Header>
         <Modal.Body>
-          <Form>
+          <Form onSubmit={handleSubmitEmail}>
             <Form.Group className="mb-3">
               <Form.Label className="email-current-title">E-mail Atual</Form.Label>
               <Form.Control
-                type="text"
+                type="email"
                 name="nome"
                 value={email}
-                onChange={(e) => {setEmail}}
+                onChange={(e) => {setEmail(e.target.value)}}
                 placeholder="Digite um E-mail"
               />
             </Form.Group>
             <Button variant="primary" type="submit">
-              Modificar E-mail
+              {emailAtual ? ("Modificar E-mail") : ("Adicionar E-mail")}
             </Button>
 
 
