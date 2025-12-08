@@ -37,12 +37,12 @@ const Footer = () => {
                   className="img-fluid logo-footer"
                 />
               </div>
-              <p className="mb-2">
+              {/* <p className="mb-2">
                 <Telephone className="custom-icon me-1" />
                 <a href="tel:9999999999" className="site-footer-link">
                   999999-9999
                 </a>
-              </p>
+              </p> */}
               <p>
                 <Envelope className="custom-icon me-1" />
                 <a
@@ -66,7 +66,7 @@ const Footer = () => {
                   src={hydroLogo}
                   alt="Fundo de Sustentabilidade Hydro"
                   //className="img-fluid"
-                  className="image-footer"
+                  className="image-footer-realizacao"
                 />
               </a>
             </Col>
@@ -83,7 +83,7 @@ const Footer = () => {
                   src={barcarenaLogo}
                   alt="Iniciativa Barcarena Sustentável"
                   //className="img-fluid"
-                  className="image-footer"
+                  className="image-footer-ibs"
                 />
               </a>
             </Col>

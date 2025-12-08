@@ -1,6 +1,13 @@
-.image-footer {
-    max-width: 80%;
+.image-footer-realizacao {
+    max-width: 100%;
     height: auto;
+    margin-top: 0.5rem;
+}
+
+.image-footer-ibs {
+    max-width: 70%;
+    height: auto;
+    margin-top: 0.1rem;
 }
 
 .logo-footer {
