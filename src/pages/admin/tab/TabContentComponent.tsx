@@ -161,10 +161,8 @@ export const TabContentComponent: FC<{nomeDimensao:string, activeTab: string, no
   };
 
   const handleDragEnd = async(event:any) => {
-    console.trace('handleDragEnd',event)
     const { active, over } = event;
     if(!over || active.id === over.id) return;
-    //console.log(active, over)
     if (active.id !== over.id) {
       const oldIndex = nomeIndicadores.find((item) => item.posicao === active.id);
       const newIndex = nomeIndicadores.find((item) => item.posicao === over.id);

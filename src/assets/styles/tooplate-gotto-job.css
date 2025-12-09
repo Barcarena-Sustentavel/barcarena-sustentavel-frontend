@@ -1272,7 +1272,7 @@ nav[aria-label="breadcrumb"] {
   SITE FOOTER              
 -----------------------------------------*/
 .site-footer {
-  padding-top: 100px;
+  /* padding-top: 100px; */
   padding-bottom: 0;
 }
 
