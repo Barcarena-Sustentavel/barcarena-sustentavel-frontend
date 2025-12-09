@@ -52,7 +52,7 @@ const DimensaoAdmin: FC = () => {
 
 
   return (
-    <div className="home-container">
+    <div className="home-container" style={{height:'100vh'}}>
       <div className="position-relative d-flex align-items-center justify-content-center admin-header-dimensao-admin">
         <h1>Administração de Dimensões</h1>
         <span className="position-absolute end-0 gear-icon"
