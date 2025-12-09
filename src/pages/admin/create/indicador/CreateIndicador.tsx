@@ -39,7 +39,7 @@ export const CreateIndicador: FC<{
 
   const chaveValorGraficos: { [key: string]: string } = useMemo(
     () => ({
-      "Selecione um tipo de gráfico": "",
+      //"Selecione um tipo de gráfico": "",
       Linha: "line",
       "Linha Suave": "spline",
       "Linha Com Coluna": "xy",
@@ -48,6 +48,7 @@ export const CreateIndicador: FC<{
       Barra: "bar",
       "Mapa de Calor": "heatmap",
       Pizza: "pie",
+      "Área": "area",
       Tabela: "tabela",
     }),
     [],
