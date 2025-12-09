@@ -21,6 +21,11 @@ import {
 } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
 
+interface IndicadorTrocarPosicao{
+  nome:string
+  posicao:number
+}
+
 const SortableItem:FC<{
   id: number;
   children: (props: { dragHandleProps: any }) => React.ReactNode;
@@ -158,28 +163,24 @@ export const TabContentComponent: FC<{nomeDimensao:string, activeTab: string, no
   const handleDragEnd = async(event:any) => {
     console.trace('handleDragEnd',event)
     const { active, over } = event;
-
     if(!over || active.id === over.id) return;
-
+    //console.log(active, over)
     if (active.id !== over.id) {
       const oldIndex = nomeIndicadores.find((item) => item.posicao === active.id);
       const newIndex = nomeIndicadores.find((item) => item.posicao === over.id);
-      setNomeIndicadores((items) => {
-        // const copia = items.map(item => ({...item}));
-        // const novaPosicao = items.indexOf(oldIndex!) 
-        // const antigaPosicao = items.indexOf(newIndex!)
-        // const saveOldIndex = copia[novaPosicao].posicao;
-        // copia[novaPosicao].posicao = copia[antigaPosicao].posicao;
-        // copia[antigaPosicao].posicao = saveOldIndex;
-        // console.log('novaPosicao',novaPosicao)
-        // console.log('antigaPosicao',antigaPosicao)
-        return arrayMove(items, items.indexOf(oldIndex!), items.indexOf(newIndex!));
+      const antigaPosicao = nomeIndicadores.indexOf(oldIndex!)
+      const novaPosicao = nomeIndicadores.indexOf(newIndex!) 
+      let arrayPatch: IndicadorTrocarPosicao[] = []
+      const novoArray= arrayMove(nomeIndicadores, antigaPosicao, novaPosicao)
+      novoArray.map((element) => {
+        arrayPatch.push({nome:(element.nome as string), posicao:(element.posicao as number)})
       })
-       await api.patch(`/admin/dimensoes/${nomeDimensao}/indicador/trocar_posicao`, {
-          indicador1: oldIndex,
-          indicador2: newIndex,
-        });
+      api.patch(`/admin/dimensoes/${nomeDimensao}/indicador/trocar_posicao`, 
+          arrayPatch, {headers:{'Content-Type':"application/json"}}
+        );
+      setNomeIndicadores(novoArray)
     }
+    
   }
   useEffect(() => {
     api
@@ -209,9 +210,19 @@ export const TabContentComponent: FC<{nomeDimensao:string, activeTab: string, no
   }, [url, nomeDimensao]);
 
   //useEffect(() => {
-  //  handleClick(dimensaoJson?.nome as string);
-  //}, [dimensaoJson?.nome]);
-
+  //  setNomeIndicadores((items) => {
+  //    for (let index = 0; index < items.length; index++) {
+  //        items[index].posicao = index  
+  //       }
+  //    return items
+  //  })
+  //},[nomeIndicadores])
+//
+  //useEffect(() => {
+  //    api.patch(`/admin/dimensoes/${nomeDimensao}/indicador/trocar_posicao`, {
+  //      indicadores:nomeIndicadores
+  //      });
+  //},[nomeIndicadores])
   if (activeTab === "Dimensão") {
     return (
       <div className="admin-forms">
@@ -293,6 +304,7 @@ export const TabContentComponent: FC<{nomeDimensao:string, activeTab: string, no
       </div>
     );
   } else if (activeTab === "Indicadores") {
+    console.log(nomeIndicadores)
     return (
       <div>
         {/* {<div>} */}
@@ -301,18 +313,20 @@ export const TabContentComponent: FC<{nomeDimensao:string, activeTab: string, no
           onDragEnd={handleDragEnd}
         >
           <SortableContext
-            items={nomeIndicadores.map((item) => item.posicao as number)}
+            items={nomeIndicadores.map((item,index) => item.posicao as number)}
             strategy={verticalListSortingStrategy}
           >
-            {nomeIndicadores.map((element) => {
-              console.log(element)
+            {nomeIndicadores.map((element, index) => {
+              //console.log(element)
               const encodedURI = encodeURI(
                 `/admin/dimensao/${nomeDimensao}/update/${activeTab}/${element.nome}/`,
               );
               return (
                 <SortableItem
-                  key={element.posicao}
+                  key={element.posicao as number}
                   id={element.posicao as number}
+                  //key = {index}
+                  //id = {index}
                 >
                   {(props) => (
                   <div><span className="d-flex align-items-center justify-content-between">
