@@ -11,6 +11,7 @@ import About from "./pages/about/about.tsx";
 import "leaflet/dist/leaflet.css";
 import AuthProvider from "./utils/private_route/AuthProvider.tsx";
 import PrivateRoutes from "./utils/private_route/PrivateRoutes.tsx";
+import Colaboradores from "./pages/colaboradores/colaboradores.tsx";
 
 const App: FC = () => {
   return (
@@ -46,6 +47,7 @@ const App: FC = () => {
             />
           </Route>
           <Route path="/about/" element={<About />} />
+          <Route path="/colaboradores/" element={<Colaboradores />} />
         </Routes>
       </BrowserRouter>
     </AuthProvider>

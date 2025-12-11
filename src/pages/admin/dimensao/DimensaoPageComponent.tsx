@@ -25,7 +25,7 @@ const DimensaoPageComponent: FC = () => {
     navigate(`/admin/dimensao/${novoNomeDimensao}`);
   }
   return (
-    <div className="home-container">
+    <div className="home-container" style={{height:'100vh'}}>
       <div
         style={{
           backgroundColor: `var(--${dimensoesCores123[dimensao!]})`,

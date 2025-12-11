@@ -74,7 +74,7 @@ const NavbarComponent: FC = () => {
             </Nav.Item>
 
             <Nav.Item>
-              <Nav.Link as={Link} to="/contact/">
+              <Nav.Link as={Link} to="/colaboradores/">
                 Colaboradores
               </Nav.Link>
             </Nav.Item>

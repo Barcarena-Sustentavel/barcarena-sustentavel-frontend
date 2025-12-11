@@ -103,7 +103,10 @@ const DimensaoComponent: FC = () => {
       } else {
         setPathHtml("https://victorsantiago.github.io/odsb_escolas/");
       }
-    } else {
+    } else if(dimensao === "Ordenamento Territorial"){
+        setPathHtml("https://victorsantiago.github.io/odsb_ordenamento/");
+
+    }else {
       setPathHtml("");
     }
     api.get(url).then((response) => {
@@ -173,11 +176,14 @@ const DimensaoComponent: FC = () => {
             <ul className="referencias">
               {/* <li style={{ borderLeft: `5px solid ${getProximaCor()}` }}> */}
               <li>
-                <a
+                {referencia?.link != '' ? <a
                   className="custom-link-tooplate-gotto-job"
                   href={`${referencia?.link}`}
                   target="_blank"
-                >{`${referencia?.nome}`}</a>
+                >{`${referencia?.nome}`}</a>:
+                <p className="custom-link-tooplate-gotto-job">{`${referencia?.nome}`}</p>
+                }
+                
               </li>
             </ul>
           ))}

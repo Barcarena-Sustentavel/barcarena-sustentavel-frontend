@@ -5,18 +5,9 @@ import Footer from "../../components/layout/footer/footer.tsx";
 import IBS from "@assets/images/about/21.12.2022---conexoes-sustentaveis.jpg";
 import image_piramide from "@assets/images/about/piramide.png";
 import image_mandala from "@assets/images/about/mandala_odsb-1.png";
-// import image1 from "@assets/images/about/WhatsApp Image 2025-05-04 at 14.00.02.jpeg";
-// import image2 from "@assets/images/about/WhatsApp Image 2025-05-04 at 14.00.11.jpeg";
-// import user from "@assets/images/about/user.png";
 import "./about.css";
 
 const About: FC = () => {
-  // const colaboradores = [
-  //   { nome: "Colaborador 1", cargo: "Cargo 1" },
-  //   { nome: "Colaborador 2", cargo: "Cargo 2" },
-  //   { nome: "Colaborador 3", cargo: "Cargo 3" },
-  // ];
-
   return (
     <div className="home-container">
       <NavbarComponent />
