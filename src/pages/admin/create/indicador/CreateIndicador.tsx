@@ -49,6 +49,7 @@ export const CreateIndicador: FC<{
       "Mapa de Calor": "heatmap",
       Pizza: "pie",
       Tabela: "tabela",
+      Área: "area"
     }),
     [],
   );
