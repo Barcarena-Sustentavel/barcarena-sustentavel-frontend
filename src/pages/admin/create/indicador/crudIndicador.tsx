@@ -87,7 +87,7 @@ export const patchIndicador = async (
 
     //Anexos
     if (arrayGrafico.length > 0) {
-      const formData = new FormData();
+      let formData = new FormData();
       for (let i = 0; i < arrayGrafico.length; i++) {
         console.log(arrayGrafico[i].arquivo.size);
         if (arrayGrafico[i].arquivo.size !== undefined) {
@@ -97,20 +97,29 @@ export const patchIndicador = async (
         formData.append("tituloGrafico", arrayGrafico[i].tituloGrafico);
         formData.append("tipoGrafico", arrayGrafico[i].tipoGrafico);
         formData.append("posicaoGrafico", arrayGrafico[i].posicao.toString());
+        console.log(formData)
         const method: string =
           arrayGrafico[i].id! < 0 || arrayGrafico[i].id! === null
             ? "POST"
             : "PATCH";
-        const endpoit =
+        const endpoint =
           method === "PATCH"
-            ? `/api/admin/dimensoes/${dimensao}/indicador/${indicador.nome}/anexos/${arrayGrafico[i].id}/`
-            : `/api/admin/dimensoes/${dimensao}/indicador/${indicador.nome}/anexos/`;
-        await fetch(endpoit, {
-          method: method, //arrayGrafico[i].id != null ? "PATCH" : "POST",
-          body: formData,
-        }).catch((error) => {
-          console.log(error);
-        });
+            ? `/admin/dimensoes/${dimensao}/indicador/${indicador.nome}/anexos/${arrayGrafico[i].id}/`
+            : `/admin/dimensoes/${dimensao}/indicador/${indicador.nome}/anexos/`;
+            // await fetch(endpoit, {
+        //   method: method, //arrayGrafico[i].id != null ? "PATCH" : "POST",
+        //   body: formData,
+        // }).catch((error) => {
+        //   console.log(error);
+        // });
+        if(method === "POST"){
+          await api.post(endpoint, formData);  
+        }
+        else{
+          await api.patch(endpoint, formData);
+        }
+
+        formData = new FormData();
       }
     }
     await Swal.fire({
