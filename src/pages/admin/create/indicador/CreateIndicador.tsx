@@ -50,6 +50,7 @@ export const CreateIndicador: FC<{
       Pizza: "pie",
       "Área": "area",
       Tabela: "tabela",
+      Área: "area"
     }),
     [],
   );
@@ -194,9 +195,9 @@ export const CreateIndicador: FC<{
     console.log(openStates);
   }, [openStates]);
 
-  useEffect(() => {
-    console.table(graficosData);
-  }, [graficosData]);
+  // useEffect(() => {
+  //   console.table(graficosData);
+  // }, [graficosData]);
 
   const addGrafico = (e: React.MouseEvent) => {
     e.preventDefault();
