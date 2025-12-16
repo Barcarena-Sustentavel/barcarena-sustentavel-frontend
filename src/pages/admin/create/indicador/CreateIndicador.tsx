@@ -50,7 +50,6 @@ export const CreateIndicador: FC<{
       Pizza: "pie",
       "Área": "area",
       Tabela: "tabela",
-      Área: "area"
     }),
     [],
   );
