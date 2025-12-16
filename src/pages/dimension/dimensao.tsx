@@ -172,24 +172,22 @@ const DimensaoComponent: FC = () => {
         <h1 style={{ borderBottom: "solid 1px #ddd" }}>Referências</h1>
         {referencias.length > 0 &&
           referencias.map((referencia) => (
-            // <ul className="referencias mt-5">
             <ul className="referencias">
               {/* <li style={{ borderLeft: `5px solid ${getProximaCor()}` }}> */}
               <li>
-                {referencia?.link != '' ? <a
+                {referencia?.link !== "" ? <a
                   className="custom-link-tooplate-gotto-job"
                   href={`${referencia?.link}`}
                   target="_blank"
                 >{`${referencia?.nome}`}</a>:
                 <p className="custom-link-tooplate-gotto-job">{`${referencia?.nome}`}</p>
                 }
-                
               </li>
             </ul>
           ))}
       </div>
       {pathHtml !== "" && (
-        <div style={{ margin: "0 auto", width: "70%" }}>
+        <div style={{ margin: "0 auto", width: "90%" }}>
           {dimensao === "Conectividade" && (
             <div
               style={{
@@ -217,7 +215,7 @@ const DimensaoComponent: FC = () => {
               })}
             </div>
           )}
-          <HTMLFileIframe htmlFilePath={pathHtml} />
+          <HTMLFileIframe  htmlFilePath={pathHtml} />
         </div>
       )}
       {/*

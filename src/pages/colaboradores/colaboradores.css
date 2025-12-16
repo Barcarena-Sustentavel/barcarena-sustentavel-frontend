@@ -1,0 +1,45 @@
+.colabContainer{
+    background-color:white;
+    display:flex;
+    flex-direction: column;
+    align-items: 'center';
+}
+.colabContainer > h2{
+    text-align: center;
+    margin-top: 2rem;
+    margin-bottom: 1rem;
+}
+#timesAbaixo{
+    text-align: center;
+    font-size: 1rem;
+    margin-bottom: 0.5rem;
+    font-style: bold;
+}
+.times{
+    width: 90%;
+    margin: 0 auto 0 8rem;
+    display: grid;
+    grid-template-columns: repeat(3,1fr);
+    gap: 1rem;
+}
+.persona{
+    width: 80%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-bottom: 15px;
+}
+.persona > img{
+    width: 33%;
+    object-fit: cover;
+}
+#colab-filter{
+    background-color: var(--primary-blue);
+    border: solid 0px;
+    border-radius: 8px;
+    color: white;
+    width: 25%;
+    margin: 1rem auto;
+    padding: 0.5rem;
+    font-size: 1rem;
+}
