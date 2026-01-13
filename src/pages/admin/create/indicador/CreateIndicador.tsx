@@ -218,12 +218,12 @@ export const CreateIndicador: FC<{
     setNextId((prev) => prev + 1);
   };
 
-  const updateGrafico = (index: number, updatedGrafico: GraficosIndicador) => {
-    console.log(graficosData);
-    setGraficosData((prev) =>
-      prev.map((grafico, i) => (i === index ? updatedGrafico : grafico)),
-    );
-  };
+  // const updateGrafico = (index: number, updatedGrafico: GraficosIndicador) => {
+  //   console.log(graficosData);
+  //   setGraficosData((prev) =>
+  //     prev.map((grafico, i) => (i === index ? updatedGrafico : grafico)),
+  //   );
+  // };
 
   const deleteSingleGrafico = (grafico: GraficosIndicador) => {
     // Deletar da API se for um gráfico existente
@@ -338,7 +338,7 @@ export const CreateIndicador: FC<{
       if(view[index].posicao != index)
         view[index].posicao = index
     });
-
+    console.log(arrayIndicadorResponse)
     return (
       <DndContext sensors={sensors}
         collisionDetection={pointerWithin}
@@ -354,11 +354,11 @@ export const CreateIndicador: FC<{
                     <GraficoComponent
                       chaveValorGraficos={chaveValorGraficos}
                       grafico={grafico}
-                      arrayIndicadorResponse={arrayIndicadorResponse}
+                      //arrayIndicadorResponse={arrayIndicadorResponse}
                       setDeleteArray={setDeleteArray}
-                      onUpdate={(updatedGrafico) =>
-                        updateGrafico(index, updatedGrafico)
-                      }
+                      graficosData = {graficosData}
+                      setGraficosData={setGraficosData}
+                      //onUpdate={(updatedGrafico) => updateGrafico(index, updatedGrafico)}
                       onDelete={() => deleteSingleGrafico(grafico)}
                     />
                     </div>
