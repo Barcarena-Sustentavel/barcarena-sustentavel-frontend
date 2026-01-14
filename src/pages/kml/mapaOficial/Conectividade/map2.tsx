@@ -36,8 +36,8 @@ const Map2: FC<{ dimensao: string | undefined }> = ({ dimensao }) => {
     useState<string>("Cobertura");
   // Estados que guardam os dados lidos dos CSVs (escolas e unidades de saúde)
   // Refs para marcar elementos de mapa (não estritamente tipadas aqui)
-  const refsMarcadorComInternet = useRef<(typeof Marker | null)[]>([]);
-  const refsMarcadorSemInternet = useRef<(typeof Marker | null)[]>([]);
+  //const refsMarcadorComInternet = useRef<(typeof Marker | null)[]>([]);
+  //const refsMarcadorSemInternet = useRef<(typeof Marker | null)[]>([]);
   //Carre a o componente tabela com o atual estado dos marcadores
   const [geojsonListSetores, setGeojsonListSetores] = useState<any[]>([]);  
   // Checkbox para ativar/desativar camadas de setores no mapa
@@ -101,12 +101,10 @@ const Map2: FC<{ dimensao: string | undefined }> = ({ dimensao }) => {
   };
   // Carrega o KML correspondente ao setor e atualiza a camada no mapa
   const setGeoJsonToKmlSetores = async (item: string) => {
-    console.log(item);
     const kmlUrl = item === "Todos" ? "" : `/setoresBarcarena/${setores[item]}`;
     if (kmlUrl === "") {
       return;
     }
-    console.log(kmlUrl);
     try {
       const response = await fetch(kmlUrl);
 

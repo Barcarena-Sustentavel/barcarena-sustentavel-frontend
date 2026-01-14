@@ -127,10 +127,12 @@ export const MapaSaude:FC<{geoJsonListSetores:any[]}> = ({geoJsonListSetores}) =
           setMarcadorSemInternet(novosMarcadoresSemInternet);
         };
         preencherMarcadoresSaude(comInternet, semInternet);
-      },[])
+      },[statusInternet, dadosSaudeBarcarena]);
       useEffect(() => {
     setTabela([...marcadorComInternet, ...marcadorSemInternet]);
   }, [marcadorComInternet, marcadorSemInternet]);
+  console.log(marcadorComInternet)
+  console.log(marcadorSemInternet)
   return(<div>
       <span>
             {Object.entries(statusInternet).map(([key]) => {

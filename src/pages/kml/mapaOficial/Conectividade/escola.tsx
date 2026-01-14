@@ -55,7 +55,6 @@ export const MapaEscola:FC<{geoJsonListSetores: any[]}> = ({geoJsonListSetores})
   const [marcadorSemInternet, setMarcadorSemInternet] = useState<EscolaBarcarena[]>(
     [],
   );
-  const [geoJsonListEscola, setGeoJsonListEscola] = useState<any[]>([]);
   const [fitBounds, setFitBounds] = useState<
       L.LatLngBoundsExpression | undefined
     >(undefined);
