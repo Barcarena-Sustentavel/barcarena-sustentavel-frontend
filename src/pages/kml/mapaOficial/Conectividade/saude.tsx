@@ -1,13 +1,15 @@
 import { useState,FC, useEffect } from "react";
 import { UnidadeSaude } from "../../interfaces/mapa.ts";
 import { useMap } from "react-leaflet";
+import { MapContainer, TileLayer, Marker, Popup, GeoJSON } from "react-leaflet";
 import { ChangeEvent } from "react";
 import Papa from "papaparse";
 import { ChavesBooleanas } from "./map2.tsx";
 import L from "leaflet";
+import { Tabela } from "../tabela.tsx";
 // Dados de Saúde para Barcarena
 
-export const MapaSaude:FC<{geoJsonListSetores:any[]}> = (geoJsonListSetores) => {
+export const MapaSaude:FC<{geoJsonListSetores:any[]}> = ({geoJsonListSetores}) => {
   const UpdateBounds: FC<{ bounds: L.LatLngBoundsExpression | undefined }> = ({
     bounds,
   }) => {
@@ -126,6 +128,87 @@ export const MapaSaude:FC<{geoJsonListSetores:any[]}> = (geoJsonListSetores) => 
         };
         preencherMarcadoresSaude(comInternet, semInternet);
       },[])
-  return()
+      useEffect(() => {
+    setTabela([...marcadorComInternet, ...marcadorSemInternet]);
+  }, [marcadorComInternet, marcadorSemInternet]);
+  return(<div>
+      <span>
+            {Object.entries(statusInternet).map(([key]) => {
+              return (
+                <label>
+                  <input
+                    type="checkbox"
+                    name="internetes"
+                    checked={statusInternet[key]}
+                    onChange={(e) => handleChange(e, key)}
+                  />
+                  {key}
+                </label>
+              );
+            })}
+          </span>
+          <MapContainer
+                    style={{ height: "500px", width: "800px", margin: "0 auto" }}
+                    center={[-1.5113, -48.61914]}
+                    zoom={10}
+                    scrollWheelZoom={true}
+                  >
+                    <TileLayer
+                      attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+                      url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+                    />
+                    
+                      <UpdateBounds bounds={fitBounds} />
+                    
+                    {geoJsonListSetores.map((geojson, index) => (
+                      <GeoJSON key={index} data={geojson} />
+                    ))}
+
+                    {marcadorComInternet.length > 0 ? (
+                      marcadorComInternet.map((item, index) => (
+                        <Marker
+                          key={index}
+                          position={[item.Latitude, item.Longitude]}
+                          icon={blueIcon}
+                        >
+                          <Popup>
+                            {Object.entries(item).map(([key, value]) => (
+                              <div key={key}>
+                                <b>{key}:</b>
+                                {value}
+                                <br />
+                              </div>
+                            ))}
+                          </Popup>
+                        </Marker>
+                      ))
+                    ) : (
+                      <></>
+                    )}
+                    {marcadorSemInternet.length > 0 ? (
+                      marcadorSemInternet.map((item, index) => (
+                        <Marker
+                          key={index}
+                          position={[item.Latitude, item.Longitude]}
+                          icon={redIcon}
+                        >
+                          <Popup>
+                            <div>
+                              {Object.entries(item).map(([key, value]) => (
+                                <div key={key}>
+                                  <b>{key}:</b> {value}
+                                  <br />
+                                </div>
+                              ))}
+                            </div>
+                          </Popup>
+                        </Marker>
+                      ))
+                    ) : (
+                      <></>
+                    )}
+                  </MapContainer>
+
+  </div>);
 
 }

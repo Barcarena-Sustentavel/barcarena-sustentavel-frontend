@@ -11,6 +11,7 @@ import { GeoJSON } from "react-leaflet";
 import L from "leaflet";
 import Papa from "papaparse";
 import { Tabela } from "../tabela.tsx";
+
 export const MapaEscola:FC<{geoJsonListSetores: any[]}> = ({geoJsonListSetores}) => 
 {
   const blueIcon = new L.Icon({
