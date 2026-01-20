@@ -11,8 +11,8 @@ import Footer from "../../components/layout/footer/footer.tsx";
 import SubmenuDimensao from "./components/submenuDimensao.tsx";
 import FormContribuicao from "./components/formContribuicao.tsx";
 import BackButton from "../../components/layout/backButton/backButton.tsx";
-//import Map2 from "../kml/mapaOficial/Conectividade/map2.js";
-import Map2 from "../kml/mapaOficial/Conectividade/map2.tsx";
+import MapaConectividade from "../kml/mapaOficial/conectividade/mapa_conectividade.tsx";
+import MapaOrdenamento from "../kml/mapaOficial/ordenamentoTerritorial/mapa_ordenamento_territorial.tsx";
 import HTMLFileIframe from "../kml/mapa/map4.tsx";
 //import Map2 from "../kml/map2.tsx";
 const NODE_ENV = import.meta.env.VITE_NODE_ENV;
@@ -80,18 +80,22 @@ const DimensaoComponent: FC = () => {
     const url = encodeURI(`/${dimensao}/${indicador}/`);
     navigate(url);
   };
+  //--------------------------------------------------------------------------
+  /*
+  Variáveis utilizadas junto com o iframe para carregar os mapas de conectividade  */
   const [pathHtml, setPathHtml] = useState<string>("");
-  const mapasConectividade = ["Cobertura", "Escola", "Saúde"];
-  const [botaoConectividade, setBotaoConectividade] = useState<string>("");
   const handleOnCick = (event: any) => {
     setBotaoConectividade(event.target.value);
   };
-
+  const mapasConectividade = ["Cobertura", "Escola", "Saúde"];
+  const [botaoConectividade, setBotaoConectividade] = useState<string>("");
+  //--------------------------------------------------------------------------
   const handleDownloadEstudo = (estudo: string) => {
     const url = `api/dimensoes/${dimensao}/estudo_complementar/${estudo}/anexo/`;
     window.open(url, "_blank");
   };
-
+  //--------------------------------------------------------------------------
+  //useEffect para carregar os dados da dimensão para o iFrame
   useEffect(() => {
     if (dimensao === "Segurança") {
       setPathHtml("https://victorsantiago.github.io/odsb_kmls/");
@@ -122,7 +126,7 @@ const DimensaoComponent: FC = () => {
     });
     //}
   }, [url, dimensao, botaoConectividade]);
-
+  //--------------------------------------------------------------------------
   return (
     <div className="home-container">
       <NavbarComponent />
@@ -220,10 +224,14 @@ const DimensaoComponent: FC = () => {
           <HTMLFileIframe  htmlFilePath={pathHtml} />
         </div>
       )*/}
-      {
+      {dimensao === "Conectividade" &&
         <div className="divMapa">
-          <Map2 dimensao={dimensao} />
-          </div>}
+          <MapaConectividade dimensao={dimensao} />
+        </div>}
+      {dimensao === "Ordenamento Territorial" && 
+        <div className="divMapa">
+          <MapaOrdenamento dimensao={dimensao}/>
+        </div>}
       <FormContribuicao
         dimensaoId={0}
         formStyle={{ borderLeft: `5px solid ${getProximaCor()}` }}

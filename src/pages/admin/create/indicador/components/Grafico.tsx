@@ -7,129 +7,68 @@ import "./components.css";
 interface GraficoComponentProps {
   chaveValorGraficos: { [key: string]: string };
   grafico: GraficosIndicador;
-  //arrayIndicadorResponse: GraficosIndicador[];
   setDeleteArray: React.Dispatch<React.SetStateAction<GraficosIndicador[]>>;
   graficosData: GraficosIndicador[];
   setGraficosData: React.Dispatch<React.SetStateAction<GraficosIndicador[]>>;
-  //onUpdate?: (grafico: GraficosIndicador) => void;
   onDelete?: () => void;
 }
 
 export const GraficoComponent: FC<GraficoComponentProps> = ({
   chaveValorGraficos,
   grafico,
-  //arrayIndicadorResponse,
   setDeleteArray,
   graficosData,
   setGraficosData,
-  //onUpdate,
   onDelete,
 }) => {
-  const [graficoAdicionado, setGraficoAdicionado] = useState<boolean>(
-    grafico.id !== undefined && grafico.id! > 0,
-  );
+  //const [graficoAdicionado, setGraficoAdicionado] = useState<boolean>(
+  //  grafico.id !== undefined && grafico.id! > 0,
+  //);
   const [errorTitulo, setErrorTitulo] = useState<string | null>(null);
   const [errorArquivo, setErrorArquivo] = useState<string | null>(null);
   const [errorTipo, setErrorTipo] = useState<string | null>(null);
-  const [modified, setModified] = useState<boolean>(false);
   const [checked, setChecked] = useState<boolean>(false);
-  //const [newIndicadorResponse, setNewIndicadorResponse] = useState<GraficosIndicador>(grafico);
-  const newIndicadorResponse:GraficosIndicador= grafico
-  const [tituloGrafico, setTituloGrafico] = useState<string>(newIndicadorResponse.tituloGrafico || "");
-  const [descricaoGrafico, setDescricaoGrafico] = useState<string>(newIndicadorResponse.descricaoGrafico || "");
-  const [arquivo, setArquivo] = useState<File | string | null>(newIndicadorResponse.arquivo || null);
-  const [tipoGrafico, setTipoGrafico] = useState<string>(newIndicadorResponse.tipoGrafico || "");
-  useEffect(() => {
-    //setNewIndicadorResponse(grafico);
-    setGraficoAdicionado(grafico.id !== undefined && grafico.id! > 0);
-  }, [grafico]);
-
+  const graficoResponse:GraficosIndicador= grafico
+  const [tituloGrafico, setTituloGrafico] = useState<string>(graficoResponse.tituloGrafico || "");
+  const [descricaoGrafico, setDescricaoGrafico] = useState<string>(graficoResponse.descricaoGrafico || "");
+  const [arquivo, setArquivo] = useState<File | string | null>(graficoResponse.arquivo || null);
+  const [tipoGrafico, setTipoGrafico] = useState<string>(graficoResponse.tipoGrafico || "");
+ // useEffect(() => {
+  //  setGraficoAdicionado(grafico.id !== undefined && grafico.id! > 0);
+  //q}, [grafico]);
 
   const onChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setChecked(e.target.checked);
 
     if (e.target.checked) {
-      setDeleteArray((prev) => [...prev, newIndicadorResponse]);
+      setDeleteArray((prev) => [...prev, graficoResponse]);
     } else {
       setDeleteArray((prev) =>
-        prev.filter((item) => item.id !== newIndicadorResponse.id),
+        prev.filter((item) => item.id !== graficoResponse.id),
       );
     }
   };
-/*
-  const handleApply = () => {
-    // Validar campos
-    let hasError = false;
-
-    if (!newIndicadorResponse.tituloGrafico) {
-      setErrorTitulo("O título é obrigatório");
-      hasError = true;
-    } else {
-      setErrorTitulo(null);
-    }
-
-    if (
-      (typeof(newIndicadorResponse.arquivo) === "object") &&
-      (!newIndicadorResponse.id || newIndicadorResponse.id <= 0) &&
-      (!newIndicadorResponse.arquivo || newIndicadorResponse.arquivo.size === 0)
-    ) {
-      setErrorArquivo("O arquivo é obrigatório para novos gráficos");
-      hasError = true;
-    } else {
-      setErrorArquivo(null);
-    }
-
-    if (!newIndicadorResponse.tipoGrafico) {
-      setErrorTipo("Escolha por favor o tipo do gráfico");
-      hasError = true;
-    } else {
-      setErrorTipo(null);
-    }
-
-    if (hasError) return;
-
-    // Atualizar ou adicionar ao array de resposta
-    if (graficoAdicionado) {
-      // Atualizar gráfico existente
-      const index = graficosData.findIndex(//arrayIndicadorResponse.findIndex(
-        (item) => item.id === newIndicadorResponse.id,
-      );
-      if (index !== -1) {
-        //arrayIndicadorResponse[index] = newIndicadorResponse;
-        const graficosDataUpdate = graficosData
-        graficosDataUpdate[index] = newIndicadorResponse
-        setGraficosData(graficosDataUpdate)
-        
-        //setGraficosData()
-      } else {
-        //arrayIndicadorResponse.push(newIndicadorResponse);
-        setGraficosData((prev) => [...prev, newIndicadorResponse])
-      }
-      setModified(true);
-    } else {
-      // Adicionar novo gráfico
-      //arrayIndicadorResponse.push(newIndicadorResponse);
-      setGraficosData((prev) => [...prev, newIndicadorResponse])
-      setGraficoAdicionado(true);
-    }
-
-    // Notificar componente pai sobre a atualização
-    //if (onUpdate) {
-    //  onUpdate(newIndicadorResponse);
-    //}
-  };
-*/
   const handleDelete = () => {
     if (onDelete) {
       onDelete();
     } else {
       const shouldDelete = window.confirm("Deseja deletar este gráfico?");
       if (shouldDelete) {
-        setDeleteArray((prev) => [...prev, newIndicadorResponse]);
+        setDeleteArray((prev) => [...prev, graficoResponse]);
       }
     }
   };
-
+useEffect(() => {
+  setGraficosData(prevState => {
+              const newState = prevState
+              prevState.forEach((g:GraficosIndicador, index:number) => {
+                if(g.id === graficoResponse.id){
+                  newState[index] = graficoResponse
+                }
+              })
+              return newState
+            })
+},[tituloGrafico, descricaoGrafico, arquivo, tipoGrafico])
   return (
     <div>
       <div className="form-group">
@@ -139,41 +78,13 @@ export const GraficoComponent: FC<GraficoComponentProps> = ({
           id="tituloGrafico"
           name="tituloGrafico"
           placeholder="Título do gráfico"
-          //value={newIndicadorResponse.tituloGrafico}
           value={tituloGrafico}
           onChange={(e) => {
-            //setNewIndicadorResponse((prevState) => ({
-            //   ...prevState,
-            //   tituloGrafico: e.target.value,
-            // }));
-            setTituloGrafico(e.target.value)
-            const newArrayIndicadorResponse:GraficosIndicador[] = graficosData
-            console.log('newArrayIndicadorResponse',graficosData)
-            newArrayIndicadorResponse.map((g, index) => {
-              console.log('g.tituloGrafico',g.tituloGrafico)
-              console.log('grafico.tituloGrafico',grafico.tituloGrafico)
-              if(g.tituloGrafico === grafico.tituloGrafico){
-                console.log('atualizando')
-                newArrayIndicadorResponse[index].tituloGrafico = tituloGrafico
-                setGraficosData(newArrayIndicadorResponse)
-                console.log(graficosData)
-                return
-              }
-            })
-            // const graficoAntigo:GraficosIndicador | undefined = newArrayIndicadorResponse.find((g) => g.tituloGrafico === grafico.tituloGrafico)
-            // console.log('graficoAntigo',graficoAntigo)
-            // if (graficoAntigo){
-            //   graficoAntigo.tituloGrafico = tituloGrafico //newIndicadorResponse.tituloGrafico
-            //   console.log('graficoAntigo',graficoAntigo)
-            //   newArrayIndicadorResponse.map((g, index) => {
-            //     if (g === grafico){
-            //       newArrayIndicadorResponse[index] = graficoAntigo
-            //       console.log('novoArray',newArrayIndicadorResponse)
-            //       setGraficosData(newArrayIndicadorResponse)
-            //       return
-            //     }
-            //   })
-            // }
+            //Guarda o valor atual do tituloGrafico para ser atualizado no array de graficosData
+            const valorAtual = e.target.value
+            //Após guardar o valor atual, atualiza o estado do campo de texto
+            setTituloGrafico(valorAtual)
+            graficoResponse.tituloGrafico = valorAtual
           }}
         />
         {errorTitulo && (
@@ -185,19 +96,13 @@ export const GraficoComponent: FC<GraficoComponentProps> = ({
 
       <div className="form-group">
         <label htmlFor="csvGrafico">Dados do gráfico</label>
-        {/* {newIndicadorResponse.arquivo &&
-          newIndicadorResponse.arquivo !== "" && (
-            <div>
-              <p>{`Arquivo atual: ${newIndicadorResponse.arquivo.split('/')}`}</p>
-            </div>
-          )} */}
-        {typeof(newIndicadorResponse.arquivo) === "string" ? (
+        {typeof(graficoResponse.arquivo) === "string" ? (
           <div>
-            <p>{`Arquivo atual: ${newIndicadorResponse.arquivo.split('/').pop()}`}</p>
+            <p>{`Arquivo atual: ${graficoResponse.arquivo.split('/').pop()}`}</p>
           </div>
         ):(
           <div>
-            <p>{`Arquivo atual: ${newIndicadorResponse.arquivo.name}`}</p>
+            <p>{`Arquivo atual: ${graficoResponse.arquivo.name}`}</p>
           </div>
         ) }
         <input
@@ -205,24 +110,9 @@ export const GraficoComponent: FC<GraficoComponentProps> = ({
           name="csvGrafico"
           type="file"
           onChange={(e) => {
-            setArquivo(e.target.files?.[0] || null);
-            const newArrayIndicadorResponse = graficosData
-            const graficoAntigo:GraficosIndicador | undefined = newArrayIndicadorResponse.find((g) => g === grafico)
-            const file = arquivo
-            if (file && graficoAntigo !== undefined) {
-                newArrayIndicadorResponse.map((g, index) => {
-                if (g === grafico){
-                  graficoAntigo!.arquivo = file
-                  newArrayIndicadorResponse[index] = graficoAntigo
-                  setGraficosData(newArrayIndicadorResponse)
-                  return
-                }
-              })
-              // setNewIndicadorResponse((prevState) => ({
-              //   ...prevState,
-              //   arquivo: file,
-              // }));
-            }
+            const arquivoAtual = e.target.files?.[0] || null
+            setArquivo(arquivoAtual);
+            graficoResponse.arquivo = arquivoAtual as File
           }}
         />
         {errorArquivo && (
@@ -238,26 +128,11 @@ export const GraficoComponent: FC<GraficoComponentProps> = ({
           type="text"
           id="descricaoGrafico"
           name="descricaoGrafico"
-          //value={newIndicadorResponse.descricaoGrafico}
           value={descricaoGrafico}
           onChange={(e) => {
+            const valorAtual = e.target.value
             setDescricaoGrafico(e.target.value)
-            const newArrayIndicadorResponse = graficosData
-            const graficoAntigo:GraficosIndicador | undefined = newArrayIndicadorResponse.find((g) => g === grafico)
-            if (graficoAntigo){
-              graficoAntigo.descricaoGrafico = descricaoGrafico //e.target.value
-              newArrayIndicadorResponse.map((g, index) => {
-                if (g === grafico){
-                  newArrayIndicadorResponse[index] = graficoAntigo
-                  setGraficosData(newArrayIndicadorResponse)
-                  return
-                }
-              })
-            }
-            // setNewIndicadorResponse((prevState) => ({
-            //   ...prevState,
-            //   tituloGrafico: e.target.value,
-            // }));
+            graficoResponse.descricaoGrafico = valorAtual
           }}
           placeholder="Descrição do gráfico"
         />
@@ -268,28 +143,13 @@ export const GraficoComponent: FC<GraficoComponentProps> = ({
         <Form.Select
           className="form-select"
           aria-label="Tipo de gráfico"
-          //value={newIndicadorResponse.tipoGrafico}
           value={tipoGrafico}
           onChange={(e) => {
-            const newArrayIndicadorResponse = graficosData
-            const graficoAntigo:GraficosIndicador | undefined = newArrayIndicadorResponse.find((g) => g === grafico)
-            if (graficoAntigo){
-              graficoAntigo.tipoGrafico = tipoGrafico //e.target.value
-              newArrayIndicadorResponse.map((g, index) => {
-                if (g === grafico){
-                  newArrayIndicadorResponse[index] = graficoAntigo
-                  setGraficosData(newArrayIndicadorResponse)
-                  return
-                }
-              })
-            }
-            // setNewIndicadorResponse((prevState) => ({
-            //   ...prevState,
-            //   tituloGrafico: e.target.value,
-            // }));
+            const valorAtual = e.target.value
+            setTipoGrafico(valorAtual)
+            graficoResponse.tipoGrafico = valorAtual
           }}
         >
-          <option value="">Selecione um tipo de gráfico</option>
           {Object.keys(chaveValorGraficos).map((key) => (
             <option
               key={chaveValorGraficos[key]}
@@ -307,24 +167,16 @@ export const GraficoComponent: FC<GraficoComponentProps> = ({
         <p>
           <b>Pré-visualização</b>
         </p>
-        {newIndicadorResponse.tipoGrafico && (
+        {graficoResponse.tipoGrafico && (
           <div style={{ width: "50%", height: "50%", margin: "0 auto" }}>
             <DashboardComponentPreview
-              tipoGrafico={newIndicadorResponse.tipoGrafico}
+              tipoGrafico={graficoResponse.tipoGrafico}
             />
           </div>
         )}
       </div>
 
       <div className="atualizar">
-        {/* <button
-          type="button"
-          className={`btn ${graficoAdicionado ? "btn-success" : "btn-apply"}`}
-          onClick={handleApply}
-        >
-          {graficoAdicionado ? "Atualizar" : "Aplicar"}
-        </button> */}
-
         <button type="button" className="btn btn-danger" onClick={handleDelete}>
           🗑️ Deletar
         </button>

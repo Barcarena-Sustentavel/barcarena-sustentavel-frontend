@@ -106,12 +106,6 @@ export const patchIndicador = async (
           method === "PATCH"
             ? `/admin/dimensoes/${dimensao}/indicador/${indicador.nome}/anexos/${arrayGrafico[i].id}/`
             : `/admin/dimensoes/${dimensao}/indicador/${indicador.nome}/anexos/`;
-            // await fetch(endpoit, {
-        //   method: method, //arrayGrafico[i].id != null ? "PATCH" : "POST",
-        //   body: formData,
-        // }).catch((error) => {
-        //   console.log(error);
-        // });
         if(method === "POST"){
           await api.post(endpoint, formData);  
         }

@@ -1,6 +1,4 @@
 import { FC } from "react";
-//import { Marcador } from "./Conectividade/map2.tsx";
-import { EscolaBarcarena, UnidadeSaude } from "../interfaces/mapa.ts";
 import {
   Table,
   TableBody,

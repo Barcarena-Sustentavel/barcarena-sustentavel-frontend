@@ -28,16 +28,13 @@ export interface ChavesBooleanas {
 
 // Componente principal do mapa (Map2)
 // Recebe `dimensao` para decidir se mostra opções de Conectividade
-const Map2: FC<{ dimensao: string | undefined }> = ({ dimensao }) => {
+const MapaConectividade: FC<{ dimensao: string | undefined }> = ({ dimensao }) => {
   // Opções de visualização para conectividade: tipo de mapa (Cobertura, Escola, Saúde)
   const mapasConectividade = ["Cobertura", "Escola", "Saúde"];
   //Estado do botão para escolher o mapa de conectividade
   const [botaoConectividade, setBotaoConectividade] =
     useState<string>("Cobertura");
   // Estados que guardam os dados lidos dos CSVs (escolas e unidades de saúde)
-  // Refs para marcar elementos de mapa (não estritamente tipadas aqui)
-  //const refsMarcadorComInternet = useRef<(typeof Marker | null)[]>([]);
-  //const refsMarcadorSemInternet = useRef<(typeof Marker | null)[]>([]);
   //Carre a o componente tabela com o atual estado dos marcadores
   const [geojsonListSetores, setGeojsonListSetores] = useState<any[]>([]);  
   // Checkbox para ativar/desativar camadas de setores no mapa
@@ -196,4 +193,4 @@ const Map2: FC<{ dimensao: string | undefined }> = ({ dimensao }) => {
   );
 };
 
-export default Map2;
+export default MapaConectividade;
