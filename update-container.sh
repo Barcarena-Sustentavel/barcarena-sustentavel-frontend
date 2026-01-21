@@ -2,6 +2,8 @@
 file_name="fundohydro.pem"
 file_path=$(find / -name "$file_name" 2>/dev/null)
 
+echo "$file_path"
+
 if [ -z "$file_path" ]; then
   echo "File '$file_name' not found."
   exit 1

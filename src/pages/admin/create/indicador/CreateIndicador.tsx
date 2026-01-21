@@ -18,23 +18,33 @@ export const CreateIndicador: FC<{
   indicadorNome: string | undefined;
 }> = ({ dimensao, indicadorNome }) => {
   const navigate = useNavigate();
-  const arrayIndicadorResponse: GraficosIndicador[] = useMemo(() => [], []);
+  //Array para armazenar os gráficos antes de enviar para a API
+  //const arrayIndicadorResponse: GraficosIndicador[] = useMemo(() => [], []);
+  //Guarda o nome do indicador antigo para o patch
   const [indicadorAntigo, setIndicadorAntigo] = useState<string>("");
+  //Muda o estado para realizar um patch
   const [patch, setPatch] = useState(false);
+  //Faz um set do nome do indicador atual
   const [indicador, setIndicador] = useState<string>(
     indicadorNome !== undefined ? indicadorNome : "",
   );
+  //Array que guarda os dados dos gráficos para que possam ser enviados definitivamente
+  const [graficosData, setGraficosData] = useState<GraficosIndicador[]>([]);
+  //Atributos relacionados aos nomes das colunas e suas cores
   const { dimensoesColumn1, dimensoesColumn2, dimensoesCores123 } =
     dimensoes.GetAllConst();
   const dimensoesColumn12 = {
     ...dimensoesColumn1,
     ...dimensoesColumn2,
   };
+  //URL para recuperar dados do indicador
   const url = `admin/dimensoes/${dimensao}/indicador/${indicador}/`;
+  //Mensagem de erros do indicador
   const [errorIndicador, setErrorIndicador] = useState<string | null>(null);
+  //Mensagem de erros dos gráficos
   const [msgsErrorGrafico, setMsgsErrorGrafico] = useState<Array<string>>([]);
+  //Array para armazenar os gráficos que devem ser deletados
   const [deleteArray, setDeleteArray] = useState<Array<GraficosIndicador>>([]);
-  const [graficosData, setGraficosData] = useState<GraficosIndicador[]>([]);
   const [nextId, setNextId] = useState(1);
 
   const chaveValorGraficos: { [key: string]: string } = useMemo(
@@ -63,9 +73,11 @@ export const CreateIndicador: FC<{
     }));
   };
 
+  //Deletar os gráficos selecionados
   const handleDeleteGrafico = (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
 
+    //Verifica se há gráficos selecionados
     if (deleteArray.length === 0) {
       alert("Selecione pelo menos um gráfico para deletar");
       return;
@@ -97,6 +109,7 @@ export const CreateIndicador: FC<{
     setDeleteArray([]);
   };
 
+  //Faz o submit do a
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setMsgsErrorGrafico([]);
@@ -125,23 +138,18 @@ export const CreateIndicador: FC<{
       return;
     }
 
-    // Atualizar arrayIndicadorResponse com os dados atuais
-    arrayIndicadorResponse.length = 0;
-    graficosData.forEach((grafico) => {
-      arrayIndicadorResponse.push(grafico);
-    });
-
     if (patch === true) {
-      console.log(arrayIndicadorResponse)
+      //console.log(graficosData)
       patchIndicador(
         dimensao,
         indicadorAntigo,
         indicador,
-        arrayIndicadorResponse,
+        graficosData,
       );
       navigate(`/admin/dimensao/${dimensao}/`);
     } else {
-      postIndicador(dimensao, indicador, arrayIndicadorResponse);
+      //postIndicador(dimensao, indicador, arrayIndicadorResponse);
+      postIndicador(dimensao, indicador, graficosData);
       navigate(`/admin/dimensao/${dimensao}/`);
     }
   };
@@ -153,8 +161,8 @@ export const CreateIndicador: FC<{
         .get(url)
         .then((response) => {
           setIndicadorAntigo(response.data.nome);
-          arrayIndicadorResponse.length = 0;
-          console.log(response.data.graficos);
+          //arrayIndicadorResponse.length = 0;
+          //console.log(response.data.graficos);
 
           const graficosFromApi: GraficosIndicador[] =
             response.data.graficos.map((grafico: any, index: any) => ({
@@ -191,12 +199,8 @@ export const CreateIndicador: FC<{
   }, []);
 
   useEffect(() => {
-    console.log(openStates);
+    //console.log(openStates);
   }, [openStates]);
-
-  // useEffect(() => {
-  //   console.table(graficosData);
-  // }, [graficosData]);
 
   const addGrafico = (e: React.MouseEvent) => {
     e.preventDefault();
@@ -216,13 +220,6 @@ export const CreateIndicador: FC<{
       [novoGrafico.id]: true,
     }));
     setNextId((prev) => prev + 1);
-  };
-
-  const updateGrafico = (index: number, updatedGrafico: GraficosIndicador) => {
-    console.log(graficosData);
-    setGraficosData((prev) =>
-      prev.map((grafico, i) => (i === index ? updatedGrafico : grafico)),
-    );
   };
 
   const deleteSingleGrafico = (grafico: GraficosIndicador) => {
@@ -300,7 +297,8 @@ export const CreateIndicador: FC<{
 
     const sensors = useSensors(useSensor(PointerSensor, { activationConstraint: { distance: 8 } }));
     const [activeId, setActiveId] = useState(null);
-    useEffect(() => {console.log(`activeId = ${activeId}\ntypeof(activeId) = ${typeof(activeId)}\n${graficosData.find(grafico => grafico.id === activeId)}`)}, [activeId]);
+    //useEffect(() => {
+    //  console.log(`activeId = ${activeId}\ntypeof(activeId) = ${typeof(activeId)}\n${graficosData.find(grafico => grafico.id === activeId)}`)}, [activeId]);
 
     function onDragStart(event: any) {
       setActiveId(event.active.id);
@@ -331,14 +329,15 @@ export const CreateIndicador: FC<{
       });
       setActiveId(null);
     }
-
+    //console.log('graficosData', graficosData)
     const view = [...graficosData].sort((a,b) => a.posicao - b.posicao);
+    //const view = graficosData.sort((a,b) => a.posicao - b.posicao);
 
     view.forEach((element, index, array) => {
       if(view[index].posicao != index)
         view[index].posicao = index
     });
-
+    console.log(graficosData)
     return (
       <DndContext sensors={sensors}
         collisionDetection={pointerWithin}
@@ -354,11 +353,9 @@ export const CreateIndicador: FC<{
                     <GraficoComponent
                       chaveValorGraficos={chaveValorGraficos}
                       grafico={grafico}
-                      arrayIndicadorResponse={arrayIndicadorResponse}
                       setDeleteArray={setDeleteArray}
-                      onUpdate={(updatedGrafico) =>
-                        updateGrafico(index, updatedGrafico)
-                      }
+                      graficosData = {graficosData}
+                      setGraficosData={setGraficosData}
                       onDelete={() => deleteSingleGrafico(grafico)}
                     />
                     </div>
@@ -423,24 +420,6 @@ export const CreateIndicador: FC<{
 
         <h3>Gráficos</h3>
         <div id="graficos">
-          {/* {graficosData.map((grafico, index) => (
-            <div
-              key={grafico.id || `new-${index}`}
-              className="grafico-component"
-            >
-              <h3>Gráfico {index + 1}</h3>
-              <GraficoComponent
-                chaveValorGraficos={chaveValorGraficos}
-                grafico={grafico}
-                arrayIndicadorResponse={arrayIndicadorResponse}
-                setDeleteArray={setDeleteArray}
-                onUpdate={(updatedGrafico) =>
-                  updateGrafico(index, updatedGrafico)
-                }
-                onDelete={() => deleteSingleGrafico(grafico)}
-              />
-            </div>
-            ))} */}
             <SortableList />
             
 

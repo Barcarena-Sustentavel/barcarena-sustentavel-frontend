@@ -19,7 +19,7 @@ const TileLayer_1 = require("react-leaflet/TileLayer");
 const const_1 = __importDefault(require("../const"));
 const react_bootstrap_1 = require("react-bootstrap");
 const react_bootstrap_2 = require("react-bootstrap");
-const api_1 = __importDefault(require("../../api"));
+const api_1 = __importDefault(require("../../../../api"));
 //import ReactLeafletKml from 'react-leaflet-kml'; // react-leaflet-kml must be loaded AFTER react-leaflet
 //import { Polygon } from 'react-leaflet/Polygon';
 //import { Tooltip } from 'react-leaflet/Tooltip';
