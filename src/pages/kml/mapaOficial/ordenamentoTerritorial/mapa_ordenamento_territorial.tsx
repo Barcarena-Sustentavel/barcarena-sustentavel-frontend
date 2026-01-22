@@ -419,12 +419,12 @@ const MapaOrdenamento: FC<{ dimensao: string | undefined }> = ({ dimensao }) => 
             {geoJsonListSetores.map((geojson, index) => (
               <GeoJSON key={index} data={geojson.data}  style={{color:geojson.color, weight: 1.5}}/>
             ))}
-            {geoJsonOrdenamento.map((geojson, index) => 
+            {/* {geoJsonOrdenamento.map((geojson, index) => 
                <GeoJSON key={index} data={geojson.geoJson} style={{color:geojson[index]["cor"],
                                                                  fillColor:geojson[index]["cor"], 
                                                                  fillOpacity:geojson[index]["opacidade"],
                                                                  weight: 0.5}} />
-            )}
+            )} */}
             </MapContainer>
             
         </div>
