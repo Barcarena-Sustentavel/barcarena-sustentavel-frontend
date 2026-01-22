@@ -210,7 +210,7 @@ export const CreateIndicador: FC<{
       arquivo: new File([], ""),
       descricaoGrafico: "",
       tituloGrafico: "",
-      tipoGrafico: "",
+      tipoGrafico: "line",
       posicao: graficosData.length
     };
 
