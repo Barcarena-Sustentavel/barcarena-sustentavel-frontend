@@ -37,6 +37,7 @@ main {
  {
     font-size: 1rem;
     color: black;
+    font-weight: var(--font-weight-light);
 }
 .section-um {
     gap: 8rem;
@@ -157,3 +158,31 @@ main {
         gap: 2rem;
     }
 }
+
+.card-download-short-paper {
+    border: 2px solid #005994;
+    border-radius: 9px;
+    padding: 2.5rem 1rem;
+    width: 30%;
+    margin-bottom: 2rem;
+}
+
+.dimensao-short-paper {
+    color: #182B46;
+    font-family: "Roboto", sans-serif;
+    font-weight: bold;
+    margin-bottom: 0;
+}
+
+.download-paper-button {
+    margin-left: auto;
+    margin-right: 1rem;
+    margin-bottom: 0;
+    height: 3rem;
+}
+
+.secao-download-papers {
+    padding-top: 2rem;
+    gap: 2%;
+}
+
