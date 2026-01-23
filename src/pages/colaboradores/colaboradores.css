@@ -5,9 +5,10 @@
     align-items: 'center';
 }
 .colabContainer > h2{
-    text-align: center;
+    text-align: start;
     margin-top: 2rem;
-    margin-bottom: 1rem;
+    margin-bottom: 2rem;
+    margin-left: 16rem;
 }
 #timesAbaixo{
     text-align: center;
