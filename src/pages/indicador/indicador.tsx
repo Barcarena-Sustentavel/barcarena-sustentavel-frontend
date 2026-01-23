@@ -22,6 +22,8 @@ const IndicadorComponent: FC = () => {
   });
   const [loading, setLoading] = useState<boolean>(true);
 
+  const [singleColumn, setSingleConlumn] = useState<boolean>(true);
+
   useEffect(() => {
     api
       .get(url)
@@ -87,6 +89,16 @@ const IndicadorComponent: FC = () => {
       <div className="indicador-container">
         <div className="indicador-header">
           <h1>{indicadorJson.nome}</h1>
+          <div className="d-flex justify-content-end container-layout">
+            <span>
+                <button className="button-single-column"
+                onClick= {() => setSingleConlumn(true)}
+                style={singleColumn ? { backgroundColor: "grey", color: "white" } : {}}><i className="bi bi-square"></i></button>
+                <button className="button-double-column"
+                onClick= {() => setSingleConlumn(false)}
+                style={!singleColumn ? { backgroundColor: "grey", color: "white" } : {}}><i className="bi bi-layout-split"></i></button>
+            </span>
+          </div>
         </div>
 
         {loading ? (
@@ -95,7 +107,7 @@ const IndicadorComponent: FC = () => {
             <p>Carregando dados...</p>
           </div>
         ) : (
-          <div className="graficos-container">
+          <div className={singleColumn ? 'graficos-container-single-column': 'graficos-container-double-column'}>
             {indicadorJson.graficos.length > 0 ? (
               indicadorJson.graficos.map((grafico: DadosGrafico, index) => (
                 <div className="grafico-card" key={index}>

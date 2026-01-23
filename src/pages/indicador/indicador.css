@@ -35,11 +35,22 @@
 }
 
 /* Graficos container */
-.graficos-container {
+.graficos-container-double-column {
   display: flex;
   /* flex-direction: column; */
   flex-wrap: wrap;
   justify-content: center;
+  align-content: center;
+  gap: 3rem;
+  margin-bottom: 3rem;
+}
+
+.graficos-container-single-column {
+  display: flex;
+  flex-direction: column;
+  /* flex-wrap: wrap; */
+  justify-content: center;
+  align-items: center;
   gap: 3rem;
   margin-bottom: 3rem;
 }
@@ -182,4 +193,21 @@ body {
 
 .download-btn:hover {
   background-color: var(--primary-color-dark);
+}
+
+.container-layout > span {
+  border-radius: 20px;
+}
+
+.button-single-column {
+  border-radius: 15px 0 0 15px;
+}
+
+.button-double-column {
+  border-radius: 0 15px 15px 0;
+}
+
+.button-double-column,
+.button-single-column {
+  border-color: black;
 }
