@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { Contribuicao } from '../../../interfaces/contribuicao_interface.tsx';
 import { useContribuicao } from '../../../hooks/useContribuicao.ts';
 import Swal from 'sweetalert2';
@@ -6,7 +6,6 @@ import ReCAPTCHA from "react-google-recaptcha";
 import { Alert, Form, Row, Col, Button } from "react-bootstrap";
 import "./formContribuicao.css";
 import info_icon from "@assets/images/icons/info-icon.png";
-
 
 interface FormContribuicaoProps {
     dimensaoId: number;
@@ -22,7 +21,7 @@ const FormContribuicao: React.FC<FormContribuicaoProps> = ({ dimensaoId , formSt
         file: null
     });
 
-    const [isSubmitting, setIsSubmitting] = useState(false);
+    // const [isSubmitting, setIsSubmitting] = useState(false);
     const [captchaValido, setCaptchaValido] = useState(false);
     const { submitContribuicao } = useContribuicao();
     const [errorNome, setErrorNome] = useState<string>("");
@@ -30,6 +29,7 @@ const FormContribuicao: React.FC<FormContribuicaoProps> = ({ dimensaoId , formSt
     const [errorEmail, setErrorEmail] = useState<string>("");
     const [errorComentario, setErrorComentario] = useState<string>("");
     const [errorArquivo, setErrorArquivo] = useState<string>("");
+    const fileRef = useRef<HTMLInputElement>();
 
     const SITE_KEY_RECAPTCHA = import.meta.env.VITE_SITE_KEY_RECAPTCHA;
 
@@ -98,9 +98,6 @@ const FormContribuicao: React.FC<FormContribuicaoProps> = ({ dimensaoId , formSt
                 setErrorTelefone(prev => ("Insira apenas números."));
                 return;
             }
-        } else {
-            setErrorTelefone(prev => ("Campo de telefone vazio."));
-            return;
         }
 
         if(!formData.comentario){
@@ -135,6 +132,9 @@ const FormContribuicao: React.FC<FormContribuicaoProps> = ({ dimensaoId , formSt
                 comentario: '',
                 file: null
               });
+              if (fileRef.current) {
+                    fileRef.current.value = "";
+                }
             },
             onError: async (message: string) => {
                 await Swal.fire({
@@ -237,7 +237,7 @@ const FormContribuicao: React.FC<FormContribuicaoProps> = ({ dimensaoId , formSt
 
                                 <Form.Group className="mb-3" controlId="formFile">
                                     <Form.Label>Anexar Arquivo</Form.Label>
-                                    <Form.Control type="file" onChange={handleFileChange}/>
+                                    <Form.Control type="file" onChange={handleFileChange} ref={fileRef}/>
                                     {errorArquivo && (
                                         <Alert variant="danger" className="mt-2">
                                             {errorArquivo}
