@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { Contribuicao } from '../../../interfaces/contribuicao_interface.tsx';
 import { useContribuicao } from '../../../hooks/useContribuicao.ts';
 import Swal from 'sweetalert2';
@@ -6,7 +6,6 @@ import ReCAPTCHA from "react-google-recaptcha";
 import { Alert, Form, Row, Col, Button } from "react-bootstrap";
 import "./formContribuicao.css";
 import info_icon from "@assets/images/icons/info-icon.png";
-
 
 interface FormContribuicaoProps {
     dimensaoId: number;
@@ -22,13 +21,15 @@ const FormContribuicao: React.FC<FormContribuicaoProps> = ({ dimensaoId , formSt
         file: null
     });
 
-    const [isSubmitting, setIsSubmitting] = useState(false);
+    // const [isSubmitting, setIsSubmitting] = useState(false);
     const [captchaValido, setCaptchaValido] = useState(false);
     const { submitContribuicao } = useContribuicao();
     const [errorNome, setErrorNome] = useState<string>("");
     const [errorTelefone, setErrorTelefone] = useState<string>("");
     const [errorEmail, setErrorEmail] = useState<string>("");
+    const [errorComentario, setErrorComentario] = useState<string>("");
     const [errorArquivo, setErrorArquivo] = useState<string>("");
+    const fileRef = useRef<HTMLInputElement>();
 
     const SITE_KEY_RECAPTCHA = import.meta.env.VITE_SITE_KEY_RECAPTCHA;
 
@@ -73,6 +74,9 @@ const FormContribuicao: React.FC<FormContribuicaoProps> = ({ dimensaoId , formSt
                 setErrorNome(prev => ("Insira um nome menor que 100 caracteres."));
                 return;
             }
+        } else{
+            setErrorNome(prev => ("Campo de nome vazio."));
+            return;
         }
         
         if(formData.email){
@@ -80,6 +84,9 @@ const FormContribuicao: React.FC<FormContribuicaoProps> = ({ dimensaoId , formSt
                 setErrorEmail(prev => ("Insira um email menor que 250 caracteres."));
                 return;
             }
+        } else {
+            setErrorEmail(prev => ("Campo de e-mail vazio."));
+            return;
         }
 
         if(formData.telefone){
@@ -91,6 +98,10 @@ const FormContribuicao: React.FC<FormContribuicaoProps> = ({ dimensaoId , formSt
                 setErrorTelefone(prev => ("Insira apenas números."));
                 return;
             }
+        }
+
+        if(!formData.comentario){
+            setErrorComentario("Campo de comentário vazio.");
         }
         
         const data = new FormData();
@@ -121,6 +132,9 @@ const FormContribuicao: React.FC<FormContribuicaoProps> = ({ dimensaoId , formSt
                 comentario: '',
                 file: null
               });
+              if (fileRef.current) {
+                    fileRef.current.value = "";
+                }
             },
             onError: async (message: string) => {
                 await Swal.fire({
@@ -215,10 +229,15 @@ const FormContribuicao: React.FC<FormContribuicaoProps> = ({ dimensaoId , formSt
                                     onChange={handleChange}
                                     />
                                 </Form.Group>
+                                {errorComentario && (
+                                        <Alert variant="danger" className="mt-2">
+                                            {errorComentario}
+                                        </Alert>
+                                    )}
 
                                 <Form.Group className="mb-3" controlId="formFile">
                                     <Form.Label>Anexar Arquivo</Form.Label>
-                                    <Form.Control type="file" onChange={handleFileChange}/>
+                                    <Form.Control type="file" onChange={handleFileChange} ref={fileRef}/>
                                     {errorArquivo && (
                                         <Alert variant="danger" className="mt-2">
                                             {errorArquivo}

@@ -1,4 +1,4 @@
-import { FC } from "react";
+import { FC, useEffect, useState } from "react";
 import "@assets/styles/index.css";
 import NavbarComponent from "../../components/layout/navbar/navbar.tsx";
 import Footer from "../../components/layout/footer/footer.tsx";
@@ -6,8 +6,31 @@ import IBS from "@assets/images/about/21.12.2022---conexoes-sustentaveis.jpg";
 import image_piramide from "@assets/images/about/piramide.png";
 import image_mandala from "@assets/images/about/mandala_odsb-1.png";
 import "./about.css";
+import api from "../../api.tsx";
+import { getArtigoDimensao } from "../admin/create/artigo/crudArtigo.tsx";
 
 const About: FC = () => {
+  const [dimensoes, setDimensoes] = useState<string[]>([]);
+  const urlDimensoes: string = "/dimensoes/";
+
+  const getDownloadCard = (dimensao: string) => {
+    return (<div className="d-flex align-items-center card-download-short-paper col-4">
+            <p className="dimensao-short-paper">{dimensao}</p>
+            <button className="download-paper-button btn btn-primary"
+            onClick={() => getArtigoDimensao(dimensao)}>Download</button>
+          </div>)
+  };
+
+  useEffect(() => {
+    api
+      .get(urlDimensoes)
+      .then((response) =>{
+        console.log(response);
+        setDimensoes(response.data.dimensoes);
+      })
+      .catch();
+  }, []);
+  
   return (
     <div className="home-container">
       <NavbarComponent />
@@ -98,7 +121,7 @@ const About: FC = () => {
           <section className="d-flex dados-section">
             <div className="metodologia-dados-container">
               <p className="section-titulo">Metodologia Para Coleta de Dados</p>
-              <p className="section-texto">
+              <div className="section-texto">
                 O procedimento de diagnóstico baseado em indicadores é um processo sistemático de coleta, seleção, 
                 análise e interpretação de dados para identificar problemas nas dimensões previstas em nosso estudo. O processo envolve as seguintes etapas:
                 <ul>
@@ -116,7 +139,7 @@ const About: FC = () => {
                     Ao considerar essas características, pretende-se garantir que resultados mais robustos e eficazes em relação as dimensões previstas nos estudos.
                   </li>
                 </ul>
-              </p>
+              </div>
             </div>
             <div className="metodologia-dados-container">
               <p className="section-titulo">Definição da Base de Dados</p>
@@ -137,6 +160,16 @@ const About: FC = () => {
             </div>
           </section>
         </div>
+        <p className="mx-auto sobre-titulo">Download de Short Papers</p>
+        <div className="d-flex mx-auto align-items-center justify-content-center conteudo-pagina secao-download-papers row">
+          {dimensoes.map((dimensao) => getDownloadCard(dimensao))}
+        </div>
+        {/* <div className="d-flex mx-auto align-items-center justify-content-center conteudo-pagina secao-download-papers row">
+          <div className="d-flex align-items-center card-download-short-paper col-4">
+            <p className="dimensao-short-paper">Conectividade</p>
+            <button className="download-paper-button btn btn-primary">Download</button>
+          </div>
+        </div> */}
       </main>
       <Footer />
     </div>

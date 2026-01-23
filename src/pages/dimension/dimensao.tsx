@@ -231,6 +231,10 @@ const DimensaoComponent: FC = () => {
         <div className="divMapa">
           <MapaOrdenamento dimensao={dimensao}/>
         </div>}
+      {dimensao === "Segurança" && 
+        <div className="divMapa" style={{ margin: "2rem auto", width: "61%" }}>
+          <HTMLFileIframe htmlFilePath={pathHtml}/>
+        </div>}
       <FormContribuicao
         dimensaoId={0}
         formStyle={{ borderLeft: `5px solid ${getProximaCor()}` }}
