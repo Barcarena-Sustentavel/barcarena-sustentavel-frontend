@@ -28,6 +28,7 @@ const FormContribuicao: React.FC<FormContribuicaoProps> = ({ dimensaoId , formSt
     const [errorNome, setErrorNome] = useState<string>("");
     const [errorTelefone, setErrorTelefone] = useState<string>("");
     const [errorEmail, setErrorEmail] = useState<string>("");
+    const [errorComentario, setErrorComentario] = useState<string>("");
     const [errorArquivo, setErrorArquivo] = useState<string>("");
 
     const SITE_KEY_RECAPTCHA = import.meta.env.VITE_SITE_KEY_RECAPTCHA;
@@ -69,6 +70,10 @@ const FormContribuicao: React.FC<FormContribuicaoProps> = ({ dimensaoId , formSt
         e.preventDefault();
 
         if(formData.nome){
+            if(formData.nome.length === 0){
+                setErrorNome(prev => ("Campo de nome vazio."));
+                return;
+            }
             if(formData.nome.length > 100){
                 setErrorNome(prev => ("Insira um nome menor que 100 caracteres."));
                 return;
@@ -76,6 +81,10 @@ const FormContribuicao: React.FC<FormContribuicaoProps> = ({ dimensaoId , formSt
         }
         
         if(formData.email){
+            if(formData.email.length == 0){
+                setErrorEmail(prev => ("Campo de e-mail vazio."));
+                return;
+            }
             if(formData.email.length > 250){
                 setErrorEmail(prev => ("Insira um email menor que 250 caracteres."));
                 return;
@@ -83,6 +92,10 @@ const FormContribuicao: React.FC<FormContribuicaoProps> = ({ dimensaoId , formSt
         }
 
         if(formData.telefone){
+            if(formData.telefone.length === 0){
+                setErrorTelefone(prev => ("Campo de telefone vazio."));
+                return;
+            }
             if(formData.telefone.length != 11){
                 setErrorTelefone(prev => ("Insira um número de telefone no formato XX9XXXXXXXX."));
                 return;
@@ -91,6 +104,10 @@ const FormContribuicao: React.FC<FormContribuicaoProps> = ({ dimensaoId , formSt
                 setErrorTelefone(prev => ("Insira apenas números."));
                 return;
             }
+        }
+
+        if(formData.comentario?.length === 0){
+            setErrorComentario("Campo de comentário vazio.");
         }
         
         const data = new FormData();
@@ -215,6 +232,11 @@ const FormContribuicao: React.FC<FormContribuicaoProps> = ({ dimensaoId , formSt
                                     onChange={handleChange}
                                     />
                                 </Form.Group>
+                                {errorComentario && (
+                                        <Alert variant="danger" className="mt-2">
+                                            {errorComentario}
+                                        </Alert>
+                                    )}
 
                                 <Form.Group className="mb-3" controlId="formFile">
                                     <Form.Label>Anexar Arquivo</Form.Label>
