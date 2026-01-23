@@ -70,32 +70,26 @@ const FormContribuicao: React.FC<FormContribuicaoProps> = ({ dimensaoId , formSt
         e.preventDefault();
 
         if(formData.nome){
-            if(formData.nome.length === 0){
-                setErrorNome(prev => ("Campo de nome vazio."));
-                return;
-            }
             if(formData.nome.length > 100){
                 setErrorNome(prev => ("Insira um nome menor que 100 caracteres."));
                 return;
             }
+        } else{
+            setErrorNome(prev => ("Campo de nome vazio."));
+            return;
         }
         
         if(formData.email){
-            if(formData.email.length == 0){
-                setErrorEmail(prev => ("Campo de e-mail vazio."));
-                return;
-            }
             if(formData.email.length > 250){
                 setErrorEmail(prev => ("Insira um email menor que 250 caracteres."));
                 return;
             }
+        } else {
+            setErrorEmail(prev => ("Campo de e-mail vazio."));
+            return;
         }
 
         if(formData.telefone){
-            if(formData.telefone.length === 0){
-                setErrorTelefone(prev => ("Campo de telefone vazio."));
-                return;
-            }
             if(formData.telefone.length != 11){
                 setErrorTelefone(prev => ("Insira um número de telefone no formato XX9XXXXXXXX."));
                 return;
@@ -104,9 +98,12 @@ const FormContribuicao: React.FC<FormContribuicaoProps> = ({ dimensaoId , formSt
                 setErrorTelefone(prev => ("Insira apenas números."));
                 return;
             }
+        } else {
+            setErrorTelefone(prev => ("Campo de telefone vazio."));
+            return;
         }
 
-        if(formData.comentario?.length === 0){
+        if(!formData.comentario){
             setErrorComentario("Campo de comentário vazio.");
         }
         
