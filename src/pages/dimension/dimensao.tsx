@@ -131,6 +131,42 @@ const DimensaoComponent: FC = () => {
       <NavbarComponent />
       <SubmenuDimensao dimensaoAtiva={dimensaoJson?.nome || ""} />
       <BackButton />
+      {pathHtml !== "" && (
+        <div className="mx-auto" style={{ 
+          width: "43%", 
+          height: "41rem", 
+          marginBottom: dimensao === "Conectividade" ? "6rem" : "0" 
+        }}>
+          {dimensao === "Conectividade" && (
+            <div
+              style={{
+                margin: "10px auto 5px auto",
+                width: "30%",
+                display: "flex",
+                justifyContent: "space-between",
+              }}
+            >
+              {mapasConectividade.map((mapa) => {
+                return (
+                  <button
+                    style={{
+                      padding: "10px",
+                      border: "1px solid",
+                      borderRadius: "8px",
+                      backgroundColor: "var(--primary-blue)",
+                    }}
+                    value={mapa}
+                    onClick={(event: any) => handleOnCick(event)}
+                  >
+                    {mapa}
+                  </button>
+                );
+              })}
+            </div>
+          )}
+          <HTMLFileIframe htmlFilePath={pathHtml} />
+        </div>
+      )}
       <div className="container dimension-details-container">
         <div className="descricao">
           <p style={{ borderLeft: `5px solid ${getProximaCor()}` }}>
@@ -191,39 +227,8 @@ const DimensaoComponent: FC = () => {
             </ul>
           ))}
       </div>
-      {/*pathHtml !== "" && (
-        <div style={{ margin: "0 auto", width: "90%" }}>
-          {dimensao === "Conectividade" && (
-            <div
-              style={{
-                margin: "10px auto 5px auto",
-                width: "30%",
-                display: "flex",
-                justifyContent: "space-between",
-              }}
-            >
-              {mapasConectividade.map((mapa) => {
-                return (
-                  <button
-                    style={{
-                      padding: "10px",
-                      border: "1px solid",
-                      borderRadius: "8px",
-                      backgroundColor: "var(--primary-blue)",
-                    }}
-                    value={mapa}
-                    onClick={(event: any) => handleOnCick(event)}
-                  >
-                    {mapa}
-                  </button>
-                );
-              })}
-            </div>
-          )}
-          <HTMLFileIframe  htmlFilePath={pathHtml} />
-        </div>
-      )*/}
-      {dimensao === "Conectividade" &&
+      
+      {/* {dimensao === "Conectividade" &&
         <div className="divMapa">
           <MapaConectividade dimensao={dimensao} />
         </div>}
@@ -234,7 +239,7 @@ const DimensaoComponent: FC = () => {
       {dimensao === "Segurança" && 
         <div className="divMapa" style={{ margin: "2rem auto", width: "61%" }}>
           <HTMLFileIframe htmlFilePath={pathHtml}/>
-        </div>}
+        </div>} */}
       <FormContribuicao
         dimensaoId={0}
         formStyle={{ borderLeft: `5px solid ${getProximaCor()}` }}
