@@ -132,6 +132,13 @@ const DimensaoComponent: FC = () => {
       <NavbarComponent />
       <SubmenuDimensao dimensaoAtiva={dimensaoJson?.nome || ""} />
       <BackButton />
+      <div className="container dimension-details-container">
+        <div className="descricao">
+          <p style={{ borderLeft: `5px solid ${getProximaCor()}` }}>
+            {dimensaoJson?.descricao}
+          </p>
+        </div>
+      </div>
       {pathHtml !== "" && (
         <div className="mx-auto" style={{ 
           width: "43%", 
@@ -168,13 +175,6 @@ const DimensaoComponent: FC = () => {
           <HTMLFileIframe htmlFilePath={pathHtml} />
         </div>
       )}
-      <div className="container dimension-details-container">
-        <div className="descricao">
-          <p style={{ borderLeft: `5px solid ${getProximaCor()}` }}>
-            {dimensaoJson?.descricao}
-          </p>
-        </div>
-      </div>
       <div className="container dimension-details-container">
         <h1>Indicadores</h1>
         <ul className="indicadores">
