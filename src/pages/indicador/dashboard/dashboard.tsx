@@ -1,5 +1,6 @@
-import * as Highcharts from "highcharts";
+import Highcharts from "highcharts";
 import HighchartsReact from "highcharts-react-official";
+//import 'highcharts/modules/exporting';
 import '../../../utils/highcharts/heatmap.js';
 import React, { FC, useRef } from "react";
 import { DashboardProps } from "./interface/dashboard_interface.tsx";
@@ -35,6 +36,13 @@ const plotOptions = (dashboard: DashboardProps) => {
           data: dashboard.dados,
         },
       ],
+      exporting: {
+        buttons: {
+            contextButton: {
+                menuItems: ['downloadPNG', 'downloadJPEG', 'downloadPDF', 'downloadSVG']
+            }
+        }
+    },
     };
   }
 
@@ -61,6 +69,13 @@ const plotOptions = (dashboard: DashboardProps) => {
         text: dashboard.tituloGrafico ?? "",
       },
       series: dadosSeries,
+      exporting: {
+        buttons: {
+            contextButton: {
+                menuItems: ['downloadPNG', 'downloadJPEG', 'downloadPDF', 'downloadSVG']
+            }
+        }
+    },
       xAxis: {
         categories: dashboard.categorias,
       },
@@ -98,8 +113,13 @@ const plotOptions = (dashboard: DashboardProps) => {
             enabled: true
         },
         series: dashboard.dados,
-
-    }
+        exporting: {
+        buttons: {
+            contextButton: {
+                menuItems: ['downloadPNG', 'downloadJPEG', 'downloadPDF', 'downloadSVG']
+            }
+        }
+    },    }
   }
   return {
     chart: {
@@ -109,6 +129,13 @@ const plotOptions = (dashboard: DashboardProps) => {
       text: dashboard.tituloGrafico ?? "",
     },
     series: dashboard.dados,
+    exporting: {
+        buttons: {
+            contextButton: {
+                menuItems: ['downloadPNG', 'downloadJPEG', 'downloadPDF', 'downloadSVG']
+            }
+        }
+    },
     xAxis: {
       categories: dashboard.categorias,
     },

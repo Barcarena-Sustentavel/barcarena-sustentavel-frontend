@@ -40,7 +40,10 @@ const App: FC = () => {
               path="/admin/dimensao/:dimensao/create/:activeTab/"
               element={<CreatePage />}
             />
-
+             <Route
+              path="/admin/dimensao/create/:activeTab/"
+              element={<CreatePage />}
+            />
             <Route
               path="/admin/dimensao/:dimensao/update/:activeTab/:elementName/"
               element={<CreatePage />}

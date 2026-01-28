@@ -11,7 +11,8 @@ const AddDelete: FC<RenderContentInterface> = ({
 }) => {
   const navigate = useNavigate();
   const handleAdd = () => {
-    navigate(`/admin/dimensao/${dimensao}/create/${activeTab}/`);
+    //Transfere para todos o 
+    navigate(`/admin/dimensao/${dimensao}/create/${activeTab}/`)
   };
 
   const handleDelete = async () => {

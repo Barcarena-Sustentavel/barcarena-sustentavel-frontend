@@ -1,4 +1,4 @@
-import { FC, useEffect, useState } from "react"; 
+import { FC, useEffect, useState, useRef } from "react"; 
 import {
   IndicadorDadosGrafico,
   DadosGrafico,
@@ -11,24 +11,24 @@ import "./indicador.css";
 import Footer from "../../components/layout/footer/footer.tsx";
 import BackButton from "../../components/layout/backButton/backButton.tsx";
 import Location from "../../components/layout/location/location.tsx";
-
+import { DashboardProps } from "./dashboard/interface/dashboard_interface.tsx";
+import html2canvas from 'html2canvas';
 const IndicadorComponent: FC = () => {
   const { dimensao, indicador } = useParams();
   const url: string = `/dimensoes/${dimensao}/indicador/${indicador}/`;
-  
   const [indicadorJson, setIndicadorJson] = useState<IndicadorDadosGrafico>({
     nome: "",
     graficos: [],
   });
   const [loading, setLoading] = useState<boolean>(true);
-
   const [singleColumn, setSingleConlumn] = useState<boolean>(true);
-
+  //guarda a referência dos graficos
+  const graficosRef = useRef<Array<HTMLDivElement | null>>([]);
   useEffect(() => {
     api
       .get(url)
       .then((response) => {
-        console.log(response.request);
+        //console.log(response.request);
         setIndicadorJson( (prev) => {
           const responseData = response.data;
           return responseData.graficos.sort((a: any, b: any) => a.posicao - b.posicao);
@@ -41,6 +41,11 @@ const IndicadorComponent: FC = () => {
         setLoading(false);
       });
   }, [url]);
+
+  const printDiv = () => {
+    console.log("Preparando documento")
+    window.print()
+  }
 
   const handleDownloadCSV = (grafico: DadosGrafico) => {
     let csvContent = grafico.colunas.join(",") + "\n";
@@ -72,11 +77,20 @@ const IndicadorComponent: FC = () => {
     document.body.removeChild(link);
     window.URL.revokeObjectURL(url);
   };
-
+  
+  const exportGrafico = async (nome:string,index:number) =>{
+    const canvas = await html2canvas(graficosRef.current[index])
+    const dataUrl = canvas.toDataURL("image/png");
+  // Optional: Trigger an automatic download
+    const link = document.createElement('a');
+    link.href = dataUrl;
+    link.download = `${nome}.png`
+    link.click();
+  }
+ 
   return (
     <div>
       <NavbarComponent />
-
       {/* Cabeçalho com botão e localização */}
       <div className="header-location">
         <BackButton />
@@ -109,10 +123,22 @@ const IndicadorComponent: FC = () => {
         ) : (
           <div className={singleColumn ? 'graficos-container-single-column': 'graficos-container-double-column'}>
             {indicadorJson.graficos.length > 0 ? (
-              indicadorJson.graficos.map((grafico: DadosGrafico, index) => (
+              indicadorJson.graficos.map((grafico: DadosGrafico, index) => {
+                const graficoTeste:DashboardProps = {
+                  tituloGrafico:grafico.tituloGrafico,
+                  tipoGrafico: grafico.tipoGrafico,
+                  dados: grafico.dados,
+                  categorias: grafico.colunas
+                }
+                const id:string = `grafico ${index}`
+                return (
                 <div className="grafico-card" key={index}>
                   <div className="grafico-content">
-                    <div className="dashboard-container">
+                    <div key={index} id={id} ref={(e) => {
+                      if(e && !graficosRef.current.includes(e)) {
+                        graficosRef.current.push(e)
+                      }
+                      }} className="dashboard-container">
                       <DashboardComponent
                         tipoGrafico={grafico.tipoGrafico}
                         dados={grafico.dados}
@@ -121,22 +147,33 @@ const IndicadorComponent: FC = () => {
                         categorias={grafico.categoria}
                       />
                     </div>
+                    <div id={id} style={{display:'none'}}></div>
                     {grafico.descricaoGrafico && (
                       <div className="grafico-description">
                         <p>{grafico.descricaoGrafico}</p>
                       </div>
                     )}
-                    <div className="grafico-download">
-                      <button 
-                        className="download-btn"
-                        onClick={() => handleDownloadCSV(grafico)}
-                      >
-                        Baixar dados (CSV)
-                      </button>
+                    <div className="d-flex justify-content-end">
+                       <div className="grafico-exports">
+                        <button 
+                          className="download-btn"
+                          onClick={() => exportGrafico(grafico.tituloGrafico as string,index)}
+                        >
+                          Baixar gráfico (PNG)
+                        </button>
+                      </div>
+                      <div className="grafico-exports">
+                        <button 
+                          className="download-btn"
+                          onClick={() => handleDownloadCSV(grafico)}
+                        >
+                          Baixar dados (CSV)
+                        </button>
+                      </div>
                     </div>
                   </div>
                 </div>
-              ))
+              )})
           ) : (
 
               <div className="no-data">

@@ -15,16 +15,20 @@ const DimensaoAdmin: FC = () => {
     dimensoes.GetAllConst();
 
   const [show, setShow] = useState(false);
-
+  const [page, setPage] = useState<string>("dimensoes")
+  const [estudos, setEstudos] = useState<string[]>([])
+  const [arquivoEstudo, setArquivoEstudo] = useState<File>(new File([], ""))
+  const [nomeEstudo, setNomeEstudo] = useState<string>("")
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
-
+  const [isPopUpAberto, setIsPopUpAberto] = useState<boolean>(false)
   const [email, setEmail] = useState<string>("");
 
   const [emailAtual, setEmailAtual] = useState<string>("");
   
   useEffect(() => {
-    api
+      const fetchAll = async () =>{
+        await api
       .get("/admin/email_contribuicao")
       .then((response) => {
         console.log(response.data.email_contribuicao);
@@ -33,26 +37,80 @@ const DimensaoAdmin: FC = () => {
           setEmail(response.data.email_contribuicao.email);
           setEmailAtual(response.data.email_contribuicao.email);
         }
-
       })
       .catch((error) => {
         console.error("Error fetching indicador data:", error);
       });
+      await api
+      .get("/admin/pagina_inicial/estudos_complementares/")
+      .then((response) => {
+        console.log("fetch de estudos")
+        setEstudos(response.data.estudos)
+      }).catch((error) =>{
+        setEstudos([])
+        console.log(error)
+      })
+      }
+      fetchAll()
+      
   }, [])
 
   const handleSubmitEmail = (e: any) => {
     e.preventDefault();
-
-
     emailAtual && emailAtual != "" ? patchEmail(email): postEmail(email);
-
     console.log("handlesubmitemail");
-    
   }
 
+  const handleEnviar = async () => {
+    // Lógica de envio (FormData é necessário para arquivos)
+    const formData = new FormData();
+    formData.append("nome", nomeEstudo);
+    if (arquivoEstudo) formData.append("pdf", arquivoEstudo);
+    console.log(formData)
+    try {
+      api.post("/admin/pagina_inicial/estudos_complementares/", formData) // Parse the JSON response body
+      .then(json => console.log(json)) // Log the resulting data (e.g., the new post with an ID)
+      .catch(error => console.error('Error:', error)); // Handle network errors
+      setNomeEstudo("")
+      setIsPopUpAberto(false); // Fecha após enviar
+    } catch (error) {
+      console.error("Erro ao enviar", error);
+    }
+  };
+  const renderAddEstudo = () => {
+  // Se o estado for falso, não renderiza nada
+  if (!isPopUpAberto) return null;
 
   return (
-    <div className="home-container" style={{height:'100vh'}}>
+    <div style={{
+      position: 'fixed',
+      top: '50%',
+      left: '50%',
+      transform: 'translate(-50%, -50%)',
+      backgroundColor: 'white',
+      padding: '20px',
+      zIndex: 1000,
+      display: 'flex', // Aqui você garante o flex
+      flexDirection: 'column',
+      boxShadow: '0 4px 8px rgba(0,0,0,0.2)'
+    }}>
+      <button onClick={() => setIsPopUpAberto(false)}>Fechar X</button>
+      
+      <label>Nome</label>
+      <input value={nomeEstudo} onChange={(e) => setNomeEstudo(e.target.value)} type="text" />
+      
+      <label>Arquivo</label>
+      <input type="file" onChange={(e) => {
+        if (e.target.files !== null) setArquivoEstudo(e.target.files[0])
+      }} />
+      
+      <button onClick={handleEnviar}>Enviar Estudo</button>
+    </div>
+  );
+};
+
+  return (
+    <div className="home-container" style={{height:'100vh', backgroundColor:(isPopUpAberto === true ? 'rgba(0,0,0,0.7)' : '')}}>
       <div className="position-relative d-flex align-items-center justify-content-center admin-header-dimensao-admin">
         <h1>Administração de Dimensões</h1>
         <span className="position-absolute end-0 gear-icon"
@@ -76,8 +134,6 @@ const DimensaoAdmin: FC = () => {
             <Button variant="primary" type="submit">
               {emailAtual ? ("Modificar E-mail") : ("Adicionar E-mail")}
             </Button>
-
-
           </Form>
         </Modal.Body>
         <Modal.Footer>
@@ -87,8 +143,13 @@ const DimensaoAdmin: FC = () => {
         </Modal.Footer>
       </Modal>
       </div>
-      <div className="dimensoes-grid-wallpaper">
-        <div className="dimensoes-grid">
+        <select name="" id="" onChange={(e) => setPage(e.target.value)}>
+        <option value="dimensoes">Dimensoes</option>
+        <option value="pinicial">Página Inicial</option>
+        <option value="contribuicao">Contriuição</option>
+        </select>
+        {page === "dimensoes" && <div className="dimensoes-grid-wallpaper">
+          <div className="dimensoes-grid">
           <div className="dimensoes-column">
             {Object.entries(dimensoesColumn1).map(([key, value]) => (
               <div
@@ -175,7 +236,15 @@ const DimensaoAdmin: FC = () => {
             ))}
           </div>
         </div>
-      </div>
+        </div>
+      }
+      {page === "pinicial" && 
+        <div className="dimensoes-grid-wallpaper" style={isPopUpAberto === true ? {backgroundColor:'rgba(0,0,0,0.7)'} : {}}>
+          <span> <button type="button" onClick={() => setIsPopUpAberto(true)}>Adicionar</button> <button>Deletar</button></span>
+          {renderAddEstudo()}
+          {estudos.map(estudo => <p>{estudo}</p>)}
+        </div>}
+        
     </div>
   );
 };

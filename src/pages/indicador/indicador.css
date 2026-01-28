@@ -126,10 +126,6 @@
 }
 
 @media (max-width: 1200px) {
-  /* .graficos-container {
-    flex-direction: column;
-    align-items: center;
-  } */
   .grafico-card {
     width: 70%;
   }
@@ -189,10 +185,9 @@ body {
   margin-bottom: 1rem;
 }
 
-.grafico-download {
-  display: flex;
-  justify-content: flex-end;
+.grafico-exports {
   margin-top: 10px;
+  margin-left: 10px;
 }
 
 .download-btn {
@@ -225,4 +220,21 @@ body {
 .button-double-column,
 .button-single-column {
   border-color: rgb(90, 89, 89);
+}
+
+@media print {
+  body * {
+    visibility: hidden;
+  }
+
+  .dashboard-container * {
+    visibility: visible;
+  }
+
+  .dashboard-container{
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+  }
 }
