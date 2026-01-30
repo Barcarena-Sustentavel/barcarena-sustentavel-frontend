@@ -114,3 +114,19 @@
 .email-current-title {
     margin-left: 0.1rem;
 }
+
+.select-admin {
+    width: 50% !important;
+    display: inline !important;
+    margin-bottom: 2rem;
+}
+
+.container-contribuicao {
+    width: 50%;
+    background-color: #f8f9fa;
+}
+
+.email-input {
+    margin: auto;
+    width: 50% !important;
+}
