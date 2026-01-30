@@ -15,7 +15,7 @@ export const postIndicador = async (
   };
   try {
     await api.post(`/admin/dimensoes/${dimensao}/indicador/`, Indicador);
-    const endpoint = `/api/admin/dimensoes/${dimensao}/indicador/${indicador}/anexos/`;
+    const endpoint = `/admin/dimensoes/${dimensao}/indicador/${indicador}/anexos/`;
     let formData = new FormData();
     for (let i = 0; i < arrayGrafico.length; i++) {
       formData.append("grafico", arrayGrafico[i].arquivo);
@@ -24,12 +24,8 @@ export const postIndicador = async (
       formData.append("tipoGrafico", arrayGrafico[i].tipoGrafico);
       formData.append("posicaoGrafico", arrayGrafico[i].posicao.toString());
       console.log(formData);
-      await fetch(endpoint, {
-        method: "POST",
-        body: formData,
-      }).catch((error) => {
-        console.log(error);
-      });
+
+      await api.post(endpoint, formData);
 
       formData = new FormData();
     }

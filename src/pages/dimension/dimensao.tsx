@@ -11,8 +11,8 @@ import Footer from "../../components/layout/footer/footer.tsx";
 import SubmenuDimensao from "./components/submenuDimensao.tsx";
 import FormContribuicao from "./components/formContribuicao.tsx";
 import BackButton from "../../components/layout/backButton/backButton.tsx";
-import MapaConectividade from "../kml/mapaOficial/conectividade/mapa_conectividade.tsx";
-import MapaOrdenamento from "../kml/mapaOficial/ordenamentoTerritorial/mapa_ordenamento_territorial.tsx";
+//import MapaConectividade from "../kml/mapaOficial/conectividade/mapa_conectividade.tsx";
+//import MapaOrdenamento from "../kml/mapaOficial/ordenamentoTerritorial/mapa_ordenamento_territorial.tsx";
 import HTMLFileIframe from "../kml/mapa/map4.tsx";
 //import Map2 from "../kml/map2.tsx";
 const NODE_ENV = import.meta.env.VITE_NODE_ENV;
@@ -138,6 +138,42 @@ const DimensaoComponent: FC = () => {
           </p>
         </div>
       </div>
+      {pathHtml !== "" && (
+        <div className="mx-auto" style={{ 
+          width: "100%", 
+          height: "41rem", 
+          marginBottom: dimensao === "Conectividade" ? "6rem" : "0" 
+        }}>
+          {dimensao === "Conectividade" && (
+            <div
+              style={{
+                margin: "10px auto 5px auto",
+                width: "30%",
+                display: "flex",
+                justifyContent: "space-between",
+              }}
+            >
+              {mapasConectividade.map((mapa) => {
+                return (
+                  <button
+                    style={{
+                      padding: "10px",
+                      border: "1px solid",
+                      borderRadius: "8px",
+                      backgroundColor: "var(--primary-blue)",
+                    }}
+                    value={mapa}
+                    onClick={(event: any) => handleOnCick(event)}
+                  >
+                    {mapa}
+                  </button>
+                );
+              })}
+            </div>
+          )}
+          <HTMLFileIframe htmlFilePath={pathHtml} />
+        </div>
+      )}
       <div className="container dimension-details-container">
         <h1>Indicadores</h1>
         <ul className="indicadores">
@@ -191,39 +227,8 @@ const DimensaoComponent: FC = () => {
             </ul>
           ))}
       </div>
-      {/*pathHtml !== "" && (
-        <div style={{ margin: "0 auto", width: "90%" }}>
-          {dimensao === "Conectividade" && (
-            <div
-              style={{
-                margin: "10px auto 5px auto",
-                width: "30%",
-                display: "flex",
-                justifyContent: "space-between",
-              }}
-            >
-              {mapasConectividade.map((mapa) => {
-                return (
-                  <button
-                    style={{
-                      padding: "10px",
-                      border: "1px solid",
-                      borderRadius: "8px",
-                      backgroundColor: "var(--primary-blue)",
-                    }}
-                    value={mapa}
-                    onClick={(event: any) => handleOnCick(event)}
-                  >
-                    {mapa}
-                  </button>
-                );
-              })}
-            </div>
-          )}
-          <HTMLFileIframe  htmlFilePath={pathHtml} />
-        </div>
-      )*/}
-      {dimensao === "Conectividade" &&
+      
+      {/* {dimensao === "Conectividade" &&
         <div className="divMapa">
           <MapaConectividade dimensao={dimensao} />
         </div>}
@@ -231,6 +236,10 @@ const DimensaoComponent: FC = () => {
         <div className="divMapa">
           <MapaOrdenamento dimensao={dimensao}/>
         </div>}
+      {dimensao === "Segurança" && 
+        <div className="divMapa" style={{ margin: "2rem auto", width: "61%" }}>
+          <HTMLFileIframe htmlFilePath={pathHtml}/>
+        </div>} */}
       <FormContribuicao
         dimensaoId={0}
         formStyle={{ borderLeft: `5px solid ${getProximaCor()}` }}

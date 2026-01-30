@@ -6,15 +6,16 @@ yarn-debug.log*
 yarn-error.log*
 pnpm-debug.log*
 lerna-debug.log*
-
+update-container.sh
 node_modules/
-dist/
+update-container.sh
 dist-ssr
 *.local
 src/apt.js
 src/api.tsx
 Dockerfile*
 nginx.conf*
+fundohydro2.pem
 
 # Editor directories and files
 .vscode/*

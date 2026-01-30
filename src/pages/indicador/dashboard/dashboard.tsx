@@ -1,5 +1,6 @@
-import * as Highcharts from "highcharts";
+import Highcharts from "highcharts";
 import HighchartsReact from "highcharts-react-official";
+//import 'highcharts/modules/exporting';
 import '../../../utils/highcharts/heatmap.js';
 import React, { FC, useRef } from "react";
 import { DashboardProps } from "./interface/dashboard_interface.tsx";
@@ -10,6 +11,7 @@ import {
   PizzaSeries,
   ScatterProps
 } from "./interface/dados_graficos_interface.tsx";
+import { MRT_Localization_PT_BR } from 'material-react-table/locales/pt-BR';
 
 const plotOptions = (dashboard: DashboardProps) => {
   if (dashboard.tipoGrafico === "pie") {
@@ -35,6 +37,13 @@ const plotOptions = (dashboard: DashboardProps) => {
           data: dashboard.dados,
         },
       ],
+      exporting: {
+        buttons: {
+            contextButton: {
+                menuItems: ['downloadPNG', 'downloadJPEG', 'downloadPDF', 'downloadSVG']
+            }
+        }
+    },
     };
   }
 
@@ -61,6 +70,13 @@ const plotOptions = (dashboard: DashboardProps) => {
         text: dashboard.tituloGrafico ?? "",
       },
       series: dadosSeries,
+      exporting: {
+        buttons: {
+            contextButton: {
+                menuItems: ['downloadPNG', 'downloadJPEG', 'downloadPDF', 'downloadSVG']
+            }
+        }
+    },
       xAxis: {
         categories: dashboard.categorias,
       },
@@ -98,8 +114,13 @@ const plotOptions = (dashboard: DashboardProps) => {
             enabled: true
         },
         series: dashboard.dados,
-
-    }
+        exporting: {
+        buttons: {
+            contextButton: {
+                menuItems: ['downloadPNG', 'downloadJPEG', 'downloadPDF', 'downloadSVG']
+            }
+        }
+    },    }
   }
   return {
     chart: {
@@ -109,6 +130,13 @@ const plotOptions = (dashboard: DashboardProps) => {
       text: dashboard.tituloGrafico ?? "",
     },
     series: dashboard.dados,
+    exporting: {
+        buttons: {
+            contextButton: {
+                menuItems: ['downloadPNG', 'downloadJPEG', 'downloadPDF', 'downloadSVG']
+            }
+        }
+    },
     xAxis: {
       categories: dashboard.categorias,
     },
@@ -250,6 +278,30 @@ export const DashboardComponent: FC<{
       enableSorting: true,
       enableBottomToolbar: true,
       enableTopToolbar: true,
+      enableFullScreenToggle: false,
+      enableStickyHeader: true,
+      localization: MRT_Localization_PT_BR,
+      // Configuração visual padrão (sem a lógica complexa de tela cheia)
+      muiTablePaperProps: {
+        sx: {
+          display: 'flex',
+          flexDirection: 'column',
+          height: '100%', // Ocupa a altura da div pai
+          width: '100%',
+          boxShadow: 'none', // Opcional: remove sombra se preferir visual "flat"
+        },
+      },
+
+      // Área de dados com rolagem
+      muiTableContainerProps: {
+        sx: {
+          flexGrow: 1,
+          height: '0px',     // Mantém o truque para respeitar o flexbox do pai
+          minHeight: '0px',
+          overflow: 'auto',  // Barra de rolagem apenas nos dados
+        },
+      },
+
       muiTableBodyRowProps: ({ row }) => ({
         sx: {
           cursor: "pointer",

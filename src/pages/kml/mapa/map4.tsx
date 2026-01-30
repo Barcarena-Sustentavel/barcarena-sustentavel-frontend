@@ -8,7 +8,7 @@ const HTMLFileIframe: React.FC<{ htmlFilePath: string }> = ({
       src={htmlFilePath}
       title="External HTML Content"
       width="100%"
-      height="1000px"
+      height="100%"
       style={{ border: "none" }}
       scrolling="no"
     />
