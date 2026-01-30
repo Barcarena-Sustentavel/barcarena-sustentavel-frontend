@@ -11,6 +11,7 @@ import {
   PizzaSeries,
   ScatterProps
 } from "./interface/dados_graficos_interface.tsx";
+import { MRT_Localization_PT_BR } from 'material-react-table/locales/pt-BR';
 
 const plotOptions = (dashboard: DashboardProps) => {
   if (dashboard.tipoGrafico === "pie") {
@@ -277,6 +278,30 @@ export const DashboardComponent: FC<{
       enableSorting: true,
       enableBottomToolbar: true,
       enableTopToolbar: true,
+      enableFullScreenToggle: false,
+      enableStickyHeader: true,
+      localization: MRT_Localization_PT_BR,
+      // Configuração visual padrão (sem a lógica complexa de tela cheia)
+      muiTablePaperProps: {
+        sx: {
+          display: 'flex',
+          flexDirection: 'column',
+          height: '100%', // Ocupa a altura da div pai
+          width: '100%',
+          boxShadow: 'none', // Opcional: remove sombra se preferir visual "flat"
+        },
+      },
+
+      // Área de dados com rolagem
+      muiTableContainerProps: {
+        sx: {
+          flexGrow: 1,
+          height: '0px',     // Mantém o truque para respeitar o flexbox do pai
+          minHeight: '0px',
+          overflow: 'auto',  // Barra de rolagem apenas nos dados
+        },
+      },
+
       muiTableBodyRowProps: ({ row }) => ({
         sx: {
           cursor: "pointer",
