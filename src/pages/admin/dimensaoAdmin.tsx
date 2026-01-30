@@ -13,7 +13,7 @@ const DimensaoAdmin: FC = () => {
   };
   const { dimensoesColumn1, dimensoesColumn2, dimensoesColumn3,dimensoesCores123 } =
     dimensoes.GetAllConst();
-
+  const deleteEstudos:string[] = []
   const [show, setShow] = useState(false);
   const [page, setPage] = useState<string>("dimensoes")
   const [estudos, setEstudos] = useState<string[]>([])
@@ -61,14 +61,14 @@ const DimensaoAdmin: FC = () => {
     console.log("handlesubmitemail");
   }
 
-  const handleEnviar = async () => {
+  const handleEnviar = async (estudo:string)  => {
     // Lógica de envio (FormData é necessário para arquivos)
     const formData = new FormData();
     formData.append("nome", nomeEstudo);
     if (arquivoEstudo) formData.append("pdf", arquivoEstudo);
-    console.log(formData)
+    let operacao = estudo === "" ? api.post("/admin/pagina_inicial/estudos_complementares/", formData) : api.patch(`/admin/pagina_inicial/estudo_complementar/${estudo}/`)
     try {
-      api.post("/admin/pagina_inicial/estudos_complementares/", formData) // Parse the JSON response body
+      operacao // Parse the JSON response body
       .then(json => console.log(json)) // Log the resulting data (e.g., the new post with an ID)
       .catch(error => console.error('Error:', error)); // Handle network errors
       setNomeEstudo("")
@@ -77,10 +77,35 @@ const DimensaoAdmin: FC = () => {
       console.error("Erro ao enviar", error);
     }
   };
-  const renderAddEstudo = () => {
+  const modificarDeleteEstudos = (e:any, nomeEstudo:string) => {
+    if(e.target.checked){
+      deleteEstudos.push(nomeEstudo)
+    }
+    else{
+      deleteEstudos.map((nome,index) => {
+        if(nome === nomeEstudo){
+          deleteEstudos.splice(index, 1)
+        }
+      })
+    }
+    console.log(deleteEstudos)
+  }
+  const renderAddEstudo = (estudo:string = "") => {
   // Se o estado for falso, não renderiza nada
   if (!isPopUpAberto) return null;
-
+  // Guarda o nome do estudo que será modificado
+  let enviarNomeEstudo = ""
+  if(estudo !== ""){
+    //Se estudo já existir pega as informações daquele estudo já existente no banco de dados
+    api.get(`/admin/pagina_inicial/estudos_complementares/${estudo}/path/`).then((result) => {
+      //Guardar o nome do estudo para mudar 
+      enviarNomeEstudo = estudo
+      //mudar o nome do estudo para o campo
+      setNomeEstudo(result.data.estudo)
+      //pega o path para mostrar para o usuário que o arquivo existe
+      setArquivoEstudo(new File([],result.data.path))
+    })
+  }
   return (
     <div style={{
       position: 'fixed',
@@ -94,17 +119,18 @@ const DimensaoAdmin: FC = () => {
       flexDirection: 'column',
       boxShadow: '0 4px 8px rgba(0,0,0,0.2)'
     }}>
+
       <button onClick={() => setIsPopUpAberto(false)}>Fechar X</button>
       
       <label>Nome</label>
       <input value={nomeEstudo} onChange={(e) => setNomeEstudo(e.target.value)} type="text" />
       
       <label>Arquivo</label>
-      <input type="file" onChange={(e) => {
+      <input value={arquivoEstudo.name} type="file" onChange={(e) => {
         if (e.target.files !== null) setArquivoEstudo(e.target.files[0])
       }} />
       
-      <button onClick={handleEnviar}>Enviar Estudo</button>
+      <button onClick={(e) => handleEnviar(enviarNomeEstudo)}>Enviar Estudo</button>
     </div>
   );
 };
@@ -240,9 +266,13 @@ const DimensaoAdmin: FC = () => {
       }
       {page === "pinicial" && 
         <div className="dimensoes-grid-wallpaper" style={isPopUpAberto === true ? {backgroundColor:'rgba(0,0,0,0.7)'} : {}}>
-          <span> <button type="button" onClick={() => setIsPopUpAberto(true)}>Adicionar</button> <button>Deletar</button></span>
-          {renderAddEstudo()}
-          {estudos.map(estudo => <p>{estudo}</p>)}
+          <span> <button type="button" onClick={() => setIsPopUpAberto(true)}>Adicionar</button> <button>Deletar selecionados</button></span>
+          {renderAddEstudo("")}
+          {estudos.map(estudo => 
+            <span>
+            <input type="checkbox" onChange={(e) => modificarDeleteEstudos(e, estudo)}/>
+            <button onClick={(e) => renderAddEstudo(estudo)}>{estudo}</button>
+            </span> )}
         </div>}
         
     </div>
