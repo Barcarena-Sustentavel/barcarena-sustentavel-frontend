@@ -36,8 +36,11 @@ const CreateReferencias: FC<{
 
   useEffect(() => {
     if (referencia != undefined) {
+      const refDecodificado = decodeURIComponent(referencia)      
+      //console.log(`/admin/dimensoes/${dimensao}/referencias/${refDecodificado}/`)
       api
-        .get(`/admin/dimensoes/${dimensao}/referencias/${referencia}/`)
+        //.get(`/admin/dimensoes/${dimensao}/referencias/${refDecodificado}/`)
+        .get(`/admin/dimensoes/${dimensao}/referencias/`,{params:{referenciaNome:refDecodificado}})
         .then((response) => {
           console.log(response.data);
           setFormRef({

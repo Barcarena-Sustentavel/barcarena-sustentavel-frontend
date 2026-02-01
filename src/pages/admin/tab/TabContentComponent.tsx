@@ -207,20 +207,6 @@ export const TabContentComponent: FC<{nomeDimensao:string, activeTab: string, no
       });
   }, [url, nomeDimensao]);
 
-  //useEffect(() => {
-  //  setNomeIndicadores((items) => {
-  //    for (let index = 0; index < items.length; index++) {
-  //        items[index].posicao = index  
-  //       }
-  //    return items
-  //  })
-  //},[nomeIndicadores])
-//
-  //useEffect(() => {
-  //    api.patch(`/admin/dimensoes/${nomeDimensao}/indicador/trocar_posicao`, {
-  //      indicadores:nomeIndicadores
-  //      });
-  //},[nomeIndicadores])
   if (activeTab === "Dimensão") {
     return (
       <div className="admin-forms">
@@ -246,24 +232,6 @@ export const TabContentComponent: FC<{nomeDimensao:string, activeTab: string, no
               onChange={handleInputChange}
             />
           </Form.Group>
-          {/* <Form.Group controlId="icone-dimensao" className="mt-3">
-            <Form.Label className="icone-dimensao-titulo">Ícone da Dimensão</Form.Label>
-            <div className="d-flex align-items-center imagem-icone-container">
-              <Form.Control
-              className="campo-input-icone"
-              type="file"
-              name="icone"
-              accept="image/svg+xml"
-              // onChange={handleIconeChange}
-              />
-              <div className="container-icone-atual">
-                <p className="nome-icone-atual">Ícone Atual: </p>
-                <div className="icone-atual">
-                  Ícone aqui
-                </div>
-              </div>
-            </div>
-          </Form.Group> */}
 
           {error && (
             <Alert variant="danger" className="mt-3">
@@ -389,8 +357,15 @@ export const TabContentComponent: FC<{nomeDimensao:string, activeTab: string, no
     <div>
       <div>
         {activeTabDict[activeTab].map((element) => {
+          const regexForwardSlash = /(\/)*/g
+          let elementNomeTratado:string = element.nome as string
+          if (regexForwardSlash.test(element.nome as string)){
+            console.log(true)
+            elementNomeTratado = encodeURIComponent(elementNomeTratado)
+          }
+          console.log(elementNomeTratado)
           const encodedURI = encodeURI(
-            `/admin/dimensao/${nomeDimensao}/update/${activeTab}/${element.nome}/`,
+            `/admin/dimensao/${nomeDimensao}/update/${activeTab}/${elementNomeTratado}/`,
           );
           console.log(encodedURI);
           return (
