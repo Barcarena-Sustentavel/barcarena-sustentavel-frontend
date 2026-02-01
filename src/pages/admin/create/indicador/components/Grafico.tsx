@@ -54,9 +54,9 @@ export const GraficoComponent: FC<GraficoComponentProps> = ({
       }
     }
   };
-  const sanitizarCSV = (csv:File) => {
-    const regexVirgulas = /\,/
-    const regexPonto = /\./
+  const sanitizarCSV= (csv:File) => {
+    const regexVirgulas = /\,/g
+    const regexPonto = /\./g
     Papa.parse(csv, {
         header: true, // Transforma cada linha em um objeto usando o cabeçalho como chave
         worker:false,
@@ -71,20 +71,19 @@ export const GraficoComponent: FC<GraficoComponentProps> = ({
         complete: (results) => {
           const regexCaracteresEspeciais = /[!@#$%^&*()_+\-=\[\]{};':"\\|<>\/??~]/g
           const regexTextoDesnecessario = /[a-zA-Z]/
-          let campos = results.meta.fields
-          console.log(campos)
           const resultados:any[] = results.data
-          if(tipoGrafico === 'Tabela'){
+          console.log(resultados)
+          if(tipoGrafico === 'tabela'){
             setArquivo(csv);
             graficoResponse.arquivo = csv
           }
           else{
             let msgsErro:string[] = [] 
             resultados.map((coluna:any,index) => {
-              console.log(coluna,index)
+              //console.log(coluna,index)
               const colunasChaves = Object.keys(coluna)
               colunasChaves.map(chave =>{
-                console.log(coluna[chave])
+                //console.log(coluna[chave])
                 //Verifica a presença de caracteres especiais
                 if(regexCaracteresEspeciais.test(coluna[chave])){
                   msgsErro.push(`Foi detectada a presença de caracteres especiais na coluna "${chave}", por favor remova-os para prosseguir`)
@@ -108,6 +107,7 @@ export const GraficoComponent: FC<GraficoComponentProps> = ({
                 if(regexVirgulas.test(coluna[chave])){
                   //Divide o valor a partir das virgulas
                   const dividirValor:string[] = coluna[chave].split(",")
+                  console.log(dividirValor)
                   let novoValor:string = ""
                   dividirValor.map((str,index) => {
                     const stringSemPonto = regexPonto.test(str) ? str.replace(regexPonto, "") : str
@@ -121,7 +121,26 @@ export const GraficoComponent: FC<GraficoComponentProps> = ({
                       novoValor += stringSemPonto
                     }
                   })
-                  resultados[index][coluna][chave] = novoValor
+                  resultados[index][chave] = novoValor
+                  //console.log(resultados[index][chave])
+                }
+                //Verifica a existência de mais de um ponto
+                if(coluna[chave].split(".").length > 2){
+                  const dividirValor:string[] = coluna[chave].split(".")
+                  let novoValor:string = ""
+                  dividirValor.map((str,index) => {
+                    //verifica se está no último index,se sim adiciona o ponto
+                    if(index === dividirValor.length - 1){
+                      novoValor += "."
+                      novoValor += str
+                    }
+                    //se insere até chegar no ponto
+                    else{
+                      novoValor += str
+                    }
+                  })
+                  resultados[index][chave] = novoValor
+                  console.log(resultados[index][chave])
                 }
               })
             })
@@ -129,9 +148,15 @@ export const GraficoComponent: FC<GraficoComponentProps> = ({
               setErrorArquivo(msgsErro)
               return
             }
+            const csvFinalString = Papa.unparse(resultados, {
+              quotes: false, // Define se quer aspas em tudo
+              delimiter: "," // Define o separador do novo arquivo
+            });
+            const csvFinal = new File([csvFinalString], csv.name, {type:"text/csv"})
+            console.log(csvFinal)
             setErrorArquivo([])
-            setArquivo(csv);
-            graficoResponse.arquivo = csv
+            setArquivo(csvFinal);
+            graficoResponse.arquivo = csvFinal
           }
         },
         error: (error) => {
@@ -192,6 +217,7 @@ useEffect(() => {
           type="file"
           accept=".csv"
           onChange={(e) => {
+            setErrorArquivo([])
             const arquivoAtual = e.target.files?.[0] || null
             if (/(\.csv$)/.test(arquivoAtual!.name)){
                 sanitizarCSV(arquivoAtual as File)
@@ -235,8 +261,11 @@ useEffect(() => {
           value={tipoGrafico}
           onChange={(e) => {
             const valorAtual = e.target.value
-            setTipoGrafico(valorAtual)
-            graficoResponse.tipoGrafico = valorAtual
+            //if(arquivo === null){
+              setTipoGrafico(valorAtual)
+              graficoResponse.tipoGrafico = valorAtual
+              return
+            //}            
           }}
         >
           {Object.keys(chaveValorGraficos).map((key) => (
