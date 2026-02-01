@@ -21,7 +21,6 @@ export const CreateIndicador: FC<{
   //Array para armazenar os gráficos antes de enviar para a API
   //const arrayIndicadorResponse: GraficosIndicador[] = useMemo(() => [], []);
   //Guarda o nome do indicador antigo para o patch
-  const [indicadorAntigo, setIndicadorAntigo] = useState<string>("");
   //Muda o estado para realizar um patch
   const [patch, setPatch] = useState(false);
   //Faz um set do nome do indicador atual
@@ -38,7 +37,7 @@ export const CreateIndicador: FC<{
     ...dimensoesColumn2,
   };
   //URL para recuperar dados do indicador
-  const url = `admin/dimensoes/${dimensao}/indicador/${indicador}/`;
+  const url = `admin/dimensoes/${dimensao}/indicador/${encodeURI(indicadorNome as string)}/`;
   //Mensagem de erros do indicador
   const [errorIndicador, setErrorIndicador] = useState<string | null>(null);
   //Mensagem de erros dos gráficos
@@ -142,7 +141,7 @@ export const CreateIndicador: FC<{
       //console.log(graficosData)
       patchIndicador(
         dimensao,
-        indicadorAntigo,
+        indicadorNome as string,
         indicador,
         graficosData,
       );
@@ -160,7 +159,8 @@ export const CreateIndicador: FC<{
       api
         .get(url)
         .then((response) => {
-          setIndicadorAntigo(response.data.nome);
+          //setIndicadorAntigo(response.data.nome);
+          setIndicador(response.data.nome)
           //arrayIndicadorResponse.length = 0;
           //console.log(response.data.graficos);
 
@@ -337,7 +337,7 @@ export const CreateIndicador: FC<{
       if(view[index].posicao != index)
         view[index].posicao = index
     });
-    console.log(graficosData)
+    //console.log(graficosData)
     return (
       <DndContext sensors={sensors}
         collisionDetection={pointerWithin}
