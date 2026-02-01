@@ -14,13 +14,11 @@ const DimensaoAdmin: FC = () => {
   const { dimensoesColumn1, dimensoesColumn2, dimensoesColumn3,dimensoesCores123 } =
     dimensoes.GetAllConst();
   const deleteEstudos:string[] = []
-  const [show, setShow] = useState(false);
+  // const [show, setShow] = useState(false);
   const [page, setPage] = useState<string>("dimensoes")
   const [estudos, setEstudos] = useState<string[]>([])
   const [arquivoEstudo, setArquivoEstudo] = useState<File>(new File([], ""))
   const [nomeEstudo, setNomeEstudo] = useState<string>("")
-  const handleClose = () => setShow(false);
-  const handleShow = () => setShow(true);
   const [isPopUpAberto, setIsPopUpAberto] = useState<boolean>(false)
   const [email, setEmail] = useState<string>("");
 
@@ -136,43 +134,14 @@ const DimensaoAdmin: FC = () => {
 };
 
   return (
-    <div className="home-container" style={{height:'100vh', backgroundColor:(isPopUpAberto === true ? 'rgba(0,0,0,0.7)' : '')}}>
+    <div className="text-center home-container" style={{height:'100vh', backgroundColor:(isPopUpAberto === true ? 'rgba(0,0,0,0.7)' : '')}}>
       <div className="position-relative d-flex align-items-center justify-content-center admin-header-dimensao-admin">
         <h1>Administração de Dimensões</h1>
-        <span className="position-absolute end-0 gear-icon"
-              onClick={handleShow}>⚙️</span>
-        <Modal show={show} onHide={handleClose} centered>
-        <Modal.Header closeButton>
-          <Modal.Title className="email-config-title">Destinatário de Contribuições</Modal.Title>
-        </Modal.Header>
-        <Modal.Body>
-          <Form onSubmit={handleSubmitEmail}>
-            <Form.Group className="mb-3">
-              <Form.Label className="email-current-title">E-mail Atual</Form.Label>
-              <Form.Control
-                type="email"
-                name="nome"
-                value={email}
-                onChange={(e) => {setEmail(e.target.value)}}
-                placeholder="Digite um E-mail"
-              />
-            </Form.Group>
-            <Button variant="primary" type="submit">
-              {emailAtual ? ("Modificar E-mail") : ("Adicionar E-mail")}
-            </Button>
-          </Form>
-        </Modal.Body>
-        <Modal.Footer>
-          <Button variant="secondary" onClick={handleClose}>
-            Fechar
-          </Button>
-        </Modal.Footer>
-      </Modal>
       </div>
-        <select name="" id="" onChange={(e) => setPage(e.target.value)}>
-        <option value="dimensoes">Dimensoes</option>
-        <option value="pinicial">Página Inicial</option>
-        <option value="contribuicao">Contriuição</option>
+        <select className="form-select select-admin" name="" id="" onChange={(e) => setPage(e.target.value)}>
+          <option value="dimensoes">Dimensões</option>
+          <option value="pinicial">Página Inicial</option>
+          <option value="contribuicao">Contribuição</option>
         </select>
         {page === "dimensoes" && <div className="dimensoes-grid-wallpaper">
           <div className="dimensoes-grid">
@@ -274,6 +243,31 @@ const DimensaoAdmin: FC = () => {
             <button onClick={(e) => renderAddEstudo(estudo)}>{estudo}</button>
             </span> )}
         </div>}
+
+        {page === "contribuicao" && 
+          // </div>
+          <div className="d-flex justify-content-center dimensoes-grid-wallpaper">
+            <div className="d-flex flex-column container-contribuicao">
+              <Form onSubmit={handleSubmitEmail}>
+              <Form.Group className="mb-3">
+                <Form.Label className="email-current-title">E-mail Atual</Form.Label>
+                <Form.Control
+                  type="email"
+                  name="nome"
+                  value={email}
+                  onChange={(e) => {setEmail(e.target.value)}}
+                  placeholder="Digite um E-mail"
+                  className="email-input"
+                />
+              </Form.Group>
+              <Button variant="primary" type="submit">
+                {emailAtual ? ("Modificar E-mail") : ("Adicionar E-mail")}
+              </Button>
+            </Form>
+            </div>
+          </div>
+          
+        }
         
     </div>
   );
