@@ -2,6 +2,7 @@ import React, { FC, useState, useEffect } from "react";
 import { GraficosIndicador } from "../../../../../interfaces/indicador_interface.tsx";
 import { Form, Alert } from "react-bootstrap";
 import { DashboardComponentPreview } from "./dashboard/dashboard.tsx";
+import Papa from 'papaparse'; // Importação do Papa Parse
 import "./components.css";
 
 interface GraficoComponentProps {
@@ -22,7 +23,7 @@ export const GraficoComponent: FC<GraficoComponentProps> = ({
   onDelete,
 }) => {
   const [errorTitulo, setErrorTitulo] = useState<string | null>(null);
-  const [errorArquivo, setErrorArquivo] = useState<string | null>(null);
+  const [errorArquivo, setErrorArquivo] = useState<string[]>([]);
   const [errorTipo, setErrorTipo] = useState<string | null>(null);
   const [checked, setChecked] = useState<boolean>(false);
   const graficoResponse:GraficosIndicador= grafico
@@ -53,6 +54,91 @@ export const GraficoComponent: FC<GraficoComponentProps> = ({
       }
     }
   };
+  const sanitizarCSV = (csv:File) => {
+    const regexVirgulas = /\,/
+    const regexPonto = /\./
+    Papa.parse(csv, {
+        header: true, // Transforma cada linha em um objeto usando o cabeçalho como chave
+        worker:false,
+        skipEmptyLines: true, // Ignora linhas vazias
+        transformHeader: (header) => {
+          if(regexVirgulas.test(header)){
+            const newHeader = header.replace(regexVirgulas, " ")
+            return newHeader
+          }
+          return header
+        },
+        complete: (results) => {
+          const regexCaracteresEspeciais = /[!@#$%^&*()_+\-=\[\]{};':"\\|<>\/??~]/g
+          const regexTextoDesnecessario = /[a-zA-Z]/
+          let campos = results.meta.fields
+          console.log(campos)
+          const resultados:any[] = results.data
+          if(tipoGrafico === 'Tabela'){
+            setArquivo(csv);
+            graficoResponse.arquivo = csv
+          }
+          else{
+            let msgsErro:string[] = [] 
+            resultados.map((coluna:any,index) => {
+              console.log(coluna,index)
+              const colunasChaves = Object.keys(coluna)
+              colunasChaves.map(chave =>{
+                console.log(coluna[chave])
+                //Verifica a presença de caracteres especiais
+                if(regexCaracteresEspeciais.test(coluna[chave])){
+                  msgsErro.push(`Foi detectada a presença de caracteres especiais na coluna "${chave}", por favor remova-os para prosseguir`)
+                }
+                //Verifica se há texto desnecessário nas outras colunas que não seja a primeira 
+                if((regexTextoDesnecessario.test(coluna[chave])) && colunasChaves.indexOf(chave) > 0){                  
+                  /*msgsErro.push(`Foi detectada a presença de texto desnecessário na coluna"${chave}"
+                                \npara inserir uma visualização que possa acomodar este tipo de formato
+                                \nselecione a opção "Tabela" em "Tipo de Gráfico"
+                                \n,caso deseje continuar com o formato atual por favor retire o texto desnecessário`)*/
+                    msgsErro.push(`O tipo de gráfico atual não acomoda colunas com texto além da primeira coluna
+                                  \npara continuar mude o tipo de gráfico para "Tabela" na aba "Tipo de Gráfico", ou
+                                  \nretire o texto desnecessário na coluna "${chave}"`)
+                }
+                if(/"" | " "/.test(coluna[chave])){
+                  msgsErro.push(`Foi detectada a presença de dados faltantes na coluna ${chave}
+                                \npara continuar por favor insira um valor no lugar do dado faltante,
+                                \nou elimine a linha com o dado faltante`)
+                }
+                //Retira todas as vírgulas
+                if(regexVirgulas.test(coluna[chave])){
+                  //Divide o valor a partir das virgulas
+                  const dividirValor:string[] = coluna[chave].split(",")
+                  let novoValor:string = ""
+                  dividirValor.map((str,index) => {
+                    const stringSemPonto = regexPonto.test(str) ? str.replace(regexPonto, "") : str
+                    //verifica se está no último index,se sim adiciona o ponto
+                    if(index === dividirValor.length - 1){
+                      novoValor += "."
+                      novoValor += stringSemPonto
+                    }
+                    //se insere até chegar no ponto
+                    else{
+                      novoValor += stringSemPonto
+                    }
+                  })
+                  resultados[index][coluna][chave] = novoValor
+                }
+              })
+            })
+            if(msgsErro.length > 0){
+              setErrorArquivo(msgsErro)
+              return
+            }
+            setErrorArquivo([])
+            setArquivo(csv);
+            graficoResponse.arquivo = csv
+          }
+        },
+        error: (error) => {
+          console.error("Erro ao ler o arquivo:", error.message);
+        }
+      });
+  }
 useEffect(() => {
   setGraficosData(prevState => {
               const newState = prevState
@@ -104,16 +190,24 @@ useEffect(() => {
           id="csvGrafico"
           name="csvGrafico"
           type="file"
+          accept=".csv"
           onChange={(e) => {
             const arquivoAtual = e.target.files?.[0] || null
-            setArquivo(arquivoAtual);
-            graficoResponse.arquivo = arquivoAtual as File
+            if (/(\.csv$)/.test(arquivoAtual!.name)){
+                sanitizarCSV(arquivoAtual as File)
+                //setArquivo(arquivoAtual);
+                //graficoResponse.arquivo = arquivoAtual as File
+            }
+            else{
+              setErrorArquivo(prev => [...prev, "Somente arquivos de extensão '.csv' são permitidos"])
+            }
           }}
         />
-        {errorArquivo && (
-          <Alert variant="danger" className="mt-2">
-            {errorArquivo}
-          </Alert>
+        {errorArquivo.length > 0&& (
+          errorArquivo.map(msg => <Alert variant="danger" className="mt-2">
+            {msg}
+          </Alert>)
+          
         )}
       </div>
 

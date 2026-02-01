@@ -29,7 +29,7 @@ const IndicadorComponent: FC = () => {
       .get(url)
       .then((response) => {
         //console.log(response.request);
-        setIndicadorJson( (prev) => {
+        setIndicadorJson((prev) => {
           const responseData = response.data;
           return responseData.graficos.sort((a: any, b: any) => a.posicao - b.posicao);
         });
