@@ -13,9 +13,8 @@ export const deleteAll = async (
     Anexos: "anexos",
     EstudosComplementares: "estudo_complementar",
   };
-  const nomeEncoded = encodeURIComponent(nome);
-  const url = `/admin/dimensoes/${dimensao}/${dictionary[activeTab]}/${nomeEncoded}/`;
+  const url = `/admin/dimensoes/${dimensao}/${dictionary[activeTab]}/`;
   console.log(url)
-  const response = await api.delete(url);
+  const response = await api.delete(url,{params:{nome:nome}});
   return response;
 };
