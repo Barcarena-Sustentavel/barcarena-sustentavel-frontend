@@ -13,6 +13,34 @@ import {
 } from "./interface/dados_graficos_interface.tsx";
 import { MRT_Localization_PT_BR } from 'material-react-table/locales/pt-BR';
 
+interface ColunaCsv {
+  name: string,
+  data: number[],
+  type: string
+}
+
+function analisarNecessidadeMultiplosEixos(series: ColunaCsv[]) {
+  // if (series.length < 2) return false;
+  
+  const maxRanges = series.map( serie => {
+    return Math.max(...serie.data)
+  })
+
+  const razaoMaxRanges = Math.max(...maxRanges)/Math.min(...maxRanges);
+
+  if (razaoMaxRanges > 1000){
+    return {
+      necessidade: true,
+      maxRanges: maxRanges
+    };
+  }
+  
+  return {
+      necessidade: false,
+      maxRanges: maxRanges
+    };
+}
+
 const plotOptions = (dashboard: DashboardProps) => {
   if (dashboard.tipoGrafico === "pie") {
     return {
@@ -49,6 +77,78 @@ const plotOptions = (dashboard: DashboardProps) => {
 
   if (dashboard.tipoGrafico === "xy") {
     console.log(dashboard.dados);
+
+    const multiplosEixos = analisarNecessidadeMultiplosEixos(dashboard.dados);
+
+    if(multiplosEixos.necessidade){
+      // const dadosLinha = dashboard.dados.map(dados => {
+        
+      // })
+      let dadosLinha: any[] = [];
+      let dadosColuna: any[] = [];
+      const maxValue = Math.max(...multiplosEixos.maxRanges);
+
+      for(let index = 0; index < dashboard.dados.length; index++){
+        if(maxValue / multiplosEixos.maxRanges[index] < 1000){
+          dadosLinha.push(dashboard.dados[index]);
+        } else{
+          dadosColuna.push(dashboard.dados[index]);
+        }
+      }
+
+      for(let index = 0; index < dadosLinha.length; index++){
+        dadosLinha[index].type = "line";
+        dadosColuna[index].yAxis = 0;
+      }
+
+      for(let index = 0; index < dadosColuna.length; index++){
+        dadosColuna[index].type = "column";
+        dadosColuna[index].yAxis = 1;
+      }
+      console.log(dadosLinha);
+      console.log(dadosColuna);
+      return {
+        chart: {
+          zooming: {
+            type: "xy",
+          },
+        },
+        title: {
+          text: dashboard.tituloGrafico ?? "",
+        },
+        series: [
+          ...dadosLinha,
+          ...dadosColuna
+        ],
+        exporting: {
+          buttons: {
+            contextButton: {
+              menuItems: ['downloadPNG', 'downloadJPEG', 'downloadPDF', 'downloadSVG']
+            }
+          }
+        },
+        xAxis: {
+          categories: dashboard.categorias,
+        },
+        yAxis: [
+          { // Eixo 0 - Esquerda (Linha)
+            title: {
+              text: "Linha",
+            },
+          },
+          { // Eixo 1 - Direita (Coluna)
+            title: {
+              text: "Coluna",
+            },
+            opposite: true, // Coloca à direita
+          }
+        ],
+      };
+    };
+
+    
+
+    
     const dadoColuna = {
       name: dashboard.dados[0].name,
       data: dashboard.dados[0].data,
@@ -86,7 +186,7 @@ const plotOptions = (dashboard: DashboardProps) => {
         },
       },
     };
-  }
+  };
 
   if(dashboard.tipoGrafico === "scatter"){
     return{
@@ -153,6 +253,7 @@ const plotOptions = (dashboard: DashboardProps) => {
     },
   };
 };
+
 
 //Utilizada para gerar números inteiros para o rgb do rgba
 const randomInt = (min: number, max: number): number =>
