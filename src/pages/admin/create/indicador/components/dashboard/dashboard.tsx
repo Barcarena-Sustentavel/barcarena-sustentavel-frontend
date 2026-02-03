@@ -38,6 +38,7 @@ const plotOptions = (dashboard: DashboardProps) => {
   }
 
   if (dashboard.tipoGrafico === "xy") {
+    console.log(dashboard);
     const dadoColuna = {
       name: dashboard.dados[0].name,
       data: dashboard.dados[0].data,
@@ -62,17 +63,28 @@ const plotOptions = (dashboard: DashboardProps) => {
       xAxis: {
         categories: dashboard.categorias,
       },
-      yAxis: {
+      yAxis: [{
         title: {
-          text: "Valores",
+          text: "Escala 1",
         },
-      },
+      }, 
+      {
+        title: {
+          text: "Escala 2",
+        },
+        opposite: true
+      }],
     };
   }
 
   return {
     chart: {
       type: dashboard.tipoGrafico,
+    },
+    plotOptions: {
+        area: {
+            stacking: 'normal' // or 'percent'
+        }
     },
     title: {
       text: dashboard.tituloGrafico ?? "",
