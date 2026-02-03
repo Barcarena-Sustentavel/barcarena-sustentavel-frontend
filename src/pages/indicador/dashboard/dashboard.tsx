@@ -129,6 +129,12 @@ const plotOptions = (dashboard: DashboardProps) => {
     title: {
       text: dashboard.tituloGrafico ?? "",
     },
+    plotOptions: {
+        pie: {
+          allowPointSelect: true,
+          cursor: "pointer",
+        },
+      },
     series: dashboard.dados,
     exporting: {
         buttons: {
