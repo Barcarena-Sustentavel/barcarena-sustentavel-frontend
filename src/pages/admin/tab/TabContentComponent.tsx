@@ -100,6 +100,7 @@ export const TabContentComponent: FC<{nomeDimensao:string, activeTab: string, no
       }));
       return;
     }
+    
     setFormDataArtigo(e.target.files![0]);
   };
 
@@ -185,6 +186,7 @@ export const TabContentComponent: FC<{nomeDimensao:string, activeTab: string, no
       .get(url)
       .then((response) => {
         setDimensao(response.data.dimensao);
+        setFormDataDimensao({nome: response.data.dimensao.nome, descricao: response.data.dimensao.descricao});
         setNomeIndicadores(response.data.indicadores.sort((item1:any, item2:any) => item1.posicao as number - item2.posicao as number) || []);
         setNomeReferencias(response.data.referencias || []);
         setNomeContribuicoes(response.data.contribuicoes || []);
@@ -217,7 +219,7 @@ export const TabContentComponent: FC<{nomeDimensao:string, activeTab: string, no
               type="text"
               name="nome"
               value={formDataDimensao.nome}
-              placeholder={dimensaoJson?.nome}
+              placeholder="Digite o nome da dimensão."
               onChange={handleInputChange}
             />
           </Form.Group>
@@ -225,10 +227,13 @@ export const TabContentComponent: FC<{nomeDimensao:string, activeTab: string, no
           <Form.Group controlId="descricao" className="mt-3">
             <Form.Label>Descrição</Form.Label>
             <Form.Control
+              className="dimensao-descricao-textarea"
+              as="textarea"
+              rows={8}
               type="text"
               name="descricao"
               value={formDataDimensao.descricao}
-              placeholder={dimensaoJson?.descricao}
+              placeholder="Digite a descrição da dimensão."
               onChange={handleInputChange}
             />
           </Form.Group>

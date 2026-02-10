@@ -99,3 +99,10 @@
 .container-icone-atual {
     margin-left: 1rem;
 }
+
+.dimensao-descricao-textarea {
+    height: 13rem;
+    resize: none;
+    overflow-y: auto;
+    margin-bottom: 1rem;
+}
