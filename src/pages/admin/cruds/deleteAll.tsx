@@ -14,7 +14,6 @@ export const deleteAll = async (
     EstudosComplementares: "estudo_complementar",
   };
   const url = `/admin/dimensoes/${dimensao}/${dictionary[activeTab]}/`;
-  console.log(url)
   const response = await api.delete(url,{params:{nome:nome}});
   return response;
 };

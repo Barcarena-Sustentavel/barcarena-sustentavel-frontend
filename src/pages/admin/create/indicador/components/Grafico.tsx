@@ -55,7 +55,7 @@ export const GraficoComponent: FC<GraficoComponentProps> = ({
     }
   };
   const sanitizarCSV= (csv:File) => {
-    const regexVirgulas = /\,/g
+    const regexVirgulas = /[0-9]\,[0-9]/ //g
     const regexPonto = /\./g
     Papa.parse(csv, {
         header: true, // Transforma cada linha em um objeto usando o cabeçalho como chave
@@ -104,10 +104,12 @@ export const GraficoComponent: FC<GraficoComponentProps> = ({
                                 \nou elimine a linha com o dado faltante`)
                 }
                 //Retira todas as vírgulas
+                //console.log(coluna[chave])
                 if(regexVirgulas.test(coluna[chave])){
+                  console.log('Valor',coluna[chave])
                   //Divide o valor a partir das virgulas
                   const dividirValor:string[] = coluna[chave].split(",")
-                  console.log(dividirValor)
+                  console.log('Valor dividido',dividirValor)
                   let novoValor:string = ""
                   dividirValor.map((str,index) => {
                     const stringSemPonto = regexPonto.test(str) ? str.replace(regexPonto, "") : str
@@ -125,6 +127,7 @@ export const GraficoComponent: FC<GraficoComponentProps> = ({
                   //console.log(resultados[index][chave])
                 }
                 //Verifica a existência de mais de um ponto
+                /**
                 if(coluna[chave].split(".").length > 2){
                   const dividirValor:string[] = coluna[chave].split(".")
                   let novoValor:string = ""
@@ -140,8 +143,8 @@ export const GraficoComponent: FC<GraficoComponentProps> = ({
                     }
                   })
                   resultados[index][chave] = novoValor
-                  console.log(resultados[index][chave])
-                }
+                  //console.log(resultados[index][chave])
+                } */
               })
             })
             if(msgsErro.length > 0){
@@ -158,11 +161,13 @@ export const GraficoComponent: FC<GraficoComponentProps> = ({
             setArquivo(csvFinal);
             graficoResponse.arquivo = csvFinal
           }
+          console.log(resultados)
         },
         error: (error) => {
           console.error("Erro ao ler o arquivo:", error.message);
         }
       });
+                    
   }
 useEffect(() => {
   setGraficosData(prevState => {
