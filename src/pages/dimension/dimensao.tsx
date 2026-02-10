@@ -87,7 +87,7 @@ const DimensaoComponent: FC = () => {
   const handleOnCick = (event: any) => {
     setBotaoConectividade(event.target.value);
   };
-  const mapasConectividade = ["Cobertura", "Escola", "Saúde"];
+  const mapasConectividade = ["Cobertura Móvel", "Conectividade na Educação", "Conectividade na Saúde"];
   const [botaoConectividade, setBotaoConectividade] = useState<string>("");
   //--------------------------------------------------------------------------
   const handleDownloadEstudo = (estudo: string) => {
@@ -100,11 +100,11 @@ const DimensaoComponent: FC = () => {
     if (dimensao === "Segurança") {
       setPathHtml("https://victorsantiago.github.io/odsb_kmls/");
     } else if (dimensao === "Conectividade") {
-      if (botaoConectividade === "Escola") {
+      if (botaoConectividade === "Conectividade na Educação") {
         setPathHtml("https://victorsantiago.github.io/odsb_escolas/");
-      } else if (botaoConectividade === "Cobertura") {
+      } else if (botaoConectividade === "Cobertura Móvel") {
         setPathHtml("https://victorsantiago.github.io/odsb_cobertura/");
-      } else if (botaoConectividade === "Saúde") {
+      } else if (botaoConectividade === "Conectividade na Saúde") {
         setPathHtml("https://victorsantiago.github.io/odsb_saude/");
       } else {
         setPathHtml("https://victorsantiago.github.io/odsb_escolas/");
@@ -140,9 +140,10 @@ const DimensaoComponent: FC = () => {
       </div>
       {pathHtml !== "" && (
         <div className="mx-auto" style={{ 
-          width: "100%", 
+          width: "69%", 
           height: "41rem", 
-          marginBottom: dimensao === "Conectividade" ? "6rem" : "0" 
+          marginBottom: dimensao === "Conectividade" ? "6rem" : "0",
+          marginTop: dimensao === "Conectividade" ? "0": "21px"
         }}>
           {dimensao === "Conectividade" && (
             <div
