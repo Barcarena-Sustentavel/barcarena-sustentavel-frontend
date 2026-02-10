@@ -1,3 +1,4 @@
+import { link } from "fs"
 import api from "../../../../api.tsx"
 import {Referencia} from "../../../../interfaces/referencia_interface.tsx"
 import Swal from "sweetalert2"
@@ -28,12 +29,14 @@ export const postReferencias = async (dimensao:string | undefined, nomeReferenci
 }
 
 export const patchReferencias = async (dimensao:string | undefined, referencia:string | undefined, nomeReferencia:string | undefined, linkReferencia:string | undefined) => {
-    const referenciaModificada:Referencia = {
+  const referenciaNova:Referencia = {
         nome: nomeReferencia,
         link: linkReferencia
     }
-    try{
-        await api.patch(`/admin/dimensoes/${dimensao}/referencias/${referencia}/`, referenciaModificada)
+  const decodeReferencia = decodeURIComponent(referencia as string)
+  console.log(decodeReferencia)
+  try{
+        await api.patch(`/admin/dimensoes/${dimensao}/referencias/`, referenciaNova,{params:{referencia:decodeReferencia}})
         await Swal.fire({
                 title: 'Sucesso!',
                 text: 'Referência modificada com sucesso.',
