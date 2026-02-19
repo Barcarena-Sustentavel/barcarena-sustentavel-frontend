@@ -15,9 +15,11 @@ const About: FC = () => {
 
   const getDownloadCard = (dimensao: string) => {
     return (<div className="d-flex align-items-center card-download-short-paper col-4">
-            <p className="dimensao-short-paper">{dimensao}</p>
-            <button className="download-paper-button btn btn-primary"
-            onClick={() => getArtigoDimensao(dimensao)}>Download</button>
+            <a className="dimensao-short-paper"
+            onClick={() => getArtigoDimensao(dimensao)}>{dimensao}
+            </a>
+            {/* <button className="download-paper-button btn btn-primary"
+            onClick={() => getArtigoDimensao(dimensao)}>Download</button> */}
           </div>)
   };
 
