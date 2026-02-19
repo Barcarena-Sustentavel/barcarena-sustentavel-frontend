@@ -14,6 +14,7 @@ import BackButton from "../../components/layout/backButton/backButton.tsx";
 //import MapaConectividade from "../kml/mapaOficial/conectividade/mapa_conectividade.tsx";
 //import MapaOrdenamento from "../kml/mapaOficial/ordenamentoTerritorial/mapa_ordenamento_territorial.tsx";
 import HTMLFileIframe from "../kml/mapa/map4.tsx";
+import { Dropdown, DropdownButton, DropdownItem } from "react-bootstrap";
 //import Map2 from "../kml/map2.tsx";
 const NODE_ENV = import.meta.env.VITE_NODE_ENV;
 
@@ -88,7 +89,7 @@ const DimensaoComponent: FC = () => {
     setBotaoConectividade(event.target.value);
   };
   const mapasConectividade = ["Cobertura Móvel", "Conectividade na Educação", "Conectividade na Saúde"];
-  const [botaoConectividade, setBotaoConectividade] = useState<string>("");
+  const [botaoConectividade, setBotaoConectividade] = useState<string>("Cobertura Móvel");
   //--------------------------------------------------------------------------
   const handleDownloadEstudo = (estudo: string) => {
     const url = `api/dimensoes/${dimensao}/estudo_complementar/${estudo}/anexo/`;
@@ -148,13 +149,23 @@ const DimensaoComponent: FC = () => {
           {dimensao === "Conectividade" && (
             <div
               style={{
-                margin: "10px auto 5px auto",
-                width: "30%",
+                width: "100%",
                 display: "flex",
                 justifyContent: "space-between",
+                marginTop: "2rem",
+                marginBottom: "1rem"
               }}
             >
-              {mapasConectividade.map((mapa) => {
+              <select
+                className="form-select"
+                onChange={(e) => handleOnCick(e)}
+                defaultValue={mapasConectividade[0]}
+              >
+                {mapasConectividade.map((mapa) => (
+                  <option key={mapa} value={mapa}>{mapa}</option>
+                ))}
+              </select>
+              {/* {mapasConectividade.map((mapa) => {
                 return (
                   <button
                     style={{
@@ -169,7 +180,7 @@ const DimensaoComponent: FC = () => {
                     {mapa}
                   </button>
                 );
-              })}
+              })} */}
             </div>
           )}
           <HTMLFileIframe htmlFilePath={pathHtml} />
