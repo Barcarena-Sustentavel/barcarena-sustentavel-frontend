@@ -1,14 +1,18 @@
 .colabContainer{
+    width: 70%;
     background-color:white;
     display:flex;
     flex-direction: column;
-    align-items: 'center';
+    align-items: center;
 }
 .colabContainer > h2{
     text-align: start;
+    margin: 0 auto;
+    /*
     margin-top: 2rem;
-    margin-bottom: 2rem;
-    margin-left: 16rem;
+    margin-bottom: 2rem;*/
+    width: 90%;
+    /*margin-left: 16rem;*/
 }
 #timesAbaixo{
     text-align: center;
@@ -18,16 +22,13 @@
 }
 .times{
     width: 90%;
-    margin: 0 auto 0 8rem;
-    display: grid;
-    grid-template-columns: repeat(3,1fr);
-    gap: 1rem;
-}
-.persona{
-    width: 80%;
+    /*margin: 0 auto 0 8rem;*/
+    margin: 0 auto;
     display: flex;
     flex-direction: column;
-    align-items: center;
+}
+.persona{
+    width: 90%;
     margin-bottom: 15px;
 }
 .persona > img{

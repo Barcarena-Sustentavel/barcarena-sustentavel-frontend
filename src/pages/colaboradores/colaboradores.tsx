@@ -77,8 +77,7 @@ const personas = (list:Array<Record<string, string>>) =>{
   return (<div className="times">{list.map(espec =>
              <div className="persona" key={espec.nome}>
              {/* <img src={profile} alt="persona temporária" /> */}
-          <p>{espec.nome}</p> 
-          <p>{espec.area}</p>
+          <p>{espec.nome} {espec.area && `- ${espec.area}`}</p> 
           </div>)}</div>)
 }
   return (
@@ -86,19 +85,6 @@ const personas = (list:Array<Record<string, string>>) =>{
       <NavbarComponent />
       <main>
         <div className="colabContainer" >
-        {/* <p id="timesAbaixo">Escolha um dos times abaixo</p>
-        <select name="colab-filter" id="colab-filter" onChange={(e) => setNomes(e.target.value)}>
-          <option value="especialistas">Especialistas da Àrea</option>
-          <option value="timeDev">Time de desenvolvimento</option>
-          <option value="alunos">Alunos Pesquisadores</option>
-        </select> */}
-        {/* {nomes === "especialistas" && 
-        personas(especialistaArea)
-        }
-        {nomes === "timeDev" &&
-        personas(timeDesenvolvimento)}
-        {nomes === "alunos" && 
-        personas(alunosPesquisadores)} */}
         <h2 className="time">Especialistas da Área</h2>
         {personas(especialistaArea)}
         <h2 className="time">Time de Desenvolvimento</h2>

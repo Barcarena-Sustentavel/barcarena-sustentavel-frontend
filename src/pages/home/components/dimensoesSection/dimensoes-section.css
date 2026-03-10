@@ -10,9 +10,12 @@
 }
   
 #dimensoes {
-    padding: 10% 0 10% 0;
-    display: flex;
-    flex-wrap: wrap;
+  margin: auto;
+  /*padding: 15px;*/
+  width: 80%;
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: wrap;
 }
 #dimensoesDropdown {
   display: none;
@@ -72,12 +75,6 @@
 
 .icon-color.increase-icon {
   transform: scale(1.4);
-}
-
-#dimensoes {
-  margin: auto;
-  padding: 15px;
-  width: 80%;
 }
 
 /* Animation delay for staggered entrance */

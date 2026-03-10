@@ -2,6 +2,8 @@ import React, { FC, useEffect, useRef, useCallback, useState } from 'react';
 import './dimensoes-section.css';
 import dimensoes from '../../../../utils/const.tsx';
 import DimensionLinkButton from './dimensionLinkButton.tsx';
+import api from '../../../../api.tsx';
+import downloadIcon from '../../../../assets/images/icons/download-svgrepo-com.svg';
 
 const DimensoesSection: FC = () => {
   const observerRef = useRef<IntersectionObserver | null>(null);
@@ -16,7 +18,13 @@ const DimensoesSection: FC = () => {
   } = dimensoes.GetAllConst();
   const dimensoesColumn123 ={...dimensoesColumn1, ...dimensoesColumn2, ...dimensoesColumn3}
   const [isOpen, setIsOpen] = useState(false);
-
+  const [estudos, setNomeEstudos] = useState<string[]>([])
+ // Callback ref para observar cada elemento assim que é montado
+  const dimensionItemRef = useCallback((node: HTMLDivElement | null) => {
+    if (node && observerRef.current) {
+      observerRef.current.observe(node);
+    }
+  }, []);
   useEffect(() => {
     setIsLoaded(true)
 
@@ -40,20 +48,46 @@ const DimensoesSection: FC = () => {
     };
   },[]);
 
-  // Callback ref para observar cada elemento assim que é montado
-  const dimensionItemRef = useCallback((node: HTMLDivElement | null) => {
-    if (node && observerRef.current) {
-      observerRef.current.observe(node);
+  const downloadEstudo = async (estudo:string) =>{
+    api.get("/estudos_complementares/arquivo", {params: {estudoComplementarNome: estudo}})
+       .then((response) =>{
+        const pdfBlob = new Blob([response.data.arquivo_data], { type: 'application/pdf' });
+        const url = window.URL.createObjectURL(pdfBlob);
+        const tempLink = document.createElement('a');
+        tempLink.href = url;
+
+        tempLink.setAttribute('download', `${estudo}.pdf`);
+        document.body.appendChild(tempLink);
+        tempLink.click();
+        document.body.removeChild(tempLink);
+        window.URL.revokeObjectURL(url);
+       })
+  }
+  useEffect(() => {
+    const fetchEstudos = async () => {
+      await api.get("/estudos_complementares/",{params:{pagina:"Pagina_inicial"}}).then((response) => {
+        const estudosData = response.data.estudos;
+        const estudosNomes = estudosData.map((estudo: string) => estudo);
+        console.log(estudosNomes);
+        setNomeEstudos(estudosNomes);
+      }).catch((error) => {
+        console.error("Erro ao buscar estudos complementares:", error);
+      });
     }
-  }, []);
+    fetchEstudos();
+  },[])
+ 
 
   return (
     <div id="dimensoesPai">
-      <h2 className="text-center pt-3">Escolha uma dimensão</h2>
-
+      <div className="w-75 mx-auto pt-5">
+      <h2>Escolha uma dimensão</h2>
+      <p>As dimensões correspondem a todos os aspectos socioeconômicos que dividem os dados da plataforma, para prosseguir, clique em uma dimensão e em seguida clique em um indicador para visualizar os dados.</p>
+      </div>
+      
       <div id="dimensoes" className="px-md-5 py-1">
         {/* First column */}
-        <div className="col-30 d-flex flex-column px-md-5" style={{marginLeft: "auto"}}>
+        <div className="col-30 d-flex flex-column">
           {isLoaded && Object.entries(dimensoesColumn1).map(([item, value]) => (
             <DimensionLinkButton
               to={`/${item}`}
@@ -80,7 +114,7 @@ const DimensoesSection: FC = () => {
         </div>
 
         {/* Second column */}
-        <div className="col-30 d-flex flex-column px-md-5">
+        <div className="col-30 d-flex flex-column">
           {isLoaded && Object.entries(dimensoesColumn2).map(([item, value]) => (
             <DimensionLinkButton
               to={`/${item}`}
@@ -106,7 +140,7 @@ const DimensoesSection: FC = () => {
           ))}
         </div>
 
-        <div className="col-30 d-flex flex-column px-md-5" style={{marginRight: "auto"}}>
+        <div className="col-30 d-flex flex-column">
           {isLoaded && Object.entries(dimensoesColumn3).map(([item, value]) => (
             <DimensionLinkButton
               to={`/${item}`}
@@ -165,6 +199,25 @@ const DimensoesSection: FC = () => {
           ))}
           </div>
       </div>
+      <div className="d-flex flex-column w-75 mx-auto pt-2">
+          <div>
+          <h2>Estudos Complementares</h2>
+          <p>Aqui você pode encontrar e baixar arquivos em pdf referentes aos diversos conhecimentos que fizeram parte do desenvolvimento do Observatório e da plataforma, para prosseguir, escolha um nome e clique no icone ao lado direito </p>
+          </div>
+          
+          <div className="container-fluid px-5">
+            <div className="row">
+              {estudos.map((estudo, index) => (
+                  <div key={index} className="w-1/2 d-flex justify-content-between align-items-center bg-light rounded p-3 h-100">
+                    <p className="mb-0">{estudo}</p>
+                    <button className="btn btn-link p-0" onClick={() => downloadEstudo(estudo)}> 
+                      <img src={downloadIcon} alt="Download" style={{width: '24px', height: '24px'}} />
+                    </button>
+                  </div>
+              ))}
+            </div>
+          </div>
+      </div>  
     </div>
   );
 };
