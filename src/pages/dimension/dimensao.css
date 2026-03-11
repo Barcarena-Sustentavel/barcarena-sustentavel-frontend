@@ -1,4 +1,4 @@
-h1 {
+/* h1 {
     font-size: xx-large;
     background: white;
     position: relative;
@@ -6,7 +6,7 @@ h1 {
     font-weight: bolder !important;
     font-family: "Brandom";
     text-align: left;
-}
+} */
 
 p {
     color: var(--p-color);
