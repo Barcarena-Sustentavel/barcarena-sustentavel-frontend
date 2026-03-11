@@ -5,6 +5,7 @@ import NavbarComponent from "../../components/layout/navbar/navbar.tsx";
 import ImageCarousel from "./components/carousel/carousel.tsx";
 import DimensoesSection from "./components/dimensoesSection/dimensoesSection.tsx";
 import Footer from "../../components/layout/footer/footer.tsx";
+import Banner from "./components/banner/banner.tsx";
 
 const Home: FC = () => {
   const navigate = useNavigate();
@@ -14,7 +15,7 @@ const Home: FC = () => {
   return (
     <div className="home-container">
       <NavbarComponent />
-      <ImageCarousel />
+      <Banner/>
       <DimensoesSection />
       <Footer />
     </div>
