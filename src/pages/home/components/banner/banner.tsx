@@ -303,10 +303,9 @@ const Banner: React.FC = () => {
             drawTS(ctx);
             drawScatter(ctx);
             drawParticles(ctx);
-            requestAnimationFrame(animate);
+            animFrameId = requestAnimationFrame(animate); // guarda o id
             const frameTime = performance.now() - start;
             if (frameTime > 16) console.warn(`Frame lento: ${frameTime.toFixed(1)}ms`);
-            animFrameId = requestAnimationFrame(animate); // guarda o id
         }
         animate();
 
