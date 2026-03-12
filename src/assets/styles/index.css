@@ -90,10 +90,6 @@
     .dimensoes-grid {
         grid-template-columns: 1fr;
     }
-
-    .home-container {
-        padding: 1rem;
-    }
 }
 
 @font-face {

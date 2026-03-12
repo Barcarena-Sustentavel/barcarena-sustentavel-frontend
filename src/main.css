@@ -30,6 +30,8 @@
     --green-light-d: rgba(61, 222, 163, 0.9);
     --blue-d: rgba(69, 117, 181, 0.9);
     --dark-blue-d: rgba(41, 54, 122, 0.9);
+    --secondary-blue-d: #091C3A;
+    --text-light: #5a7090;
 }
 
 a {

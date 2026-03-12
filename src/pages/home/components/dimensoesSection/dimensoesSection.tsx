@@ -50,9 +50,9 @@ export const DimensoesSection: FC = () => {
 
   return (
     <div id="dimensoesPai">
-      <div className="w-75 mx-auto pt-5">
+      <div className="w-75 mx-auto pt-5 escolhe">
       <h2>Escolha uma dimensão</h2>
-      <p>As dimensões correspondem a todos os aspectos socioeconômicos que dividem os dados da plataforma, para prosseguir, clique em uma dimensão e em seguida clique em um indicador para visualizar os dados.</p>
+      {/*<p>As dimensões correspondem a todos os aspectos socioeconômicos que dividem os dados da plataforma, para prosseguir, clique em uma dimensão e em seguida clique em um indicador para visualizar os dados.</p>*/}
       </div>
       
       <div id="dimensoes" className="px-md-5 py-1">
