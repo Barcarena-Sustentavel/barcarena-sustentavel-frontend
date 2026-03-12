@@ -2,6 +2,17 @@
     font-family: 'Sora';
     background-color: var(--secondary-gray);
 }
+#publicacoes h1{
+    font-size: 2.5em;
+    background-color: var(--secondary-gray);
+    font-weight: 700;
+    line-height: 1.1;
+}
+#publicacoes h3{
+    font-size: 1em;
+    font-weight: 800;
+    line-height: 1.1;
+}
 #publicacoesBackGround{
         width: 100%;
         min-height: 500px;
@@ -15,7 +26,7 @@
 }
 
 .publicacoes-carousel {
-    background: rgba(255,255,255,0.07);
+    background:  rgba(0, 0, 0, 0.7);
     backdrop-filter: blur(10px);
     border: 1px solid rgba(255,255,255,0.15);
     border-radius: 16px;
@@ -26,19 +37,108 @@
     min-height: 200px;
     display: flex;
     flex-direction: column;
+    align-items: center;
 }
-#publicacoes h1{
-    font-size: 2.5em;
-    background-color: var(--secondary-gray);
+
+.publicacoes-content {
+    width: 100%;
+    text-align: left;
+    margin-top: 28px; /* afastamento do ícone */
+}
+
+.publicacoes-icone-wrapper {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 72px;
+    height: 72px;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.1);
+    border: 1.5px solid rgba(255, 255, 255, 0.25);
+    margin-bottom: 16px;
+}
+
+.publicacoes-categoria {
+    font-size: 0.7rem; /* menor */
     font-weight: 800;
-    line-height: 1.1;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    margin: 0 0 8px;
+    text-align: left;
 }
-#publicacoes h3{
-    font-size: 1em;
-    font-weight: 800;
-    line-height: 1.1;
+.publicacoes-footer {
+    margin-top: auto;
+    width: 100%;
+    text-align: right;
 }
-#publicacoes p{
-    font-size: 1.2em;
-    font-weight: 400;
+.publicacoes-botao{
+    font-size: 0.8rem;
+    font-weight: 600;
+    background-color: var(--primary-blue);
+    border:  solid 0px;
+    border-radius: 20px;
+}
+.publicacoes-botao svg{
+    margin-right: 8px;
+}
+.publicacoes-divider {
+    border: none;
+    border-top: 1px solid rgba(255, 255, 255, 0.15);
+    margin: 24px 0 16px;
+}
+
+.publicacoes-section .carousel-indicators {
+    align-items: center;
+    gap: 6px;
+    bottom: -40px;
+}
+
+.publicacoes-section .carousel-indicators [data-bs-target] {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background-color: rgba(255, 255, 255, 0.4);
+    border: none;
+    opacity: 1;
+    transition: all 0.3s ease;
+}
+
+.publicacoes-section .carousel-indicators .active {
+    width: 32px;
+    height: 10px;
+    border-radius: 20px; /* pílula */
+    background-color: #7ec850; /* verde da imagem */
+}
+
+/* Setas laterais */
+.publicacoes-section .carousel-control-prev,
+.publicacoes-section .carousel-control-next {
+    width: 48px;
+    height: 48px;
+    background: transparent;
+    border: 1.5px solid rgba(255, 255, 255, 0.5);
+    border-radius: 50%;
+    top: 50%;
+    transform: translateY(-50%);
+    opacity: 0.8;
+}
+
+.publicacoes-section .carousel-control-prev {
+    left: -60px;
+}
+
+.publicacoes-section .carousel-control-next {
+    right: -60px;
+}
+
+.publicacoes-section .carousel-control-prev:hover,
+.publicacoes-section .carousel-control-next:hover {
+    opacity: 1;
+    background: rgba(255, 255, 255, 0.1);
+}
+
+.publicacoes-section .carousel-control-prev-icon,
+.publicacoes-section .carousel-control-next-icon {
+    width: 16px;
+    height: 16px;
 }

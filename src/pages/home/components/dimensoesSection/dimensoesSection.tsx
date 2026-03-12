@@ -2,9 +2,7 @@ import React, { FC, useEffect, useRef, useCallback, useState } from 'react';
 import './dimensoes-section.css';
 import dimensoes from '../../../../utils/const.tsx';
 import DimensionLinkButton from './dimensionLinkButton.tsx';
-import api from '../../../../api.tsx';
 import SlideArtigos from '../slideArtigos/slideArtigosl.tsx';
-import downloadIcon from '../../../../assets/images/icons/download-svgrepo-com.svg';
 
 export const DimensoesSection: FC = () => {
   const observerRef = useRef<IntersectionObserver | null>(null);
@@ -18,7 +16,8 @@ export const DimensoesSection: FC = () => {
     setIsLoaded
   } = dimensoes.GetAllConst();
   const dimensoesColumn123 ={...dimensoesColumn1, ...dimensoesColumn2, ...dimensoesColumn3}
-  //console.log(dimensoesColumn123)
+  const todasAsCores = {...dimensoesCores123}
+  //console.log(dimensoesCores123)
   const [isOpen, setIsOpen] = useState(false);
  // Callback ref para observar cada elemento assim que é montado
   const dimensionItemRef = useCallback((node: HTMLDivElement | null) => {
@@ -64,7 +63,7 @@ export const DimensoesSection: FC = () => {
             return(
             <DimensionLinkButton
               to={`/${item}`}
-              color={dimensoesCores123[item]}
+              color={todasAsCores[item]}
               key={item}
               increaseIcon={dimensaoAumentaIcone[item]}
             >
@@ -95,7 +94,7 @@ export const DimensoesSection: FC = () => {
             return(
             <DimensionLinkButton
               to={`/${item}`}
-              color={dimensoesCores123[item]}
+              color={todasAsCores[item]}
               key={item}
               increaseIcon={dimensaoAumentaIcone[item]}
             >
@@ -117,14 +116,14 @@ export const DimensoesSection: FC = () => {
             </DimensionLinkButton>
           )})}
         </div>
-
+                
         <div className="col-30 d-flex flex-column">
           {isLoaded && Object.entries(dimensoesColumn3).map(([item, value]) => {
             const objectValue:any = value
             return(
             <DimensionLinkButton
               to={`/${item}`}
-              color={dimensoesCores123[item]}
+              color={todasAsCores[item]}
               key={item}
               increaseIcon={dimensaoAumentaIcone[item]}
             >
@@ -158,7 +157,7 @@ export const DimensoesSection: FC = () => {
         {isOpen && isLoaded && Object.entries(dimensoesColumn123).map(([item, value]) => (
             <DimensionLinkButton
               to={`/${item}`}
-              color={dimensoesCores123[item]}
+              color={todasAsCores[item]}
               key={item}
               increaseIcon={dimensaoAumentaIcone[item]}
             >
@@ -180,7 +179,7 @@ export const DimensoesSection: FC = () => {
           ))}
           </div>
       </div>
-      <SlideArtigos dimensoesList={dimensoesColumn123}/>
+      <SlideArtigos dimensoesList={dimensoesColumn123} dimensoesCores={todasAsCores}/>
     </div>
   );
 };
