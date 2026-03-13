@@ -4,19 +4,57 @@ import { useState, useEffect } from "react";
 // Lazy load SVG icons usando importação dinâmica
 const loadIcon = (iconName: string) => {
   const iconPaths: Record<string, () => Promise<any>> = {
-    seguranca: () => import("@assets/images/icons/seguranca2.svg"),
-    mobilidade: () => import("@assets/images/icons/mobilidade2.svg"),
-    saude: () => import("@assets/images/icons/saude2.svg"),
-    ordenamento: () => import("@assets/images/icons/ordenamento_territorial2.svg"),
-    meioAmbiente: () => import("@assets/images/icons/meio_ambiente2.svg"),
-    instituicoes: () => import("@assets/images/icons/instituicoes2.svg"),
-    emprego: () => import("@assets/images/icons/emprego2.svg"),
-    educacao: () => import("@assets/images/icons/educacao2.svg"),
-    conectividade: () => import("@assets/images/icons/conectividade2.svg"),
+    seguranca: () => import("@assets/images/icons/dimensoes/seguranca.svg"),
+    mobilidade: () => import("@assets/images/icons/dimensoes/mobilidade.svg"),
+    saude: () => import("@assets/images/icons/dimensoes/saude.svg"),
+    ordenamento: () => import("@assets/images/icons/dimensoes/ordenamento.svg"),
+    meioAmbiente: () => import("@assets/images/icons/dimensoes/meio_ambiente.svg"),
+    instituicoes: () => import("@assets/images/icons/dimensoes/instituicoes.svg"),
+    emprego: () => import("@assets/images/icons/dimensoes/emprego.svg"),
+    educacao: () => import("@assets/images/icons/dimensoes/educacao.svg"),
+    conectividade: () => import("@assets/images/icons/dimensoes/conectividade.svg"),
   };
 
   return iconPaths[iconName]?.() || Promise.reject(`Icon ${iconName} not found`);
 };
+
+// Carrega todos os ícones de forma lazy
+const loadAllIconsDimensions = async () => {
+  const [
+    logoEmprego,
+    logoMeioAmbiente,
+    logoEducacao,
+    logoMobilidade,
+    logoOrdenamento,
+    logoSegurança,
+    logoSaude,
+    logoConectividade,
+    logoInstituicoes,
+  ] = await Promise.all([
+    loadIcon('emprego'),
+    loadIcon('meioAmbiente'),
+    loadIcon('educacao'),
+    loadIcon('mobilidade'),
+    loadIcon('ordenamento'),
+    loadIcon('seguranca'),
+    loadIcon('saude'),
+    loadIcon('conectividade'),
+    loadIcon('instituicoes'),
+  ]);
+
+  return [
+    logoEmprego.default,
+    logoMeioAmbiente.default,
+    logoEducacao.default,
+    logoMobilidade.default,
+    logoOrdenamento.default,
+    logoSegurança.default,
+    logoSaude.default,
+    logoConectividade.default,
+    logoInstituicoes.default,
+  ];
+};
+
 
 // Carrega todos os ícones de forma lazy
 const loadAllIcons = async () => {
@@ -212,5 +250,6 @@ export default {
   //dimensoesColumn12Array,
   //dimensaoCoresArray,
   //dimensaoAumentaIconeArray,
+  loadAllIconsDimensions,
   GetAllConst
 };
