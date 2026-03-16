@@ -1,20 +1,3 @@
-/* h1 {
-    font-size: xx-large;
-    background: white;
-    /*position: relative;*/
-    /*padding: 16px;*/
-    /*font-weight: bolder !important;*/
-    /*font-family: "Brandom";*/
-    /*font-family: "Sora";*/
-    /*text-align: left;
-}*/
-/*
-p {
-    color: var(--p-color);
-    font-size: var(--p-font-size);
-    font-weight: var(--font-weight-light);
-}*/
-
 .dimension-details-container {
     border-radius: 4px;
     border: 1px solid grey;
@@ -32,6 +15,45 @@ p {
     padding-left: 16px;
 }
 
+.dimensao-container{
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 3.5rem 3rem;
+}
+.descricao{
+  background: #fff;
+  border-radius: 16px;
+  padding: 2.5rem;
+  /*border-left: 5px solid;*/
+  margin-bottom: 3rem;
+}
+.descricao p {
+    font-family: 'Sora', sans-serif;
+    color: var(--text-light);
+    font-size: 0.97rem;
+    line-height: 1.85;
+}
+.header-indicadores{
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+}
+.header-indicadores h2{
+  font-size: 1.1rem;
+  font-weight: 800;
+  color: var(--dark);
+}
+.contador-indicadores{
+  background: #c0392b22;
+  color: #c0392b;
+  border: 1px solid #c0392b44;
+  border-radius: 20px;
+  padding: 2px 12px;
+  font-size: 0.72rem;
+  font-weight: 700;
+  font-family: 'IBM Plex Mono',monospace;
+}
 .dimension-details-container ul.indicadores
 /* , .dimension-details-container ul.referencias  */ {
     list-style-type: none !important;
@@ -40,7 +62,6 @@ p {
     border-top: solid 1px #ddd;
     background: var(--secondary-gray);
 }
-.dimension-details-container .descricao,
 .dimension-details-container .contribuicao {
     padding: 16px;
     margin: 0 !important;
@@ -49,8 +70,6 @@ p {
 }
 
 .dimension-details-container ul.indicadores li,
-/* .dimension-details-container ul.referencias li, */
-.dimension-details-container .descricao p,
 .dimension-details-container .contribuicao form {
     padding: 16px;
     background: white;

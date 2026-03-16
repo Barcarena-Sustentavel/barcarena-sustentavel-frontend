@@ -11,11 +11,7 @@ import Footer from "../../components/layout/footer/footer.tsx";
 import SubmenuDimensao from "./components/submenuDimensao.tsx";
 import FormContribuicao from "./components/formContribuicao.tsx";
 import BackButton from "../../components/layout/backButton/backButton.tsx";
-//import MapaConectividade from "../kml/mapaOficial/conectividade/mapa_conectividade.tsx";
-//import MapaOrdenamento from "../kml/mapaOficial/ordenamentoTerritorial/mapa_ordenamento_territorial.tsx";
 import HTMLFileIframe from "../kml/mapa/map4.tsx";
-import { Dropdown, DropdownButton, DropdownItem } from "react-bootstrap";
-//import Map2 from "../kml/map2.tsx";
 const NODE_ENV = import.meta.env.VITE_NODE_ENV;
 
 const DimensaoComponent: FC = () => {
@@ -132,13 +128,12 @@ const DimensaoComponent: FC = () => {
       <NavbarComponent />
       <SubmenuDimensao dimensaoAtiva={dimensaoJson?.nome || ""} />
       <BackButton />
-      <div className="container dimension-details-container">
-        <div className="descricao">
-          <p style={{ borderLeft: `5px solid ${getProximaCor()}` }}>
+     <div className="dimensao-container">
+        <div className="descricao" style={{ borderLeft: `5px solid ${getProximaCor()}` }}>
+          <p>
             {dimensaoJson?.descricao}
           </p>
         </div>
-      </div>
       {pathHtml !== "" && (
         <div className="mx-auto" style={{ 
           width: "69%", 
@@ -186,8 +181,11 @@ const DimensaoComponent: FC = () => {
           <HTMLFileIframe htmlFilePath={pathHtml} />
         </div>
       )}
-      <div className="container dimension-details-container">
-        <h1>Indicadores</h1>
+      {/*<div className="container dimension-details-container">*/}
+      <div className="header-indicadores">
+        <h2>Indicadores</h2>
+        <span className="contador-indicadores">{indicadores.length}</span>
+      </div>
         <ul className="indicadores">
           {indicadores.length > 0 &&
             indicadores.map((indicador) => (
@@ -257,7 +255,7 @@ const DimensaoComponent: FC = () => {
         formStyle={{ borderLeft: `5px solid ${getProximaCor()}` }}
       />
       <Footer />
-    </div>
+      </div>
   );
 };
 

@@ -18,7 +18,6 @@ const SubmenuDimensao: React.FC<SubmenuDimensaoProps> = ({ dimensaoAtiva }) => {
 		dimensoesColumn2,
 		dimensoesColumn3,
 		dimensoesCores123,
-		dimensaoAumentaIcone,
 	} = dimensoes.GetAllConst();
 	//console.log(dimensoesColumn1, dimensoesColumn2, dimensoesColumn3);
 	const todasDimensoes = {
@@ -26,34 +25,22 @@ const SubmenuDimensao: React.FC<SubmenuDimensaoProps> = ({ dimensaoAtiva }) => {
 		...dimensoesColumn2,
 		...dimensoesColumn3,
 	};
-	//console.log(todasDimensoes)
+	console.log('todasDimensoes:', todasDimensoes);
 	const icone = todasDimensoes[dimensaoAtiva || activeDimensionFromPath];
-	//console.log(icone);
-	function ajustarFonteTitulo(dimensaoAtiva: string) {
-		const tamanhoString = dimensaoAtiva.length;
-
-		if (tamanhoString < 20) {
-			return "40px";
-		} else if (tamanhoString < 30) {
-			return "30px";
-		}
-
-		return "20px";
-	}
-
+	console.log('icone:', icone);
 	return (
 		<div className="submenu-dimensao-wrap">
 			<div
 				className="submenu-dimensao"
 			>
 				{Object.entries(todasDimensoes).map(([nomeDimensao, icon]) => {
-					//console.log(icon);
+					console.log('icon:', icon);
 					const isAtiva =
 						nomeDimensao === (dimensaoAtiva || activeDimensionFromPath);
 					//const cor = dimensoes.dimensaoCores[nomeDimensao] || 'default-color';
 					const cor = dimensoesCores123[nomeDimensao] || "default-color";
 					//const aumentaIcone = dimensoes.dimensaoAumentaIcone[nomeDimensao] || false;
-					const aumentaIcone = dimensaoAumentaIcone[nomeDimensao] || false;
+					//const aumentaIcone = dimensaoAumentaIcone[nomeDimensao] || false;
 
 					return (
 						<a
@@ -87,35 +74,32 @@ const SubmenuDimensao: React.FC<SubmenuDimensaoProps> = ({ dimensaoAtiva }) => {
 				style={{ backgroundColor: `var(--${dimensoesCores123[dimensaoAtiva || activeDimensionFromPath]})` }}>
 				<div className="submenu-dimensao-hero-dentro">
 					<div className="submenu-dimensao-hero-svg" style={{ backgroundColor: `var(--${dimensoesCores123[dimensaoAtiva || activeDimensionFromPath]})` }}>
-						{<svg
-							viewBox={(icone as any).viewBox}                   // Aumenta o ícone se for ativo
-							stroke="white"  //{(icon as any).stroke}
+						{icone !== undefined && <svg
+							viewBox={(icone as any).viewBox}
+							stroke="white"  //{(icone as any).stroke}
 							fill={(icone as any).fill}
 							strokeWidth={(icone as any)["stroke-width"]}
 							strokeLinecap={(icone as any)["stroke-linecap"]}
 							strokeLinejoin={(icone as any)["stroke-linejoin"]}
-							width="36" // icon um tamanho padrão
+							width="36"
 							height="36">
 							{(icone as any).children}
 						</svg>}
 					</div>
 
-					<div style={{flex:'1'}}>
-						<p
-							className="label-dimensao ml-5"
+					<div style={{ flex: '1' }}>
+						<p className="submenu-dimensao-hero-titulo"
 						>
 							{dimensaoAtiva || activeDimensionFromPath}
 						</p>
 					</div>
 					<button
-						className="btn btn-primary botao-download-resumo"
+						className="submenu-dimensao-hero-botao"
 						onClick={() =>
 							getArtigoDimensao(dimensaoAtiva || activeDimensionFromPath)
 						}>
-						<p style={{ color: "white" }}>Resumo da dimensão</p>{" "}
-						<i
-							style={{ marginBottom: "15px", marginLeft: "10px" }}
-							className="bi bi-download"></i>
+						<svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><line x1="6" y1="1" x2="6" y2="8"></line><polyline points="3,5 6,8 9,5"></polyline><line x1="1" y1="11" x2="11" y2="11"></line></svg>
+						Resumo da dimensão
 					</button>
 				</div>
 			</div>

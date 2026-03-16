@@ -98,6 +98,7 @@ const loadAllIcons = () => {
     ],
   };
 };
+
 const dimensaoCoresArray: string[] = [
   "dark-blue-d", // Confiança, proteção
   "green-light-d", // Movimento, fluidez
@@ -108,18 +109,6 @@ const dimensaoCoresArray: string[] = [
   "red-d", // Ação, urgência, energia
   "orange-d", // Estímulo, criatividade
   "yellow-d", // Comunicação, otimismo
-];
-
-const dimensaoAumentaIconeArray: boolean[] = [
-  false, // Segurança
-  true,  // Mobilidade
-  false, // Saúde
-  false, // Ordenamento Territorial
-  false, // Meio Ambiente
-  false, // Instituições
-  false, // Emprego
-  true,  // Educação
-  false, // Conectividade
 ];
 
 const GetAllConst = () => {
@@ -154,7 +143,6 @@ const GetAllConst = () => {
   },[])
   
   useEffect(() => {
-    console.log("dimensoesList atualizado:", dimensoesList);
       const { dimensoesColumn1Array, dimensoesColumn2Array, dimensoesColumn3Array } = loadAllIcons();
       const tempDimensoesColumn1: Record<string, string> = {};
       const tempDimensoesColumn2: Record<string, string> = {};
@@ -184,9 +172,6 @@ const GetAllConst = () => {
       setDimensaoAumentaIcone(tempDimensaoAumentaIcone);
       setIsLoaded(true);
     },[dimensoesList])
-  
-  //console.log(dimensoesColumn1, dimensoesColumn2, dimensoesColumn3, dimensoesCores123, dimensaoAumentaIcone);
-  //console.log(dimensoesList);
   return {
     dimensoesColumn1,
     dimensoesColumn2,
