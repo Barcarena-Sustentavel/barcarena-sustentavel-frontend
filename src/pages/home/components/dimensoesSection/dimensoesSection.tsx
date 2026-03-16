@@ -76,6 +76,9 @@ export const DimensoesSection: FC = () => {
 		...dimensoesColumn2,
 		...dimensoesColumn3,
 	};
+
+	const testConsts = consts.GetAllConst();
+
 	const todasAsCores = { ...dimensoesCores123 };
 	//console.log(dimensoesCores123)
 	//const [isOpen, setIsOpen] = useState(false);
@@ -112,7 +115,6 @@ export const DimensoesSection: FC = () => {
 				instituicoes: loaded[8],
 			});
 		});
-
 		return () => {
 			// Cleanup: desconectar o observer
 			if (observerRef.current) {
@@ -120,6 +122,11 @@ export const DimensoesSection: FC = () => {
 			}
 		};
 	}, []);
+
+	//test consts
+	useEffect(() => {
+		console.log(testConsts);
+	}, [testConsts]);
 
 	if (!icones) return <div className="spinner-border" />;
 
@@ -132,147 +139,6 @@ export const DimensoesSection: FC = () => {
 					Acesse indicadores detalhados por área temática
 				</p>
 			</div>
-			{/*<div id="dimensoesPai">
-				<div className="w-75 mx-auto pt-5 escolhe">
-					<h2>Escolha uma dimensão</h2>
-				</div>
-
-				<div id="dimensoes" className="px-md-5 py-1">
-					<div className="col-30 d-flex flex-column">
-						{isLoaded &&
-							Object.entries(dimensoesColumn1).map(([item, value]) => {
-								const objectValue: any = value;
-								return (
-									<DimensionLinkButton
-										to={`/${item}`}
-										color={todasAsCores[item]}
-										key={item}
-										increaseIcon={dimensaoAumentaIcone[item]}>
-										<div
-											ref={dimensionItemRef}
-											className="dimensao-item d-flex flex-row align-items-center justify-content-between my-2">
-											<p>{item}</p>
-											<svg
-												viewBox={objectValue.viewBox}
-												stroke={objectValue.stroke}
-												fill={objectValue.fill}
-												strokeWidth={objectValue["stroke-width"]}
-												strokeLinecap={objectValue["stroke-linecap"]}
-												strokeLinejoin={objectValue["stroke-linejoin"]}
-												width="36" // Defina um tamanho padrão
-												height="36">
-												{objectValue.children}
-											</svg>
-										</div>
-									</DimensionLinkButton>
-								);
-							})}
-					</div>
-
-					<div className="col-30 d-flex flex-column">
-						{isLoaded &&
-							Object.entries(dimensoesColumn2).map(([item, value]) => {
-								const objectValue: any = value;
-								return (
-									<DimensionLinkButton
-										to={`/${item}`}
-										color={todasAsCores[item]}
-										key={item}
-										increaseIcon={dimensaoAumentaIcone[item]}>
-										<div
-											ref={dimensionItemRef}
-											className="dimensao-item d-flex flex-row align-items-center justify-content-between my-2">
-											<p>{item}</p>
-											<svg
-												viewBox={objectValue.viewBox}
-												stroke={objectValue.stroke}
-												fill={objectValue.fill}
-												strokeWidth={objectValue["stroke-width"]}
-												strokeLinecap={objectValue["stroke-linecap"]}
-												strokeLinejoin={objectValue["stroke-linejoin"]}
-												width="36" // Defina um tamanho padrão
-												height="36">
-												{objectValue.children}
-											</svg>
-										</div>
-									</DimensionLinkButton>
-								);
-							})}
-					</div>
-
-					<div className="col-30 d-flex flex-column">
-						{isLoaded &&
-							Object.entries(dimensoesColumn3).map(([item, value]) => {
-								const objectValue: any = value;
-								return (
-									<DimensionLinkButton
-										to={`/${item}`}
-										color={todasAsCores[item]}
-										key={item}
-										increaseIcon={dimensaoAumentaIcone[item]}>
-										<div
-											ref={dimensionItemRef}
-											className="dimensao-item d-flex flex-row align-items-center justify-content-between my-2">
-											<p>{item}</p>
-											<svg
-												viewBox={objectValue.viewBox}
-												stroke={objectValue.stroke}
-												fill={objectValue.fill}
-												strokeWidth={objectValue["stroke-width"]}
-												strokeLinecap={objectValue["stroke-linecap"]}
-												strokeLinejoin={objectValue["stroke-linejoin"]}
-												width="36" // Defina um tamanho padrão
-												height="36">
-												{objectValue.children}
-											</svg>
-										</div>
-									</DimensionLinkButton>
-								);
-							})}
-					</div>
-				</div>
-				<div id="dimensoesDropdown">
-					<button
-						className="dropdown-button"
-						onClick={() => setIsOpen(!isOpen)}>
-						<span className={`arrow ${isOpen ? "up" : "down"}`}>
-							<h2>Escolha uma Dimensão</h2>▼
-						</span>
-					</button>
-					<div
-						className="d-flex flex-column px-md-5"
-						style={{ marginRight: "auto" }}>
-						{isOpen &&
-							isLoaded &&
-							Object.entries(dimensoesColumn123).map(([item, value]) => (
-								<DimensionLinkButton
-									to={`/${item}`}
-									color={todasAsCores[item]}
-									key={item}
-									increaseIcon={dimensaoAumentaIcone[item]}>
-									<div
-										ref={dimensionItemRef}
-										className="dimensao-item d-flex flex-row align-items-center justify-content-between my-2">
-										<p>{item}</p>
-										<div
-											className="icon-color"
-											style={{
-												maskImage: `url(${value})`,
-												WebkitMaskImage: `url(${value})`,
-												maskRepeat: "no-repeat",
-												WebkitMaskRepeat: "no-repeat",
-												maskSize: "contain",
-												WebkitMaskSize: "contain",
-											}}
-										/>
-									</div>
-								</DimensionLinkButton>
-							))}
-					</div>
-				</div>
-				
-			</div>*/}
-
 			<div className="dim-grid">
 				{dimensoesOrdem.map((item) => (
 					<DimensaoCard
