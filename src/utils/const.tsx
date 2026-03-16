@@ -20,6 +20,7 @@ const loadIcon = (iconName: string) => {
 };
 
 // Carrega todos os ícones de forma lazy
+
 const loadAllIconsDimensions = async () => {
   const [
     logoEmprego,
@@ -130,9 +131,11 @@ const GetAllConst = () => {
   const [dimensoesList, setDimensoesList] = useState<string[]>([]);
   const [isLoaded, setIsLoaded] = useState<boolean>(false);
   const url = '/dimensoes/';
+  console.log("GetAllConst - url:", url);
 
   useEffect(() => {
     const puxarDimensoes = async () => {
+      console.log("aqui", url);
       const dimensoesList: string[] = [];
         await api.get(url).then((response) => {
         response.data.dimensoes.forEach((dimensao:string, index:number) => {
@@ -141,10 +144,17 @@ const GetAllConst = () => {
       })
       setDimensoesList(dimensoesList)
       }
-    puxarDimensoes()
+      try {
+        puxarDimensoes()
+    // seu código
+  } catch (e) {
+    console.error(e); // Verifique se há erros sendo engolidos
+  }
+    
   },[])
   
   useEffect(() => {
+    console.log("dimensoesList atualizado:", dimensoesList);
       const { dimensoesColumn1Array, dimensoesColumn2Array, dimensoesColumn3Array } = loadAllIcons();
       const tempDimensoesColumn1: Record<string, string> = {};
       const tempDimensoesColumn2: Record<string, string> = {};
@@ -175,6 +185,8 @@ const GetAllConst = () => {
       setIsLoaded(true);
     },[dimensoesList])
   
+  //console.log(dimensoesColumn1, dimensoesColumn2, dimensoesColumn3, dimensoesCores123, dimensaoAumentaIcone);
+  //console.log(dimensoesList);
   return {
     dimensoesColumn1,
     dimensoesColumn2,
