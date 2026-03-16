@@ -1,0 +1,181 @@
+.car-section {
+    padding: 4rem 3rem 5rem;
+    position: relative;
+}
+.car-section .sec-header,
+.car-section .car-wrap { position: relative; z-index: 10; }
+.car-section .sec-eyebrow { color: #8DC63F; }
+.car-section .sec-title   { color: #fff; }
+.car-section .sec-sub     { color: rgba(255,255,255,0.5); }
+
+/* fundo parallax */
+.car-parallax-clip {
+    position: absolute; inset: 0;
+    overflow: hidden; pointer-events: none;
+}
+.car-parallax-bg {
+    position: absolute;
+    top: -40%; left: 0; right: 0; bottom: -40%;
+    will-change: transform;
+    background: url("@assets/images/carousel/bannerPublicacoes.jpg") center center / cover no-repeat;
+}
+
+/* viewport do carrossel */
+.car-wrap  { max-width: 1200px; margin: 0 auto; }
+.car-outer { overflow: hidden; width: 100%; padding: 12px 8px; }
+
+/* faixa de cards — sem gap, espaço feito por padding nos cards */
+.car-track {
+    display: flex;
+    width: 100%;
+    transition: transform 0.5s cubic-bezier(.4,0,.2,1);
+}
+
+.car-card {
+    flex: 0 0 calc(33.3333% - 16px);
+    box-sizing: border-box;
+    padding: 0 10px;
+    border-radius: 18px;
+    overflow: visible;
+    background: rgba(8, 16, 32, 0.55);
+    border: 1px solid rgba(255,255,255,0.13);
+    display: flex; flex-direction: column;
+    backdrop-filter: blur(10px);
+    transition: background 0.35s, transform 0.35s cubic-bezier(.2,0,.2,1), box-shadow 0.35s, border-color 0.35s;
+    margin: 0 8px;
+}
+.car-card:hover {
+    background: rgba(20, 36, 64, 0.75);
+    transform: scale(1.03);
+    box-shadow: 0 20px 48px rgba(0,0,0,0.40), 0 0 0 1px rgba(255,255,255,0.18);
+    border-color: rgba(255,255,255,0.22);
+}
+
+.car-img {
+    width: 100%; aspect-ratio: 16/7;
+    display: flex; align-items: center; justify-content: center;
+    position: relative; overflow: hidden;
+    border-radius: 10px 10px 0 0;
+}
+
+
+
+/* Icon wrapper: glowing circle */
+.car-icon-wrap {
+    position: relative; z-index: 3;
+    width: 68px; height: 68px;
+    border-radius: 50%;
+    background: rgba(0,0,0,0.28);
+    border: 1.5px solid rgba(255,255,255,0.18);
+    display: flex; align-items: center; justify-content: center;
+    box-shadow: 0 0 22px rgba(255,255,255,0.06), inset 0 1px 0 rgba(255,255,255,0.12);
+    transition: transform 0.3s, box-shadow 0.3s;
+}
+.car-card:hover .car-icon-wrap {
+    transform: scale(1.1);
+    box-shadow: 0 0 32px rgba(255,255,255,0.14), inset 0 1px 0 rgba(255,255,255,0.18);
+}
+
+.car-img svg.car-dim-icon {
+    width: 34px; height: 34px; position: relative; z-index: 1; opacity: .95;
+}
+
+.car-dim-economia  { background: transparent; }
+.car-dim-ambiente  { background: transparent; }
+.car-dim-educacao  { background: transparent; }
+.car-dim-mobilidade{ background: transparent; }
+.car-dim-territorio{ background: transparent; }
+.car-dim-seguranca { background: transparent; }
+.car-dim-saude     { background: transparent; }
+.car-dim-conectiv  { background: transparent; }
+.car-dim-instituic { background: transparent; }
+
+/* Card body */
+.car-body {
+    padding: 1.1rem 1.2rem 1rem;
+    flex: 1; display: flex; flex-direction: column;
+    gap: 0;
+}
+
+.car-cat {
+    font-size: .63rem; font-weight: 700;
+    text-transform: uppercase; letter-spacing: .16em;
+    margin-bottom: 7px;
+    opacity: 0.9;
+}
+
+.car-title {
+    font-size: .9rem; font-weight: 700;
+    color: #fff; line-height: 1.5; flex: 1;
+    text-shadow: 0 1px 4px rgba(0,0,0,0.4);
+}
+
+.car-meta {
+    display: flex; align-items: center; justify-content: space-between;
+    margin-top: .85rem; padding-top: .75rem;
+    border-top: 1px solid rgba(255,255,255,0.10);
+    gap: 8px;
+}
+
+.car-date {
+    font-size: .68rem; color: rgba(255,255,255,.4);
+    font-family: 'IBM Plex Mono', monospace;
+    letter-spacing: .06em;
+}
+
+.car-download {
+    display: inline-flex; align-items: center; gap: 6px;
+    font-size: .75rem; font-weight: 700;
+    letter-spacing: .06em; text-transform: uppercase;
+    color: #fff;
+    background: linear-gradient(135deg, #1B4F9B 0%, #2A6CC4 100%);
+    border: none; border-radius: 50px;
+    padding: 7px 15px; text-decoration: none;
+    transition: transform .2s, box-shadow .2s, filter .2s;
+    box-shadow: 0 4px 14px rgba(27,79,155,0.45);
+    white-space: nowrap; flex-shrink: 0;
+}
+.car-download:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 24px rgba(27,79,155,0.65);
+    filter: brightness(1.14);
+}
+.car-download:active { transform: translateY(0); }
+.car-download svg { width: 12px; height: 12px; flex-shrink: 0; }
+.car-card { cursor: pointer; }
+
+/* controles */
+.car-controls {
+    display:flex; align-items:center; justify-content:center;
+    gap:1rem; margin-top:1.8rem; position:relative; z-index:10;
+}
+.car-btn {
+    width:48px; height:48px; border-radius:50%;
+    border:1.5px solid rgba(255,255,255,.3);
+    background:rgba(255,255,255,.08);
+    color:#fff; cursor:pointer; font-size:1.2rem;
+    display:flex; align-items:center; justify-content:center;
+    transition: all .3s;
+}
+.car-btn:hover { background:var(--primary); border-color:var(--primary); }
+.car-dots-wrap { display:flex; gap:6px; }
+.car-dot {
+    width:7px; height:7px; border-radius:50%;
+    background:rgba(255,255,255,.25); cursor:pointer; transition:all .3s;
+}
+.car-dot.active { background:#8DC63F; width:20px; border-radius:4px; }
+
+@media(max-width:900px) {
+    /* Carrossel */
+    .carousel-section { padding: 3.5rem 1.2rem; }
+    .carousel-track-outer { --car-visible: 2; }
+    }
+
+    /* ── Mobile (≤ 600px) ── */
+@media(max-width:600px) {
+    /* Carrossel */
+    .carousel-section { padding: 2.5rem 1rem; }
+    .carousel-track-outer { --car-visible: 1; }
+
+    .car-img { aspect-ratio: 16/7; }
+}
