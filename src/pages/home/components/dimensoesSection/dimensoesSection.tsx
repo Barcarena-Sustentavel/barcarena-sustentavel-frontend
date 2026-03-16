@@ -4,6 +4,8 @@ import consts from "../../../../utils/const.tsx";
 import DimensionLinkButton from "./dimensionLinkButton.tsx";
 import DimensaoCard from "./dimensaoCard.tsx";
 import SlideArtigos from "../slideArtigos/slideArtigosl.tsx";
+import api from "../../../../api.tsx"
+import RelatoriosCarousel from "../carrossel/RelatoriosCarousel.tsx";
 
 export const DimensoesSection: FC = () => {
 	const observerRef = useRef<IntersectionObserver | null>(null);
@@ -16,7 +18,8 @@ export const DimensoesSection: FC = () => {
 	// } = dimensoes.GetAllConst();
 	// const dimensoesColumn123 ={...dimensoesColumn1, ...dimensoesColumn2, ...dimensoesColumn3}
 	const [isOpen, setIsOpen] = useState(false);
-	const [icones, setIcones] = useState<Record<string, string> | null>(null);
+	const [icones, setIcones] = useState<Record<string, React.FC> | null>(null);
+	const [dimensoesTitulo, setDimensoesTitulo] = useState<Record<string, string> | null>(null);
 	const dimensoesOrdem = [
 		"emprego",
 		"meioAmbiente",
@@ -28,28 +31,6 @@ export const DimensoesSection: FC = () => {
 		"conectividade",
 		"instituicoes",
 	];
-	const dimensoesUrl: Record<string, string> = {
-		emprego: "Economia e Mercado de Trabalho",
-		meioAmbiente: "Meio Ambiente e Saneamento",
-		educacao: "Educação, Cultura e Lazer",
-		mobilidade: "Mobilidade",
-		ordenamento: "Ordenamento Territorial",
-		seguranca: "Segurança",
-		saude: "Saúde",
-		conectividade: "Conectividade",
-		instituicoes: "Instituições",
-	};
-	const dimensoesTitulo: Record<string, string> = {
-		emprego: "Economia e Mercado de Trabalho",
-		meioAmbiente: "Meio Ambiente e Saneamento",
-		educacao: "Educação, Cultura, Esporte e Lazer",
-		mobilidade: "Mobilidade",
-		ordenamento: "Ordenamento Territorial e Habitação",
-		seguranca: "Segurança",
-		saude: "Saúde",
-		conectividade: "Conectividade",
-		instituicoes: "Instituições Locais",
-	};
 	const dimensoesCores: Record<string, string> = {
 		emprego: "#d4594c",
 		meioAmbiente: "#c4b840",
@@ -61,33 +42,51 @@ export const DimensoesSection: FC = () => {
 		conectividade: "#2c3e7d",
 		instituicoes: "#E05A2B",
 	};
+	const keywordParaChave: Array<[string, string]> = [
+		['Economia',      'emprego'],
+		['Meio Ambiente', 'meioAmbiente'],
+		['Educa',         'educacao'],
+		['Mobilidade',    'mobilidade'],
+		['Ordenamento',   'ordenamento'],
+		['Seguran',       'seguranca'],
+		['Saúde',         'saude'],
+		['Conectividade', 'conectividade'],
+		['Institui',      'instituicoes'],
+	];
 
-	const {
-		dimensoesColumn1,
-		dimensoesColumn2,
-		dimensoesColumn3,
-		dimensoesCores123,
-		dimensaoAumentaIcone,
-		isLoaded,
-		setIsLoaded,
-	} = consts.GetAllConst();
-	const dimensoesColumn123 = {
-		...dimensoesColumn1,
-		...dimensoesColumn2,
-		...dimensoesColumn3,
+	const tituloParaChave = (titulo: string): string => {
+		const match = keywordParaChave.find(([keyword]) =>
+			titulo.toLowerCase().includes(keyword.toLowerCase())
+		);
+		return match ? match[1] : titulo.toLowerCase();
 	};
 
-	const testConsts = consts.GetAllConst();
+	// const {
+	// 	dimensoesColumn1,
+	// 	dimensoesColumn2,
+	// 	dimensoesColumn3,
+	// 	dimensoesCores123,
+	// 	dimensaoAumentaIcone,
+	// 	isLoaded,
+	// 	setIsLoaded,
+	// } = consts.GetAllConst();
+	// const dimensoesColumn123 = {
+	// 	...dimensoesColumn1,
+	// 	...dimensoesColumn2,
+	// 	...dimensoesColumn3,
+	// };
 
-	const todasAsCores = { ...dimensoesCores123 };
-	//console.log(dimensoesCores123)
-	//const [isOpen, setIsOpen] = useState(false);
-	// Callback ref para observar cada elemento assim que é montado
-	const dimensionItemRef = useCallback((node: HTMLDivElement | null) => {
-		if (node && observerRef.current) {
-			observerRef.current.observe(node);
-		}
-	}, []);
+	// const testConsts = consts.GetAllConst();
+
+	// const todasAsCores = { ...dimensoesCores123 };
+	// //console.log(dimensoesCores123)
+	// //const [isOpen, setIsOpen] = useState(false);
+	// // Callback ref para observar cada elemento assim que é montado
+	// const dimensionItemRef = useCallback((node: HTMLDivElement | null) => {
+	// 	if (node && observerRef.current) {
+	// 		observerRef.current.observe(node);
+	// 	}
+	// }, []);
 	useEffect(() => {
 		// setIsLoaded(true)
 
@@ -102,58 +101,65 @@ export const DimensoesSection: FC = () => {
 		//   },
 		//   { threshold: 0.1 }
 		// );
-		consts.loadAllIconsDimensions().then((loaded) => {
-			setIcones({
-				emprego: loaded[0],
-				meioAmbiente: loaded[1],
-				educacao: loaded[2],
-				mobilidade: loaded[3],
-				ordenamento: loaded[4],
-				seguranca: loaded[5],
-				saude: loaded[6],
-				conectividade: loaded[7],
-				instituicoes: loaded[8],
+		const url = "/dimensoes";
+		api.get(url).then( response => {
+			const titulos: string[] = response.data.dimensoes;
+
+			const mapa: Record<string, string> = {};
+			titulos.forEach(titulo => {
+			mapa[tituloParaChave(titulo)] = titulo;
 			});
-		});
-		return () => {
-			// Cleanup: desconectar o observer
-			if (observerRef.current) {
-				observerRef.current.disconnect();
+
+			setDimensoesTitulo(mapa);
 			}
-		};
+		);
+		const loaded = consts.loadAllIconsDimensions();
+		setIcones(loaded);
+		// return () => {
+		// 	// Cleanup: desconectar o observer
+		// 	if (observerRef.current) {
+		// 		observerRef.current.disconnect();
+		// 	}
+		// };
 	}, []);
 
-	//test consts
 	useEffect(() => {
-		console.log(testConsts);
-	}, [testConsts]);
+		console.log(icones);
+	}, [icones])
+
+	//test consts
+	// useEffect(() => {
+	// 	console.log(testConsts);
+	// }, [testConsts]);
 
 	if (!icones) return <div className="spinner-border" />;
+	if (!dimensoesTitulo) return <p>Carregando...</p>;
 
 	return (
-		<section className="dimensions" id="dimensoes">
-			<div className="sec-header">
-				<div className="sec-eyebrow">Áreas de Monitoramento</div>
-				<h2 className="sec-title">Escolha uma Dimensão</h2>
-				<p className="sec-sub">
+		<>
+			<section className="dimensions" id="dimensoes">
+				<div className="sec-header">
+					<div className="sec-eyebrow">Áreas de Monitoramento</div>
+					<h2 className="sec-title">Escolha uma Dimensão</h2>
+					<p className="sec-sub">
 					Acesse indicadores detalhados por área temática
-				</p>
-			</div>
-			<div className="dim-grid">
-				{dimensoesOrdem.map((item) => (
+					</p>
+				</div>
+				<div className="dim-grid">
+					{dimensoesOrdem.map((item) => (
 					<DimensaoCard
 						key={item}
 						titulo={dimensoesTitulo[item]}
 						icone={icones[item]}
-						url={dimensoesUrl[item]}
+						url={dimensoesTitulo[item]}
 						cor={dimensoesCores[item]}
 					/>
-				))}
-			</div>
-      <SlideArtigos
-					dimensoesList={dimensoesColumn123}
-					dimensoesCores={todasAsCores}
-				/>
-		</section>
+					))}
+				</div>
+			</section>
+
+			<RelatoriosCarousel dimensoesTitulo={dimensoesTitulo} />
+		</>
+
 	);
 };
