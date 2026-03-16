@@ -1,12 +1,13 @@
 /* h1 {
     font-size: xx-large;
     background: white;
-    position: relative;
-    padding: 16px;
-    font-weight: bolder !important;
-    font-family: "Brandom";
-    text-align: left;
-} */
+    /*position: relative;*/
+    /*padding: 16px;*/
+    /*font-weight: bolder !important;*/
+    /*font-family: "Brandom";*/
+    /*font-family: "Sora";*/
+    /*text-align: left;
+}*/
 
 p {
     color: var(--p-color);

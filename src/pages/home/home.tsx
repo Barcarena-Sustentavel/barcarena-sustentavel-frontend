@@ -3,10 +3,11 @@ import { useNavigate } from "react-router-dom";
 import "@assets/styles/index.css";
 import NavbarComponent from "../../components/layout/navbar/navbar.tsx";
 import ImageCarousel from "./components/carousel/carousel.tsx";
-import DimensoesSection from "./components/dimensoesSection/dimensoesSection.tsx";
+import {DimensoesSection} from "./components/dimensoesSection/dimensoesSection.tsx";
 import Footer from "../../components/layout/footer/footer.tsx";
 import Banner from "./components/banner/banner.tsx";
 
+import SlideArtigos from "./components/slideArtigos/slideArtigosl.tsx";
 const Home: FC = () => {
   const navigate = useNavigate();
   const handleClick = (dimensao: string) => {
