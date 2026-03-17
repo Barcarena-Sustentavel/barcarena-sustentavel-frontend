@@ -1,7 +1,7 @@
 import Highcharts from "highcharts";
 import HighchartsReact from "highcharts-react-official";
 //import 'highcharts/modules/exporting';
-import '../../../utils/highcharts/heatmap.js';
+//import '../../../utils/highcharts/heatmap.js';
 import React, { FC, useRef } from "react";
 import { DashboardProps } from "./interface/dashboard_interface.tsx";
 import { MaterialReactTable } from "material-react-table";

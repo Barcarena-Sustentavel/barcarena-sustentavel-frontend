@@ -2,7 +2,6 @@ import { FC, useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { Referencia } from "../../interfaces/referencia_interface.tsx";
 import { Dimensao } from "../../interfaces/dimensao_interface.tsx";
-import { EstudoComplementar } from "../../interfaces/estudo_complementar_interface.tsx";
 import NavbarComponent from "../../components/layout/navbar/navbar.tsx";
 import "@assets/styles/index.css";
 import "./dimensao.css";
@@ -11,14 +10,13 @@ import Footer from "../../components/layout/footer/footer.tsx";
 import SubmenuDimensao from "./components/submenuDimensao.tsx";
 import FormContribuicao from "./components/formContribuicao.tsx";
 import BackButton from "../../components/layout/backButton/backButton.tsx";
-//import MapaConectividade from "../kml/mapaOficial/conectividade/mapa_conectividade.tsx";
-//import MapaOrdenamento from "../kml/mapaOficial/ordenamentoTerritorial/mapa_ordenamento_territorial.tsx";
 import HTMLFileIframe from "../kml/mapa/map4.tsx";
-//import Map2 from "../kml/map2.tsx";
+import dimensoes from "../../utils/const.tsx";
 const NODE_ENV = import.meta.env.VITE_NODE_ENV;
 
 const DimensaoComponent: FC = () => {
   const { dimensao } = useParams();
+  const { dimensoesCores123 } = dimensoes.GetAllConst();
   //const [indicadores, setIndicadores] = useState<string[]>([]);
   const [indicadores, setIndicadores] = useState<
     Array<Record<string, string | number | null>>
@@ -42,39 +40,6 @@ const DimensaoComponent: FC = () => {
   let contadorGlobal = 0;
 
   // Função para obter a cor sequencial
-  const getProximaCor = () => {
-    const cor = coresBordas[contadorGlobal % coresBordas.length];
-    contadorGlobal++;
-    return cor;
-  };
-
-  const mockData = {
-    dimensao: {
-      id: 1,
-      nome: "Educação",
-      descricao: "Indicadores relacionados ao sistema educacional brasileiro",
-    },
-    indicadores: [
-      "Taxa de alfabetização",
-      "Anos médios de estudo",
-      "Investimento em educação (% do PIB)",
-    ],
-    estudos_complementares: ["Pesquisa de evasão escolar"],
-    referencias: [
-      {
-        id: 1,
-        nome: "IBGE - Educação",
-        link: "https://www.ibge.gov.br/educacao",
-        fkDimensao: "1",
-      },
-      {
-        id: 2,
-        nome: "INEP - Indicadores Educacionais",
-        link: "https://www.inep.gov.br/indicadores",
-        fkDimensao: "2",
-      },
-    ],
-  };
 
   const handleNavigateIndicador = (indicador: string) => {
     const url = encodeURI(`/${dimensao}/${indicador}/`);
@@ -88,7 +53,7 @@ const DimensaoComponent: FC = () => {
     setBotaoConectividade(event.target.value);
   };
   const mapasConectividade = ["Cobertura Móvel", "Conectividade na Educação", "Conectividade na Saúde"];
-  const [botaoConectividade, setBotaoConectividade] = useState<string>("");
+  const [botaoConectividade, setBotaoConectividade] = useState<string>("Cobertura Móvel");
   //--------------------------------------------------------------------------
   const handleDownloadEstudo = (estudo: string) => {
     const url = `api/dimensoes/${dimensao}/estudo_complementar/${estudo}/anexo/`;
@@ -109,10 +74,10 @@ const DimensaoComponent: FC = () => {
       } else {
         setPathHtml("https://victorsantiago.github.io/odsb_escolas/");
       }
-    } else if(dimensao === "Ordenamento Territorial"){
-        setPathHtml("https://victorsantiago.github.io/odsb_ordenamento/");
+    } else if (dimensao === "Ordenamento Territorial") {
+      setPathHtml("https://victorsantiago.github.io/odsb_ordenamento/");
 
-    }else {
+    } else {
       setPathHtml("");
     }
     api.get(url).then((response) => {
@@ -125,36 +90,46 @@ const DimensaoComponent: FC = () => {
     });
     //}
   }, [url, dimensao, botaoConectividade]);
+  console.log('cor', dimensoesCores123[dimensao as string])
   //--------------------------------------------------------------------------
   return (
     <div className="home-container">
       <NavbarComponent />
       <SubmenuDimensao dimensaoAtiva={dimensaoJson?.nome || ""} />
       <BackButton />
-      <div className="container dimension-details-container">
-        <div className="descricao">
-          <p style={{ borderLeft: `5px solid ${getProximaCor()}` }}>
+      <div className="dimensao-container">
+        <div className="descricao" style={{ borderLeft: `5px solid var(--${dimensoesCores123[dimensao as string]})` }}>
+          <p>
             {dimensaoJson?.descricao}
           </p>
         </div>
-      </div>
-      {pathHtml !== "" && (
-        <div className="mx-auto" style={{ 
-          width: "69%", 
-          height: "41rem", 
-          marginBottom: dimensao === "Conectividade" ? "6rem" : "0",
-          marginTop: dimensao === "Conectividade" ? "0": "21px"
-        }}>
-          {dimensao === "Conectividade" && (
-            <div
-              style={{
-                margin: "10px auto 5px auto",
-                width: "30%",
-                display: "flex",
-                justifyContent: "space-between",
-              }}
-            >
-              {mapasConectividade.map((mapa) => {
+        {pathHtml !== "" && (
+          <div className="mx-auto" style={{
+            width: "69%",
+            height: "41rem",
+            marginBottom: dimensao === "Conectividade" ? "6rem" : "0",
+            marginTop: dimensao === "Conectividade" ? "0" : "21px"
+          }}>
+            {dimensao === "Conectividade" && (
+              <div
+                style={{
+                  width: "100%",
+                  display: "flex",
+                  justifyContent: "space-between",
+                  marginTop: "2rem",
+                  marginBottom: "1rem"
+                }}
+              >
+                <select
+                  className="form-select"
+                  onChange={(e) => handleOnCick(e)}
+                  defaultValue={mapasConectividade[0]}
+                >
+                  {mapasConectividade.map((mapa) => (
+                    <option key={mapa} value={mapa}>{mapa}</option>
+                  ))}
+                </select>
+                {/* {mapasConectividade.map((mapa) => {
                 return (
                   <button
                     style={{
@@ -169,66 +144,73 @@ const DimensaoComponent: FC = () => {
                     {mapa}
                   </button>
                 );
-              })}
-            </div>
-          )}
-          <HTMLFileIframe htmlFilePath={pathHtml} />
+              })} */}
+              </div>
+            )}
+            <HTMLFileIframe htmlFilePath={pathHtml} />
+          </div>
+        )}
+        {/*<div className="container dimension-details-container">*/}
+        <div className="header-indicadores">
+          <h2>Indicadores</h2>
+          <span className="contador-indicadores">{indicadores.length} indicadores</span>
         </div>
-      )}
-      <div className="container dimension-details-container">
-        <h1>Indicadores</h1>
-        <ul className="indicadores">
+        <div className="indicadores-grid">
           {indicadores.length > 0 &&
             indicadores.map((indicador) => (
-              <li style={{ borderLeft: `5px solid ${getProximaCor()}` }}>
-                <button
-                  className="button-as-link"
-                  onClick={() =>
-                    handleNavigateIndicador(indicador.nome as string)
-                  }
-                >
-                  {indicador.nome}
-                </button>
-              </li>
+              <div
+                className="indicadores-grid-card"
+                style={{ borderTop: `3px solid var(--${dimensoesCores123[dimensao as string]})` }}
+                onClick={() =>
+                  handleNavigateIndicador(indicador.nome as string)
+                }
+              >
+                <div className="indicadores-grid-card-nome">{indicador.nome}</div>
+                <div className="ind-card-arrow">→</div>
+              </div>
+
             ))}
-        </ul>
-      </div>
-      {estudosComplementares.length != 0 && (<div className="container dimension-details-container">
-        <h1>Estudos Complementares</h1>
-        <ul className="indicadores">
-          {estudosComplementares.length > 0 &&
-            estudosComplementares.map((estudoComplementar) => (
-              <li style={{ borderLeft: `5px solid ${getProximaCor()}` }}>
-                <button
-                  className="button-as-link"
-                  onClick={() => handleDownloadEstudo(estudoComplementar)}
-                >
-                  {estudoComplementar}
-                </button>
-              </li>
-            ))}
-        </ul>
-      </div>)}
-      {/* <div className="container dimension-details-container mt-5 d-flex flex-column"> */}
-      <div className="container dimension-details-container d-flex flex-column">
-        <h1 style={{ borderBottom: "solid 1px #ddd" }}>Referências</h1>
+        </div>
+          {estudosComplementares.length != 0 &&
+        (<div className="secao-ref-estudoComplementar">
+          <h2>Estudos Complementares</h2>
+          <div className="secao-ref-estudoComplementar-lista">
+            {estudosComplementares.length > 0 &&
+              estudosComplementares.map((estudoComplementar) => (
+                  <button
+                    className="button-as-link"
+                    onClick={() => handleDownloadEstudo(estudoComplementar)}
+                  >
+                    {estudoComplementar}
+                  </button>
+              ))}
+          </div>
+        </div>)}
+        <div className="secao-ref-estudoComplementar">
+        <h2>Referências</h2>
         {referencias.length > 0 &&
           referencias.map((referencia) => (
-            <ul className="referencias">
-              {/* <li style={{ borderLeft: `5px solid ${getProximaCor()}` }}> */}
+            <ul className="secao-ref-estudoComplementar-lista-ul">
               <li>
                 {referencia?.link !== "" ? <a
-                  className="custom-link-tooplate-gotto-job"
                   href={`${referencia?.link}`}
                   target="_blank"
-                >{`${referencia?.nome}`}</a>:
-                <p className="custom-link-tooplate-gotto-job">{`${referencia?.nome}`}</p>
+                >{`${referencia?.nome}`}</a> :
+                  <p className="custom-link-tooplate-gotto-job">{`${referencia?.nome}`}</p>
                 }
               </li>
             </ul>
           ))}
+          <FormContribuicao
+        dimensaoId={0}
+        formStyle={{ borderLeft: `5px solid var(--${dimensoesCores123[dimensao as string]})` }}
+      />
       </div>
+      </div>
+    
+      {/* <div className="container dimension-details-container mt-5 d-flex flex-column"> */}
       
+
       {/* {dimensao === "Conectividade" &&
         <div className="divMapa">
           <MapaConectividade dimensao={dimensao} />
@@ -241,10 +223,7 @@ const DimensaoComponent: FC = () => {
         <div className="divMapa" style={{ margin: "2rem auto", width: "61%" }}>
           <HTMLFileIframe htmlFilePath={pathHtml}/>
         </div>} */}
-      <FormContribuicao
-        dimensaoId={0}
-        formStyle={{ borderLeft: `5px solid ${getProximaCor()}` }}
-      />
+      
       <Footer />
     </div>
   );

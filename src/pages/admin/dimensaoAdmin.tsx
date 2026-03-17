@@ -7,18 +7,23 @@ import api from "../../api.tsx"
 import {patchEmail, postEmail} from "./cruds/crudEmail.tsx"
 
 const RenderizarEstudo: FC<{
+                            patch:boolean,
+                            page: string,
                             isPopUpAberto:Record<string,any>,
                             setIsPopUpAberto:React.Dispatch<React.SetStateAction<Record<string,any>>>}> = 
-                            ({isPopUpAberto,setIsPopUpAberto}) => {
+                            ({patch, page,isPopUpAberto,setIsPopUpAberto}) => {
   
+  //Nome do estudo e arquivo para enviar para o backend, podendo ser modificado ou não
   const [nomeEstudo, setNomeEstudo] = useState<string>()
   const [arquivoEstudo, setArquivoEstudo] = useState<File>(new File([],''))
   const handleEnviar = async (estudo:string)  => {
     // Lógica de envio (FormData é necessário para arquivos)
     const formData = new FormData();
-    formData.append("nome", estudo);
+    formData.append("nome", nomeEstudo as string);
     if (arquivoEstudo) formData.append("pdf", arquivoEstudo);
-    let operacao = estudo === "" ? api.post("/admin/pagina_inicial/estudos_complementares/", formData) : api.patch(`/admin/pagina_inicial/estudo_complementar/${estudo}/`)
+    console.log(formData)
+    const pagina = page === "pinicial" ? "Pagina_inicial" : "Pagina_sobre"
+    let operacao = patch === false ? api.post("/admin/estudos_complementares/",formData,{params:{pagina:pagina}}) : api.patch(`/admin/estudo_complementar/${estudo}/`)
     try {
       operacao // Parse the JSON response body
       .then(json => console.log(json)) // Log the resulting data (e.g., the new post with an ID)
@@ -35,9 +40,8 @@ const RenderizarEstudo: FC<{
     if(isPopUpAberto.estudo !== ""){
       console.log(isPopUpAberto.estudo)
       const retornarEstudo = async () => {
-        await api.get(`/admin/pagina_inicial/estudos_complementares/path/`,{params:{estudoComplementarNome:isPopUpAberto.estudo}}).then((result) => {
+        await api.get(`/admin/estudos_complementares/path/`,{params:{estudoComplementarNome:isPopUpAberto.estudo}}).then((result) => {
         //Guardar o nome do estudo para mudar 
-        //enviarNomeEstudo = estudo
         //mudar o nome do estudo para o campo
         setNomeEstudo(result.data.estudo)
         //pega o path para mostrar para o usuário que o arquivo existe
@@ -75,6 +79,7 @@ const RenderizarEstudo: FC<{
         if (e.target.files !== null) setArquivoEstudo(e.target.files[0])
       }} />
       
+      {/*isPopUpaberto.estudo serve para guardar o nome do estudo que está sendo editado*/}
       <button onClick={(e) => handleEnviar(isPopUpAberto.estudo)}>Enviar Estudo</button>
     </div>
   );
@@ -88,8 +93,10 @@ const DimensaoAdmin: FC = () => {
   const { dimensoesColumn1, dimensoesColumn2, dimensoesColumn3,dimensoesCores123 } =
     dimensoes.GetAllConst();
   const deleteEstudos:string[] = []
+  const [patch, setPatch] = useState<boolean>(false)
   const [page, setPage] = useState<string>("dimensoes")
-  const [estudos, setEstudos] = useState<string[]>([])
+  const [estudosPaginaInicial, setEstudosPaginaInicial] = useState<string[]>([])
+  const [estudosPaginaSobre, setEstudosPaginaSobre] = useState<string[]>([])
   const [isPopUpAberto, setIsPopUpAberto] = useState<Record<string,any>>({estado:false,estudo:""})
   const [email, setEmail] = useState<string>("");
 
@@ -111,12 +118,14 @@ const DimensaoAdmin: FC = () => {
         console.error("Error fetching indicador data:", error);
       });
       await api
-      .get("/admin/pagina_inicial/estudos_complementares/")
+      .get("/admin/estudos_complementares/")
       .then((response) => {
         console.log("fetch de estudos")
-        setEstudos(response.data.estudos)
+        setEstudosPaginaInicial(response.data.estudosPaginaInicial)
+        setEstudosPaginaSobre(response.data.estudosPaginaSobre)
       }).catch((error) =>{
-        setEstudos([])
+        setEstudosPaginaInicial([])
+        setEstudosPaginaSobre([])
         console.log(error)
       })
       }
@@ -128,6 +137,24 @@ const DimensaoAdmin: FC = () => {
     e.preventDefault();
     emailAtual && emailAtual != "" ? patchEmail(email): postEmail(email);
     console.log("handlesubmitemail");
+  }
+
+  const listarEstudos = (estudos:Array<any>) => {
+
+    return (estudos.map((estudo) => 
+              {
+              const estudoNome:string = estudo
+              return (<span>
+              <input type="checkbox" onChange={(e) => modificarDeleteEstudos(e, estudoNome)}/>
+              <button className="btn btn-link text-dark text-decoration-none" value={
+                estudoNome
+              } onClick={(e) => {
+                setPatch(true)
+                setIsPopUpAberto({estado:true, estudo:estudoNome})
+                }}>{estudoNome}</button>
+              </span>)} 
+            ))
+             
   }
 
   const modificarDeleteEstudos = (e:any, nomeEstudo:string) => {
@@ -151,6 +178,7 @@ const DimensaoAdmin: FC = () => {
         <select className="form-select select-admin" name="" id="" onChange={(e) => setPage(e.target.value)}>
           <option value="dimensoes">Dimensões</option>
           <option value="pinicial">Página Inicial</option>
+          <option value="psobre">Página Sobre</option>
           <option value="contribuicao">Contribuição</option>
         </select>
         {page === "dimensoes" && <div className="dimensoes-grid-wallpaper">
@@ -243,29 +271,20 @@ const DimensaoAdmin: FC = () => {
         </div>
         </div>
       }
-      {page === "pinicial" && 
+      {(page === "pinicial"  || page === "psobre") && 
         <div className="dimensoes-grid-wallpaper" style={isPopUpAberto.estado === true ? {backgroundColor:'rgba(0,0,0,0.7)'} : {}}>
-          {isPopUpAberto.estado === true && <RenderizarEstudo isPopUpAberto={isPopUpAberto} setIsPopUpAberto={setIsPopUpAberto} /> }
+          {isPopUpAberto.estado === true && <RenderizarEstudo patch={patch} page={page} isPopUpAberto={isPopUpAberto} setIsPopUpAberto={setIsPopUpAberto} /> }
           <span> <button className="mt-5 mb-2" type="button" onClick={() => {
                                         setIsPopUpAberto({estado:true, estudo:''})
                                         }}>Adicionar</button> <button>Deletar selecionados</button></span>
           <div className="d-flex flex-column bg-white w-50 mx-auto align-items-start p-5">  
-            {estudos.map((estudo) => 
-              {
-              const estudoNome:string = estudo
-              return (<span>
-              <input type="checkbox" onChange={(e) => modificarDeleteEstudos(e, estudoNome)}/>
-              <button className="btn btn-link text-dark text-decoration-none" value={
-                estudoNome
-              } onClick={(e) => {
-                setIsPopUpAberto({estado:true, estudo:estudoNome})
-                }}>{estudoNome}</button>
-              </span>)} )}
+            {
+              page === "pinicial" ? listarEstudos(estudosPaginaInicial) : listarEstudos(estudosPaginaSobre)
+            }
           </div>
         </div>}
 
         {page === "contribuicao" && 
-          // </div>
           <div className="d-flex justify-content-center dimensoes-grid-wallpaper">
             <div className="d-flex flex-column container-contribuicao">
               <Form onSubmit={handleSubmitEmail}>

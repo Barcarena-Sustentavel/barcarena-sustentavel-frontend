@@ -12,8 +12,8 @@ interface FormContribuicaoProps {
     formStyle: React.CSSProperties;
 }
 
-const FormContribuicao: React.FC<FormContribuicaoProps> = ({ dimensaoId , formStyle = {}}) => {
-    const [formData, setFormData] = useState<Omit<Contribuicao, 'id' | 'fkDimensao'> & { file: File | null}>({
+const FormContribuicao: React.FC<FormContribuicaoProps> = ({ dimensaoId, formStyle = {} }) => {
+    const [formData, setFormData] = useState<Omit<Contribuicao, 'id' | 'fkDimensao'> & { file: File | null }>({
         nome: null,
         email: '',
         telefone: null,
@@ -42,14 +42,14 @@ const FormContribuicao: React.FC<FormContribuicaoProps> = ({ dimensaoId , formSt
         setCaptchaValido(!!value);
     }
     const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        const file = e.target.files ? e.target.files[0]: null;
+        const file = e.target.files ? e.target.files[0] : null;
         if (!file) return; // nada selecionado
 
         // ✅ Validação de tipo (MIME)
         if (file.type !== "application/pdf") {
-        setErrorArquivo("O arquivo deve ser um PDF.");
-        e.target.value = ""; // limpa o campo
-        return;
+            setErrorArquivo("O arquivo deve ser um PDF.");
+            e.target.value = ""; // limpa o campo
+            return;
         }
 
         // ✅ Validação de tamanho (em bytes)
@@ -57,9 +57,9 @@ const FormContribuicao: React.FC<FormContribuicaoProps> = ({ dimensaoId , formSt
         const maxSizeBytes = maxSizeMB * 1024 * 1024;
 
         if (file.size > maxSizeBytes) {
-        setErrorArquivo(`O arquivo deve ter no máximo ${maxSizeMB} MB.`);
-        e.target.value = "";
-        return;
+            setErrorArquivo(`O arquivo deve ter no máximo ${maxSizeMB} MB.`);
+            e.target.value = "";
+            return;
         }
 
         setFormData(prev => ({ ...prev, file: e.target.files![0] }));
@@ -69,18 +69,18 @@ const FormContribuicao: React.FC<FormContribuicaoProps> = ({ dimensaoId , formSt
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
 
-        if(formData.nome){
-            if(formData.nome.length > 100){
+        if (formData.nome) {
+            if (formData.nome.length > 100) {
                 setErrorNome(prev => ("Insira um nome menor que 100 caracteres."));
                 return;
             }
-        } else{
+        } else {
             setErrorNome(prev => ("Campo de nome vazio."));
             return;
         }
-        
-        if(formData.email){
-            if(formData.email.length > 250){
+
+        if (formData.email) {
+            if (formData.email.length > 250) {
                 setErrorEmail(prev => ("Insira um email menor que 250 caracteres."));
                 return;
             }
@@ -89,21 +89,21 @@ const FormContribuicao: React.FC<FormContribuicaoProps> = ({ dimensaoId , formSt
             return;
         }
 
-        if(formData.telefone){
-            if(formData.telefone.length != 11){
+        if (formData.telefone) {
+            if (formData.telefone.length != 11) {
                 setErrorTelefone(prev => ("Insira um número de telefone no formato XX9XXXXXXXX."));
                 return;
             }
-            if(/[a-z]/i.test(formData.telefone)){
+            if (/[a-z]/i.test(formData.telefone)) {
                 setErrorTelefone(prev => ("Insira apenas números."));
                 return;
             }
         }
 
-        if(!formData.comentario){
+        if (!formData.comentario) {
             setErrorComentario("Campo de comentário vazio.");
         }
-        
+
         const data = new FormData();
         data.append('nome', formData.nome ?? "");
         data.append('email', formData.email ?? "");
@@ -125,14 +125,14 @@ const FormContribuicao: React.FC<FormContribuicaoProps> = ({ dimensaoId , formSt
                     icon: 'success',
                     confirmButtonColor: 'var(--primary-color)',
                 });
-              setFormData({
-                nome: '',
-                email: '',
-                telefone: '',
-                comentario: '',
-                file: null
-              });
-              if (fileRef.current) {
+                setFormData({
+                    nome: '',
+                    email: '',
+                    telefone: '',
+                    comentario: '',
+                    file: null
+                });
+                if (fileRef.current) {
                     fileRef.current.value = "";
                 }
             },
@@ -142,126 +142,56 @@ const FormContribuicao: React.FC<FormContribuicaoProps> = ({ dimensaoId , formSt
                     text: message,
                     icon: 'error',
                     confirmButtonColor: 'var(--primary-color)',
-                  });
+                });
             }
         });
     };
 
     return (
-        <section className="mx-auto contribuicao-section">
-            <div className="d-flex justify-content-center align-items-center header-contribuicao">
-                <span>Deixe aqui sua contribuição</span>
-            </div>
-            <div className="">
-                <div className="contribuicao-corpo">
-                    <Form onSubmit={handleSubmit}>
-                        {/* 1. Adicionei a Row principal para segurar as duas colunas */}
-                        <Row>
-                            {/* COLUNA DA ESQUERDA (Ocupa metade da tela: md={6}) */}
-                            <Col md={6}>
-                                <Form.Group className="mb-3" controlId="formNome">
-                                    <Form.Label>Nome</Form.Label>
-                                    <Form.Control 
-                                    type="text" 
-                                    className="border border-dark" 
-                                    placeholder="Digite seu nome"
-
-                                    name="nome"                 // 1. O "nome" da chave
-                                    value={formData.nome ?? ""}       // 2. O valor atual do estado
-                                    onChange={handleChange}
-                                    />
-                                    {errorNome && (
-                                        <Alert variant="danger" className="mt-2">
-                                            {errorNome}
-                                        </Alert>
-                                    )}
-                                </Form.Group>
-
-                                <Form.Group className="mb-3" controlId="formEmail">
-                                    <Form.Label>E-mail</Form.Label>
-                                    <Form.Control 
-                                    type="email" 
-                                    className="border border-dark" 
-                                    placeholder="Digite seu e-mail"
-
-                                    name="email"
-                                    value={formData.email ?? ""}
-                                    onChange={handleChange}
-                                    />
-                                    {errorEmail && (
-                                        <Alert variant="danger" className="mt-2">
-                                            {errorEmail}
-                                        </Alert>
-                                    )}
-                                </Form.Group>
-
-                                <Form.Group className="mb-3" controlId="formTel">
-                                    <Form.Label>Telefone</Form.Label>
-                                    <Form.Control 
-                                    type="tel" 
-                                    className="border border-dark" 
-                                    placeholder="Digite seu telefone"
-
-                                    name="telefone"
-                                    value={formData.telefone ?? ""}
-                                    onChange={handleChange}
-                                    />
-                                    {errorTelefone && (
-                                        <Alert variant="danger" className="mt-2">
-                                            {errorTelefone}
-                                        </Alert>
-                                    )}
-                                </Form.Group>
-                            </Col>
-
-                            {/* COLUNA DA DIREITA (Ocupa a outra metade: md={6}) */}
-                            <Col md={6}>
-                                <Form.Group className="mb-3" controlId="formComment">
-                                    <Form.Label>Comentário</Form.Label>
-                                    <Form.Control 
-                                    as="textarea" 
-                                    className="border border-dark campo-comentario" 
-                                    rows={3} 
-                                    placeholder="Digite seu comentário"
-
-                                    name="comentario"
-                                    value={formData.comentario ?? ""}
-                                    onChange={handleChange}
-                                    />
-                                </Form.Group>
-                                {errorComentario && (
-                                        <Alert variant="danger" className="mt-2">
-                                            {errorComentario}
-                                        </Alert>
-                                    )}
-
-                                <Form.Group className="mb-3" controlId="formFile">
-                                    <Form.Label>Anexar Arquivo</Form.Label>
-                                    <Form.Control type="file" onChange={handleFileChange} ref={fileRef}/>
-                                    {errorArquivo && (
-                                        <Alert variant="danger" className="mt-2">
-                                            {errorArquivo}
-                                        </Alert>
-                                    )}
-                                </Form.Group>
-                            </Col>
-                        </Row>
-                        <div className="d-flex align-items-center mx-auto campo-informacao">
-                            <img src={info_icon} className="info-icone"></img>
-                             <span className="info-texto">Deixe um feedback ou um comentário para contribuir com a plataforma, caso queira adicionar um dado 
-                                interessante, anexe arquivos no botão indicado. (Máximo de 25mb)</span>
-                        </div>
-                        <div className="d-flex justify-content-center recaptcha">
-                            <ReCAPTCHA
+        <form onSubmit={handleSubmit} className="contribuicao-section">
+            <h2>Deixe aqui sua contribuição</h2>
+            <div  className="contribuicao-grid">
+                {/*<form onSubmit={handleSubmit}>*/}
+                {/* 1. Adicionei a Row principal para segurar as duas colunas */}
+                <div className='contribuicao-campo'><label>Nome <span className="contribuicao-requerida">*</span></label>
+                    <input id="contrib-nome" type="text" placeholder="Digite seu nome" value={formData.nome ?? ""}       // 2. O valor atual do estado
+                        onChange={handleChange}></input></div>
+                <div className="contribuicao-campo" style={{ gridRow: 'span 2' }}>
+                    <label>Comentário <span className="contribuicao-requerida">*</span></label>
+                    <textarea id="contrib-comentario" placeholder="Digite seu comentário" value={formData.comentario ?? ""}
+                        onChange={handleChange}></textarea>
+                </div>
+                <div className="contribuicao-campo">
+                    <label>E-mail <span className="contribuicao-requerida">*</span></label>
+                    <input id="contrib-email" type="email" placeholder="exemplo@email.com" value={formData.email ?? ""}
+                        onChange={handleChange}></input>
+                </div>
+                <div className="contribuicao-campo">
+                    <label>Telefone <span className="contribuicao-requerida">*</span></label>
+                    <input id="contrib-telefone" type="tel" placeholder="(00) 00000-0000" value={formData.telefone ?? ""}
+                        onChange={handleChange}></input>
+                </div>
+                <div className="contribuicao-campo contrib-field-file">
+                    <label>Anexar Arquivo</label>
+                    <input type="file"></input>
+                </div>
+                <div className="contribuicao-info">
+                    <div className="contribuicao-info-icone">i</div>
+                    <span>Deixe um feedback ou um comentário para contribuir com a plataforma. Caso queira adicionar um dado interessante, anexe arquivos no botão indicado. (Máximo de 25mb)</span>
+                </div>
+                </div>
+                <div className="contribuicao-campo recaptcha">
+                    <div>
+                        <ReCAPTCHA
                             sitekey={SITE_KEY_RECAPTCHA}
                             onChange={onChangeRecaptcha}
-                            />
-                        </div>
-                        <Button className="mx-auto botao-contribuicao" variant="primary" type="submit">Enviar</Button>
-                    </Form>
+                        />
+                    </div>
+                    <button type="submit" className="contribuicao-submit">
+                        Enviar
+                    </button>
                 </div>
-            </div>
-        </section>
+        </form>
     );
 };
 

@@ -1,172 +1,165 @@
-import React, { FC, useEffect, useRef, useCallback, useState } from 'react';
-import './dimensoes-section.css';
-import dimensoes from '../../../../utils/const.tsx';
-import DimensionLinkButton from './dimensionLinkButton.tsx';
+import React, { FC, useEffect, useRef, useCallback, useState } from "react";
+import "./dimensoes-section.css";
+import consts from "../../../../utils/const.tsx";
+import DimensionLinkButton from "./dimensionLinkButton.tsx";
+import DimensaoCard from "./dimensaoCard.tsx";
+import SlideArtigos from "../slideArtigos/slideArtigosl.tsx";
+import api from "../../../../api.tsx"
+import RelatoriosCarousel from "../carrossel/RelatoriosCarousel.tsx";
 
-const DimensoesSection: FC = () => {
-  const observerRef = useRef<IntersectionObserver | null>(null);
-  const {
-    dimensoesColumn1,
-    dimensoesColumn2,
-    dimensoesColumn3,
-    dimensoesCores123,
-    dimensaoAumentaIcone,
-    isLoaded,
-    setIsLoaded
-  } = dimensoes.GetAllConst();
-  const dimensoesColumn123 ={...dimensoesColumn1, ...dimensoesColumn2, ...dimensoesColumn3}
-  const [isOpen, setIsOpen] = useState(false);
+export const DimensoesSection: FC = () => {
+	const observerRef = useRef<IntersectionObserver | null>(null);
+	// const {
+	//   dimensoesColumn1,
+	//   dimensoesColumn2,
+	//   dimensoesColumn3,
+	//   isLoaded,
+	//   setIsLoaded
+	// } = dimensoes.GetAllConst();
+	// const dimensoesColumn123 ={...dimensoesColumn1, ...dimensoesColumn2, ...dimensoesColumn3}
+	const [isOpen, setIsOpen] = useState(false);
+	const [icones, setIcones] = useState<Record<string, React.FC> | null>(null);
+	const [dimensoesTitulo, setDimensoesTitulo] = useState<Record<string, string> | null>(null);
+	const dimensoesOrdem = [
+		"emprego",
+		"meioAmbiente",
+		"educacao",
+		"mobilidade",
+		"ordenamento",
+		"seguranca",
+		"saude",
+		"conectividade",
+		"instituicoes",
+	];
+	const dimensoesCores: Record<string, string> = {
+		emprego: "#d4594c",
+		meioAmbiente: "#c4b840",
+		educacao: "#1B4F9B",
+		mobilidade: "#d4b840",
+		ordenamento: "#4ecdc4",
+		seguranca: "#5abf80",
+		saude: "#8b3a3a",
+		conectividade: "#2c3e7d",
+		instituicoes: "#E05A2B",
+	};
+	const keywordParaChave: Array<[string, string]> = [
+		['Economia',      'emprego'],
+		['Meio Ambiente', 'meioAmbiente'],
+		['Educa',         'educacao'],
+		['Mobilidade',    'mobilidade'],
+		['Ordenamento',   'ordenamento'],
+		['Seguran',       'seguranca'],
+		['Saúde',         'saude'],
+		['Conectividade', 'conectividade'],
+		['Institui',      'instituicoes'],
+	];
 
-  useEffect(() => {
-    setIsLoaded(true)
+	const tituloParaChave = (titulo: string): string => {
+		const match = keywordParaChave.find(([keyword]) =>
+			titulo.toLowerCase().includes(keyword.toLowerCase())
+		);
+		return match ? match[1] : titulo.toLowerCase();
+	};
 
-    // Criar o observer uma vez
-    observerRef.current = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry) => {
-          if (entry.isIntersecting) {
-            entry.target.classList.add('animate-in');
-          }
-        });
-      },
-      { threshold: 0.1 }
-    );
+	// const {
+	// 	dimensoesColumn1,
+	// 	dimensoesColumn2,
+	// 	dimensoesColumn3,
+	// 	dimensoesCores123,
+	// 	dimensaoAumentaIcone,
+	// 	isLoaded,
+	// 	setIsLoaded,
+	// } = consts.GetAllConst();
+	// const dimensoesColumn123 = {
+	// 	...dimensoesColumn1,
+	// 	...dimensoesColumn2,
+	// 	...dimensoesColumn3,
+	// };
 
-    return () => {
-      // Cleanup: desconectar o observer
-      if (observerRef.current) {
-        observerRef.current.disconnect();
-      }
-    };
-  },[]);
+	// const testConsts = consts.GetAllConst();
 
-  // Callback ref para observar cada elemento assim que é montado
-  const dimensionItemRef = useCallback((node: HTMLDivElement | null) => {
-    if (node && observerRef.current) {
-      observerRef.current.observe(node);
-    }
-  }, []);
+	// const todasAsCores = { ...dimensoesCores123 };
+	// //console.log(dimensoesCores123)
+	// //const [isOpen, setIsOpen] = useState(false);
+	// // Callback ref para observar cada elemento assim que é montado
+	// const dimensionItemRef = useCallback((node: HTMLDivElement | null) => {
+	// 	if (node && observerRef.current) {
+	// 		observerRef.current.observe(node);
+	// 	}
+	// }, []);
+	useEffect(() => {
+		// setIsLoaded(true)
 
-  return (
-    <div id="dimensoesPai">
-      <h2 className="text-center pt-3">Escolha uma dimensão</h2>
+		// Criar o observer uma vez
+		// observerRef.current = new IntersectionObserver(
+		//   (entries) => {
+		//     entries.forEach((entry) => {
+		//       if (entry.isIntersecting) {
+		//         entry.target.classNameList.add('animate-in');
+		//       }
+		//     });
+		//   },
+		//   { threshold: 0.1 }
+		// );
+		const url = "/dimensoes";
+		api.get(url).then( response => {
+			const titulos: string[] = response.data.dimensoes;
 
-      <div id="dimensoes" className="px-md-5 py-1">
-        {/* First column */}
-        <div className="col-30 d-flex flex-column px-md-5" style={{marginLeft: "auto"}}>
-          {isLoaded && Object.entries(dimensoesColumn1).map(([item, value]) => (
-            <DimensionLinkButton
-              to={`/${item}`}
-              color={dimensoesCores123[item]}
-              key={item}
-              increaseIcon={dimensaoAumentaIcone[item]}
-            >
-              <div ref={dimensionItemRef} className="dimensao-item d-flex flex-row align-items-center justify-content-between my-2">
-                <p>{item}</p>
-                <div
-                  className="icon-color"
-                  style={{
-                    maskImage: `url(${value})`,
-                    WebkitMaskImage: `url(${value})`,
-                    maskRepeat: 'no-repeat',
-                    WebkitMaskRepeat: 'no-repeat',
-                    maskSize: 'contain',
-                    WebkitMaskSize: 'contain',
-                  }}
-                />
-              </div>
-            </DimensionLinkButton>
-          ))}
-        </div>
+			const mapa: Record<string, string> = {};
+			titulos.forEach(titulo => {
+			mapa[tituloParaChave(titulo)] = titulo;
+			});
 
-        {/* Second column */}
-        <div className="col-30 d-flex flex-column px-md-5">
-          {isLoaded && Object.entries(dimensoesColumn2).map(([item, value]) => (
-            <DimensionLinkButton
-              to={`/${item}`}
-              color={dimensoesCores123[item]}
-              key={item}
-              increaseIcon={dimensaoAumentaIcone[item]}
-            >
-              <div ref={dimensionItemRef} className="dimensao-item d-flex flex-row align-items-center justify-content-between my-2">
-                <p>{item}</p>
-                <div
-                  className="icon-color"
-                  style={{
-                    maskImage: `url(${value})`,
-                    WebkitMaskImage: `url(${value})`,
-                    maskRepeat: 'no-repeat',
-                    WebkitMaskRepeat: 'no-repeat',
-                    maskSize: 'contain',
-                    WebkitMaskSize: 'contain',
-                  }}
-                />
-              </div>
-            </DimensionLinkButton>
-          ))}
-        </div>
+			setDimensoesTitulo(mapa);
+			}
+		);
+		const loaded = consts.loadAllIconsDimensions();
+		setIcones(loaded);
+		// return () => {
+		// 	// Cleanup: desconectar o observer
+		// 	if (observerRef.current) {
+		// 		observerRef.current.disconnect();
+		// 	}
+		// };
+	}, []);
 
-        <div className="col-30 d-flex flex-column px-md-5" style={{marginRight: "auto"}}>
-          {isLoaded && Object.entries(dimensoesColumn3).map(([item, value]) => (
-            <DimensionLinkButton
-              to={`/${item}`}
-              color={dimensoesCores123[item]}
-              key={item}
-              increaseIcon={dimensaoAumentaIcone[item]}
-            >
-              <div ref={dimensionItemRef} className="dimensao-item d-flex flex-row align-items-center justify-content-between my-2">
-                <p>{item}</p>
-                <div
-                  className="icon-color"
-                  style={{
-                    maskImage: `url(${value})`,
-                    WebkitMaskImage: `url(${value})`,
-                    maskRepeat: 'no-repeat',
-                    WebkitMaskRepeat: 'no-repeat',
-                    maskSize: 'contain',
-                    WebkitMaskSize: 'contain',
-                  }}
-                />
-              </div>
-            </DimensionLinkButton>
-          ))}
-        </div>
-      </div>
-      <div id="dimensoesDropdown">
-        <button 
-        className="dropdown-button" 
-        onClick={() => setIsOpen(!isOpen)}
-        >
-        <span className={`arrow ${isOpen ? 'up' : 'down'}`}><h2>Escolha uma Dimensão</h2>▼</span>
-        </button>
-        <div className="d-flex flex-column px-md-5" style={{marginRight: "auto"}}>
-        {isOpen && isLoaded && Object.entries(dimensoesColumn123).map(([item, value]) => (
-            <DimensionLinkButton
-              to={`/${item}`}
-              color={dimensoesCores123[item]}
-              key={item}
-              increaseIcon={dimensaoAumentaIcone[item]}
-            >
-              <div ref={dimensionItemRef} className="dimensao-item d-flex flex-row align-items-center justify-content-between my-2">
-                <p>{item}</p>
-                <div
-                  className="icon-color"
-                  style={{
-                    maskImage: `url(${value})`,
-                    WebkitMaskImage: `url(${value})`,
-                    maskRepeat: 'no-repeat',
-                    WebkitMaskRepeat: 'no-repeat',
-                    maskSize: 'contain',
-                    WebkitMaskSize: 'contain',
-                  }}
-                />
-              </div>
-            </DimensionLinkButton>
-          ))}
-          </div>
-      </div>
-    </div>
-  );
+	useEffect(() => {
+		console.log(icones);
+	}, [icones])
+
+	//test consts
+	// useEffect(() => {
+	// 	console.log(testConsts);
+	// }, [testConsts]);
+
+	if (!icones) return <div className="spinner-border" />;
+	if (!dimensoesTitulo) return <p>Carregando...</p>;
+
+	return (
+		<>
+			<section className="dimensions" id="dimensoes">
+				<div className="sec-header">
+					<div className="sec-eyebrow">Áreas de Monitoramento</div>
+					<h2 className="sec-title">Escolha uma Dimensão</h2>
+					<p className="sec-sub">
+					Acesse indicadores detalhados por área temática
+					</p>
+				</div>
+				<div className="dim-grid">
+					{dimensoesOrdem.map((item) => (
+					<DimensaoCard
+						key={item}
+						titulo={dimensoesTitulo[item]}
+						icone={icones[item]}
+						url={dimensoesTitulo[item]}
+						cor={dimensoesCores[item]}
+					/>
+					))}
+				</div>
+			</section>
+
+			<RelatoriosCarousel dimensoesTitulo={dimensoesTitulo} />
+		</>
+
+	);
 };
-
-export default DimensoesSection;

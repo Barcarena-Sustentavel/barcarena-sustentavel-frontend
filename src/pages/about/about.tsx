@@ -8,19 +8,51 @@ import image_mandala from "@assets/images/about/mandala_odsb-1.png";
 import "./about.css";
 import api from "../../api.tsx";
 import { getArtigoDimensao } from "../admin/create/artigo/crudArtigo.tsx";
+import downloadIcon from '../../assets/images/icons/download-svgrepo-com.svg';
 
 const About: FC = () => {
   const [dimensoes, setDimensoes] = useState<string[]>([]);
+  const [estudos, setNomeEstudos] = useState<string[]>([])
+  
   const urlDimensoes: string = "/dimensoes/";
 
   const getDownloadCard = (dimensao: string) => {
     return (<div className="d-flex align-items-center card-download-short-paper col-4">
-            <p className="dimensao-short-paper">{dimensao}</p>
-            <button className="download-paper-button btn btn-primary"
-            onClick={() => getArtigoDimensao(dimensao)}>Download</button>
+            <a className="dimensao-short-paper"
+            onClick={() => getArtigoDimensao(dimensao)}>{dimensao}
+            </a>
+            {/* <button className="download-paper-button btn btn-primary"
+            onClick={() => getArtigoDimensao(dimensao)}>Download</button> */}
           </div>)
   };
+  const downloadEstudo = async (estudo:string) =>{
+    api.get("/estudos_complementares/arquivo", {params: {estudoComplementarNome: estudo}})
+       .then((response) =>{
+        const pdfBlob = new Blob([response.data.arquivo_data], { type: 'application/pdf' });
+        const url = window.URL.createObjectURL(pdfBlob);
+        const tempLink = document.createElement('a');
+        tempLink.href = url;
 
+        tempLink.setAttribute('download', `${estudo}.pdf`);
+        document.body.appendChild(tempLink);
+        tempLink.click();
+        document.body.removeChild(tempLink);
+        window.URL.revokeObjectURL(url);
+       })
+  }
+ useEffect(() => {
+    const fetchEstudos = async () => {
+      await api.get("/estudos_complementares/",{params:{pagina:"Pagina_sobre"}}).then((response) => {
+        const estudosData = response.data.estudos;
+        const estudosNomes = estudosData.map((estudo: string) => estudo);
+        console.log(estudosNomes);
+        setNomeEstudos(estudosNomes);
+      }).catch((error) => {
+        console.error("Erro ao buscar estudos complementares:", error);
+      });
+    }
+    fetchEstudos();
+  },[])
   useEffect(() => {
     api
       .get(urlDimensoes)
@@ -164,12 +196,17 @@ const About: FC = () => {
         <div className="d-flex mx-auto align-items-center justify-content-center conteudo-pagina secao-download-papers row">
           {dimensoes.map((dimensao) => getDownloadCard(dimensao))}
         </div>
-        {/* <div className="d-flex mx-auto align-items-center justify-content-center conteudo-pagina secao-download-papers row">
-          <div className="d-flex align-items-center card-download-short-paper col-4">
-            <p className="dimensao-short-paper">Conectividade</p>
-            <button className="download-paper-button btn btn-primary">Download</button>
-          </div>
-        </div> */}
+        <p className="mx-auto sobre-titulo">Download de Estudos Complementares</p>
+        <div className="d-flex mx-auto align-items-center justify-content-center conteudo-pagina secao-download-papers row">
+          {estudos.map((estudo, index) => (
+                  <div key={index} className="w-1/2 d-flex justify-content-between align-items-center bg-primary rounded p-3 h-100">
+                    <p className="mb-0">{estudo}</p>
+                    <button className="btn btn-link p-0" onClick={() => downloadEstudo(estudo)}> 
+                      <img src={downloadIcon} className="bg-light" alt="Download" style={{width: '24px', height: '24px'}} />
+                    </button>
+                  </div>
+              ))}
+        </div>
       </main>
       <Footer />
     </div>

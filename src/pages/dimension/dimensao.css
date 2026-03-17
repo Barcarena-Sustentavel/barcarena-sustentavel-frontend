@@ -1,19 +1,3 @@
-h1 {
-    font-size: xx-large;
-    background: white;
-    position: relative;
-    padding: 16px;
-    font-weight: bolder !important;
-    font-family: "Brandom";
-    text-align: left;
-}
-
-p {
-    color: var(--p-color);
-    font-size: var(--p-font-size);
-    font-weight: var(--font-weight-light);
-}
-
 .dimension-details-container {
     border-radius: 4px;
     border: 1px solid grey;
@@ -31,6 +15,138 @@ p {
     padding-left: 16px;
 }
 
+.dimensao-container{
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 3.5rem 3rem;
+}
+.descricao{
+  background: #fff;
+  border-radius: 16px;
+  padding: 2.5rem;
+  /*border-left: 5px solid;*/
+  margin-bottom: 3rem;
+}
+.descricao p {
+    font-family: 'Sora', sans-serif;
+    color: var(--text-light);
+    font-size: 0.97rem;
+    line-height: 1.85;
+}
+.header-indicadores{
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+}
+.header-indicadores h2{
+  font-size: 1.1rem;
+  font-weight: 800;
+  color: var(--dark);
+}
+.indicadores-grid{
+  display: grid;
+  grid-template-columns: repeat(3,1fr);
+  gap: 1rem;
+}
+.indicadores-grid-card{
+    font-family: 'Sora', sans-serif;
+  background: #fff;
+  border-radius: 12px;
+  padding: 1.4rem 1.2rem;
+  text-decoration: none;
+  display: block;
+  position: relative;
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+.indicadores-grid-card:hover{
+  transform: translateY(-4px);
+  box-shadow: 0 10px 28px rgba(0,0,0,0.10);
+}
+.indicadores-grid-card-nome{
+  font-size: 0.88rem;
+  font-weight: 700;
+  color: var(--dark);
+  line-height: 1.4;
+}
+.indicadores-grid-flecha{
+  position: absolute;
+  right: 1rem;
+  bottom: 1rem;
+  font-size: 1rem;
+  opacity: 0.5;
+  transition: opacity 0.2s, transform 0.2s;
+
+}
+.contador-indicadores{
+  background: #c0392b22;
+  color: #c0392b;
+  border: 1px solid #c0392b44;
+  border-radius: 20px;
+  padding: 2px 12px;
+  font-size: 0.72rem;
+  font-weight: 700;
+  font-family: 'IBM Plex Mono',monospace;
+}
+
+.secao-ref-estudoComplementar{
+  background: #fff;
+  border-radius: 16px;
+  padding: 2rem 2.5rem;
+  margin-top: 2rem;
+}
+.secao-ref-estudoComplementar h2{
+  font-size: 1rem;
+  font-weight: 800;
+  color: var(--dark);
+  margin-bottom: 1.2rem;
+}
+.secao-ref-estudoComplementar-lista{
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+}
+.secao-ref-estudoComplementar-lista button{
+  font-family: 'Sora', sans-serif;
+  display: block;
+  padding: 0.75rem 0;
+  color: var(--primary-dark);
+  text-decoration: none;
+  font-size: 0.88rem;
+  font-weight: 600;
+  border-bottom: 1px solid var(--border);
+  transition: color 0.2s, transform 0.2s;
+  width: 100%;
+  text-align: -webkit-left;
+}
+.secao-ref-estudoComplementar-lista button:hover{
+  transform: translateX(4px);
+}
+.secao-ref-estudoComplementar-lista-ul{
+  list-style: none;
+  padding: 0;
+}
+.secao-ref-estudoComplementar-lista-ul li{
+  font-family: 'Sora', sans-serif;
+  padding: 0.5rem 0 0.5rem 1rem;
+  border-bottom: 1px solid var(--border);
+  font-size: 0.88rem;
+  color: var(--primary);
+  text-decoration: none;
+  transition: color 0.2s;
+  line-height: 1.6;
+  position: relative;
+}
+.secao-ref-estudoComplementar-lista-ul li::before {
+  content: '•';
+  position: absolute;
+  left: 0;
+  color: var(--primary);
+}
+.secao-ref-estudoComplementar-lista-ul li a{
+  color: var(--primary);
+}
+
 .dimension-details-container ul.indicadores
 /* , .dimension-details-container ul.referencias  */ {
     list-style-type: none !important;
@@ -39,7 +155,6 @@ p {
     border-top: solid 1px #ddd;
     background: var(--secondary-gray);
 }
-.dimension-details-container .descricao,
 .dimension-details-container .contribuicao {
     padding: 16px;
     margin: 0 !important;
@@ -48,8 +163,6 @@ p {
 }
 
 .dimension-details-container ul.indicadores li,
-/* .dimension-details-container ul.referencias li, */
-.dimension-details-container .descricao p,
 .dimension-details-container .contribuicao form {
     padding: 16px;
     background: white;
@@ -112,4 +225,18 @@ a.custom-link-tooplate-gotto-job:hover {
     width: 100%;
     height: 100%;
     margin: 0 auto;
+}
+
+@media (max-width: 900px){
+  .indicadores-grid{
+    grid-template-columns: 1fr 1fr;
+  }
+}
+@media (max-width: 600px){
+  .indicadores-grid{
+    grid-template-columns: 1fr;
+  }
+  .descricao p{
+    font-size: 0.8rem;
+  }
 }

@@ -1,10 +1,11 @@
+@import url('https://fonts.googleapis.com/css2?family=Sora:wght@100..800&display=swap');
 :root {
-    font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
+    font-family: 'Sora', Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
     line-height: 1.5;
     font-weight: 400;
 
     color-scheme: light dark;
-    color: rgba(255, 255, 255, 0.87);
+    /*color: rgba(255, 255, 255, 0.87);*/
     background-color: #242424;
 
     font-synthesis: none;
@@ -29,6 +30,18 @@
     --green-light-d: rgba(61, 222, 163, 0.9);
     --blue-d: rgba(69, 117, 181, 0.9);
     --dark-blue-d: rgba(41, 54, 122, 0.9);
+    --secondary-blue-d: #091C3A;
+    --text-light: #5a7090;
+    --primary: #1B4F9B;
+    --primary-light: #2A6CC4;
+    --primary-dark: #0E3270;
+    --accent: #E05A2B;
+    --dark: #091C3A;
+    --light: #EEF2F8;
+    --text: #1a2a3a;
+    --text-light: #5a7090;
+    --border: #C8D8EE;
+
 }
 
 a {
@@ -39,12 +52,12 @@ a {
 a:hover {
     color: #535bf2;
 }
-
+/*
 h1 {
     font-size: 3.2em;
     line-height: 1.1;
     text-align: center;
-}
+}*/
 
 button {
     border-radius: 8px;
