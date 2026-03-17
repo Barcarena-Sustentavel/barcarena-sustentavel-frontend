@@ -147,7 +147,6 @@ const ConhecaProjetoSection: React.FC = () => {
             <iframe
               src="https://www.youtube.com/embed/91rEujWOTfo"
               title="ODSB — Conheça o projeto"
-              frameBorder="0"
               allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
               allowFullScreen
             />

@@ -1,6 +1,7 @@
 #!/bin/bash
-file_name="fundohydro.pem"
-file_path=$(find / -name "$file_name" 2>/dev/null)
+file_name="fundohydro2.pem"
+file_path="./fundohydro2.pem" 
+#$(find / -name "$file_name" 2>/dev/null)
 
 echo "$file_path"
 
@@ -11,5 +12,5 @@ fi
 chmod 400 "$file_path"
 npm run build
 
-#scp -i /home/marrior/Desktop/acesso.pem -r ./dist ubuntu@3.148.173.110:~/barcarena_sustentavel/barcarena-sustentavel-frontend/
-scp -i "$file_path" -r ./dist ubuntu@54.233.210.68:~/barcarena_sustentavel/barcarena-sustentavel-frontend/
+#scp -i "$file_path" -r ./dist root@54.233.210.68:~/barcarena_sustentavel/barcarena-sustentavel-frontend/
+scp -i "$file_path" -r ./dist root@54.233.210.68:/home/ubuntu/barcarena_sustentavel/barcarena-sustentavel-frontend

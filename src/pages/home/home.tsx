@@ -22,9 +22,8 @@ const Home: FC = () => {
     <>
       <NavbarComponent />
       <Banner/>
-      <ConhecaProjetoSection/>
+      {/*<ConhecaProjetoSection/>*/}
       <DimensoesSection />
-      {/* <RelatoriosCarousel/> */}
       <BarraParceiros/>
       <Footer />
     </>

@@ -102,7 +102,8 @@ export const DimensoesSection: FC = () => {
 		//   { threshold: 0.1 }
 		// );
 		const url = "/dimensoes";
-		api.get(url).then( response => {
+		const getIconesDimensoes = async () =>
+		{await api.get(url).then( response => {
 			const titulos: string[] = response.data.dimensoes;
 
 			const mapa: Record<string, string> = {};
@@ -114,13 +115,14 @@ export const DimensoesSection: FC = () => {
 			}
 		);
 		const loaded = consts.loadAllIconsDimensions();
-		setIcones(loaded);
+		setIcones(loaded);}
 		// return () => {
 		// 	// Cleanup: desconectar o observer
 		// 	if (observerRef.current) {
 		// 		observerRef.current.disconnect();
 		// 	}
 		// };
+		getIconesDimensoes()
 	}, []);
 
 	useEffect(() => {
@@ -132,8 +134,9 @@ export const DimensoesSection: FC = () => {
 	// 	console.log(testConsts);
 	// }, [testConsts]);
 
-	if (!icones) return <div className="spinner-border" />;
+	//if (!icones) return <div className="spinner-border" />
 	if (!dimensoesTitulo) return <p>Carregando...</p>;
+	if (!icones || !dimensoesTitulo) return <div className="spinner-border" />;
 
 	return (
 		<>
@@ -149,9 +152,9 @@ export const DimensoesSection: FC = () => {
 					{dimensoesOrdem.map((item) => (
 					<DimensaoCard
 						key={item}
-						titulo={dimensoesTitulo[item]}
-						icone={icones[item]}
-						url={dimensoesTitulo[item]}
+						titulo={dimensoesTitulo![item]}
+						icone={icones![item]}
+						url={dimensoesTitulo![item]}
 						cor={dimensoesCores[item]}
 					/>
 					))}
