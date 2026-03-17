@@ -5,9 +5,10 @@ import { useBannerCanvas } from "./useBannerCanvas.tsx";
 const Banner: React.FC = () => {
     const canvasRef = useBannerCanvas();
     
+    /*
     useEffect(() => {
         
-    }, []);
+    }, []);*/
 
   return (
     <section className="hero" id="inicio">
