@@ -12,13 +12,14 @@ import ConhecaProjetoSection from "./components/conhecaProjetoSection/conhecaPro
 import BarraParceiros from "../../components/layout/barraParceiros/BarraParceiros.tsx";
 import { Carousel } from "react-bootstrap";
 import RelatoriosCarousel from "./components/carrossel/RelatoriosCarousel.tsx";
+import "./home.css"
 const Home: FC = () => {
   const navigate = useNavigate();
   const handleClick = (dimensao: string) => {
     navigate(`/${dimensao}/`);
   };
   return (
-    <div className="home-container">
+    <>
       <NavbarComponent />
       <Banner/>
       <ConhecaProjetoSection/>
@@ -26,7 +27,7 @@ const Home: FC = () => {
       {/* <RelatoriosCarousel/> */}
       <BarraParceiros/>
       <Footer />
-    </div>
+    </>
   );
 };
 

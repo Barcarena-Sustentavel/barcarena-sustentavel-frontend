@@ -25,16 +25,14 @@ const SubmenuDimensao: React.FC<SubmenuDimensaoProps> = ({ dimensaoAtiva }) => {
 		...dimensoesColumn2,
 		...dimensoesColumn3,
 	};
-	console.log('todasDimensoes:', todasDimensoes);
+	//console.log('todasDimensoes:', todasDimensoes);
 	const icone = todasDimensoes[dimensaoAtiva || activeDimensionFromPath];
-	console.log('icone:', icone);
 	return (
 		<div className="submenu-dimensao-wrap">
 			<div
 				className="submenu-dimensao"
 			>
 				{Object.entries(todasDimensoes).map(([nomeDimensao, icon]) => {
-					console.log('icon:', icon);
 					const isAtiva =
 						nomeDimensao === (dimensaoAtiva || activeDimensionFromPath);
 					//const cor = dimensoes.dimensaoCores[nomeDimensao] || 'default-color';
@@ -46,10 +44,8 @@ const SubmenuDimensao: React.FC<SubmenuDimensaoProps> = ({ dimensaoAtiva }) => {
 						<a
 							key={nomeDimensao}
 							className={"submenu-dimensao-item" + (isAtiva ? " active" : "")}
-							//className={`submenu-dimensao-item m-2 p-3 d-flex flex-column justify-content-between align-items-center ${isAtiva ? "selected" : ""}`}
 							href={`/${nomeDimensao}`}
 							style={{
-								//backgroundColor: `var(--${cor})`,
 							}}>
 							<div className={isAtiva ? "submenu-dimensao-svg submenu-dimensao-svg-ativo" : "submenu-dimensao-svg"} style={{ backgroundColor: `var(--${cor})` }}>
 								<svg

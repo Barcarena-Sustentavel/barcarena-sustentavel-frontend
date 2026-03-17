@@ -21,7 +21,7 @@ const loadIcon = (iconName: string) => {
 
 // Carrega todos os ícones de forma lazy
 
-const loadAllIconsDimensions = async () => {
+const loadAllIconsDimensions = () => {
   const [
     logoEmprego,
     logoMeioAmbiente,
@@ -32,7 +32,7 @@ const loadAllIconsDimensions = async () => {
     logoSaude,
     logoConectividade,
     logoInstituicoes,
-  ] = await Promise.all([
+  ] = ([
     loadIcon('emprego'),
     loadIcon('meioAmbiente'),
     loadIcon('educacao'),
@@ -98,7 +98,6 @@ const loadAllIcons = () => {
     ],
   };
 };
-
 const dimensaoCoresArray: string[] = [
   "dark-blue-d", // Confiança, proteção
   "green-light-d", // Movimento, fluidez

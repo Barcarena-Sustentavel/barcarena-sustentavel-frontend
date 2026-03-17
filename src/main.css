@@ -32,7 +32,16 @@
     --dark-blue-d: rgba(41, 54, 122, 0.9);
     --secondary-blue-d: #091C3A;
     --text-light: #5a7090;
+    --primary: #1B4F9B;
+    --primary-light: #2A6CC4;
+    --primary-dark: #0E3270;
+    --accent: #E05A2B;
     --dark: #091C3A;
+    --light: #EEF2F8;
+    --text: #1a2a3a;
+    --text-light: #5a7090;
+    --border: #C8D8EE;
+
 }
 
 a {

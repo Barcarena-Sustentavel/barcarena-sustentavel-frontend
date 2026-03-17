@@ -44,6 +44,40 @@
   font-weight: 800;
   color: var(--dark);
 }
+.indicadores-grid{
+  display: grid;
+  grid-template-columns: repeat(3,1fr);
+  gap: 1rem;
+}
+.indicadores-grid-card{
+    font-family: 'Sora', sans-serif;
+  background: #fff;
+  border-radius: 12px;
+  padding: 1.4rem 1.2rem;
+  text-decoration: none;
+  display: block;
+  position: relative;
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+.indicadores-grid-card:hover{
+  transform: translateY(-4px);
+  box-shadow: 0 10px 28px rgba(0,0,0,0.10);
+}
+.indicadores-grid-card-nome{
+  font-size: 0.88rem;
+  font-weight: 700;
+  color: var(--dark);
+  line-height: 1.4;
+}
+.indicadores-grid-flecha{
+  position: absolute;
+  right: 1rem;
+  bottom: 1rem;
+  font-size: 1rem;
+  opacity: 0.5;
+  transition: opacity 0.2s, transform 0.2s;
+
+}
 .contador-indicadores{
   background: #c0392b22;
   color: #c0392b;
@@ -54,6 +88,65 @@
   font-weight: 700;
   font-family: 'IBM Plex Mono',monospace;
 }
+
+.secao-ref-estudoComplementar{
+  background: #fff;
+  border-radius: 16px;
+  padding: 2rem 2.5rem;
+  margin-top: 2rem;
+}
+.secao-ref-estudoComplementar h2{
+  font-size: 1rem;
+  font-weight: 800;
+  color: var(--dark);
+  margin-bottom: 1.2rem;
+}
+.secao-ref-estudoComplementar-lista{
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+}
+.secao-ref-estudoComplementar-lista button{
+  font-family: 'Sora', sans-serif;
+  display: block;
+  padding: 0.75rem 0;
+  color: var(--primary-dark);
+  text-decoration: none;
+  font-size: 0.88rem;
+  font-weight: 600;
+  border-bottom: 1px solid var(--border);
+  transition: color 0.2s, transform 0.2s;
+  width: 100%;
+  text-align: -webkit-left;
+}
+.secao-ref-estudoComplementar-lista button:hover{
+  transform: translateX(4px);
+}
+.secao-ref-estudoComplementar-lista-ul{
+  list-style: none;
+  padding: 0;
+}
+.secao-ref-estudoComplementar-lista-ul li{
+  font-family: 'Sora', sans-serif;
+  padding: 0.5rem 0 0.5rem 1rem;
+  border-bottom: 1px solid var(--border);
+  font-size: 0.88rem;
+  color: var(--primary);
+  text-decoration: none;
+  transition: color 0.2s;
+  line-height: 1.6;
+  position: relative;
+}
+.secao-ref-estudoComplementar-lista-ul li::before {
+  content: '•';
+  position: absolute;
+  left: 0;
+  color: var(--primary);
+}
+.secao-ref-estudoComplementar-lista-ul li a{
+  color: var(--primary);
+}
+
 .dimension-details-container ul.indicadores
 /* , .dimension-details-container ul.referencias  */ {
     list-style-type: none !important;
@@ -132,4 +225,18 @@ a.custom-link-tooplate-gotto-job:hover {
     width: 100%;
     height: 100%;
     margin: 0 auto;
+}
+
+@media (max-width: 900px){
+  .indicadores-grid{
+    grid-template-columns: 1fr 1fr;
+  }
+}
+@media (max-width: 600px){
+  .indicadores-grid{
+    grid-template-columns: 1fr;
+  }
+  .descricao p{
+    font-size: 0.8rem;
+  }
 }
