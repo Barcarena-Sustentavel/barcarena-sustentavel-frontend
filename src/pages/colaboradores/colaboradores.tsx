@@ -148,7 +148,7 @@ const Colaboradores: FC = () => {
   //   navigate('/')}
 
   return (
-    <div className="home-container">
+    <>
       <NavbarComponent />
         <section className="page-hero">
           <div className="page-hero-eyebrow">Pessoas</div>
@@ -203,7 +203,7 @@ const Colaboradores: FC = () => {
         </div>
       <BarraParceiros />
       <Footer />
-    </div>
+    </>
   );
 };
 
