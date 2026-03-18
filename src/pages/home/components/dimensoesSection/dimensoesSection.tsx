@@ -180,7 +180,7 @@ export const DimensoesSection: FC = () => {
 		//   },
 		//   { threshold: 0.1 }
 		// );
-		const url = "/dimensoes";
+		const url = "/dimensoes/";
 		const getIconesDimensoes = async () =>
 		{await api.get(url).then( response => {
 			const titulos: string[] = response.data.dimensoes;
@@ -193,7 +193,7 @@ export const DimensoesSection: FC = () => {
 			setDimensoesTitulo(mapa);
 			}
 		);
-		const loaded = consts.loadAllIconsDimensions();
+		// const loaded = consts.loadAllIconsDimensions();
 		// setIcones(loaded);
 	}
 		// return () => {
