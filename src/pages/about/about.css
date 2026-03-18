@@ -460,59 +460,152 @@ main {
   height: 3rem;
 }
 
-/* ── Responsivo ── */
+/* ── Responsivo — Tablet (max 1024px) ── */
+@media (max-width: 1024px) {
+  .intro-grid,
+  .concepts-grid {
+    grid-template-columns: 1fr 1fr;
+    gap: 2.5rem;
+  }
+
+  .objetivo-card {
+    grid-template-columns: 140px 1fr;
+    gap: 2rem;
+    padding: 2rem 2rem;
+  }
+
+  .dados-section {
+    grid-template-columns: 1fr 1fr;
+    gap: 1.5rem;
+  }
+
+  .card-download-short-paper {
+    width: 45%;
+  }
+
+  .fontes-section {
+    padding: 2.5rem 2rem;
+  }
+}
+
+/* ── Responsivo — Mobile (max 768px) ── */
 @media (max-width: 768px) {
   .page-wrapper {
     padding-left: 1rem;
     padding-right: 1rem;
+    gap: 1rem;
   }
 
-  .objetivos-section,
-  .div-conceitos-grupo,
-  .section-um {
-    flex-direction: column;
-    align-items: stretch;
+  /* Hero */
+  .about-hero {
+    padding: 3rem 1.5rem 2.5rem;
+    gap: 0.9rem;
+  }
+
+  .about-hero h1 {
+    font-size: clamp(1.6rem, 6vw, 2.2rem);
+  }
+
+  .about-hero-sub {
+    font-size: 0.9rem;
+  }
+
+  /* Intro ODSB */
+  .intro-grid {
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
+  }
+
+  .intro-img {
+    aspect-ratio: 16/9;
+  }
+
+  /* Objetivo */
+  .objetivo-card {
+    grid-template-columns: 1fr;
+    gap: 1rem;
+    padding: 1.5rem;
+    border-left: none;
+    border-top: 5px solid #005994;
+    text-align: center;
+  }
+
+  /* Conceitos */
+  .concepts-grid {
+    grid-template-columns: 1fr;
     gap: 2rem;
   }
 
-  .objetivos-titulo {
-    min-height: auto;
-    margin: 0;
-    width: 100%;
-    padding: 1.25rem 1.5rem;
+  .pyramid-wrap svg {
+    max-width: 240px;
   }
 
-  .objetivos-texto {
-    margin: 0;
+  /* Fontes Secundárias */
+  .fontes-section {
+    padding: 2rem 1.5rem;
+    border-radius: 14px;
   }
 
-  .img-piramide {
-    width: min(100%, 340px);
-    margin: 0 auto;
+  .fontes-section .parallax-bg {
+    background-attachment: scroll; /* parallax desativado no mobile */
   }
 
-  .mandala-wrapper {
-    width: 100%;
-    padding: 1rem;
-    border-radius: 18px;
+  /* Mandala */
+  .mandala-bloco {
+    margin-top: 1rem;
+    margin-bottom: 1rem;
   }
 
   .img-mandala {
-    width: min(88vw, 380px);
+    width: min(88vw, 320px);
   }
 
-  .img-ibs {
-    max-width: 100%;
-    margin: 0 auto;
+  /* Dados */
+  .dados-section {
+    grid-template-columns: 1fr;
+    gap: 1rem;
+    margin-bottom: 2rem;
+  }
+
+  /* Downloads */
+  .card-download-short-paper {
+    width: 100% !important;
+  }
+
+  .secao-download-papers {
+    gap: 1rem;
+    padding-top: 1rem;
+  }
+
+  /* Tipografia geral */
+  .section-titulo {
+    font-size: 1.5rem;
+  }
+
+  .sec-divider h2 {
+    font-size: clamp(1.2rem, 5vw, 1.6rem);
+  }
+
+  .metodologia-dados-container {
+    padding: 1.5rem 1.25rem;
+  }
+}
+
+/* ── Responsivo — Mobile pequeno (max 480px) ── */
+@media (max-width: 480px) {
+  .about-hero h1 {
+    font-size: 1.5rem;
+  }
+
+  .objetivo-label {
+    font-size: 1.3rem;
+  }
+
+  .fontes-section {
+    padding: 1.5rem 1rem;
   }
 
   .card-download-short-paper {
-    width: 80% !important;
-  }
-
-  .dados-section {
-    grid-template-columns: 1fr;
-    gap: 1.5rem;
-    margin-bottom: 3rem;
+    padding: 1.5rem 1rem;
   }
 }
