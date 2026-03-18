@@ -20,7 +20,7 @@ const DimensaoComponent: FC = () => {
   const [indicadores, setIndicadores] = useState<
     Array<Record<string, string | number | null>>
   >([]);
-   const [indicadoresNomes, setIndicadoresNomes] = useState<
+  const [indicadoresNomes, setIndicadoresNomes] = useState<
     Array<string>
   >([]);
   const [referencias, setReferencias] = useState<Referencia[]>([]);
@@ -43,11 +43,11 @@ const DimensaoComponent: FC = () => {
 
   // Função para obter a cor sequencial
 
-  const handleNavigateIndicador = (indicador: string, ordem:number, arrayIndicadores:string[]) => {
+  const handleNavigateIndicador = (indicador: string, ordem: number, arrayIndicadores: string[]) => {
     const url = encodeURI(`/${dimensao}/${indicador}/${ordem}`);
     console.log(arrayIndicadores)
-    navigate(url,{
-      state:arrayIndicadores
+    navigate(url, {
+      state: arrayIndicadores
     });
   };
   //--------------------------------------------------------------------------
@@ -96,12 +96,12 @@ const DimensaoComponent: FC = () => {
     //}
   }, [url, dimensao, botaoConectividade]);
   //console.log('cor', dimensoesCores123[dimensao as string])
-  useEffect(() =>{
-          setIndicadoresNomes(indicadores.map((indicador) => indicador.nome as string))
-  },[indicadores])
+  useEffect(() => {
+    setIndicadoresNomes(indicadores.map((indicador) => indicador.nome as string))
+  }, [indicadores])
   //--------------------------------------------------------------------------
-  console.log('indicadores',indicadores)
-  console.log('indicadoresNomes',indicadoresNomes)
+  console.log('indicadores', indicadores)
+  console.log('indicadoresNomes', indicadoresNomes)
   return (
     <div className="home-container">
       <NavbarComponent />
@@ -114,7 +114,7 @@ const DimensaoComponent: FC = () => {
         </div>
         {pathHtml !== "" && (
           <div className="mx-auto" style={{
-            width: "69%",
+            width: "100%",
             height: "41rem",
             marginBottom: dimensao === "Conectividade" ? "6rem" : "0",
             marginTop: dimensao === "Conectividade" ? "0" : "21px"
@@ -124,13 +124,21 @@ const DimensaoComponent: FC = () => {
                 style={{
                   width: "100%",
                   display: "flex",
-                  justifyContent: "space-between",
+                  justifyContent: "center",
                   marginTop: "2rem",
-                  marginBottom: "1rem"
+                  marginBottom: "1rem",
+                  marginLeft: "auto",
+                  marginRight: "auto",
                 }}
               >
                 <select
                   className="form-select"
+                  style={{
+                    background: 'var(--primary-dark)',
+                    border: 'none',
+                    fontFamily: 'Sora,sans-serif',
+                    borderRadius:'8px'
+                  }}
                   onChange={(e) => handleOnCick(e)}
                   defaultValue={mapasConectividade[0]}
                 >
@@ -171,55 +179,55 @@ const DimensaoComponent: FC = () => {
                 className="indicadores-grid-card"
                 style={{ borderTop: `3px solid var(--${dimensoesCores123[dimensao as string]})` }}
                 onClick={() =>
-                  handleNavigateIndicador(indicador.nome as string, index+1,indicadoresNomes)
+                  handleNavigateIndicador(indicador.nome as string, index + 1, indicadoresNomes)
                 }
               >
-                <div className="indicadores-grid-card-numero" style={{color: `var(--${dimensoesCores123[dimensao as string]})`}}>Indicador {index+1}</div>
+                <div className="indicadores-grid-card-numero" style={{ color: `var(--${dimensoesCores123[dimensao as string]})` }}>Indicador {index + 1}</div>
                 <div className="indicadores-grid-card-nome">{indicador.nome}</div>
                 <div className="ind-card-arrow">→</div>
               </div>
 
             ))}
         </div>
-          {estudosComplementares.length != 0 &&
-        (<div className="secao-ref-estudoComplementar">
-          <h2>Estudos Complementares</h2>
-          <div className="secao-ref-estudoComplementar-lista">
-            {estudosComplementares.length > 0 &&
-              estudosComplementares.map((estudoComplementar) => (
+        {estudosComplementares.length != 0 &&
+          (<div className="secao-ref-estudoComplementar">
+            <h2>Estudos Complementares</h2>
+            <div className="secao-ref-estudoComplementar-lista">
+              {estudosComplementares.length > 0 &&
+                estudosComplementares.map((estudoComplementar) => (
                   <button
                     className="button-as-link"
                     onClick={() => handleDownloadEstudo(estudoComplementar)}
                   >
                     {estudoComplementar}
                   </button>
-              ))}
-          </div>
-        </div>)}
+                ))}
+            </div>
+          </div>)}
         <div className="secao-ref-estudoComplementar">
-        <h2>Referências</h2>
-        {referencias.length > 0 &&
-          referencias.map((referencia) => (
-            <ul className="secao-ref-estudoComplementar-lista-ul">
-              <li>
-                {referencia?.link !== "" ? <a
-                  href={`${referencia?.link}`}
-                  target="_blank"
-                >{`${referencia?.nome}`}</a> :
-                  <p className="custom-link-tooplate-gotto-job">{`${referencia?.nome}`}</p>
-                }
-              </li>
-            </ul>
-          ))}
+          <h2>Referências</h2>
+          {referencias.length > 0 &&
+            referencias.map((referencia) => (
+              <ul className="secao-ref-estudoComplementar-lista-ul">
+                <li>
+                  {referencia?.link !== "" ? <a
+                    href={`${referencia?.link}`}
+                    target="_blank"
+                  >{`${referencia?.nome}`}</a> :
+                    <p className="custom-link-tooplate-gotto-job">{`${referencia?.nome}`}</p>
+                  }
+                </li>
+              </ul>
+            ))}
           <FormContribuicao
-        dimensaoId={0}
-        formStyle={{ borderLeft: `5px solid var(--${dimensoesCores123[dimensao as string]})` }}
-      />
+            dimensaoId={0}
+            formStyle={{ borderLeft: `5px solid var(--${dimensoesCores123[dimensao as string]})` }}
+          />
+        </div>
       </div>
-      </div>
-    
+
       {/* <div className="container dimension-details-container mt-5 d-flex flex-column"> */}
-      
+
 
       {/* {dimensao === "Conectividade" &&
         <div className="divMapa">
@@ -233,7 +241,7 @@ const DimensaoComponent: FC = () => {
         <div className="divMapa" style={{ margin: "2rem auto", width: "61%" }}>
           <HTMLFileIframe htmlFilePath={pathHtml}/>
         </div>} */}
-      
+
       <Footer />
     </div>
   );

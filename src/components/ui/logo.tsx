@@ -58,7 +58,7 @@ function Logo({ forceVersion, className, style, onClick }: LogoProps) {
       className={className}
       style={{ 
         maxHeight: 'auto', 
-        maxWidth: getLogoSource() != logoMinimalist ? "70%" : "40%",
+        maxWidth: "70%", //getLogoSource() != logoMinimalist ? "70%" : "0%",
         ...style,
         cursor: onClick ? 'pointer' : undefined // Mostra cursor pointer apenas se tiver onClick
       }}
