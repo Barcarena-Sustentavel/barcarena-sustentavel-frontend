@@ -119,11 +119,9 @@ const GetAllConst = () => {
   const [dimensoesList, setDimensoesList] = useState<string[]>([]);
   const [isLoaded, setIsLoaded] = useState<boolean>(false);
   const url = '/dimensoes/';
-  console.log("GetAllConst - url:", url);
 
   useEffect(() => {
     const puxarDimensoes = async () => {
-      console.log("aqui", url);
       const dimensoesList: string[] = [];
         await api.get(url).then((response) => {
         response.data.dimensoes.forEach((dimensao:string, index:number) => {

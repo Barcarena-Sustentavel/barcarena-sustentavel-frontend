@@ -6,17 +6,16 @@ import DimensaoCard from "./dimensaoCard.tsx";
 import SlideArtigos from "../slideArtigos/slideArtigosl.tsx";
 import api from "../../../../api.tsx"
 import RelatoriosCarousel from "../carrossel/RelatoriosCarousel.tsx";
+import dimensoes from "../../../../utils/const.tsx"
 
 export const DimensoesSection: FC = () => {
 	const observerRef = useRef<IntersectionObserver | null>(null);
-	// const {
-	//   dimensoesColumn1,
-	//   dimensoesColumn2,
-	//   dimensoesColumn3,
-	//   isLoaded,
-	//   setIsLoaded
-	// } = dimensoes.GetAllConst();
-	// const dimensoesColumn123 ={...dimensoesColumn1, ...dimensoesColumn2, ...dimensoesColumn3}
+	 const {
+	   dimensoesColumn1,
+	   dimensoesColumn2,
+	   dimensoesColumn3,
+	 } = dimensoes.GetAllConst();
+	const dimensoesColumn123 ={...dimensoesColumn1, ...dimensoesColumn2, ...dimensoesColumn3}
 	const [isOpen, setIsOpen] = useState(false);
 	const [icones, setIcones] = useState<Record<string, React.FC> | null>(null);
 	const [dimensoesTitulo, setDimensoesTitulo] = useState<Record<string, string> | null>(null);
@@ -125,15 +124,9 @@ export const DimensoesSection: FC = () => {
 	useEffect(() => {
 		console.log(icones);
 	}, [icones])
-
-	//test consts
-	// useEffect(() => {
-	// 	console.log(testConsts);
-	// }, [testConsts]);
-
-	//if (!icones) return <div className="spinner-border" />
-	//if (!dimensoesTitulo) return <p>Carregando...</p>;
 	if (!icones || !dimensoesTitulo) return <div className="spinner-border" />;
+	console.log(dimensoesColumn123 as any)
+	console.log(dimensoesTitulo)
 	return (
 		<>
 			<section className="dimensions" id="dimensoes">
@@ -149,7 +142,7 @@ export const DimensoesSection: FC = () => {
 					<DimensaoCard
 						key={item}
 						titulo={dimensoesTitulo![item]}
-						icone={icones![item]}
+						icone={dimensoesColumn123[dimensoesTitulo[item]] as any}
 						url={dimensoesTitulo![item]}
 						cor={dimensoesCores[item]}
 					/>

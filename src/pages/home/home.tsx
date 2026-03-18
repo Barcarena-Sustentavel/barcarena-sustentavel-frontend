@@ -6,7 +6,7 @@ import ImageCarousel from "./components/carousel/carousel.tsx";
 import {DimensoesSection} from "./components/dimensoesSection/dimensoesSection.tsx";
 import Footer from "../../components/layout/footer/footer.tsx";
 import Banner from "./components/banner/banner.tsx";
-
+import "./components/conhecaProjetoSection/conhecaProjetoSection.css"
 import SlideArtigos from "./components/slideArtigos/slideArtigosl.tsx";
 import ConhecaProjetoSection from "./components/conhecaProjetoSection/conhecaProjetoSection.tsx";
 import BarraParceiros from "../../components/layout/barraParceiros/BarraParceiros.tsx";
@@ -22,7 +22,7 @@ const Home: FC = () => {
     <>
       <NavbarComponent />
       <Banner/>
-      {/*<ConhecaProjetoSection/>*/}
+      <ConhecaProjetoSection/>
       <DimensoesSection />
       <BarraParceiros/>
       <Footer />
