@@ -15,7 +15,7 @@ const NavbarComponent: FC = () => {
   const [showMobileModal, setShowMobileModal] = useState(false);
   const [modalActive, setModalActive] = useState(false);
   const [iconRotated, setIconRotated] = useState(false);
-
+  const [menuAberto, setMenuAberto] = useState(false);
   const handleCloseMobileModal = () => setShowMobileModal(false);
   const handleShowMobileModal = () => setShowMobileModal(true);
   const toggleModal = () => {
@@ -23,7 +23,35 @@ const NavbarComponent: FC = () => {
     console.log("teste modal");
     setIconRotated(!iconRotated);
   };
+  return(
+    <nav className="barra-navegacao">
+       <Navbar.Brand
+          as={Link}
+          to="/"
+          className="d-flex align-self-left logo-navbar"
+        >
+          <Logo></Logo>
+        </Navbar.Brand>
+      <button
+      className={`hamburger ${menuAberto ? "aberto" : ""}`}
+      onClick={() => setMenuAberto(!menuAberto)}
+    >
+      <span></span>
+      <span></span>
+      <span></span>
+    </button>
 
+    {/* Menu */}
+    <ul className={`nav-links ${menuAberto ? "nav-aberto" : ""}`}>
+      <li><a href="/">Início</a></li>
+      <li><a href="/#dimensoes">Dimensões</a></li>
+      <li><a href="/#galeria">Publicações</a></li>
+      <li><a href="/colaboradores/">Colaboradores</a></li>
+      <li><a href="/about/">Sobre</a></li>
+    </ul>
+  </nav>
+  )
+/*
   return (
     <Navbar expand="lg" className="flex-row navbar-light bg-light">
       <Container
@@ -81,13 +109,12 @@ const NavbarComponent: FC = () => {
           </Nav>
         </Navbar.Collapse>
 
-        {/* Mobile Modal */}
+        
         <Modal
           show={showMobileModal}
           onHide={handleCloseMobileModal}
           id="mobile-modal"
-          dialogClassName={modalActive ? "active" : ""}
-        >
+          dialogClassName={modalActive ? "active" : ""}>
           <Modal.Header
             style={{
               display: "flex",
@@ -197,7 +224,7 @@ const NavbarComponent: FC = () => {
         </Modal>
       </Container>
     </Navbar>
-  );
+  );*/
 };
 
 export default NavbarComponent;
