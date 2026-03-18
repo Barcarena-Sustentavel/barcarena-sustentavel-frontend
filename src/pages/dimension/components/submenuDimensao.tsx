@@ -3,6 +3,7 @@ import "./submenu-dimensao.css";
 import dimensoes from "../../../utils/const.tsx"; // Ajuste o caminho conforme necessário
 import { useLocation } from "react-router-dom";
 import { getArtigoDimensao } from "../../admin/create/artigo/crudArtigo.tsx";
+import Location from "../../../components/layout/location/location.tsx";
 interface SubmenuDimensaoProps {
 	dimensaoAtiva: string;
 }
@@ -28,6 +29,7 @@ const SubmenuDimensao: React.FC<SubmenuDimensaoProps> = ({ dimensaoAtiva }) => {
 	//console.log('todasDimensoes:', todasDimensoes);
 	const icone = todasDimensoes[dimensaoAtiva || activeDimensionFromPath];
 	return (
+		<div>
 		<div className="submenu-dimensao-wrap">
 			<div
 				className="submenu-dimensao"
@@ -64,8 +66,10 @@ const SubmenuDimensao: React.FC<SubmenuDimensaoProps> = ({ dimensaoAtiva }) => {
 						</a>
 					);
 				})}
-			</div>
-			<div
+			</div>	
+		</div>
+		<Location parentName={dimensaoAtiva}/>
+		<div
 				className="submenu-dimensao-hero"
 				style={{ backgroundColor: `var(--${dimensoesCores123[dimensaoAtiva || activeDimensionFromPath]})` }}>
 				<div className="submenu-dimensao-hero-dentro">
@@ -99,7 +103,7 @@ const SubmenuDimensao: React.FC<SubmenuDimensaoProps> = ({ dimensaoAtiva }) => {
 					</button>
 				</div>
 			</div>
-		</div>
+	</div>
 	);
 };
 

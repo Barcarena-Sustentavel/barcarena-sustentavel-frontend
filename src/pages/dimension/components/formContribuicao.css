@@ -33,7 +33,7 @@
 }
 
 .contribuicao-campo input, .contribuicao-campo textarea{
-    border: 1.5px solid var(--border);
+  border: 1.5px solid var(--border);
   border-radius: 8px;
   padding: 0.6rem 0.9rem;
   font-family: 'Sora',sans-serif;
@@ -42,6 +42,12 @@
   background: #fff;
   transition: border-color 0.2s;
   outline: none;
+}
+
+@media (max-width:400px){
+  .contribuicao-campo input, .contribuicao-campo textarea{
+    width: 100%;
+  }
 }
 .contribuicao-campo textarea{
     resize: vertical;
@@ -135,4 +141,16 @@ form .botao-contribuicao {
 
 .recaptcha {
     margin-top: 1rem;
+}
+
+@media (max-width: 600px){
+  .contribuicao-grid{
+    grid-template-columns: 1fr;
+  }
+  .contribuicao-section{
+    padding:0 ;
+  }
+  .contribuicao-submit{
+    width: 125px
+  }
 }

@@ -20,6 +20,14 @@
   margin: 0 auto;
   padding: 3.5rem 3rem;
 }
+
+@media (max-width:600px){
+  .dimensao-container{
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 1rem 1rem;
+}
+}
 .descricao{
   background: #fff;
   border-radius: 16px;
@@ -59,6 +67,14 @@
   position: relative;
   transition: transform 0.2s, box-shadow 0.2s;
 }
+.indicadores-grid-card-numero{
+  font-size: 0.65rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  margin-bottom: 6px;
+}
+
 .indicadores-grid-card:hover{
   transform: translateY(-4px);
   box-shadow: 0 10px 28px rgba(0,0,0,0.10);
@@ -237,6 +253,10 @@ a.custom-link-tooplate-gotto-job:hover {
     grid-template-columns: 1fr;
   }
   .descricao p{
-    font-size: 0.8rem;
+    font-size: 0.5rem;
   }
+  .secao-ref-estudoComplementar{
+    padding:0
+  }
+  
 }

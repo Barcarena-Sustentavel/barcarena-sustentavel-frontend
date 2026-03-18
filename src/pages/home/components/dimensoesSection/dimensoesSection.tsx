@@ -87,6 +87,8 @@ export const DimensoesSection: FC = () => {
 	// 		observerRef.current.observe(node);
 	// 	}
 	// }, []);
+
+	
 	useEffect(() => {
 		// setIsLoaded(true)
 
@@ -101,29 +103,24 @@ export const DimensoesSection: FC = () => {
 		//   },
 		//   { threshold: 0.1 }
 		// );
-		const url = "/dimensoes";
-		const getIconesDimensoes = async () =>
-		{await api.get(url).then( response => {
-			const titulos: string[] = response.data.dimensoes;
+    const getIconesDimensoes = async () => {
+        const response = await api.get("/dimensoes/");
+        const titulos: string[] = response.data.dimensoes;
 
-			const mapa: Record<string, string> = {};
-			titulos.forEach(titulo => {
-			mapa[tituloParaChave(titulo)] = titulo;
-			});
+        const mapa: Record<string, string> = {};
+        titulos.forEach(titulo => {
+            mapa[tituloParaChave(titulo)] = titulo;
+        });
 
-			setDimensoesTitulo(mapa);
-			}
-		);
-		const loaded = consts.loadAllIconsDimensions();
-		setIcones(loaded);}
-		// return () => {
-		// 	// Cleanup: desconectar o observer
-		// 	if (observerRef.current) {
-		// 		observerRef.current.disconnect();
-		// 	}
-		// };
-		getIconesDimensoes()
-	}, []);
+        setDimensoesTitulo(mapa);
+
+        const loaded = consts.loadAllIconsDimensions();
+        setIcones(loaded);
+    };
+
+    getIconesDimensoes();
+}, []);
+
 
 	useEffect(() => {
 		console.log(icones);
@@ -135,9 +132,8 @@ export const DimensoesSection: FC = () => {
 	// }, [testConsts]);
 
 	//if (!icones) return <div className="spinner-border" />
-	if (!dimensoesTitulo) return <p>Carregando...</p>;
+	//if (!dimensoesTitulo) return <p>Carregando...</p>;
 	if (!icones || !dimensoesTitulo) return <div className="spinner-border" />;
-
 	return (
 		<>
 			<section className="dimensions" id="dimensoes">

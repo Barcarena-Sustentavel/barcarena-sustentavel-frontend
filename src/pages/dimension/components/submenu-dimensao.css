@@ -108,6 +108,13 @@
   gap: 1.5rem;
   position: relative;
 }
+
+@media (max-width: 500px){
+	.submenu-dimensao-hero-dentro{
+		flex-direction: column;
+	}
+}
+
 .submenu-dimensao-hero-svg{
   width: 56px;
   height: 56px;
@@ -140,6 +147,13 @@
   transition: all 0.25s;
   white-space: nowrap;
   backdrop-filter: blur(4px);
+}
+
+@media (max-width: 400px){
+	.submenu-dimensao-hero-botao{
+		font-size: 0.6rem;
+	}
+
 }
 
 .submenu-dimensao-hero-botao svg{

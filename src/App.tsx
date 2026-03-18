@@ -24,7 +24,7 @@ const App: FC = () => {
           <Route path="/:dimensao/" element={<DimensaoComponent />} />
           {/*Página de cada indicador referente a uma dimensão*/}
           <Route
-            path="/:dimensao/:indicador/"
+            path="/:dimensao/:indicador/:ordem/"
             element={<IndicadorComponent />}
           />
           {/*Página que mostra todas as dimensões*/}

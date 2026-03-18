@@ -51,7 +51,7 @@ const plotOptions = (dashboard: DashboardProps) => {
         type: "pie",
       },
       title: {
-        text: dashboard.tituloGrafico ?? "",
+        text: "" //dashboard.tituloGrafico ?? "",
       },
       plotOptions: {
         pie: {
@@ -113,8 +113,9 @@ const plotOptions = (dashboard: DashboardProps) => {
             type: "xy",
           },
         },
+        
         title: {
-          text: dashboard.tituloGrafico ?? "",
+          text: "" //dashboard.tituloGrafico ?? "",
         },
         series: [
           ...dadosLinha,
@@ -145,9 +146,6 @@ const plotOptions = (dashboard: DashboardProps) => {
         ],
       };
     };
-
-    
-
     
     const dadoColuna = {
       name: dashboard.dados[0].name,
@@ -167,7 +165,7 @@ const plotOptions = (dashboard: DashboardProps) => {
         },
       },
       title: {
-        text: dashboard.tituloGrafico ?? "",
+        text: "" //dashboard.tituloGrafico ?? "",
       },
       series: dadosSeries,
       exporting: {
@@ -182,7 +180,7 @@ const plotOptions = (dashboard: DashboardProps) => {
       },
       yAxis: {
         title: {
-          text: "Valores",
+          text: ""//"Valores",
         },
       },
     };
@@ -196,8 +194,9 @@ const plotOptions = (dashboard: DashboardProps) => {
                 type: 'xy'
             }
       },
+      
        title: {
-        text: dashboard.tituloGrafico ?? "",
+        text: ""//dashboard.tituloGrafico ?? "",
       },
         xAxis: {
             title: {
@@ -226,8 +225,9 @@ const plotOptions = (dashboard: DashboardProps) => {
     chart: {
       type: dashboard.tipoGrafico,
     },
+    
     title: {
-      text: dashboard.tituloGrafico ?? "",
+      text: ""//dashboard.tituloGrafico ?? "",
     },
     plotOptions: {
         pie: {
@@ -248,7 +248,7 @@ const plotOptions = (dashboard: DashboardProps) => {
     },
     yAxis: {
       title: {
-        text: "Valores",
+        text: ""//"Valores",
       },
     },
   };
@@ -334,7 +334,7 @@ export const DashboardComponent: FC<{
   const dashboard: DashboardProps = {
     tipoGrafico: tipoGrafico,
     dados: finalDadosGraficos,
-    tituloGrafico,
+    //tituloGrafico,
     categorias,
   };
   if (dashboard.tipoGrafico === "tabela") {
@@ -423,7 +423,7 @@ export const DashboardComponent: FC<{
       options={plotOptions({
         tipoGrafico,
         dados: finalDadosGraficos,
-        tituloGrafico,
+        //tituloGrafico,
         categorias,
       })}
       ref={chartComponentRef}

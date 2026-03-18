@@ -1,6 +1,6 @@
 export interface DashboardProps {
     tipoGrafico: string;
-    tituloGrafico: string | null;
+    //tituloGrafico: string | null;
     dados: any[];
     categorias: string[] | number[];
   }

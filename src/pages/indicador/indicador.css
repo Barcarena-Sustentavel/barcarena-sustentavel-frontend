@@ -1,12 +1,125 @@
 /* Main container styling */
 .indicador-container {
   margin: 0 auto;
-  padding: 2rem;
-  font-family: 'Roboto', sans-serif;
+  font-family: 'Sora', sans-serif;
   color: #333;
   background-color: white;
 }
+.indicador-hero{
+  padding: 2rem 3rem;
+}
 
+@media (max-width: 900px) {
+  .indicador-hero {
+    padding: 1.5rem 1.2rem;
+  }
+}
+
+.indicador-hero-inner { 
+  max-width: 1400px;
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+  flex-wrap: wrap;
+}
+
+.indicador-hero-icon{
+  width: 52px;
+  height: 52px;
+  flex-shrink: 0;
+  background: rgba(255,255,255,0.15);
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.indicador-hero-badge{
+  font-size: 0.68rem;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: rgba(255,255,255,0.55);
+  display: block;
+  margin-bottom: 4px;
+  
+}
+.indicador-hero-titulo
+{font-size: clamp(1.1rem,2.5vw,1.6rem);
+  font-weight: 800;
+  color: #fff;
+  line-height: 1.3;}
+.indicador-hero-text{
+  flex: 1;
+  min-width: 200px;
+}
+
+.indicador-hero-acoes{
+  display: flex;
+  gap: 0.6rem;
+  flex-wrap: wrap;
+}
+
+.indicador-hero-resumo{
+  gap: 7px;
+  background: rgba(255,255,255,0.15);
+  border: 1.5px solid rgba(255,255,255,0.3);
+  color: #fff;
+  padding: 0.5rem 1.1rem;
+  border-radius: 50px;
+  font-size: 0.8rem;
+  font-weight: 700;
+  text-decoration: none;
+  cursor: pointer;
+  font-family: 'Sora',sans-serif;
+  transition: all 0.2s;
+  white-space: nowrap;
+  backdrop-filter: blur(4px);
+}
+
+.indicador-hero-resumo svg{
+  width: 13px;
+  height: 13px;
+  flex-shrink: 0;
+}
+
+.indicador-hero-toggle{
+  display: flex;
+  align-items: center;
+  background: rgba(255,255,255,0.15);
+  border: 1.5px solid rgba(255,255,255,0.3);
+  border-radius: 50px;
+  overflow: hidden;
+  padding: 2px;
+  gap: 2px;
+}
+
+@media (max-width: 1000px) {
+  .indicador-hero-toggle {
+    display: none;
+  }
+}
+
+
+.botao-layout{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 28px;
+  border: none;
+  cursor: pointer;
+  border-radius: 46px;
+  background: transparent;
+  color: rgba(255,255,255,0.6);
+  transition: all 0.2s;
+  flex-shrink: 0;
+}
+.botao-layout svg{
+  width: 14px;
+  height: 14px;
+  display: block;
+}
 /* Header styling */
 .indicador-header {
   text-align: center;
@@ -37,32 +150,35 @@
 /* Graficos container */
 .graficos-container-double-column {
   display: flex;
-  /* flex-direction: column; */
   flex-wrap: wrap;
   justify-content: center;
   align-content: center;
   gap: 3rem;
   margin-bottom: 3rem;
+  max-width: 1400px;
+  margin: 0 auto;
+  /*padding: 2.5rem 3rem;*/
 }
 
 .graficos-container-single-column {
   display: flex;
   flex-direction: column;
-  /* flex-wrap: wrap; */
   justify-content: center;
   align-items: center;
   gap: 3rem;
   margin-bottom: 3rem;
+  max-width: 1400px;
+  margin: 0 auto;
+  /*padding: 2.5rem 3rem;*/
 }
 
 /* Individual grafico card */
 .graficos-container-double-column > .grafico-card,
 .graficos-container-single-column > .grafico-card{
-  background-color: white;
-  border-radius: 10px;
-  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
-  overflow: hidden;
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  background: #fff;
+  border-radius: 16px;
+  padding: 2rem 2.2rem;
+  box-shadow: 0 2px 12px rgba(0,0,0,0.05);
   
 }
 
@@ -71,15 +187,142 @@
 }
 
 .graficos-container-single-column > .grafico-card{
-  width: 70%;
+  width: 100%;
 }
-
 
 .grafico-card:hover {
   transform: translateY(-5px);
   box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
 }
 
+@media (max-width: 400px){
+  .graficos-container-single-column > .grafico-card{
+    padding: 1rem 1rem
+  }
+  .grafico-card-descricao{
+    font-size: 0.7rem;
+  }
+}
+
+.grafico-card-titulo{
+  font-size: 0.95rem;
+  font-weight: 800;
+  color: var(--dark);
+  margin-bottom: 0.4rem;
+}
+
+.grafico-card-wrap{
+  position: relative;
+  width: 100%;
+  min-height: 300px;
+}
+
+.grafico-card-descricao{
+  font-size: 0.9rem;
+  line-height: 1.8;
+  color: var(--text-light);
+  padding-left: 1rem;
+  margin-top: 1.2rem;
+}
+
+.grafico-card-export{
+  display: flex;
+  gap: 0.6rem;
+  margin-top: 1.2rem;
+  flex-wrap: wrap;
+}
+
+.grafico-card-export-botao{
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: var(--light);
+  border: 1px solid var(--border);
+  color: var(--primary);
+  padding: 0.45rem 1rem;
+  border-radius: 8px;
+  font-size: 0.75rem;
+  font-weight: 700;
+  cursor: pointer;
+  font-family: 'Sora',sans-serif;
+  transition: all 0.2s;
+  text-decoration: none;
+}
+
+.grafico-card-grid{
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
+}
+@media (max-width: 600px){
+  .grafico-card-grid{
+    display: flex;
+    flex-direction: column;
+  } 
+}
+
+.grafico-card-grid-label{
+  font-size: 0.68rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--text-light);
+  margin-bottom: 0.35rem;
+}
+.grafico-card-grid-valor{
+  font-size: 0.85rem;
+  color: var(--text);
+  line-height: 1.6;
+}
+
+.grafico-card-grid-valor a {
+  color: var(--primary);
+  text-decoration: none;
+}
+
+.anterior-proximo-indicador{
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+
+.navegacao-indicador{
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  background: #fff;
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 0.9rem 1.2rem;
+  text-decoration: none;
+  transition: all 0.2s;
+  flex: 1;
+  min-width: 200px;
+  max-width: 280px;
+}
+
+.navegacao-indicador-label{
+  font-size: 0.65rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--text-light);
+}
+
+.navegacao-indicador-nome{
+  font-size: 0.82rem;
+  font-weight: 700;
+  color: var(--dark);
+  margin-top: 2px;
+  line-height: 1.3;
+}
+
+.navegacao-indicador-icone{
+  font-size: 1.1rem;
+  flex-shrink: 0;
+}
 /* Grafico content */
 .grafico-content {
   padding: 2rem;
@@ -112,9 +355,6 @@
 
 /* Responsive adjustments */
 @media (max-width: 768px) {
-  .indicador-container {
-    padding: 1rem;
-  }
   
   .indicador-header h1 {
     font-size: 2rem;

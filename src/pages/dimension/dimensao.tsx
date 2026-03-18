@@ -17,9 +17,11 @@ const NODE_ENV = import.meta.env.VITE_NODE_ENV;
 const DimensaoComponent: FC = () => {
   const { dimensao } = useParams();
   const { dimensoesCores123 } = dimensoes.GetAllConst();
-  //const [indicadores, setIndicadores] = useState<string[]>([]);
   const [indicadores, setIndicadores] = useState<
     Array<Record<string, string | number | null>>
+  >([]);
+   const [indicadoresNomes, setIndicadoresNomes] = useState<
+    Array<string>
   >([]);
   const [referencias, setReferencias] = useState<Referencia[]>([]);
   const [dimensaoJson, setDimensao] = useState<Dimensao | null>(null);
@@ -41,9 +43,12 @@ const DimensaoComponent: FC = () => {
 
   // Função para obter a cor sequencial
 
-  const handleNavigateIndicador = (indicador: string) => {
-    const url = encodeURI(`/${dimensao}/${indicador}/`);
-    navigate(url);
+  const handleNavigateIndicador = (indicador: string, ordem:number, arrayIndicadores:string[]) => {
+    const url = encodeURI(`/${dimensao}/${indicador}/${ordem}`);
+    console.log(arrayIndicadores)
+    navigate(url,{
+      state:arrayIndicadores
+    });
   };
   //--------------------------------------------------------------------------
   /*
@@ -90,13 +95,17 @@ const DimensaoComponent: FC = () => {
     });
     //}
   }, [url, dimensao, botaoConectividade]);
-  console.log('cor', dimensoesCores123[dimensao as string])
+  //console.log('cor', dimensoesCores123[dimensao as string])
+  useEffect(() =>{
+          setIndicadoresNomes(indicadores.map((indicador) => indicador.nome as string))
+  },[indicadores])
   //--------------------------------------------------------------------------
+  console.log('indicadores',indicadores)
+  console.log('indicadoresNomes',indicadoresNomes)
   return (
     <div className="home-container">
       <NavbarComponent />
       <SubmenuDimensao dimensaoAtiva={dimensaoJson?.nome || ""} />
-      <BackButton />
       <div className="dimensao-container">
         <div className="descricao" style={{ borderLeft: `5px solid var(--${dimensoesCores123[dimensao as string]})` }}>
           <p>
@@ -157,14 +166,15 @@ const DimensaoComponent: FC = () => {
         </div>
         <div className="indicadores-grid">
           {indicadores.length > 0 &&
-            indicadores.map((indicador) => (
+            indicadores.map((indicador, index) => (
               <div
                 className="indicadores-grid-card"
                 style={{ borderTop: `3px solid var(--${dimensoesCores123[dimensao as string]})` }}
                 onClick={() =>
-                  handleNavigateIndicador(indicador.nome as string)
+                  handleNavigateIndicador(indicador.nome as string, index+1,indicadoresNomes)
                 }
               >
+                <div className="indicadores-grid-card-numero" style={{color: `var(--${dimensoesCores123[dimensao as string]})`}}>Indicador {index+1}</div>
                 <div className="indicadores-grid-card-nome">{indicador.nome}</div>
                 <div className="ind-card-arrow">→</div>
               </div>
