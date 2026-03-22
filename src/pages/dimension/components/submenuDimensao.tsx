@@ -7,6 +7,39 @@ import Location from "../../../components/layout/location/location.tsx";
 interface SubmenuDimensaoProps {
 	dimensaoAtiva: string;
 }
+const DimensaoItem: React.FC<{icon:any, dimensao:string, isAtiva:boolean, cor:string}> = ({icon, dimensao, isAtiva, cor}) => {
+	const [isHovering, setIsHovering] = useState<boolean>(false)
+	const dimensaoAtiva = isAtiva
+	const corItem = cor
+	const nomeDimensao = dimensao
+	const icone = icon
+		return (
+							<a
+								key={nomeDimensao}
+								className={"submenu-dimensao-item" + (dimensaoAtiva ? " active" : "")}
+								onMouseEnter={() => setIsHovering(true)}
+								onMouseLeave={() => setIsHovering(false)}
+								href={`/${nomeDimensao}`}
+								style={{
+									borderBottomColor: dimensaoAtiva || isHovering ? `var(--${corItem})` : ""
+								}}>
+								<div className={isAtiva ? "submenu-dimensao-svg submenu-dimensao-svg-ativo" : "submenu-dimensao-svg"} style={{ backgroundColor: `var(--${corItem})` }}>
+									<svg
+										viewBox={(icone as any).viewBox}                   // Aumenta o ícone se for ativo
+										stroke="white"  //{(icon as any).stroke}
+										fill={(icone as any).fill}
+										strokeWidth={(icone as any)["stroke-width"]}
+										strokeLinecap={(icone as any)["stroke-linecap"]}
+										strokeLinejoin={(icone as any)["stroke-linejoin"]}
+										width="36" // icon um tamanho padrão
+										height="36">
+										{(icone as any).children}
+									</svg>
+								</div>
+								<p>{nomeDimensao}</p>
+							</a>
+						);
+}
 
 const SubmenuDimensao: React.FC<SubmenuDimensaoProps> = ({ dimensaoAtiva }) => {
 	const location = useLocation();
@@ -20,56 +53,28 @@ const SubmenuDimensao: React.FC<SubmenuDimensaoProps> = ({ dimensaoAtiva }) => {
 		dimensoesColumn3,
 		dimensoesCores123,
 	} = dimensoes.GetAllConst();
-	//console.log(dimensoesColumn1, dimensoesColumn2, dimensoesColumn3);
 	const todasDimensoes = {
 		...dimensoesColumn1,
 		...dimensoesColumn2,
 		...dimensoesColumn3,
 	};
-	//console.log('todasDimensoes:', todasDimensoes);
 	const icone = todasDimensoes[dimensaoAtiva || activeDimensionFromPath];
 	return (
 		<div>
-		<div className="submenu-dimensao-wrap">
+			<div className="submenu-dimensao-wrap">
+				<div
+					className="submenu-dimensao"
+				>
+					{Object.entries(todasDimensoes).map(([nomeDimensao, icon]) => {
+						const isAtiva =
+							nomeDimensao === (dimensaoAtiva || activeDimensionFromPath);
+						const cor = dimensoesCores123[nomeDimensao] || "default-color";						
+						return(<DimensaoItem icon={icon} dimensao={nomeDimensao} isAtiva={isAtiva} cor={cor} />)
+					})}
+				</div>
+			</div>
+			<Location parentName={dimensaoAtiva} />
 			<div
-				className="submenu-dimensao"
-			>
-				{Object.entries(todasDimensoes).map(([nomeDimensao, icon]) => {
-					const isAtiva =
-						nomeDimensao === (dimensaoAtiva || activeDimensionFromPath);
-					//const cor = dimensoes.dimensaoCores[nomeDimensao] || 'default-color';
-					const cor = dimensoesCores123[nomeDimensao] || "default-color";
-					//const aumentaIcone = dimensoes.dimensaoAumentaIcone[nomeDimensao] || false;
-					//const aumentaIcone = dimensaoAumentaIcone[nomeDimensao] || false;
-
-					return (
-						<a
-							key={nomeDimensao}
-							className={"submenu-dimensao-item" + (isAtiva ? " active" : "")}
-							href={`/${nomeDimensao}`}
-							style={{
-							}}>
-							<div className={isAtiva ? "submenu-dimensao-svg submenu-dimensao-svg-ativo" : "submenu-dimensao-svg"} style={{ backgroundColor: `var(--${cor})` }}>
-								<svg
-									viewBox={(icon as any).viewBox}                   // Aumenta o ícone se for ativo
-									stroke="white"  //{(icon as any).stroke}
-									fill={(icon as any).fill}
-									strokeWidth={(icon as any)["stroke-width"]}
-									strokeLinecap={(icon as any)["stroke-linecap"]}
-									strokeLinejoin={(icon as any)["stroke-linejoin"]}
-									width="36" // icon um tamanho padrão
-									height="36">
-									{(icon as any).children}
-								</svg>
-							</div>
-							<p>{nomeDimensao}</p>
-						</a>
-					);
-				})}
-			</div>	
-		</div>
-		<Location parentName={dimensaoAtiva}/>
-		<div
 				className="submenu-dimensao-hero"
 				style={{ backgroundColor: `var(--${dimensoesCores123[dimensaoAtiva || activeDimensionFromPath]})` }}>
 				<div className="submenu-dimensao-hero-dentro">
@@ -103,7 +108,7 @@ const SubmenuDimensao: React.FC<SubmenuDimensaoProps> = ({ dimensaoAtiva }) => {
 					</button>
 				</div>
 			</div>
-	</div>
+		</div>
 	);
 };
 

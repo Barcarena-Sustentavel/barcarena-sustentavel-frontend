@@ -8,6 +8,28 @@
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
   }
   
+  .fonteMetodologia{
+    display: flex;
+    flex-direction: column;
+  }
+
+  .fonteMetodologia input[type="text"],
+  .fonteMetodologia select{
+    padding: 0.75rem;
+    border: 1px solid #e0e0e0;
+    border-radius: 4px;
+    font-size: 1rem;
+    transition: border-color 0.3s ease, box-shadow 0.3s ease;
+  }
+
+  .fonteMetodologia textarea {
+    padding: 1rem;
+    border: 1px solid #e0e0e0;
+    border-radius: 4px;
+    font-size: 1rem;
+    transition: border-color 0.3s ease, box-shadow 0.3s ease;
+  }
+
   .create-indicador-title {
     color: #2c3e50;
     margin-bottom: 1.5rem;

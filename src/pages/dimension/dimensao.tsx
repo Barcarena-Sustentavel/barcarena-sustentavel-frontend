@@ -17,6 +17,15 @@ const NODE_ENV = import.meta.env.VITE_NODE_ENV;
 const DimensaoComponent: FC = () => {
   const { dimensao } = useParams();
   const { dimensoesCores123 } = dimensoes.GetAllConst();
+  
+  const contadorIndicadoresCores = [
+    {corLetra: '#1B4F9B', corBackground: '#1B4F9B22', corBorda: '#1B4F9B44'},
+    {corLetra: '#1B4F9B', corBackground: '#1B4F9B22', corBorda: '#1B4F9B44'},
+  ]
+
+  const dimensoesNomes = Object.keys(dimensoesCores123)
+  //const contadorIndicadorCores = 
+  //console.log(dimensoesNomes)
   const [indicadores, setIndicadores] = useState<
     Array<Record<string, string | number | null>>
   >([]);
@@ -95,7 +104,6 @@ const DimensaoComponent: FC = () => {
     });
     //}
   }, [url, dimensao, botaoConectividade]);
-  //console.log('cor', dimensoesCores123[dimensao as string])
   useEffect(() => {
     setIndicadoresNomes(indicadores.map((indicador) => indicador.nome as string))
   }, [indicadores])
@@ -204,10 +212,11 @@ const DimensaoComponent: FC = () => {
                 ))}
             </div>
           </div>)}
-        <div className="secao-ref-estudoComplementar">
-          <h2>Referências</h2>
+        
           {referencias.length > 0 &&
-            referencias.map((referencia) => (
+          <div className="secao-ref-estudoComplementar">
+          <h2>Referências</h2>
+            {referencias.map((referencia) => (
               <ul className="secao-ref-estudoComplementar-lista-ul">
                 <li>
                   {referencia?.link !== "" ? <a
@@ -218,12 +227,14 @@ const DimensaoComponent: FC = () => {
                   }
                 </li>
               </ul>
+
             ))}
-          <FormContribuicao
+          </div>
+          }
+        <FormContribuicao
             dimensaoId={0}
             formStyle={{ borderLeft: `5px solid var(--${dimensoesCores123[dimensao as string]})` }}
           />
-        </div>
       </div>
 
       {/* <div className="container dimension-details-container mt-5 d-flex flex-column"> */}

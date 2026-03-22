@@ -52,21 +52,11 @@
 	border-bottom-color: transparent;
 	transition: all 0.25s;
 	line-height: 1.3;
-	/*
-    display: flex;
-    flex-direction: row;
-    justify-content: space-between;
-    max-width: 130px;
-    max-height: 130px;
-    border-radius: 8px; /* Arredonda os cantos do card */
-	/*text-decoration: none;  Remove sublinhado dos links */
-	/*transition: transform 0.2s;  Adiciona uma transição suave */
-	/*width: 150px;*/
 }
 .submenu-dimensao-item.active {
   color: #fff;
   background: rgba(255,255,255,0.10);
-  border-bottom-color: var(--dim-color);
+  /*border-bottom-color: var(--dim-color);*/
 }
 
 .submenu-dimensao-item:hover {
@@ -141,12 +131,22 @@
   color: #fff;
   padding: 0.6rem 1.4rem;
   border-radius: 50px;
+  font-family: 'Sora', sans-serif;
   font-size: 0.85rem;
   font-weight: 700;
   text-decoration: none;
   transition: all 0.25s;
   white-space: nowrap;
   backdrop-filter: blur(4px);
+}
+
+.submenu-dimensao-hero-botao:hover{
+	transform: translateY(-4px);
+	background: rgba(255,255,255,0.30);
+}
+
+.submenu-dimensao-hero-botao:focus{
+	outline: none;
 }
 
 @media (max-width: 400px){

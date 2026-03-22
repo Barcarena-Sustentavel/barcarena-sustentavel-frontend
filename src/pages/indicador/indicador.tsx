@@ -35,12 +35,12 @@ const IndicadorComponent: FC = () => {
   const arrayIndicadores = location.state
   const indicadorIndex = arrayIndicadores.findIndex(
     (indicadorAtual: string) => indicadorAtual === indicador
-);
-  const ordemAnterior = parseInt (ordem as string) - 1
-  const ordemProxima = parseInt(ordem as string) + 1 
+  );
+  const ordemAnterior = parseInt(ordem as string) - 1
+  const ordemProxima = parseInt(ordem as string) + 1
   console.log(ordemProxima)
   const indicadores = {
-    proximo: arrayIndicadores[indicadorIndex + 1] !== undefined && arrayIndicadores[indicadorIndex + 1] 
+    proximo: arrayIndicadores[indicadorIndex + 1] !== undefined && arrayIndicadores[indicadorIndex + 1]
     /*
     arrayIndicadores.find((indicadorAtual: string, index: number) => {
     if (indicador === indicadorAtual && ) {
@@ -85,8 +85,8 @@ const IndicadorComponent: FC = () => {
 
   const handleNavigateIndicador = (indicador: string, ordem: number, arrayIndicadores: string[]) => {
     const url = encodeURI(`/${dimensao}/${indicador}/${ordem}`);
-    window.scrollTo({ top: 0, behavior: "smooth" });   
-     navigate(url, {
+    window.scrollTo({ top: 0, behavior: "smooth" });
+    navigate(url, {
       state: arrayIndicadores
     });
   };
@@ -256,6 +256,7 @@ const IndicadorComponent: FC = () => {
             <p>Carregando dados...</p>
           </div>
         ) : (
+          <div className="indicadorConteudo">
           <div className={`${singleColumn ? 'graficos-container-single-column' : 'graficos-container-double-column'} `} >
             {indicadorJson.graficos.length > 0 ? (
               indicadorJson.graficos.map((grafico: DadosGrafico, index) => {
@@ -302,42 +303,43 @@ const IndicadorComponent: FC = () => {
                 )
               })
             ) : (
-
               <div className="no-data">
                 <h3>Nenhum gráfico disponível para este indicador</h3>
                 <p>Novos dados serão adicionados em breve.</p>
               </div>
             )}
-            <div className="grafico-card card-meta">
-              <div className="grafico-card-titulo">Fonte e Metodologia</div>
-              <div style={{ marginTop: "1rem" }} className="grafico-card-grid">
-                <div className="meta-block"><div className="grafico-card-grid-label">Fonte dos dados</div><div className="grafico-card-grid-valor"><a href={cartaoMetodologia(dimensao as string).link} target="_blank" rel="noopener">{cartaoMetodologia(dimensao as string).fonteDados}</a></div></div>
-                <div className="meta-block"><div className="grafico-card-grid-label">Periodicidade</div><div className="grafico-card-grid-valor">{cartaoMetodologia(dimensao as string).periodicidade}</div></div>
-                <div className="meta-block"><div className="grafico-card-grid-label">Última atualização</div><div className="grafico-card-grid-valor">{cartaoMetodologia(dimensao as string).ultAtualizacao}</div></div>
-                <div className="meta-block"><div className="grafico-card-grid-label">Unidade de medida</div><div className="grafico-card-grid-valor">{cartaoMetodologia(dimensao as string).unidadeMedida}</div></div>
-                <div className="meta-block" style={{ gridColumn: "1/-1" }}><div className="grafico-card-grid-label">Metodologia</div><div className="grafico-card-grid-valor">{cartaoMetodologia(dimensao as string).metodologia}</div></div>
-              </div>
-            </div>
-            <div className="anterior-proximo-indicador" id="indNav">
-              {(indicadores.anterior !== "" || indicadores.anterior !== false) &&
-              <a id="btnPrev" onClick={() => handleNavigateIndicador(indicadores.anterior, ordemAnterior,arrayIndicadores)}  className="navegacao-indicador">
-                <span className="navegacao-indicador-icone" style={{color:`var(--${dimensoesCores123[dimensao as string]})`}}>←</span>
-                <div>
-                  <div className="navegacao-indicador-label">Indicador anterior</div>
-                  <div className="navegacao-indicador-nome" id="prevName">{indicadores.anterior}</div>
-                </div>
-              </a> }
-              {(indicadores.proximo !== "" || indicadores.proximo !== false) &&
-              <a id="btnNext" onClick={() => handleNavigateIndicador(indicadores.proximo, ordemProxima,arrayIndicadores)} className="navegacao-indicador">
-                <div>
-                  <div className="navegacao-indicador-label">Próximo indicador</div>
-                  <div className="navegacao-indicador-nome" id="nextName">{indicadores.proximo}</div>
-                </div>
-                <span className="navegacao-indicador-icone">→</span>
-              </a>}
-            </div> 
+
+          </div>
           </div>
         )}
+        <div className="grafico-card card-meta">
+          <div className="grafico-card-titulo">Fonte e Metodologia</div>
+          <div style={{ marginTop: "1rem" }} className="grafico-card-grid">
+            <div className="meta-block"><div className="grafico-card-grid-label">Fonte dos dados</div><div className="grafico-card-grid-valor"><a href={cartaoMetodologia(dimensao as string).link} target="_blank" rel="noopener">{cartaoMetodologia(dimensao as string).fonteDados}</a></div></div>
+            <div className="meta-block"><div className="grafico-card-grid-label">Periodicidade</div><div className="grafico-card-grid-valor">{cartaoMetodologia(dimensao as string).periodicidade}</div></div>
+            <div className="meta-block"><div className="grafico-card-grid-label">Última atualização</div><div className="grafico-card-grid-valor">{cartaoMetodologia(dimensao as string).ultAtualizacao}</div></div>
+            <div className="meta-block"><div className="grafico-card-grid-label">Unidade de medida</div><div className="grafico-card-grid-valor">{cartaoMetodologia(dimensao as string).unidadeMedida}</div></div>
+            <div className="meta-block" style={{ gridColumn: "1/-1" }}><div className="grafico-card-grid-label">Metodologia</div><div className="grafico-card-grid-valor">{cartaoMetodologia(dimensao as string).metodologia}</div></div>
+          </div>
+        </div>
+        <div className="anterior-proximo-indicador" style={indicadores.anterior === false ? { justifyContent: 'flex-end' } : (indicadores.proximo === false ? { justifyContent: 'flex-start' } : {})} id="indNav">
+          {indicadores.anterior !== false &&
+            <a id="btnPrev" onClick={() => handleNavigateIndicador(indicadores.anterior, ordemAnterior, arrayIndicadores)} className="navegacao-indicador" style={indicadores.proximo === false ? { justifyContent: 'flex-start' } : {}}>
+              <span className="navegacao-indicador-icone" style={{ color: `var(--${dimensoesCores123[dimensao as string]})` }}>←</span>
+              <div>
+                <div className="navegacao-indicador-label">Indicador anterior</div>
+                <div className="navegacao-indicador-nome" id="prevName">{indicadores.anterior}</div>
+              </div>
+            </a>}
+          {indicadores.proximo !== false &&
+            <a id="btnNext" onClick={() => handleNavigateIndicador(indicadores.proximo, ordemProxima, arrayIndicadores)} className="navegacao-indicador" >
+              <div>
+                <div className="navegacao-indicador-label">Próximo indicador</div>
+                <div className="navegacao-indicador-nome" id="nextName">{indicadores.proximo}</div>
+              </div>
+              <span className="navegacao-indicador-icone">→</span>
+            </a>}
+        </div>
       </div>
 
       <Footer />

@@ -9,7 +9,7 @@ import dimensoes from "../../../../utils/const.tsx";
 import "../../css/dimensaoPage.css";
 import { Alert } from "react-bootstrap";
 import { Collapse } from "react-bootstrap"
-import { DndContext, DragOverlay, PointerSensor, useSensor, useSensors, pointerWithin} from "@dnd-kit/core";
+import { DndContext, DragOverlay, PointerSensor, useSensor, useSensors, pointerWithin } from "@dnd-kit/core";
 import { SortableContext, verticalListSortingStrategy, useSortable, arrayMove, defaultAnimateLayoutChanges } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
 
@@ -19,7 +19,6 @@ export const CreateIndicador: FC<{
 }> = ({ dimensao, indicadorNome }) => {
   const navigate = useNavigate();
   //Array para armazenar os gráficos antes de enviar para a API
-  //const arrayIndicadorResponse: GraficosIndicador[] = useMemo(() => [], []);
   //Guarda o nome do indicador antigo para o patch
   //Muda o estado para realizar um patch
   const [patch, setPatch] = useState(false);
@@ -27,6 +26,12 @@ export const CreateIndicador: FC<{
   const [indicador, setIndicador] = useState<string>(
     indicadorNome !== undefined ? indicadorNome : "",
   );
+  const [referencias, setReferencias] = useState<string[]>([])
+  const [referenciaFonteDados, setReferenciaFonteDados] = useState<string>("")
+  const [periodicidade, setPeriodicidade] = useState<string>("")
+  const [ultimaAtualizacao, setUltimaAtualizacao] = useState<string>("")
+  const [unidadeMedida, setUnidadeMedida] = useState<string>("")
+  const [metodologia, setMetodologia] = useState<string>("")
   //Array que guarda os dados dos gráficos para que possam ser enviados definitivamente
   const [graficosData, setGraficosData] = useState<GraficosIndicador[]>([]);
   //Atributos relacionados aos nomes das colunas e suas cores
@@ -121,7 +126,7 @@ export const CreateIndicador: FC<{
         !grafico.tipoGrafico ||
         (grafico.id &&
           grafico.id <= 0 &&
-          typeof(grafico.arquivo) === "object" &&
+          typeof (grafico.arquivo) === "object" &&
           (!grafico.arquivo || grafico.arquivo.size === 0)),
     );
 
@@ -148,7 +153,7 @@ export const CreateIndicador: FC<{
       navigate(`/admin/dimensao/${dimensao}/`);
     } else {
       //postIndicador(dimensao, indicador, arrayIndicadorResponse);
-      postIndicador(dimensao, indicador, graficosData);
+      postIndicador(dimensao, indicador, referenciaFonteDados, periodicidade, ultimaAtualizacao, unidadeMedida, metodologia, graficosData);
       navigate(`/admin/dimensao/${dimensao}/`);
     }
   };
@@ -184,11 +189,11 @@ export const CreateIndicador: FC<{
           );
           setNextId(maxId + 1);
 
-          for(const grafico of graficosFromApi){
-            setOpenStates(prev =>({
-                ...prev,
+          for (const grafico of graficosFromApi) {
+            setOpenStates(prev => ({
+              ...prev,
               [grafico.id]: false,
-          }))
+            }))
           }
 
         })
@@ -201,6 +206,16 @@ export const CreateIndicador: FC<{
   useEffect(() => {
     //console.log(openStates);
   }, [openStates]);
+
+  useEffect(() => {
+    const urlReferencias = `/admin/dimensoes/${dimensao}/referencias/`
+    const getReferencias = async () => {
+      const response = await api.get(urlReferencias)
+      const listaReferencias = response.data.referencias
+      setReferencias(listaReferencias)
+    }
+    getReferencias()
+  }, [])
 
   const addGrafico = (e: React.MouseEvent) => {
     e.preventDefault();
@@ -240,29 +255,30 @@ export const CreateIndicador: FC<{
   };
 
   const sensitiveAnimateLayoutChanges = (args: any) => {
-      const { isSorting, wasDragging } = args;
+    const { isSorting, wasDragging } = args;
 
-      // Se estiver arrastando ou ordenando, bloqueie animações de layout (altura/largura)
-      if (isSorting || wasDragging) {
-        return false; // <--- Força bruta: não anima layout shifts, apenas transform
-      }
+    // Se estiver arrastando ou ordenando, bloqueie animações de layout (altura/largura)
+    if (isSorting || wasDragging) {
+      return false; // <--- Força bruta: não anima layout shifts, apenas transform
+    }
 
-      return defaultAnimateLayoutChanges(args);
-    };
+    return defaultAnimateLayoutChanges(args);
+  };
 
   function SortableGrafico({
-    id, 
+    id,
     index,
     open,
     tituloGrafico,
     children
   }: { id: string; index: number, open: boolean, tituloGrafico: string, children: React.ReactNode }) {
 
-    const {attributes, listeners, setNodeRef, transform, transition, isDragging} = useSortable({id,
-       animateLayoutChanges: sensitiveAnimateLayoutChanges,
-      });
-    const style = { transform: CSS.Translate.toString(transform), transition, opacity: isDragging ? 0: 1 , };
-    
+    const { attributes, listeners, setNodeRef, transform, transition, isDragging } = useSortable({
+      id,
+      animateLayoutChanges: sensitiveAnimateLayoutChanges,
+    });
+    const style = { transform: CSS.Translate.toString(transform), transition, opacity: isDragging ? 0 : 1, };
+
     return (
       <div ref={setNodeRef} style={style} {...attributes}>
         <div
@@ -270,22 +286,22 @@ export const CreateIndicador: FC<{
           className="grafico-component"
         >
           <i
-          className={openStates[Number(id)] ? ("bi bi-arrows-angle-contract collapse-icon"): 
-            ("bi bi-arrows-angle-expand collapse-icon")
-          }
-          onClick={() => toggle(Number(id))}
-          aria-expanded={openStates[Number(id)]}
+            className={openStates[Number(id)] ? ("bi bi-arrows-angle-contract collapse-icon") :
+              ("bi bi-arrows-angle-expand collapse-icon")
+            }
+            onClick={() => toggle(Number(id))}
+            aria-expanded={openStates[Number(id)]}
           >
           </i>
           <span className="move-icon" {...listeners} style={{ cursor: "grab", marginRight: 8 }}>⠿</span>
-          <h3>Gráfico {index + 1} { !open ? (" - " + tituloGrafico): ("")}</h3>
+          <h3>Gráfico {index + 1} {!open ? (" - " + tituloGrafico) : ("")}</h3>
           {children}
-      </div>
+        </div>
       </div>
     );
 
   }
-  
+
   function SortableList() {
 
     function normalizarPosicoes(arr: GraficosIndicador[]) {
@@ -330,11 +346,11 @@ export const CreateIndicador: FC<{
       setActiveId(null);
     }
     //console.log('graficosData', graficosData)
-    const view = [...graficosData].sort((a,b) => a.posicao - b.posicao);
+    const view = [...graficosData].sort((a, b) => a.posicao - b.posicao);
     //const view = graficosData.sort((a,b) => a.posicao - b.posicao);
 
     view.forEach((element, index, array) => {
-      if(view[index].posicao != index)
+      if (view[index].posicao != index)
         view[index].posicao = index
     });
     //console.log(graficosData)
@@ -345,31 +361,31 @@ export const CreateIndicador: FC<{
         autoScroll={false}
         onDragStart={onDragStart}>
         <SortableContext items={graficosData.map((i) => i.id.toString())} strategy={verticalListSortingStrategy}>
-            <div style={{ display: "grid", gap: 8, minHeight: '60px', height: 'auto' }}>
-              {view.map((grafico, index) => (
-                <SortableGrafico id={grafico.id.toString()} index={index} open={openStates[grafico.id]} tituloGrafico={grafico.tituloGrafico}>
-                    <Collapse in={openStates[grafico.id]}>
-                    <div>
+          <div style={{ display: "grid", gap: 8, minHeight: '60px', height: 'auto' }}>
+            {view.map((grafico, index) => (
+              <SortableGrafico id={grafico.id.toString()} index={index} open={openStates[grafico.id]} tituloGrafico={grafico.tituloGrafico}>
+                <Collapse in={openStates[grafico.id]}>
+                  <div>
                     <GraficoComponent
                       chaveValorGraficos={chaveValorGraficos}
                       grafico={grafico}
                       setDeleteArray={setDeleteArray}
-                      graficosData = {graficosData}
+                      graficosData={graficosData}
                       setGraficosData={setGraficosData}
                       onDelete={() => deleteSingleGrafico(grafico)}
                     />
-                    </div>
-                    </Collapse>
-                </SortableGrafico>
-              ))}
-            </div>
+                  </div>
+                </Collapse>
+              </SortableGrafico>
+            ))}
+          </div>
         </SortableContext>
         {/* --- DRAG OVERLAY --- */}
         {/* Renderizado fora do fluxo normal (Portal) */}
         {/* <DragOverlay adjustScale={false} style={styleDragOverlay}>
          */}
         <DragOverlay adjustScale={false}>
-          <div className="grafico-component" style={{minHeight: "100px !important"}}>
+          <div className="grafico-component" style={{ minHeight: "100px !important" }}>
             <h3>Gráfico - {graficosData.find(grafico => String(grafico.id) === String(activeId))?.tituloGrafico}</h3>
           </div>
         </DragOverlay>
@@ -420,8 +436,8 @@ export const CreateIndicador: FC<{
 
         <h3>Gráficos</h3>
         <div id="graficos">
-            <SortableList />
-            
+          <SortableList />
+
 
           {msgsErrorGrafico.length > 0 &&
             msgsErrorGrafico.map((mensagem, index) => (
@@ -435,6 +451,28 @@ export const CreateIndicador: FC<{
           <span>+</span> Adicionar Gráfico
         </button>
 
+        <h3>Fonte e Metodologia</h3>
+        <div className="fonteMetodologia">
+          <label htmlFor="">Fontes e Dados</label>
+          {referencias.length > 0 &&
+            <select value={referenciaFonteDados} onChange={(e) => setReferenciaFonteDados(e.target.value)} name="referencias" id="referencias">
+              <option value="">Escolha a sua Referência</option>
+              {referencias.map((referencia) =>
+                <option value={referencia}>
+                  {referencia}
+                </option>
+              )}
+            </select>
+          }
+          <label htmlFor="periodicidade">Periodicidade</label>
+          <input type="text" name="periodicidade" value={periodicidade} onChange={(e) => setPeriodicidade(e.target.value)} />
+          <label htmlFor="ultimaAtualizacao">Ultima Atualização</label>
+          <input type="text" name="ultimaAtualizacao" value={ultimaAtualizacao} onChange={(e) => setUltimaAtualizacao(e.target.value)} />
+          <label htmlFor="unidadeMedida">Unidade de Medida</label>
+          <input type="text" name="unidadeMedida" value={unidadeMedida} onChange={(e) => setUnidadeMedida(e.target.value)} />
+          <label htmlFor="metodologia">Metodologia</label>
+          <textarea name="metodologia" value={metodologia} onChange={(e) => setMetodologia(e.target.value)} id="metodologia"></textarea>
+        </div>
         <div className="d-flex justify-content-between mt-4">
           <button
             type="button"

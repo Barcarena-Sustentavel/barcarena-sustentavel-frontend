@@ -310,12 +310,12 @@ const RelatoriosCarousel: React.FC<RelatoriosCarouselProps> = ({ dimensoesTitulo
             </button>
             <div className="car-dots-wrap">
               {Array.from({ length: totalDots }).map((_, i) => (
-                <button
+                <div
                   key={i}
                   className={`car-dot${i === current ? ' active' : ''}`}
                   onClick={() => { go(i); kick(); }}
                   aria-label={`Slide ${i + 1}`}
-                />
+                ></div>
               ))}
             </div>
             <button className="car-btn" type="button" onClick={next} disabled={current === totalDots - 1}>

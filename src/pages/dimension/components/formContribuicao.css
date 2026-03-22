@@ -143,12 +143,16 @@ form .botao-contribuicao {
     margin-top: 1rem;
 }
 
-@media (max-width: 600px){
+@media (max-width: 800px){
   .contribuicao-grid{
     grid-template-columns: 1fr;
   }
+}
+
+@media (max-width: 600px){
+  
   .contribuicao-section{
-    padding:0 ;
+    padding:1rem ;
   }
   .contribuicao-submit{
     width: 125px

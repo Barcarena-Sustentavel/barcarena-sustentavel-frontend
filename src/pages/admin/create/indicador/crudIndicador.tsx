@@ -8,13 +8,27 @@ import Swal from "sweetalert2";
 export const postIndicador = async (
   dimensao: string | undefined,
   indicador: string,
+  referencia: string,
+  periodicidade: string,
+  ultimaAtualizacao: string,
+  unidadeMedida: string,
+  metodologia: string,
   arrayGrafico: GraficosIndicador[],
 ) => {
   const Indicador: Indicador = {
     nome: indicador,
   };
   try {
-    await api.post(`/admin/dimensoes/${dimensao}/indicador/`, Indicador);
+    await api.post(`/admin/dimensoes/${dimensao}/indicador/`, null, {
+      params: {
+        indicadorNome: indicador,
+        referenciaNome: referencia,
+        periodicidade,
+        ultimaAtualizacao,
+        unidadeMedida,
+        metodologia,
+      },
+    });
     const endpoint = `/admin/dimensoes/${dimensao}/indicador/${indicador}/anexos/`;
     let formData = new FormData();
     for (let i = 0; i < arrayGrafico.length; i++) {
@@ -79,8 +93,8 @@ export const patchIndicador = async (
     if (arrayGrafico.length > 0) {
       let formData = new FormData();
       for (let i = 0; i < arrayGrafico.length; i++) {
-        console.log(arrayGrafico[i].arquivo.size);
-        if (arrayGrafico[i].arquivo.size !== undefined) {
+        console.log((arrayGrafico[i].arquivo as File).size);
+        if ((arrayGrafico[i].arquivo as File).size !== undefined) {
           formData.append("grafico", arrayGrafico[i].arquivo);
         }
         formData.append("descricaoGrafico", arrayGrafico[i].descricaoGrafico);
