@@ -38,7 +38,6 @@ const IndicadorComponent: FC = () => {
 );
   const ordemAnterior = parseInt (ordem as string) - 1
   const ordemProxima = parseInt(ordem as string) + 1 
-  console.log(ordemProxima)
   const indicadores = {
     proximo: arrayIndicadores[indicadorIndex + 1] !== undefined && arrayIndicadores[indicadorIndex + 1] 
     /*
@@ -211,7 +210,6 @@ const IndicadorComponent: FC = () => {
     link.download = `${nome}.png`
     link.click();
   }
-  console.log(dimensoesCores123[dimensao as string])
   return (
     <div>
       <NavbarComponent />
@@ -319,22 +317,26 @@ const IndicadorComponent: FC = () => {
               </div>
             </div>
             <div className="anterior-proximo-indicador" id="indNav">
-              {(indicadores.anterior !== "" || indicadores.anterior !== false) &&
+              {(indicadores.anterior !== "" && indicadores.anterior !== false) ?
               <a id="btnPrev" onClick={() => handleNavigateIndicador(indicadores.anterior, ordemAnterior,arrayIndicadores)}  className="navegacao-indicador">
                 <span className="navegacao-indicador-icone" style={{color:`var(--${dimensoesCores123[dimensao as string]})`}}>←</span>
                 <div>
                   <div className="navegacao-indicador-label">Indicador anterior</div>
                   <div className="navegacao-indicador-nome" id="prevName">{indicadores.anterior}</div>
                 </div>
-              </a> }
-              {(indicadores.proximo !== "" || indicadores.proximo !== false) &&
+              </a>
+              : <></>
+            }
+              {(indicadores.proximo !== "" && indicadores.proximo !== false) ?
               <a id="btnNext" onClick={() => handleNavigateIndicador(indicadores.proximo, ordemProxima,arrayIndicadores)} className="navegacao-indicador">
                 <div>
                   <div className="navegacao-indicador-label">Próximo indicador</div>
                   <div className="navegacao-indicador-nome" id="nextName">{indicadores.proximo}</div>
                 </div>
                 <span className="navegacao-indicador-icone">→</span>
-              </a>}
+              </a>
+            : <></>  
+            }
             </div> 
           </div>
         )}
