@@ -163,7 +163,7 @@
     width:7px; height:7px; border-radius:50%;
     background:rgba(255,255,255,.25); cursor:pointer; transition:all .3s;
 }
-.car-dot.active { background:#8DC63F; width:20px; border-radius:4px; }
+.car-dot.active { background:#8DC63F; width:20px; border-radius:4px; width: 20%; }
 
 @media(max-width:900px) {
     /* Carrossel */

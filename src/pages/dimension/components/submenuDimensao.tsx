@@ -7,6 +7,40 @@ import Location from "../../../components/layout/location/location.tsx";
 interface SubmenuDimensaoProps {
 	dimensaoAtiva: string;
 }
+const DimensaoItem: React.FC<{icon:any, dimensao:string, isAtiva:boolean, cor:string}> = ({icon, dimensao, isAtiva, cor}) => {
+	const [isHovering, setIsHovering] = useState<boolean>(false)
+	const dimensaoAtiva = isAtiva
+	const corItem = cor
+	const nomeDimensao = dimensao
+	const icone = icon
+	//console.log(icone)
+		return (
+							<a
+								key={nomeDimensao}
+								className={"submenu-dimensao-item" + (dimensaoAtiva ? " active" : "")}
+								onMouseEnter={() => setIsHovering(true)}
+								onMouseLeave={() => setIsHovering(false)}
+								href={`/${nomeDimensao}`}
+								style={{
+									borderBottomColor: dimensaoAtiva || isHovering ? `${corItem}` : ""
+								}}>
+								<div className={isAtiva ? "submenu-dimensao-svg submenu-dimensao-svg-ativo" : "submenu-dimensao-svg"} style={{ backgroundColor: `${corItem}` }}>
+									{ icone !== undefined && <svg
+										viewBox={(icone as any).viewBox}                   // Aumenta o ícone se for ativo
+										stroke="white"  //{(icon as any).stroke}
+										fill={(icone as any).fill}
+										strokeWidth={(icone as any)["stroke-width"]}
+										strokeLinecap={(icone as any)["stroke-linecap"]}
+										strokeLinejoin={(icone as any)["stroke-linejoin"]}
+										width="36" // icon um tamanho padrão
+										height="36">
+										{(icone as any).children}
+									</svg>}
+								</div>
+								<p>{nomeDimensao}</p>
+							</a>
+						);
+}
 
 const SubmenuDimensao: React.FC<SubmenuDimensaoProps> = ({ dimensaoAtiva }) => {
 	const location = useLocation();
@@ -20,60 +54,74 @@ const SubmenuDimensao: React.FC<SubmenuDimensaoProps> = ({ dimensaoAtiva }) => {
 		dimensoesColumn3,
 		dimensoesCores123,
 	} = dimensoes.GetAllConst();
-	//console.log(dimensoesColumn1, dimensoesColumn2, dimensoesColumn3);
 	const todasDimensoes = {
 		...dimensoesColumn1,
 		...dimensoesColumn2,
 		...dimensoesColumn3,
 	};
-	//console.log('todasDimensoes:', todasDimensoes);
+	const dimensoesValor = Object.keys(todasDimensoes)
+	const dimensoesChaves = ["conectividade",
+							 "ordenamento",
+							 "educacao",
+							 "meioAmbiente",
+							 "seguranca",
+							 "saude",
+							 "emprego",
+							 "instituicoes",
+							 "mobilidade"]
+	let dimensoesChaveValor:Record<string,string> = {}
+	dimensoesChaves.map((_,index:number) => {
+		dimensoesChaveValor[dimensoesChaves[index]] = dimensoesValor[index] 
+	}) 
+	const dimensoesOrdem = [
+		"emprego",
+		"meioAmbiente",
+		"educacao",
+		"mobilidade",
+		"ordenamento",
+		"seguranca",
+		"saude",
+		"conectividade",
+		"instituicoes",
+	];
+	const dimensaoCores = [
+		"#c0392b",
+		"#27ae60",
+		"#1B4F9B",
+		"#b7950b",
+		"#148f77",
+		"#1e8449",
+		"#922b21",
+		"#3a52a8",
+		"#d35400"
+	]
 	const icone = todasDimensoes[dimensaoAtiva || activeDimensionFromPath];
 	return (
 		<div>
-		<div className="submenu-dimensao-wrap">
+			<div className="submenu-dimensao-wrap">
+				<div
+					className="submenu-dimensao"
+				>
+					{dimensoesOrdem.map((_,index:number) =>{
+						const nomeDimensaoChave:string = dimensoesOrdem[index]
+						const nomeDimensaoValor = dimensoesChaveValor[nomeDimensaoChave as string]
+						const isAtiva =
+							nomeDimensaoValor === (dimensaoAtiva || activeDimensionFromPath);
+						const cor = dimensaoCores[index] //dimensoesCores123[nomeDimensaoValor] || "default-color";
+						const icon = todasDimensoes[nomeDimensaoValor]	
+						//console.log(icon)					
+						return(<DimensaoItem icon={icon} dimensao={nomeDimensaoValor as string} isAtiva={isAtiva} cor={cor} />)
+						//return( <div></div> )
+					}) 
+					}
+				</div>
+			</div>
+			<Location parentName={dimensaoAtiva} />
 			<div
-				className="submenu-dimensao"
-			>
-				{Object.entries(todasDimensoes).map(([nomeDimensao, icon]) => {
-					const isAtiva =
-						nomeDimensao === (dimensaoAtiva || activeDimensionFromPath);
-					//const cor = dimensoes.dimensaoCores[nomeDimensao] || 'default-color';
-					const cor = dimensoesCores123[nomeDimensao] || "default-color";
-					//const aumentaIcone = dimensoes.dimensaoAumentaIcone[nomeDimensao] || false;
-					//const aumentaIcone = dimensaoAumentaIcone[nomeDimensao] || false;
-
-					return (
-						<a
-							key={nomeDimensao}
-							className={"submenu-dimensao-item" + (isAtiva ? " active" : "")}
-							href={`/${nomeDimensao}`}
-							style={{
-							}}>
-							<div className={isAtiva ? "submenu-dimensao-svg submenu-dimensao-svg-ativo" : "submenu-dimensao-svg"} style={{ backgroundColor: `var(--${cor})` }}>
-								<svg
-									viewBox={(icon as any).viewBox}                   // Aumenta o ícone se for ativo
-									stroke="white"  //{(icon as any).stroke}
-									fill={(icon as any).fill}
-									strokeWidth={(icon as any)["stroke-width"]}
-									strokeLinecap={(icon as any)["stroke-linecap"]}
-									strokeLinejoin={(icon as any)["stroke-linejoin"]}
-									width="36" // icon um tamanho padrão
-									height="36">
-									{(icon as any).children}
-								</svg>
-							</div>
-							<p>{nomeDimensao}</p>
-						</a>
-					);
-				})}
-			</div>	
-		</div>
-		<Location parentName={dimensaoAtiva}/>
-		<div
 				className="submenu-dimensao-hero"
-				style={{ backgroundColor: `var(--${dimensoesCores123[dimensaoAtiva || activeDimensionFromPath]})` }}>
+				style={{ backgroundColor:`${dimensoesCores123[dimensaoAtiva || activeDimensionFromPath]}` /*`var(--${dimensoesCores123[dimensaoAtiva || activeDimensionFromPath]})`*/ }}>
 				<div className="submenu-dimensao-hero-dentro">
-					<div className="submenu-dimensao-hero-svg" style={{ backgroundColor: `var(--${dimensoesCores123[dimensaoAtiva || activeDimensionFromPath]})` }}>
+					<div className="submenu-dimensao-hero-svg" >
 						{icone !== undefined && <svg
 							viewBox={(icone as any).viewBox}
 							stroke="white"  //{(icone as any).stroke}
@@ -103,7 +151,7 @@ const SubmenuDimensao: React.FC<SubmenuDimensaoProps> = ({ dimensaoAtiva }) => {
 					</button>
 				</div>
 			</div>
-	</div>
+		</div>
 	);
 };
 

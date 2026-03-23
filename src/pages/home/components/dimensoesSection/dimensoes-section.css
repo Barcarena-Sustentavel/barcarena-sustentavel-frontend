@@ -54,11 +54,11 @@
   color: #fff;
   stroke: #fff;
 }
-.dim-card:hover .dim-icon svg {
+.dim-card:hover svg {
   stroke: #fff;
   color: #fff;
 }
-.dim-card:hover .dim-icon svg * {
+.dim-card:hover svg * {
   stroke: #fff;
   fill: none;
 }

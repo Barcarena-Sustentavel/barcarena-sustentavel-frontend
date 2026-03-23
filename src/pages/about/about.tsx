@@ -275,25 +275,6 @@ const About: FC = () => {
               </p>
             </div>
           </section>
-
-          {/* Downloads — inalterado */}
-          <p className="mx-auto sobre-titulo">Download de Short Papers</p>
-          <div className="d-flex mx-auto align-items-center justify-content-center secao-download-papers row">
-            {dimensoes.map((dimensao) => getDownloadCard(dimensao))}
-          </div>
-
-          <p className="mx-auto sobre-titulo">Download de Estudos Complementares</p>
-          <div className="d-flex mx-auto align-items-center justify-content-center secao-download-papers row">
-            {estudos.map((estudo, index) => (
-              <div key={index} className="w-1/2 d-flex justify-content-between align-items-center bg-primary rounded p-3 h-100">
-                <p className="mb-0">{estudo}</p>
-                <button className="btn btn-link p-0" onClick={() => downloadEstudo(estudo)}>
-                  <img src={downloadIcon} className="bg-light" alt="Download" style={{ width: "24px", height: "24px" }} />
-                </button>
-              </div>
-            ))}
-          </div>
-
         </div>
       </main>
 

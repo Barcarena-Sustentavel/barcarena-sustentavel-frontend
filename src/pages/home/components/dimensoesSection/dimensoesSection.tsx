@@ -139,48 +139,8 @@ export const DimensoesSection: FC = () => {
 		),
 		};
 
-	// const {
-	// 	dimensoesColumn1,
-	// 	dimensoesColumn2,
-	// 	dimensoesColumn3,
-	// 	dimensoesCores123,
-	// 	dimensaoAumentaIcone,
-	// 	isLoaded,
-	// 	setIsLoaded,
-	// } = consts.GetAllConst();
-	// const dimensoesColumn123 = {
-	// 	...dimensoesColumn1,
-	// 	...dimensoesColumn2,
-	// 	...dimensoesColumn3,
-	// };
-
-	// const testConsts = consts.GetAllConst();
-
-	// const todasAsCores = { ...dimensoesCores123 };
-	// //console.log(dimensoesCores123)
-	// //const [isOpen, setIsOpen] = useState(false);
-	// // Callback ref para observar cada elemento assim que é montado
-	// const dimensionItemRef = useCallback((node: HTMLDivElement | null) => {
-	// 	if (node && observerRef.current) {
-	// 		observerRef.current.observe(node);
-	// 	}
-	// }, []);
-
 	
 	useEffect(() => {
-		// setIsLoaded(true)
-
-		// Criar o observer uma vez
-		// observerRef.current = new IntersectionObserver(
-		//   (entries) => {
-		//     entries.forEach((entry) => {
-		//       if (entry.isIntersecting) {
-		//         entry.target.classNameList.add('animate-in');
-		//       }
-		//     });
-		//   },
-		//   { threshold: 0.1 }
-		// );
     const getIconesDimensoes = async () => {
         const response = await api.get("/dimensoes/");
         const titulos: string[] = response.data.dimensoes;
@@ -201,10 +161,10 @@ export const DimensoesSection: FC = () => {
 
 
 	useEffect(() => {
-		console.log(icones);
+		//console.log(icones);
 	}, [icones])
 	if (!icones || !dimensoesTitulo) return <div className="spinner-border" />;
-	console.log(dimensoesColumn123 as any)
+	//console.log(dimensoesColumn123 as any)
 	console.log(dimensoesTitulo)
 	return (
 		<>
@@ -217,15 +177,16 @@ export const DimensoesSection: FC = () => {
 					</p>
 				</div>
 				<div className="dim-grid">
-					{dimensoesOrdem.map((item) => (
-					<DimensaoCard
+					{dimensoesOrdem.map((item) => 
+					{
+					return (<DimensaoCard
 						key={item}
 						titulo={dimensoesTitulo![item]}
 						icone={dimensoesColumn123[dimensoesTitulo[item]] as any}
 						url={dimensoesTitulo![item]}
 						cor={dimensoesCores[item]}
-					/>
-					))}
+					/>) }
+					)}
 				</div>
 			</section>
 

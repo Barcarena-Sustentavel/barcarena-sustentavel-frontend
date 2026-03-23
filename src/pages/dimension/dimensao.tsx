@@ -17,6 +17,21 @@ const NODE_ENV = import.meta.env.VITE_NODE_ENV;
 const DimensaoComponent: FC = () => {
   const { dimensao } = useParams();
   const { dimensoesCores123 } = dimensoes.GetAllConst();
+  const contadorIndicadoresCores = [
+    {corLetra: '#2c3e7d', corBackground: '#2c3e7d22', corBorda: '#2c3e7d44'},
+    {corLetra: '#148f77', corBackground: '#148f7722', corBorda: '#148f7744'},
+    {corLetra: '#1B4F9B', corBackground: '#1B4F9B22', corBorda: '#1B4F9B44'},
+    {corLetra: '#27ae60', corBackground: '#27ae6022', corBorda: '#27ae6044'},
+    {corLetra: '#1e8449', corBackground: '#1e844922', corBorda: '#1e844944'},
+    {corLetra: '#922b21', corBackground: '#922b2122', corBorda: '#922b2144'},
+    {corLetra: '#c0392b', corBackground: '#c0392b22', corBorda: '#c0392b44'},
+    {corLetra: '#d35400', corBackground: '#d3540022', corBorda: '#d3540044'},
+    {corLetra: '#b7950b', corBackground: '#b7950b22', corBorda: '#b7950b44'},
+  ]
+
+  const dimensoesNomes:string[] = Object.keys(dimensoesCores123)
+  console.log(dimensoesNomes)
+  const [dimensaoIndicadorContador, setDimensaoIndicadorContador] = useState<Record<string,any>>({})
   const [indicadores, setIndicadores] = useState<
     Array<Record<string, string | number | null>>
   >([]);
@@ -45,7 +60,6 @@ const DimensaoComponent: FC = () => {
 
   const handleNavigateIndicador = (indicador: string, ordem: number, arrayIndicadores: string[]) => {
     const url = encodeURI(`/${dimensao}/${indicador}/${ordem}`);
-    console.log(arrayIndicadores)
     navigate(url, {
       state: arrayIndicadores
     });
@@ -86,28 +100,35 @@ const DimensaoComponent: FC = () => {
       setPathHtml("");
     }
     api.get(url).then((response) => {
-      console.log(response.data);
       setIndicadores([...response.data.indicadores].sort((a: any, b: any) => a.posicao - b.posicao));
       setDimensao(response.data.dimensao);
       setReferencias(response.data.referencias);
       setEstudosComplementares(response.data.estudos_complementares);
-      console.log(response.data.estudos_complementares);
     });
     //}
   }, [url, dimensao, botaoConectividade]);
-  //console.log('cor', dimensoesCores123[dimensao as string])
   useEffect(() => {
     setIndicadoresNomes(indicadores.map((indicador) => indicador.nome as string))
   }, [indicadores])
   //--------------------------------------------------------------------------
-  console.log('indicadores', indicadores)
-  console.log('indicadoresNomes', indicadoresNomes)
+  useEffect(() =>{
+  const chavesDimensaoIndicadorContador = Object.keys(dimensaoIndicadorContador)
+  console.log(chavesDimensaoIndicadorContador)
+  if (chavesDimensaoIndicadorContador.length > 0) return
+
+  const dimensaoIndicadorContadorTemp:Record<string,any> = {}
+  dimensoesNomes.map((_,index:number) => {
+    console.log(dimensoesNomes[index])
+    return dimensaoIndicadorContadorTemp[dimensoesNomes[index]] = contadorIndicadoresCores[index]}) 
+  setDimensaoIndicadorContador(dimensaoIndicadorContadorTemp)
+  },[dimensoesNomes])
+  console.log(dimensaoIndicadorContador)
   return (
     <div className="home-container">
       <NavbarComponent />
       <SubmenuDimensao dimensaoAtiva={dimensaoJson?.nome || ""} />
       <div className="dimensao-container">
-        <div className="descricao" style={{ borderLeft: `5px solid var(--${dimensoesCores123[dimensao as string]})` }}>
+        <div className="descricao" style={{ borderLeft: `5px solid ${dimensoesCores123[dimensao as string]}` }}>
           <p>
             {dimensaoJson?.descricao}
           </p>
@@ -167,22 +188,24 @@ const DimensaoComponent: FC = () => {
             <HTMLFileIframe htmlFilePath={pathHtml} />
           </div>
         )}
-        {/*<div className="container dimension-details-container">*/}
         <div className="header-indicadores">
           <h2>Indicadores</h2>
-          <span className="contador-indicadores">{indicadores.length} indicadores</span>
+          {dimensaoIndicadorContador[dimensao as string] !== undefined && <span className="contador-indicadores" style={{color: dimensaoIndicadorContador[dimensao as string]["corLetra"]!, 
+                                                         backgroundColor:dimensaoIndicadorContador[dimensao as string]["corBackground"]!,
+                                                         borderColor:dimensaoIndicadorContador[dimensao as string]["corBorda"]!}}
+          >{indicadores.length} indicadores</span>}
         </div>
         <div className="indicadores-grid">
           {indicadores.length > 0 &&
             indicadores.map((indicador, index) => (
               <div
                 className="indicadores-grid-card"
-                style={{ borderTop: `3px solid var(--${dimensoesCores123[dimensao as string]})` }}
+                style={{ borderTop: `3px solid ${dimensoesCores123[dimensao as string]}` }}
                 onClick={() =>
                   handleNavigateIndicador(indicador.nome as string, index + 1, indicadoresNomes)
                 }
               >
-                <div className="indicadores-grid-card-numero" style={{ color: `var(--${dimensoesCores123[dimensao as string]})` }}>Indicador {index + 1}</div>
+                <div className="indicadores-grid-card-numero" style={{ color: `${dimensoesCores123[dimensao as string]}` }}>Indicador {index + 1}</div>
                 <div className="indicadores-grid-card-nome">{indicador.nome}</div>
                 <div className="ind-card-arrow">→</div>
               </div>
@@ -204,10 +227,11 @@ const DimensaoComponent: FC = () => {
                 ))}
             </div>
           </div>)}
-        <div className="secao-ref-estudoComplementar">
-          <h2>Referências</h2>
+        
           {referencias.length > 0 &&
-            referencias.map((referencia) => (
+          <div className="secao-ref-estudoComplementar">
+          <h2>Referências</h2>
+            {referencias.map((referencia) => (
               <ul className="secao-ref-estudoComplementar-lista-ul">
                 <li>
                   {referencia?.link !== "" ? <a
@@ -218,16 +242,15 @@ const DimensaoComponent: FC = () => {
                   }
                 </li>
               </ul>
+
             ))}
-          <FormContribuicao
+          </div>
+          }
+        <FormContribuicao
             dimensaoId={0}
-            formStyle={{ borderLeft: `5px solid var(--${dimensoesCores123[dimensao as string]})` }}
+            formStyle={{ borderLeft: `5px solid ${dimensoesCores123[dimensao as string]}` }}
           />
-        </div>
       </div>
-
-      {/* <div className="container dimension-details-container mt-5 d-flex flex-column"> */}
-
 
       {/* {dimensao === "Conectividade" &&
         <div className="divMapa">

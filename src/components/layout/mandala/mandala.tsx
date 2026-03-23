@@ -1,5 +1,7 @@
 import { useState } from "react";
 import logo from "../../../assets/images/about/logo.png";
+import './mandala.css'
+
 
 interface Dim {
   id: string;

@@ -1,3 +1,7 @@
+h2{
+  letter-spacing: 0px;
+}
+
 .dimension-details-container {
     border-radius: 4px;
     border: 1px solid grey;
@@ -20,6 +24,13 @@
   margin: 0 auto;
   padding: 3.5rem 3rem;
 }
+
+@media (max-width: 900px){
+  .dimensao-container{
+    padding: 2rem 1.2rem;
+  }
+}
+
 
 @media (max-width:600px){
   .dimensao-container{
@@ -48,6 +59,7 @@
   margin-bottom: 1.5rem;
 }
 .header-indicadores h2{
+  font-family: 'Sora', sans-serif;
   font-size: 1.1rem;
   font-weight: 800;
   color: var(--dark);
@@ -112,6 +124,7 @@
   margin-top: 2rem;
 }
 .secao-ref-estudoComplementar h2{
+  font-family: 'Sora', sans-serif;
   font-size: 1rem;
   font-weight: 800;
   color: var(--dark);
@@ -148,18 +161,26 @@
   border-bottom: 1px solid var(--border);
   font-size: 0.88rem;
   color: var(--primary);
+  font-weight: 100;
   text-decoration: none;
   transition: color 0.2s;
   line-height: 1.6;
   position: relative;
 }
+
+.secao-ref-estudoComplementar-lista-ul li a{
+  color: var(--primary);
+  font-weight: 400;
+}
+
+.secao-ref-estudoComplementar-lista-ul li a:hover{
+  color: var(--accent);
+}
+
 .secao-ref-estudoComplementar-lista-ul li::before {
   content: '•';
   position: absolute;
   left: 0;
-  color: var(--primary);
-}
-.secao-ref-estudoComplementar-lista-ul li a{
   color: var(--primary);
 }
 
@@ -256,7 +277,7 @@ a.custom-link-tooplate-gotto-job:hover {
     font-size: 0.5rem;
   }
   .secao-ref-estudoComplementar{
-    padding:0
+    padding:1rem
   }
   
 }

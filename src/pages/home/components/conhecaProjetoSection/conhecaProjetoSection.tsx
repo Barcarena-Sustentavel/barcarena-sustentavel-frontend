@@ -138,7 +138,7 @@ const ConhecaProjetoSection: React.FC = () => {
             decisão, contribuindo tanto para iniciativas como o Fundo Hydro e a Iniciativa Barcarena
             Sustentável quanto para ações do poder público e da sociedade civil.
           </p>
-          <a href="sobre.html" className="btn-prim conheca-btn">Conheça o Projeto</a>
+          <a href="/about/" className="btn-prim conheca-btn">Conheça o Projeto</a>
         </div>
 
         {/* Right: YouTube embed */}
