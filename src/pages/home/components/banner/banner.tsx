@@ -31,7 +31,7 @@ const Banner: React.FC = () => {
 
         <div className="hero-btns">
           <a href="#dimensoes" className="btn-prim">Explorar Indicadores</a>
-          <a href="#" className="btn-out">Saiba Mais →</a>
+          <a href="/about/" className="btn-out">Saiba Mais →</a>
         </div>
       </div>
 

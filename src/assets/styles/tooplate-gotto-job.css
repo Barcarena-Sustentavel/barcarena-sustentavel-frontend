@@ -60,13 +60,13 @@ h5,
 h6 {
   color: var(--dark-color);
   font-weight: var(--font-weight-semibold);
-  letter-spacing: -0.5px;
+  /*letter-spacing: -0.5px;*/
 }
-
+/*
 h1,
 h2 {
   letter-spacing: -1.5px;
-}
+}*/
 
 h1 {
   font-size: var(--h1-font-size);

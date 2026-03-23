@@ -1,3 +1,7 @@
+h2{
+  letter-spacing: 0px;
+}
+
 .dimension-details-container {
     border-radius: 4px;
     border: 1px solid grey;
@@ -55,6 +59,7 @@
   margin-bottom: 1.5rem;
 }
 .header-indicadores h2{
+  font-family: 'Sora', sans-serif;
   font-size: 1.1rem;
   font-weight: 800;
   color: var(--dark);
@@ -119,6 +124,7 @@
   margin-top: 2rem;
 }
 .secao-ref-estudoComplementar h2{
+  font-family: 'Sora', sans-serif;
   font-size: 1rem;
   font-weight: 800;
   color: var(--dark);

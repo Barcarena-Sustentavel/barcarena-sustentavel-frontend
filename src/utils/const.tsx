@@ -98,6 +98,7 @@ const loadAllIcons = () => {
     ],
   };
 };
+/*
 const dimensaoCoresArray: string[] = [
   "dark-blue-d", // Confiança, proteção
   "green-light-d", // Movimento, fluidez
@@ -108,8 +109,32 @@ const dimensaoCoresArray: string[] = [
   "red-d", // Ação, urgência, energia
   "orange-d", // Estímulo, criatividade
   "yellow-d", // Comunicação, otimismo
-];
+];*/
 
+const dimensaoCoresArray: string[] = [
+		"#3a52a8",
+		"#148f77",
+		"#1B4F9B",
+		"#148f77",
+		"#1e8449",
+		"#922b21",
+		"#c0392b",
+		"#d35400",
+		"#b7950b"
+	]
+/*
+const dimensaoCoresArray: string[] = [
+		"#c0392b",
+		"#27ae60",
+		"#1B4F9B",
+		"#b7950b",
+		"#148f77",
+		"#1e8449",
+		"#922b21",
+		"#3a52a8",
+		"#d35400"
+	]
+*/
 const GetAllConst = () => {
   const [dimensoesColumn1, setDimensoesColumn1] = useState<Record<string, string>>({});
   const [dimensoesColumn2, setDimensoesColumn2] = useState<Record<string, string>>({});
@@ -148,7 +173,7 @@ const GetAllConst = () => {
       const tempDimensaoAumentaIcone: Record<string, boolean> = {};
 
       for (let index = 0; index < dimensoesList.length; index++) {
-        console.log('dimensao',dimensoesList[index], 'cor',dimensoesColumn1Array[index])
+        //console.log('dimensao',dimensoesList[index], 'cor',dimensoesColumn1Array[index])
         if(index < 3){
           tempDimensoesColumn1[dimensoesList[index]] = dimensoesColumn1Array[index];
         }

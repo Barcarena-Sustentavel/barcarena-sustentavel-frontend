@@ -20,9 +20,9 @@ const Footer = () => {
           <div className="footer-col">
             <h4>Conteúdo</h4>
             <ul>
-              <li><a href="#">Relatórios</a></li>
-              <li><a href="#">Indicadores</a></li>
-              <li><a href="colaboradores.html">Colaboradores</a></li>
+              <li><a href="/#galeria">Relatórios</a></li>
+              <li><a href="/#dimensoes">Indicadores</a></li>
+              <li><a href="/colaboradores/">Colaboradores</a></li>
               <li><a href="#">Pesquisas</a></li>
               <li><a href="#">Legislação</a></li>
             </ul>
@@ -30,8 +30,8 @@ const Footer = () => {
           <div className="footer-col">
             <h4>Observatório</h4>
             <ul>
-              <li><a href="sobre.html">Sobre</a></li>
-              <li><a href="colaboradores.html">Colaboradores</a></li>
+              <li><a href="/about/">Sobre</a></li>
+              <li><a href="/colaboradores/">Colaboradores</a></li>
               <li><a href="#">Missão</a></li>
               <li><a href="#">Parceiros</a></li>
               <li><a href="#">Metodologia</a></li>

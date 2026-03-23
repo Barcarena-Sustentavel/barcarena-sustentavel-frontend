@@ -13,7 +13,7 @@ const DimensaoItem: React.FC<{icon:any, dimensao:string, isAtiva:boolean, cor:st
 	const corItem = cor
 	const nomeDimensao = dimensao
 	const icone = icon
-	console.log(icone)
+	//console.log(icone)
 		return (
 							<a
 								key={nomeDimensao}
@@ -22,9 +22,9 @@ const DimensaoItem: React.FC<{icon:any, dimensao:string, isAtiva:boolean, cor:st
 								onMouseLeave={() => setIsHovering(false)}
 								href={`/${nomeDimensao}`}
 								style={{
-									borderBottomColor: dimensaoAtiva || isHovering ? `var(--${corItem})` : ""
+									borderBottomColor: dimensaoAtiva || isHovering ? `${corItem}` : ""
 								}}>
-								<div className={isAtiva ? "submenu-dimensao-svg submenu-dimensao-svg-ativo" : "submenu-dimensao-svg"} style={{ backgroundColor: `var(--${corItem})` }}>
+								<div className={isAtiva ? "submenu-dimensao-svg submenu-dimensao-svg-ativo" : "submenu-dimensao-svg"} style={{ backgroundColor: `${corItem}` }}>
 									{ icone !== undefined && <svg
 										viewBox={(icone as any).viewBox}                   // Aumenta o ícone se for ativo
 										stroke="white"  //{(icon as any).stroke}
@@ -73,7 +73,6 @@ const SubmenuDimensao: React.FC<SubmenuDimensaoProps> = ({ dimensaoAtiva }) => {
 	dimensoesChaves.map((_,index:number) => {
 		dimensoesChaveValor[dimensoesChaves[index]] = dimensoesValor[index] 
 	}) 
-	console.log(dimensoesChaveValor)
 	const dimensoesOrdem = [
 		"emprego",
 		"meioAmbiente",
@@ -85,8 +84,18 @@ const SubmenuDimensao: React.FC<SubmenuDimensaoProps> = ({ dimensaoAtiva }) => {
 		"conectividade",
 		"instituicoes",
 	];
+	const dimensaoCores = [
+		"#c0392b",
+		"#27ae60",
+		"#1B4F9B",
+		"#b7950b",
+		"#148f77",
+		"#1e8449",
+		"#922b21",
+		"#3a52a8",
+		"#d35400"
+	]
 	const icone = todasDimensoes[dimensaoAtiva || activeDimensionFromPath];
-	console.log(todasDimensoes)
 	return (
 		<div>
 			<div className="submenu-dimensao-wrap">
@@ -98,9 +107,9 @@ const SubmenuDimensao: React.FC<SubmenuDimensaoProps> = ({ dimensaoAtiva }) => {
 						const nomeDimensaoValor = dimensoesChaveValor[nomeDimensaoChave as string]
 						const isAtiva =
 							nomeDimensaoValor === (dimensaoAtiva || activeDimensionFromPath);
-						const cor = dimensoesCores123[nomeDimensaoValor] || "default-color";
+						const cor = dimensaoCores[index] //dimensoesCores123[nomeDimensaoValor] || "default-color";
 						const icon = todasDimensoes[nomeDimensaoValor]	
-						console.log(icon)					
+						//console.log(icon)					
 						return(<DimensaoItem icon={icon} dimensao={nomeDimensaoValor as string} isAtiva={isAtiva} cor={cor} />)
 						//return( <div></div> )
 					}) 
@@ -110,9 +119,9 @@ const SubmenuDimensao: React.FC<SubmenuDimensaoProps> = ({ dimensaoAtiva }) => {
 			<Location parentName={dimensaoAtiva} />
 			<div
 				className="submenu-dimensao-hero"
-				style={{ backgroundColor: `var(--${dimensoesCores123[dimensaoAtiva || activeDimensionFromPath]})` }}>
+				style={{ backgroundColor:`${dimensoesCores123[dimensaoAtiva || activeDimensionFromPath]}` /*`var(--${dimensoesCores123[dimensaoAtiva || activeDimensionFromPath]})`*/ }}>
 				<div className="submenu-dimensao-hero-dentro">
-					<div className="submenu-dimensao-hero-svg" style={{ backgroundColor: `var(--${dimensoesCores123[dimensaoAtiva || activeDimensionFromPath]})` }}>
+					<div className="submenu-dimensao-hero-svg" >
 						{icone !== undefined && <svg
 							viewBox={(icone as any).viewBox}
 							stroke="white"  //{(icone as any).stroke}

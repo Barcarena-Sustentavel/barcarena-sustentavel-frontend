@@ -78,6 +78,7 @@
 }
 
 .indicador-hero-resumo{
+  display: inline-flex;
   gap: 7px;
   background: rgba(255,255,255,0.15);
   border: 1.5px solid rgba(255,255,255,0.3);
@@ -102,7 +103,6 @@
 
 .indicador-hero-resumo svg{
   width: 13px;
-  height: 13px;
   flex-shrink: 0;
 }
 
@@ -118,7 +118,9 @@
 }
 
 .card-meta{
-  padding: 3rem 3rem
+  background-color: #fff;
+  border-radius: 16px;
+  padding: 2rem 2.2rem
 }
 
 @media (max-width: 1000px) {
@@ -132,8 +134,9 @@
   display: flex;
   align-items: center;
   justify-content: center;
+  /*
   width: 32px;
-  height: 28px;
+  height: 28px;*/
   border: none;
   cursor: pointer;
   border-radius: 46px;
@@ -400,12 +403,6 @@
   
   .dashboard-container {
     height: 300px;
-  }
-}
-
-@media (max-width: 1200px) {
-  .grafico-card {
-    width: 70%;
   }
 }
 

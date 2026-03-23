@@ -40,25 +40,8 @@ const IndicadorComponent: FC = () => {
   const ordemProxima = parseInt(ordem as string) + 1
   console.log(ordemProxima)
   const indicadores = {
-    proximo: arrayIndicadores[indicadorIndex + 1] !== undefined && arrayIndicadores[indicadorIndex + 1]
-    /*
-    arrayIndicadores.find((indicadorAtual: string, index: number) => {
-    if (indicador === indicadorAtual && ) {
-      //console.log(arrayIndicadores[index + 1],true)
-      const proximo = arrayIndicadores[index + 1] 
-      console.log(proximo)
-      return proximo
-    }
-  })*/,
+    proximo: arrayIndicadores[indicadorIndex + 1] !== undefined && arrayIndicadores[indicadorIndex + 1],
     anterior: arrayIndicadores[indicadorIndex - 1] !== undefined && arrayIndicadores[indicadorIndex - 1]
-    /*arrayIndicadores.find((indicadorAtual: string, index: number) => {
-    if (indicador === indicadorAtual && index > 0) {
-      //onsole.log(arrayIndicadores[index - 1],true)
-      const anterior = arrayIndicadores[index - 1]
-      console.log(anterior)
-      return anterior
-    }
-  })*/
   }
   console.log(indicadores)
   useEffect(() => {
@@ -224,7 +207,7 @@ const IndicadorComponent: FC = () => {
       </div>
 
       <div className="indicador-container">
-        <div className="indicador-hero" style={{ backgroundColor: `var(--${dimensoesCores123[dimensao as string]})` }}>
+        <div className="indicador-hero" style={{ backgroundColor: `${dimensoesCores123[dimensao as string]}` }}>
           <div className="indicador-hero-inner">
             <div className="indicador-hero-icon">
               {icone !== undefined && iconeRenderizado()}
@@ -239,13 +222,19 @@ const IndicadorComponent: FC = () => {
                 Resumo da dimensão
               </a>
               <div className="indicador-hero-toggle">
-                <button className="botao-layout" //className="button-single-column"
+                <button className="botao-layout" 
                   onClick={() => setSingleConlumn(true)}
-                  style={singleColumn ? { backgroundColor: "rgba(255,255,255,0.9)", color: `var(--${dimensoesCores123[dimensao as string]})` } : {}}><i className="bi bi-square"></i></button>
+                  style={singleColumn ? { backgroundColor: "rgba(255,255,255,0.9)", color: `${dimensoesCores123[dimensao as string]}` } : {}}>
+                    {/*<i className="bi bi-square"></i>*/}
+                    <svg viewBox="0 0 16 16" fill="none"><rect x="2" y="2" width="12" height="5" rx="1.5" fill="currentColor"></rect><rect x="2" y="9" width="12" height="5" rx="1.5" fill="currentColor"></rect></svg>
+                    </button>
 
-                <button className="botao-layout"//className="button-double-column"
+                <button className="botao-layout"
                   onClick={() => setSingleConlumn(false)}
-                  style={!singleColumn ? { backgroundColor: "rgba(255,255,255,0.9)", color: `var(--${dimensoesCores123[dimensao as string]})` } : {}}><i className="bi bi-layout-split"></i></button>
+                  style={!singleColumn ? { backgroundColor: "rgba(255,255,255,0.9)", color: `${dimensoesCores123[dimensao as string]}` } : {}}>
+                    {/*<i className="bi bi-layout-split"></i>*/}
+                    <svg viewBox="0 0 16 16" fill="none"><rect x="1" y="2" width="6" height="5" rx="1.5" fill="currentColor"></rect><rect x="9" y="2" width="6" height="5" rx="1.5" fill="currentColor"></rect><rect x="1" y="9" width="6" height="5" rx="1.5" fill="currentColor"></rect><rect x="9" y="9" width="6" height="5" rx="1.5" fill="currentColor"></rect></svg>
+                    </button>
               </div>
             </div>
           </div>
@@ -257,71 +246,72 @@ const IndicadorComponent: FC = () => {
           </div>
         ) : (
           <div className="indicadorConteudo">
-          <div className={`${singleColumn ? 'graficos-container-single-column' : 'graficos-container-double-column'} `} >
-            {indicadorJson.graficos.length > 0 ? (
-              indicadorJson.graficos.map((grafico: DadosGrafico, index) => {
-                const id: string = `grafico ${index}`
-                return (
-                  <div className="grafico-card" key={index}>
-                    <div className="grafico-card-titulo">{grafico.tituloGrafico}</div>
-                    <div key={index} id={id} ref={(e) => {
-                      if (e && !graficosRef.current.includes(e)) {
-                        graficosRef.current.push(e)
-                      }
-                    }} className="grafico-card-wrap"//"dashboard-container"
-                    >
-                      <DashboardComponent
-                        tipoGrafico={grafico.tipoGrafico}
-                        dados={grafico.dados}
-                        colunas={grafico.colunas}
-                        tituloGrafico={grafico.tituloGrafico}
-                        categorias={grafico.categoria}
-                      />
-                    </div>
-                    <div id={id} style={{ display: 'none' }}></div>
-                    {grafico.descricaoGrafico && (
-                      <div className="grafico-card-descricao" style={{ borderLeft: `3px solid var(--${dimensoesCores123[dimensao as string]})` }}>
-                        <p>{grafico.descricaoGrafico}</p>
+            <div className={`${singleColumn ? 'graficos-container-single-column' : 'graficos-container-double-column'} `} >
+              {indicadorJson.graficos.length > 0 ? (
+                indicadorJson.graficos.map((grafico: DadosGrafico, index) => {
+                  const id: string = `grafico ${index}`
+                  return (
+                    <div className="grafico-card" key={index}>
+                      <div className="grafico-card-titulo">{grafico.tituloGrafico}</div>
+                      <div key={index} id={id} ref={(e) => {
+                        if (e && !graficosRef.current.includes(e)) {
+                          graficosRef.current.push(e)
+                        }
+                      }} className="grafico-card-wrap"//"dashboard-container"
+                      >
+                        <DashboardComponent
+                          tipoGrafico={grafico.tipoGrafico}
+                          dados={grafico.dados}
+                          colunas={grafico.colunas}
+                          tituloGrafico={grafico.tituloGrafico}
+                          categorias={grafico.categoria}
+                        />
                       </div>
-                    )}
-                    <div className="grafico-card-export">
-                      <button
-                        className="grafico-card-export-botao"
-                        onClick={() => exportGrafico(grafico.tituloGrafico as string, index)}
-                      >
-                        Baixar gráfico (PNG)
-                      </button>
-                      <button
-                        className="grafico-card-export-botao"
-                        onClick={() => handleDownloadCSV(grafico)}
-                      >
-                        Baixar dados (CSV)
-                      </button>
+                      <div id={id} style={{ display: 'none' }}></div>
+                      {grafico.descricaoGrafico && (
+                        <div className="grafico-card-descricao" style={{ borderLeft: `3px solid ${dimensoesCores123[dimensao as string]}` }}>
+                          <p>{grafico.descricaoGrafico}</p>
+                        </div>
+                      )}
+                      <div className="grafico-card-export">
+                        <button
+                          className="grafico-card-export-botao"
+                          onClick={() => exportGrafico(grafico.tituloGrafico as string, index)}
+                        >
+                          Baixar gráfico (PNG)
+                        </button>
+                        <button
+                          className="grafico-card-export-botao"
+                          onClick={() => handleDownloadCSV(grafico)}
+                        >
+                          Baixar dados (CSV)
+                        </button>
+                      </div>
+
                     </div>
+                  )
+                })
+              ) : (
+                <div className="no-data">
+                  <h3>Nenhum gráfico disponível para este indicador</h3>
+                  <p>Novos dados serão adicionados em breve.</p>
+                </div>
+              )}
 
-                  </div>
-                )
-              })
-            ) : (
-              <div className="no-data">
-                <h3>Nenhum gráfico disponível para este indicador</h3>
-                <p>Novos dados serão adicionados em breve.</p>
+            </div>
+            <div className="grafico-card card-meta">
+              <div className="grafico-card-titulo">Fonte e Metodologia</div>
+              <div style={{ marginTop: "1rem" }} className="grafico-card-grid">
+                <div className="meta-block"><div className="grafico-card-grid-label">Fonte dos dados</div><div className="grafico-card-grid-valor"><a href={cartaoMetodologia(dimensao as string).link} target="_blank" rel="noopener">{cartaoMetodologia(dimensao as string).fonteDados}</a></div></div>
+                <div className="meta-block"><div className="grafico-card-grid-label">Periodicidade</div><div className="grafico-card-grid-valor">{cartaoMetodologia(dimensao as string).periodicidade}</div></div>
+                <div className="meta-block"><div className="grafico-card-grid-label">Última atualização</div><div className="grafico-card-grid-valor">{cartaoMetodologia(dimensao as string).ultAtualizacao}</div></div>
+                <div className="meta-block"><div className="grafico-card-grid-label">Unidade de medida</div><div className="grafico-card-grid-valor">{cartaoMetodologia(dimensao as string).unidadeMedida}</div></div>
+                <div className="meta-block" style={{ gridColumn: "1/-1" }}><div className="grafico-card-grid-label">Metodologia</div><div className="grafico-card-grid-valor">{cartaoMetodologia(dimensao as string).metodologia}</div></div>
               </div>
-            )}
-
-          </div>
+            </div>
           </div>
         )}
-        <div className="grafico-card card-meta">
-          <div className="grafico-card-titulo">Fonte e Metodologia</div>
-          <div style={{ marginTop: "1rem" }} className="grafico-card-grid">
-            <div className="meta-block"><div className="grafico-card-grid-label">Fonte dos dados</div><div className="grafico-card-grid-valor"><a href={cartaoMetodologia(dimensao as string).link} target="_blank" rel="noopener">{cartaoMetodologia(dimensao as string).fonteDados}</a></div></div>
-            <div className="meta-block"><div className="grafico-card-grid-label">Periodicidade</div><div className="grafico-card-grid-valor">{cartaoMetodologia(dimensao as string).periodicidade}</div></div>
-            <div className="meta-block"><div className="grafico-card-grid-label">Última atualização</div><div className="grafico-card-grid-valor">{cartaoMetodologia(dimensao as string).ultAtualizacao}</div></div>
-            <div className="meta-block"><div className="grafico-card-grid-label">Unidade de medida</div><div className="grafico-card-grid-valor">{cartaoMetodologia(dimensao as string).unidadeMedida}</div></div>
-            <div className="meta-block" style={{ gridColumn: "1/-1" }}><div className="grafico-card-grid-label">Metodologia</div><div className="grafico-card-grid-valor">{cartaoMetodologia(dimensao as string).metodologia}</div></div>
-          </div>
-        </div>
+
         <div className="anterior-proximo-indicador" style={indicadores.anterior === false ? { justifyContent: 'flex-end' } : (indicadores.proximo === false ? { justifyContent: 'flex-start' } : {})} id="indNav">
           {indicadores.anterior !== false &&
             <a id="btnPrev" onClick={() => handleNavigateIndicador(indicadores.anterior, ordemAnterior, arrayIndicadores)} className="navegacao-indicador" style={indicadores.proximo === false ? { justifyContent: 'flex-start' } : {}}>
