@@ -13,6 +13,7 @@ const DimensaoItem: React.FC<{icon:any, dimensao:string, isAtiva:boolean, cor:st
 	const corItem = cor
 	const nomeDimensao = dimensao
 	const icone = icon
+	console.log(icone)
 		return (
 							<a
 								key={nomeDimensao}
@@ -24,7 +25,7 @@ const DimensaoItem: React.FC<{icon:any, dimensao:string, isAtiva:boolean, cor:st
 									borderBottomColor: dimensaoAtiva || isHovering ? `var(--${corItem})` : ""
 								}}>
 								<div className={isAtiva ? "submenu-dimensao-svg submenu-dimensao-svg-ativo" : "submenu-dimensao-svg"} style={{ backgroundColor: `var(--${corItem})` }}>
-									<svg
+									{ icone !== undefined && <svg
 										viewBox={(icone as any).viewBox}                   // Aumenta o ícone se for ativo
 										stroke="white"  //{(icon as any).stroke}
 										fill={(icone as any).fill}
@@ -34,7 +35,7 @@ const DimensaoItem: React.FC<{icon:any, dimensao:string, isAtiva:boolean, cor:st
 										width="36" // icon um tamanho padrão
 										height="36">
 										{(icone as any).children}
-									</svg>
+									</svg>}
 								</div>
 								<p>{nomeDimensao}</p>
 							</a>
@@ -58,19 +59,52 @@ const SubmenuDimensao: React.FC<SubmenuDimensaoProps> = ({ dimensaoAtiva }) => {
 		...dimensoesColumn2,
 		...dimensoesColumn3,
 	};
+	const dimensoesValor = Object.keys(todasDimensoes)
+	const dimensoesChaves = ["conectividade",
+							 "ordenamento",
+							 "educacao",
+							 "meioAmbiente",
+							 "seguranca",
+							 "saude",
+							 "emprego",
+							 "instituicoes",
+							 "mobilidade"]
+	let dimensoesChaveValor:Record<string,string> = {}
+	dimensoesChaves.map((_,index:number) => {
+		dimensoesChaveValor[dimensoesChaves[index]] = dimensoesValor[index] 
+	}) 
+	console.log(dimensoesChaveValor)
+	const dimensoesOrdem = [
+		"emprego",
+		"meioAmbiente",
+		"educacao",
+		"mobilidade",
+		"ordenamento",
+		"seguranca",
+		"saude",
+		"conectividade",
+		"instituicoes",
+	];
 	const icone = todasDimensoes[dimensaoAtiva || activeDimensionFromPath];
+	console.log(todasDimensoes)
 	return (
 		<div>
 			<div className="submenu-dimensao-wrap">
 				<div
 					className="submenu-dimensao"
 				>
-					{Object.entries(todasDimensoes).map(([nomeDimensao, icon]) => {
+					{dimensoesOrdem.map((_,index:number) =>{
+						const nomeDimensaoChave:string = dimensoesOrdem[index]
+						const nomeDimensaoValor = dimensoesChaveValor[nomeDimensaoChave as string]
 						const isAtiva =
-							nomeDimensao === (dimensaoAtiva || activeDimensionFromPath);
-						const cor = dimensoesCores123[nomeDimensao] || "default-color";						
-						return(<DimensaoItem icon={icon} dimensao={nomeDimensao} isAtiva={isAtiva} cor={cor} />)
-					})}
+							nomeDimensaoValor === (dimensaoAtiva || activeDimensionFromPath);
+						const cor = dimensoesCores123[nomeDimensaoValor] || "default-color";
+						const icon = todasDimensoes[nomeDimensaoValor]	
+						console.log(icon)					
+						return(<DimensaoItem icon={icon} dimensao={nomeDimensaoValor as string} isAtiva={isAtiva} cor={cor} />)
+						//return( <div></div> )
+					}) 
+					}
 				</div>
 			</div>
 			<Location parentName={dimensaoAtiva} />

@@ -148,6 +148,7 @@ const GetAllConst = () => {
       const tempDimensaoAumentaIcone: Record<string, boolean> = {};
 
       for (let index = 0; index < dimensoesList.length; index++) {
+        console.log('dimensao',dimensoesList[index], 'cor',dimensoesColumn1Array[index])
         if(index < 3){
           tempDimensoesColumn1[dimensoesList[index]] = dimensoesColumn1Array[index];
         }

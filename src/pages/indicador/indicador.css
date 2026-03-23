@@ -94,6 +94,12 @@
   backdrop-filter: blur(4px);
 }
 
+.indicador-hero-resumo:hover{
+  background: rgba(255,255,255,0.28);
+  transform: translateY(-4px);
+  color:#fff
+}
+
 .indicador-hero-resumo svg{
   width: 13px;
   height: 13px;

@@ -1,5 +1,5 @@
 import { FC, useEffect } from "react";
-
+import './dimensoes-section.css'
 interface DimensaoCardProps {
     titulo: string
     icone: any;
@@ -8,10 +8,6 @@ interface DimensaoCardProps {
 }
 
 const DimensaoCard: FC<DimensaoCardProps> = ({ titulo, icone, url, cor }) => {
-    useEffect(() => {
-        console.log(icone);
-    }, []);
-    console.log(icone)
     return (
         <a href={`/${url}`} className="dim-card" style={{ borderLeftColor: cor, color: cor, textDecoration: "none" }}>
             {icone !== undefined && 
