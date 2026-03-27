@@ -104,5 +104,5 @@ export const getIcone = (dimensao: string, cor: string) => {
     const Icon = iconPaths[tituloParaChave(dimensao)]; // extrai o componente
 
     // JSX exige variável com letra maiúscula
-    return <Icon className="dimensao-icon" />;
+    return <Icon className="admin-dimensao-icon" />;
 };
