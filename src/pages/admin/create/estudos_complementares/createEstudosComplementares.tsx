@@ -9,6 +9,7 @@ import "./CreateEstudosComplementares.css";
 import "../../css/dimensaoPage.css";
 import dimensoes from "../../../../utils/const.tsx";
 import { Form, Alert, Button, Spinner } from "react-bootstrap";
+import CreatePageHeader from "../../headers/createPageHeader.tsx";
 
 const CreateEstudosComplementares: FC<{
   dimensao: string | undefined;
@@ -133,10 +134,12 @@ const CreateEstudosComplementares: FC<{
     return formEstCompl.arquivo ? formEstCompl.arquivo: new File([], "empty.pdf",  {type: "application/pdf" });
   }
 
+  if(!dimensao) return;
+
 
   return (
     <div className="post-referencias-container">
-      <div
+      {/* <div
         style={{
           backgroundColor: `var(--${dimensoesCores123[dimensao!]})`,
         }}
@@ -151,7 +154,8 @@ const CreateEstudosComplementares: FC<{
           ></div>
           <h1 className="admin-header-dimensao-page">{dimensao}</h1>
         </div>
-      </div>
+      </div> */}
+      <CreatePageHeader dimensao={dimensao}/>
       <h2>
         {patch === true ? "Modificar Estudo Complementar" : "Adicionar Estudo Complementar"}
       </h2>
