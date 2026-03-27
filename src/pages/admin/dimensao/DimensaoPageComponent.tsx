@@ -3,6 +3,7 @@ import { useParams, useNavigate } from "react-router-dom";
 import { TabContentComponent } from "../tab/TabContentComponent.tsx";
 import "../css/dimensaoPage.css";
 import dimensoes from "../../../utils/const.tsx";
+import DimensaoPageHeader from "../headers/dimensaoPageHeader.tsx";
 
 const DimensaoPageComponent: FC = () => {
   const { dimensao } = useParams();
@@ -24,9 +25,10 @@ const DimensaoPageComponent: FC = () => {
     setNomeDimensao(novoNomeDimensao);
     navigate(`/admin/dimensao/${novoNomeDimensao}`);
   }
+  if(!dimensao) return;
   return (
     <div className="home-container" style={{height:'100vh'}}>
-      <div
+      {/* <div
         style={{
           backgroundColor: `var(--${dimensoesCores123[dimensao!]})`,
         }}
@@ -41,7 +43,8 @@ const DimensaoPageComponent: FC = () => {
           ></div>
           <h1 className="admin-header-dimensao-page">{dimensao}</h1>
         </div>
-      </div>
+      </div> */}
+      <DimensaoPageHeader dimensao={dimensao} />
 
       <div className="admin-tabs-container">
         <nav className="admin-tabs-nav">
