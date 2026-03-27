@@ -7,7 +7,7 @@ import "../../css/createIndicador.css";
 import { GraficoComponent } from "./components/Grafico.tsx";
 import dimensoes from "../../../../utils/const.tsx";
 import "../../css/dimensaoPage.css";
-import { Alert } from "react-bootstrap";
+import { Alert, Form } from "react-bootstrap";
 import { Collapse } from "react-bootstrap"
 import { DndContext, DragOverlay, PointerSensor, useSensor, useSensors, pointerWithin } from "@dnd-kit/core";
 import { SortableContext, verticalListSortingStrategy, useSortable, arrayMove, defaultAnimateLayoutChanges } from "@dnd-kit/sortable";
@@ -456,27 +456,66 @@ export const CreateIndicador: FC<{
         </button>
 
         <h3>Fonte e Metodologia</h3>
-        <div className="fonteMetodologia">
-          <label htmlFor="">Fontes e Dados</label>
-          {referencias.length > 0 &&
-            <select value={referenciaFonteDados} onChange={(e) => setReferenciaFonteDados(e.target.value)} name="referencias" id="referencias">
-              <option value="">Escolha a sua Referência</option>
-              {referencias.map((referencia) =>
-                <option value={referencia}>
-                  {referencia}
-                </option>
+          <div className="fonteMetodologia">
+            <Form.Group controlId="referencias">
+              <Form.Label>Fontes e Dados</Form.Label>
+              {referencias.length > 0 && (
+                <Form.Select
+                  defaultValue={referenciaFonteDados}
+                  onBlur={(e) => setReferenciaFonteDados(e.target.value)}
+                  name="referencias"
+                >
+                  <option value="">Escolha a sua Referência</option>
+                  {referencias.map((referencia) => (
+                    <option key={referencia} value={referencia} title={referencia}>
+                      {referencia.length > 80 ? referencia.slice(0, 80) + "…" : referencia}
+                    </option>
+                  ))}
+                </Form.Select>
               )}
-            </select>
-          }
-          <label htmlFor="periodicidade">Periodicidade</label>
-          <input type="text" name="periodicidade" value={periodicidade} onChange={(e) => setPeriodicidade(e.target.value)} />
-          <label htmlFor="ultimaAtualizacao">Ultima Atualização</label>
-          <input type="text" name="ultimaAtualizacao" value={ultimaAtualizacao} onChange={(e) => setUltimaAtualizacao(e.target.value)} />
-          <label htmlFor="unidadeMedida">Unidade de Medida</label>
-          <input type="text" name="unidadeMedida" value={unidadeMedida} onChange={(e) => setUnidadeMedida(e.target.value)} />
-          <label htmlFor="metodologia">Metodologia</label>
-          <textarea name="metodologia" value={metodologia} onChange={(e) => setMetodologia(e.target.value)} id="metodologia"></textarea>
-        </div>
+            </Form.Group>
+
+            <Form.Group controlId="periodicidade" className="mt-3">
+              <Form.Label>Periodicidade</Form.Label>
+              <Form.Control
+                type="text"
+                name="periodicidade"
+                defaultValue={periodicidade}
+                onBlur={(e) => setPeriodicidade(e.target.value)}
+              />
+            </Form.Group>
+
+            <Form.Group controlId="ultimaAtualizacao" className="mt-3">
+              <Form.Label>Última Atualização</Form.Label>
+              <Form.Control
+                type="text"
+                name="ultimaAtualizacao"
+                defaultValue={ultimaAtualizacao}
+                onBlur={(e) => setUltimaAtualizacao(e.target.value)}
+              />
+            </Form.Group>
+
+            <Form.Group controlId="unidadeMedida" className="mt-3">
+              <Form.Label>Unidade de Medida</Form.Label>
+              <Form.Control
+                type="text"
+                name="unidadeMedida"
+                defaultValue={unidadeMedida}
+                onBlur={(e) => setUnidadeMedida(e.target.value)}
+              />
+            </Form.Group>
+
+            <Form.Group controlId="metodologia" className="mt-3">
+              <Form.Label>Metodologia</Form.Label>
+              <Form.Control
+                as="textarea"
+                rows={5}
+                name="metodologia"
+                defaultValue={metodologia}
+                onBlur={(e) => setMetodologia(e.target.value)}
+              />
+            </Form.Group>
+          </div>
         <div className="d-flex justify-content-between mt-4">
           <button
             type="button"
