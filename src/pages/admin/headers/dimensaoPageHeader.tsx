@@ -7,7 +7,7 @@ const DimensaoPageHeader: FC<{ dimensao: string }> = ({ dimensao }) => {
     
     useEffect(() => {
         setIcone(() => getIcone(dimensao, "#FFFFFF"));
-    }, []);
+    }, [dimensao]);
 
     if(!icone) return;
     return (<div
@@ -16,10 +16,10 @@ const DimensaoPageHeader: FC<{ dimensao: string }> = ({ dimensao }) => {
         }}
         className="admin-header-dimensao-page"
       >
-        <div className="admin-header-dimensao-page-space">
+        {/* <div className="admin-header-dimensao-page-space">
           {icone}
           <h1 className="admin-header-dimensao-page">{dimensao}</h1>
-        </div>
+        </div> */}
       </div>);
 };
 
