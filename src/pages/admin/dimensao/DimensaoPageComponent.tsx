@@ -4,100 +4,78 @@ import { TabContentComponent } from "../tab/TabContentComponent.tsx";
 import "../css/dimensaoPage.css";
 import dimensoes from "../../../utils/const.tsx";
 import DimensaoPageHeader from "../headers/dimensaoPageHeader.tsx";
+import SidebarAdmin from "../sidebar/sidebarAdmin.tsx";
+import api from "../../../api.tsx";
+import { getCor } from "../headers/getCor.tsx";
 
 const DimensaoPageComponent: FC = () => {
   const { dimensao } = useParams();
   const [nomeDimensao, setNomeDimensao] = useState<string>(dimensao as string);
   const [activeTab, setActiveTab] = useState<string>("Dimensão");
-  const { dimensoesColumn1, dimensoesColumn2, dimensoesCores123 } =
+  const { dimensoesColumn1, dimensoesColumn2, dimensoesColumn3, dimensoesCores123 } =
     dimensoes.GetAllConst();
   const dimensoesColumn12 = {
     ...dimensoesColumn1,
     ...dimensoesColumn2,
   };
+  const [dimensoesList, setDimensoesList] = useState<string[]>([""])
   // botão para voltar página
   const navigate = useNavigate();
 
-  function handleBack() {
-    navigate("/admin/dimensao");
-  }
+
+  useEffect(() => {
+    api.get("/dimensoes/").then((response) => {
+      setDimensoesList(response.data.dimensoes);
+      console.log(response.data.dimensoes);
+    });
+  }, []);
+
+  const returnTabName = (tabName: string) => {
+    return tabName === "EstudosComplementares" ? "Estudos Complementares" : tabName;
+  };
+  
   function reloadPage(novoNomeDimensao: string) {
     setNomeDimensao(novoNomeDimensao);
     navigate(`/admin/dimensao/${novoNomeDimensao}`);
   }
   if(!dimensao) return;
   return (
-    <div className="home-container" style={{height:'100vh'}}>
-      {/* <div
-        style={{
-          backgroundColor: `var(--${dimensoesCores123[dimensao!]})`,
-        }}
-        className="admin-header-dimensao-page"
-      >
-        <div className="admin-header-dimensao-page-space">
-          <div
-            style={{
-              maskImage: `url(${dimensoesColumn12[dimensao!]})`,
-            }}
-            className="dimensao-button-header"
-          ></div>
-          <h1 className="admin-header-dimensao-page">{dimensao}</h1>
-        </div>
-      </div> */}
-      <DimensaoPageHeader dimensao={dimensao} />
+    <div className="d-flex">
+      <SidebarAdmin 
+        selectedDimensao={nomeDimensao}
+        dimensoes={dimensoesList}
+        activeTab={activeTab}
+        setActiveTab={setActiveTab}
+        navigateNovaDimensao={reloadPage}
+        />
+      <div className="home-container" style={{height:'100vh'}}>
+        {/* <div
+          style={{
+            backgroundColor: `var(--${dimensoesCores123[dimensao!]})`,
+          }}
+          className="admin-header-dimensao-page"
+        >
+          <div className="admin-header-dimensao-page-space">
+            <div
+              style={{
+                maskImage: `url(${dimensoesColumn12[dimensao!]})`,
+              }}
+              className="dimensao-button-header"
+            ></div>
+            <h1 className="admin-header-dimensao-page">{dimensao}</h1>
+          </div>
+        </div> */}
+        <DimensaoPageHeader dimensao={dimensao} />
 
-      <div className="admin-tabs-container">
-        <nav className="admin-tabs-nav">
-          <button
-            className={`admin-tab-button ${activeTab === "Dimensão" ? "active" : ""}`}
-            onClick={() => setActiveTab("Dimensão")}
-          >
-            Dimensão
-          </button>
-          <button
-            className={`admin-tab-button ${activeTab === "Indicadores" ? "active" : ""}`}
-            onClick={() => setActiveTab("Indicadores")}
-          >
-            Indicadores
-          </button>
-
-          <button
-            className={`admin-tab-button ${activeTab === "Referências" ? "active" : ""}`}
-            onClick={() => setActiveTab("Referências")}
-          >
-            Referências
-          </button>
-
-          <button
-            className={`admin-tab-button ${activeTab === "EstudosComplementares" ? "active" : ""}`}
-            onClick={() => setActiveTab("EstudosComplementares")}
-          >
-            Estudos Complementares
-          </button>
-
-          {/* <button
-            className={`admin-tab-button ${activeTab === "Contribuições" ? "active" : ""}`}
-            onClick={() => setActiveTab("Contribuições")}
-          >
-            Contribuições
-          </button> */}
-
-          <button
-            className={`admin-tab-button ${activeTab === "Artigo" ? "active" : ""}`}
-            onClick={() => setActiveTab("Artigo")}
-          >
-            Artigo
-          </button>
-        </nav>
-        <button className="voltar-button" onClick={() => handleBack()}>
-          Voltar
-        </button>
-
-        <div className="admin-tab-content">
-          <TabContentComponent nomeDimensao={nomeDimensao} activeTab={activeTab} novoNomeDimensao={reloadPage} />
+        <div className="admin-tabs-container">
+          <h2 className="admin-content__title" style={{borderBottom: `1px solid ${getCor(dimensao)}`}}>{returnTabName(activeTab)}</h2>
+          <div className="admin-tab-content">
+            <TabContentComponent nomeDimensao={nomeDimensao} activeTab={activeTab} novoNomeDimensao={reloadPage} />
+          </div>
         </div>
       </div>
     </div>
+    
   );
 };
 

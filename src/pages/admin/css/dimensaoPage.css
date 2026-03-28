@@ -57,7 +57,7 @@
 /* Tab content area */
 .admin-tab-content {
     background-color: white;
-    border-radius: 8px;
+    border-radius: 0 0 8px 8px;
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
     padding: 2rem;
     min-height: 400px;
@@ -143,11 +143,6 @@
     left: 10px;
 }
 
-.admin-dimensao-icon {
-    height: 81px;
-    margin-bottom: 2.3rem;
-    margin-right: 2rem;
-}
 
 @media (max-width: 768px) {
     .admin-tabs-nav {
@@ -163,4 +158,18 @@
     .admin-tab-content {
         padding: 1rem;
     }
+}
+
+.admin-content__title {
+  font-size: 1.6rem;
+  font-weight: 600;
+  color: #333;
+  padding-top: 1rem;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  width: 70%;
+  margin: 0 auto;
+  border-radius: 12px 12px 0px 0px;
+  padding-left: 1rem;
+  border-bottom: 1px solid blue;
+  padding-bottom: 0.5rem;
 }
