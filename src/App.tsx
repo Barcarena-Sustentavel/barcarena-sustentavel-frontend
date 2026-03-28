@@ -12,6 +12,7 @@ import "leaflet/dist/leaflet.css";
 import AuthProvider from "./utils/private_route/AuthProvider.tsx";
 import PrivateRoutes from "./utils/private_route/PrivateRoutes.tsx";
 import Colaboradores from "./pages/colaboradores/colaboradores.tsx";
+import 'bootstrap/dist/css/bootstrap.min.css';
 
 const App: FC = () => {
   return (

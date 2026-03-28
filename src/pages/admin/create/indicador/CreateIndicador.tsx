@@ -12,6 +12,7 @@ import { Collapse } from "react-bootstrap"
 import { DndContext, DragOverlay, PointerSensor, useSensor, useSensors, pointerWithin } from "@dnd-kit/core";
 import { SortableContext, verticalListSortingStrategy, useSortable, arrayMove, defaultAnimateLayoutChanges } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
+import CreatePageHeader from "../../headers/createPageHeader.tsx";
 
 export const CreateIndicador: FC<{
   dimensao: string | undefined;
@@ -393,9 +394,11 @@ export const CreateIndicador: FC<{
     );
   }
 
+  if(!dimensao) return;
+
   return (
     <div className="create-indicador-container">
-      <div
+      {/* <div
         style={{
           backgroundColor: `var(--${dimensoesCores123[dimensao!]})`,
         }}
@@ -410,7 +413,8 @@ export const CreateIndicador: FC<{
           ></div>
           <h1 className="admin-header-dimensao-page">{dimensao}</h1>
         </div>
-      </div>
+      </div> */}
+      <CreatePageHeader dimensao={dimensao}/>
       <h2 className="create-indicador-title">
         {patch === false ? "Criar Novo Indicador" : "Modificar Indicador"}
       </h2>

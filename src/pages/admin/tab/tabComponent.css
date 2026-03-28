@@ -106,3 +106,51 @@
     overflow-y: auto;
     margin-bottom: 1rem;
 }
+
+/* Linha do item */
+.checkbox-link-container {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 8px 12px;
+  border-radius: 6px;
+  transition: background-color 0.15s ease;
+}
+
+.checkbox-link-container:hover {
+  background-color: #f5f5f5;
+}
+
+/* Checkbox */
+.checkbox-link-container input[type="checkbox"] {
+  width: 16px;
+  height: 16px;
+  accent-color: #2d7a4f; /* troca pela cor da sua dimensão */
+  cursor: pointer;
+  flex-shrink: 0;
+}
+
+/* Remove estilos padrão do Link */
+.checkbox-link-container a {
+  text-decoration: none;
+  color: inherit;
+}
+
+/* Label */
+.checkbox-label {
+  cursor: pointer;
+  margin: 0;
+}
+
+.checkbox-label p {
+  margin: 0;
+  color: #1a1a1a;
+  font-size: 0.95rem;
+  font-weight: 400;
+}
+
+/* Hover no texto */
+.checkbox-link-container:hover .checkbox-label p {
+  color: #000;
+  font-weight: 500;
+}

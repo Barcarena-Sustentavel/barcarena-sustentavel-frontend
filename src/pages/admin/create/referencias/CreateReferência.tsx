@@ -9,6 +9,7 @@ import "./CreateReferencias.css";
 import "../../css/dimensaoPage.css";
 import dimensoes from "../../../../utils/const.tsx";
 import { Form, Alert, Button, Spinner } from "react-bootstrap";
+import CreatePageHeader from "../../headers/createPageHeader.tsx";
 
 const CreateReferencias: FC<{
   dimensao: string | undefined;
@@ -102,10 +103,11 @@ const CreateReferencias: FC<{
     navigate(`/admin/dimensao/${dimensao}/`);
     setIsSubmitting(false);
   };
+  if(!dimensao) return;
 
   return (
     <div className="post-referencias-container">
-      <div
+      {/* <div
         style={{
           backgroundColor: `var(--${dimensoesCores123[dimensao!]})`,
         }}
@@ -120,7 +122,8 @@ const CreateReferencias: FC<{
           ></div>
           <h1 className="admin-header-dimensao-page">{dimensao}</h1>
         </div>
-      </div>
+      </div> */}
+      <CreatePageHeader dimensao={dimensao}/>
       <h2>
         {patch === true ? "Modificar Referência" : "Adicionar Referência"}
       </h2>
