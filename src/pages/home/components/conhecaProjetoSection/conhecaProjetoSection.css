@@ -100,7 +100,7 @@ overflow: hidden;
 content: '';
 position: absolute;
 inset: 0;
-background-image: url('/src/assets/images/icons/odsbeye.png');;
+background-image: url('/src/assets/images/icons/odsbeye.png');
 background-repeat: repeat-x;
 background-size: auto 52px;
 background-position: center;

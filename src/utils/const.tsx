@@ -15,7 +15,6 @@ const loadIcon = (iconName: string) => {
     conectividade: () => <svg  viewBox="0 0 36 36" fill="none" stroke="#6080c4" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M4 13 C10 7 26 7 32 13"/><path d="M8 18 C12 13 24 13 28 18"/><path d="M12 23 C14 20 22 20 24 23"/><circle cx="18" cy="29" r="2" fill="#6080c4" stroke="none"/></svg>,
   };
   
-
   return iconPaths[iconName]().props;
 };
 
@@ -80,6 +79,7 @@ const loadAllIcons = () => {
     loadIcon('mobilidade'),
   ]);
 
+  /*
   return {
     dimensoesColumn1Array: [
       logoConectividade,
@@ -97,6 +97,26 @@ const loadAllIcons = () => {
       logoMobilidade,
     ],
   };
+  */
+ return {
+    dimensoesColumn1Array: [
+      logoEmprego,
+      logoMeioAmbiente,
+      logoEducacao,
+      logoOrdenamento,
+      
+    ],
+    dimensoesColumn2Array: [
+      logoMobilidade,
+      logoOrdenamento,
+      logoSegurança,
+    ],
+    dimensoesColumn3Array: [
+      logoSaude,
+      logoConectividade,
+      logoInstituicoes,
+    ],
+  };
 };
 /*
 const dimensaoCoresArray: string[] = [
@@ -110,7 +130,7 @@ const dimensaoCoresArray: string[] = [
   "orange-d", // Estímulo, criatividade
   "yellow-d", // Comunicação, otimismo
 ];*/
-
+/*
 const dimensaoCoresArray: string[] = [
 		"#3a52a8",
 		"#148f77",
@@ -122,7 +142,7 @@ const dimensaoCoresArray: string[] = [
 		"#d35400",
 		"#b7950b"
 	]
-/*
+*/
 const dimensaoCoresArray: string[] = [
 		"#c0392b",
 		"#27ae60",
@@ -134,7 +154,7 @@ const dimensaoCoresArray: string[] = [
 		"#3a52a8",
 		"#d35400"
 	]
-*/
+
 const GetAllConst = () => {
   const [dimensoesColumn1, setDimensoesColumn1] = useState<Record<string, string>>({});
   const [dimensoesColumn2, setDimensoesColumn2] = useState<Record<string, string>>({});
@@ -143,7 +163,8 @@ const GetAllConst = () => {
   const [dimensaoAumentaIcone, setDimensaoAumentaIcone] = useState<Record<string, boolean>>({});
   const [dimensoesList, setDimensoesList] = useState<string[]>([]);
   const [isLoaded, setIsLoaded] = useState<boolean>(false);
-  const url = '/dimensoes/';
+  //const url = '/dimensoes/';
+  const url = '/dimensoes/teste';
 
   useEffect(() => {
     const puxarDimensoes = async () => {

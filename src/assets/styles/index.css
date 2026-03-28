@@ -22,13 +22,12 @@
     font-size: 1.2rem;
     color: #7f8c8d;
 }
-
+/*
 .dimensoes-grid {
     display: grid;
-    grid-template-columns: 50% 50%; /*repeat(auto-fill, minmax(250px, 1fr));*/
-    /*gap: 2rem;*/
-}
-
+    grid-template-columns: 50% 50%;
+}*/
+/*
 .dimensao-card {
     background-color: #fff;
     border-radius: 8px;
@@ -41,28 +40,8 @@
 .dimensao-card:hover {
     transform: translateY(-5px);
     box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
-}
-
-.dimensao-button {
-    width: 100%;
-    height: 100%;
-    padding: 2rem 1.5rem;
-    background: none;
-    border: none;
-    cursor: pointer;
-    text-align: center;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-}
-
-.dimensao-button h3 {
-    margin-top: 1rem;
-    font-size: 1.2rem;
-    color: white;
-    transition: 0.3s ease;
-}
+}*/
+    
 
 .dimensao-icon {
     width: 60px;

@@ -4,166 +4,127 @@ import dimensoes from "../../utils/const.tsx";
 import "./css/dimensaoAdmin.css";
 import { Modal, Button, Form } from "react-bootstrap";
 import api from "../../api.tsx"
-import {patchEmail, postEmail} from "./cruds/crudEmail.tsx"
+import { patchEmail, postEmail } from "./cruds/crudEmail.tsx"
+import "../../main.css"
 
-const RenderizarEstudo: FC<{
-                            patch:boolean,
-                            page: string,
-                            isPopUpAberto:Record<string,any>,
-                            setIsPopUpAberto:React.Dispatch<React.SetStateAction<Record<string,any>>>}> = 
-                            ({patch, page,isPopUpAberto,setIsPopUpAberto}) => {
-  
-  //Nome do estudo e arquivo para enviar para o backend, podendo ser modificado ou não
-  const [nomeEstudo, setNomeEstudo] = useState<string>()
-  const [arquivoEstudo, setArquivoEstudo] = useState<File>(new File([],''))
-  const handleEnviar = async (estudo:string)  => {
-    // Lógica de envio (FormData é necessário para arquivos)
-    const formData = new FormData();
-    formData.append("nome", nomeEstudo as string);
-    if (arquivoEstudo) formData.append("pdf", arquivoEstudo);
-    console.log(formData)
-    const pagina = page === "pinicial" ? "Pagina_inicial" : "Pagina_sobre"
-    let operacao = patch === false ? api.post("/admin/estudos_complementares/",formData,{params:{pagina:pagina}}) : api.patch(`/admin/estudo_complementar/${estudo}/`)
-    try {
-      operacao // Parse the JSON response body
-      .then(json => console.log(json)) // Log the resulting data (e.g., the new post with an ID)
-      .catch(error => console.error('Error:', error)); // Handle network errors
-      setNomeEstudo("")
-      setIsPopUpAberto({estado:false,estudp:""}); // Fecha após enviar
-    } catch (error) {
-      console.error("Erro ao enviar", error);
-    }
-  };
-
-  // Guarda o nome do estudo que será modificado
-  useEffect(() => {
-    if(isPopUpAberto.estudo !== ""){
-      console.log(isPopUpAberto.estudo)
-      const retornarEstudo = async () => {
-        await api.get(`/admin/estudos_complementares/path/`,{params:{estudoComplementarNome:isPopUpAberto.estudo}}).then((result) => {
-        //Guardar o nome do estudo para mudar 
-        //mudar o nome do estudo para o campo
-        setNomeEstudo(result.data.estudo)
-        //pega o path para mostrar para o usuário que o arquivo existe
-        setArquivoEstudo(new File([],result.data.path))
-    }) 
-    }
-    retornarEstudo()
-  }
-  },[])
-  
-
-  if (!isPopUpAberto.estado) return null;
-
-  return (
-    <div style={{
-      position: 'fixed',
-      top: '50%',
-      left: '50%',
-      transform: 'translate(-50%, -50%)',
-      backgroundColor: 'white',
-      padding: '20px',
-      zIndex: 1000,
-      display: 'flex', // Aqui você garante o flex
-      flexDirection: 'column',
-      boxShadow: '0 4px 8px rgba(0,0,0,0.2)'
-    }}>
-
-      <button onClick={() => setIsPopUpAberto({estado:false, estudo:""})}>Fechar X</button>
-      
-      <label>Nome</label>
-      <input value={nomeEstudo} onChange={(e) => setNomeEstudo(e.target.value)} type="text" />
-      
-      <label>Arquivo</label>
-      <input type="file" onChange={(e) => {
-        if (e.target.files !== null) setArquivoEstudo(e.target.files[0])
-      }} />
-      
-      {/*isPopUpaberto.estudo serve para guardar o nome do estudo que está sendo editado*/}
-      <button onClick={(e) => handleEnviar(isPopUpAberto.estudo)}>Enviar Estudo</button>
-    </div>
-  );
-}
-
-const DimensaoAdmin: FC = () => {
+const DimensaoCard: FC<{ colunaDimensoes: Record<string, string>, colunaDimensoesCores: Record<string, string> }> = ({ colunaDimensoes, colunaDimensoesCores }) => {
   const navigate = useNavigate();
+
   const handleClick = (dimensao: string) => {
     navigate(`/admin/dimensao/${dimensao}/`);
   };
-  const { dimensoesColumn1, dimensoesColumn2, dimensoesColumn3,dimensoesCores123 } =
+
+  return (
+    <div className="dimensoes-row">
+      {Object.entries(colunaDimensoes).map(([key, value]) => (
+        <div
+          className="dimensao-card"
+          style={{
+            backgroundColor: `${colunaDimensoesCores[key]}`,
+          }}
+          key={key}
+        >
+          <button
+            style={{
+              backgroundColor: `${colunaDimensoesCores[key]}`,
+            }}
+            className="dimensao-button"
+            onClick={() => handleClick(key)}
+          >
+            {value !== undefined && <svg
+              viewBox={(value as any).viewBox}                   // Aumenta o ícone se for ativo
+              stroke="white"  //{(icon as any).stroke}
+              fill={(value as any).fill}
+              strokeWidth={(value as any)["stroke-width"]}
+              strokeLinecap={(value as any)["stroke-linecap"]}
+              strokeLinejoin={(value as any)["stroke-linejoin"]}
+              width="36" // icon um tamanho padrão
+              height="36">
+              {(value as any).children}
+            </svg>}
+            <h3>{key}</h3>
+          </button>
+        </div>
+      ))}
+    </div>)
+}
+
+const DimensaoAdmin: FC = () => {
+
+  const { dimensoesColumn1, dimensoesColumn2, dimensoesColumn3, dimensoesCores123 } =
     dimensoes.GetAllConst();
-  const deleteEstudos:string[] = []
+  const deleteEstudos: string[] = []
   const [patch, setPatch] = useState<boolean>(false)
   const [page, setPage] = useState<string>("dimensoes")
   const [estudosPaginaInicial, setEstudosPaginaInicial] = useState<string[]>([])
   const [estudosPaginaSobre, setEstudosPaginaSobre] = useState<string[]>([])
-  const [isPopUpAberto, setIsPopUpAberto] = useState<Record<string,any>>({estado:false,estudo:""})
+  const [isPopUpAberto, setIsPopUpAberto] = useState<Record<string, any>>({ estado: false, estudo: "" })
   const [email, setEmail] = useState<string>("");
 
   const [emailAtual, setEmailAtual] = useState<string>("");
-  
+
   useEffect(() => {
-      const fetchAll = async () =>{
-        await api
-      .get("/admin/email_contribuicao")
-      .then((response) => {
-        console.log(response.data.email_contribuicao);
-        if(response.data.email_contribuicao){
-          console.log("Existe email");
-          setEmail(response.data.email_contribuicao.email);
-          setEmailAtual(response.data.email_contribuicao.email);
-        }
-      })
-      .catch((error) => {
-        console.error("Error fetching indicador data:", error);
-      });
+    const fetchAll = async () => {
       await api
-      .get("/admin/estudos_complementares/")
-      .then((response) => {
-        console.log("fetch de estudos")
-        setEstudosPaginaInicial(response.data.estudosPaginaInicial)
-        setEstudosPaginaSobre(response.data.estudosPaginaSobre)
-      }).catch((error) =>{
-        setEstudosPaginaInicial([])
-        setEstudosPaginaSobre([])
-        console.log(error)
-      })
-      }
-      fetchAll()
-      
+        .get("/admin/email_contribuicao")
+        .then((response) => {
+          console.log(response.data.email_contribuicao);
+          if (response.data.email_contribuicao) {
+            console.log("Existe email");
+            setEmail(response.data.email_contribuicao.email);
+            setEmailAtual(response.data.email_contribuicao.email);
+          }
+        })
+        .catch((error) => {
+          console.error("Error fetching indicador data:", error);
+        });
+      await api
+        .get("/admin/estudos_complementares/")
+        .then((response) => {
+          console.log("fetch de estudos")
+          setEstudosPaginaInicial(response.data.estudosPaginaInicial)
+          setEstudosPaginaSobre(response.data.estudosPaginaSobre)
+        }).catch((error) => {
+          setEstudosPaginaInicial([])
+          setEstudosPaginaSobre([])
+          console.log(error)
+        })
+    }
+    fetchAll()
+
   }, [])
 
   const handleSubmitEmail = (e: any) => {
     e.preventDefault();
-    emailAtual && emailAtual != "" ? patchEmail(email): postEmail(email);
+    emailAtual && emailAtual != "" ? patchEmail(email) : postEmail(email);
     console.log("handlesubmitemail");
   }
 
-  const listarEstudos = (estudos:Array<any>) => {
+  const listarEstudos = (estudos: Array<any>) => {
 
-    return (estudos.map((estudo) => 
-              {
-              const estudoNome:string = estudo
-              return (<span>
-              <input type="checkbox" onChange={(e) => modificarDeleteEstudos(e, estudoNome)}/>
-              <button className="btn btn-link text-dark text-decoration-none" value={
-                estudoNome
-              } onClick={(e) => {
-                setPatch(true)
-                setIsPopUpAberto({estado:true, estudo:estudoNome})
-                }}>{estudoNome}</button>
-              </span>)} 
-            ))
-             
+    return (estudos.map((estudo) => {
+      const estudoNome: string = estudo
+      return (<span>
+        <input type="checkbox" onChange={(e) => modificarDeleteEstudos(e, estudoNome)} />
+        <button className="btn btn-link text-dark text-decoration-none" value={
+          estudoNome
+        } onClick={(e) => {
+          setPatch(true)
+          setIsPopUpAberto({ estado: true, estudo: estudoNome })
+        }}>{estudoNome}</button>
+      </span>)
+    }
+    ))
+
   }
 
-  const modificarDeleteEstudos = (e:any, nomeEstudo:string) => {
-    if(e.target.checked){
+  const modificarDeleteEstudos = (e: any, nomeEstudo: string) => {
+    if (e.target.checked) {
       deleteEstudos.push(nomeEstudo)
     }
-    else{
-      deleteEstudos.map((nome,index) => {
-        if(nome === nomeEstudo){
+    else {
+      deleteEstudos.map((nome, index) => {
+        if (nome === nomeEstudo) {
           deleteEstudos.splice(index, 1)
         }
       })
@@ -171,143 +132,50 @@ const DimensaoAdmin: FC = () => {
     console.log(deleteEstudos)
   }
   return (
-    <div className="text-center home-container" style={{height:'100vh', backgroundColor:(isPopUpAberto.estado === true ? 'rgba(0,0,0,0.7)' : '')}}>
-      <div className="position-relative d-flex align-items-center justify-content-center admin-header-dimensao-admin">
-        <h1>Administração de Dimensões</h1>
+    <div className="admin-sideBar-opcao" style={{ height: '100vh', backgroundColor: (isPopUpAberto.estado === true ? 'rgba(0,0,0,0.7)' : '') }}>
+      <div className="sideBar-opcao">
+        <img src="/src/assets/images/about/logo.png" alt="" />
+        <div className="opcoes-sideBar">
+          <button value="dimensoes" style={page === "dimensoes" ? { border: "solid 2px var(--primary-blue)", backgroundColor: "var(--primary-blue)", color: "white" } : {}} onClick={(e: any) => setPage(e.target.value)}>Dimensões</button>
+          <button value="contribuicao" style={page === "contribuicao" ? { border: "solid 2px var(--primary-blue)", backgroundColor: "var(--primary-blue)", color: "white" } : {}} onClick={(e: any) => setPage(e.target.value)}>Contribuição</button>
+        </div>
       </div>
-        <select className="form-select select-admin" name="" id="" onChange={(e) => setPage(e.target.value)}>
-          <option value="dimensoes">Dimensões</option>
-          <option value="pinicial">Página Inicial</option>
-          <option value="psobre">Página Sobre</option>
-          <option value="contribuicao">Contribuição</option>
-        </select>
-        {page === "dimensoes" && <div className="dimensoes-grid-wallpaper">
-          <div className="dimensoes-grid">
-          <div className="dimensoes-column">
-            {Object.entries(dimensoesColumn1).map(([key, value]) => (
-              <div
-                className="dimensao-card"
-                style={{
-                  backgroundColor: `var(--${dimensoesCores123[key]})`,
-                }}
-                key={key}
-              >
-                <button
-                  style={{
-                    backgroundColor: `var(--${dimensoesCores123[key]})`,
-                  }}
-                  className="dimensao-button"
-                  onClick={() => handleClick(key)}
-                >
-                  <h3>{key}</h3>
-                  <div
-                    style={{
-                      WebkitMaskImage: `url(${value})`,
-                      maskImage: `url(${value})`,
-                    }}
-                    className="dimensao-button-icone"
-                  />
-                </button>
-              </div>
-            ))}
-          </div>
-
-          <div className="dimensoes-column">
-            {Object.entries(dimensoesColumn2).map(([key, value]) => (
-              <div
-                style={{
-                  backgroundColor: `var(--${dimensoesCores123[key]})`,
-                }}
-                className="dimensao-card"
-                key={key}
-              >
-                <button
-                  style={{
-                    backgroundColor: `var(--${dimensoesCores123[key]})`,
-                  }}
-                  className="dimensao-button"
-                  onClick={() => handleClick(key)}
-                >
-                  <h3>{key}</h3>
-                  <div
-                    style={{
-                      WebkitMaskImage: `url(${value})`,
-                      maskImage: `url(${value})`,
-                    }}
-                    className="dimensao-button-icone"
-                  />
-                </button>
-              </div>
-            ))}
-          </div>
-          <div className="dimensoes-column">
-            {Object.entries(dimensoesColumn3).map(([key, value]) => (
-              <div
-                style={{
-                  backgroundColor: `var(--${dimensoesCores123[key]})`,
-                }}
-                className="dimensao-card"
-                key={key}
-              >
-                <button
-                  style={{
-                    backgroundColor: `var(--${dimensoesCores123[key]})`,
-                  }}
-                  className="dimensao-button"
-                  onClick={() => handleClick(key)}
-                >
-                  <h3>{key}</h3>
-                  <div
-                    style={{
-                      WebkitMaskImage: `url(${value})`,
-                      maskImage: `url(${value})`,
-                    }}
-                    className="dimensao-button-icone"
-                  />
-                </button>
-              </div>
-            ))}
-          </div>
+      {page === "dimensoes" && <div className="dimensoes-grid-wallpaper">
+        <div className="dimensoes-flex">
+          <DimensaoCard colunaDimensoes={dimensoesColumn1} colunaDimensoesCores={dimensoesCores123} />
+          <DimensaoCard colunaDimensoes={dimensoesColumn2} colunaDimensoesCores={dimensoesCores123} />
+          <DimensaoCard colunaDimensoes={dimensoesColumn3} colunaDimensoesCores={dimensoesCores123} />
         </div>
-        </div>
+      </div>
       }
-      {(page === "pinicial"  || page === "psobre") && 
-        <div className="dimensoes-grid-wallpaper" style={isPopUpAberto.estado === true ? {backgroundColor:'rgba(0,0,0,0.7)'} : {}}>
-          {isPopUpAberto.estado === true && <RenderizarEstudo patch={patch} page={page} isPopUpAberto={isPopUpAberto} setIsPopUpAberto={setIsPopUpAberto} /> }
-          <span> <button className="mt-5 mb-2" type="button" onClick={() => {
-                                        setIsPopUpAberto({estado:true, estudo:''})
-                                        }}>Adicionar</button> <button>Deletar selecionados</button></span>
-          <div className="d-flex flex-column bg-white w-50 mx-auto align-items-start p-5">  
-            {
-              page === "pinicial" ? listarEstudos(estudosPaginaInicial) : listarEstudos(estudosPaginaSobre)
-            }
-          </div>
-        </div>}
 
-        {page === "contribuicao" && 
-          <div className="d-flex justify-content-center dimensoes-grid-wallpaper">
-            <div className="d-flex flex-column container-contribuicao">
-              <Form onSubmit={handleSubmitEmail}>
-              <Form.Group className="mb-3">
-                <Form.Label className="email-current-title">E-mail Atual</Form.Label>
-                <Form.Control
+      {page === "contribuicao" &&
+        <div className="dimensoes-grid-wallpaper" style={{display: "flex", justifyContent: "center", padding: "2rem 1.5rem"}}>
+          <div style={{display: "flex" ,flexDirection: "column", justifyContent:"center", alignItems:"center"} } className="container-contribuicao">
+            <form onSubmit={handleSubmitEmail}>
+
+              <div className="contribuicao-label-email" style={{marginBottom:"1rem"}}>
+                <label htmlFor="email-input">E-mail atual</label>
+                <input
                   type="email"
+                  id="email-input"
                   name="nome"
                   value={email}
-                  onChange={(e) => {setEmail(e.target.value)}}
+                  onChange={(e) => { setEmail(e.target.value) }}
                   placeholder="Digite um E-mail"
                   className="email-input"
                 />
-              </Form.Group>
-              <Button variant="primary" type="submit">
+              </div>
+
+              <button type="submit" id="submit-btn">
                 {emailAtual ? ("Modificar E-mail") : ("Adicionar E-mail")}
-              </Button>
-            </Form>
-            </div>
+              </button>
+
+            </form>
           </div>
-          
-        }
-        
+        </div>
+      }
+
     </div>
   );
 };

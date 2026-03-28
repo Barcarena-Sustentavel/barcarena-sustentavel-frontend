@@ -1,10 +1,79 @@
+.admin-sideBar-opcao{
+    display: grid;
+    grid-template-columns: 1fr 3fr;
+}
+@media (max-width:1000px) {
+    .admin-sideBar-opcao{
+        grid-template-columns: 1fr;
+    }
+}
+
+.opcoes-sideBar{
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+}
+
+@media (max-width: 1000px){
+    .opcoes-sideBar{
+        width: 50%;
+    }
+}
+
+@media (max-width: 500px){
+    .opcoes-sideBar{
+        width: 100%;
+    }
+}
+
+.opcoes-sideBar button {
+    text-align: center;
+    background: none;
+    border: none;
+    margin: 0.5rem 2rem;
+    cursor: pointer;
+    font-size: inherit;
+    font-family: inherit;
+    color: inherit;
+}
+
+.opcoes-sideBar button:hover{
+    border: solid 2px var(--primary-blue);
+    background-color: var(--primary-blue);
+    color: white;
+    transform: translateY(-4px);
+}
+
+.opcoes-sideBar-active{
+    border: solid 2px var(--primary-blue);
+    background-color: var(--primary-blue);
+    color: white;
+}
+
+.sideBar-opcao img{
+    width: 100%;
+    padding: 3rem 3rem
+}
+
+@media (max-width:1000px) {
+    .sideBar-opcao{
+    display: flex;
+    flex-direction: column;
+    }
+
+    .sideBar-opcao img{
+    width: 80%;
+    margin: 0 auto;
+    }
+}
+
+
 .admin-header-dimensao-admin {
     text-align: center;
     padding: 2rem 1rem;
     background-color: #f8f9fa;
     margin-bottom: 2rem;
 }
-
 .admin-header-dimensao-admin h1 {
     text-align: center;
 }
@@ -15,11 +84,12 @@
     margin: 0 auto;
 }
 
-.dimensoes-grid {
+.dimensoes-flex {
     margin: 0 auto;
-    width: 50%;
-    padding: 2rem 2rem 3rem;
-    background-color: white;
+    width: 80%;
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
 }
 
 .dimensoes-grid-wallpaper {
@@ -28,48 +98,56 @@
     background-color: var(--primary-blue); /*rgba(135, 206, 235, 1);*/
 }
 
-.dimensoes-column {
+.dimensoes-row {
     display: flex;
-    flex-direction: column;
-    margin: 2rem;
+    margin: 10px auto;
     gap: 1.5rem;
-    max-width: 500px;
+}
+
+@media (max-width: 750px){
+    .dimensoes-row{
+        flex-direction: column;
+    }
 }
 
 .dimensao-card {
+    width: 200px;
     border-radius: 8px;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 8px 24px rgba(0,0,0,0.50);
     overflow: hidden;
     transition:
         transform 0.3s ease,
         box-shadow 0.3s ease;
 }
 
-.dimensao-button-icone {
-    width: 100px;
-    height: 100px;
-    color: white;
-    background-color: white;
-    -webkit-mask-size: contain;
-    mask-size: contain;
-    -webkit-mask-repeat: no-repeat;
-    mask-repeat: no-repeat;
-    -webkit-mask-position: center;
-    mask-position: center;
-}
-
 .dimensao-card:hover {
     transform: translateY(-5px);
-    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
-}
+    box-shadow: 0 8px 32px rgba(0,0,0,0.70);}
 
 .dimensao-button {
     width: 100%;
     padding: 1.5rem;
     border: none;
     cursor: pointer;
-    text-align: left;
     transition: background-color 0.3s ease;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.dimensao-button svg {
+  margin-bottom: 10px;
+  width: 56px;
+  height: 56px;
+  flex-shrink: 0;
+  background: rgba(255,255,255,0.15);
+  border-radius: 14px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.5rem;
 }
 
 .dimensao-button:hover {
@@ -80,6 +158,9 @@
 .dimensao-button h3 {
     margin-bottom: 0.5rem;
     font-size: 1.25rem;
+    font-size: 1.2rem;
+    color: white;
+    transition: 0.3s ease;
 }
 
 .dimensao-button p {
@@ -123,10 +204,58 @@
 
 .container-contribuicao {
     width: 50%;
-    background-color: #f8f9fa;
+    font-family: 'Sora', sans-serif;
 }
 
-.email-input {
-    margin: auto;
-    width: 50% !important;
+
+.contribuicao-label-email{
+  display: flex;
+  flex-direction: column;
+}
+
+.contribuicao-label-email input{
+  background-color: white;
+  border: solid 2px var(--primary);
+  padding: 0.5rem;
+  border-radius: 4px;
+  color: black;
+  font-family: 'Sora', sans-serif;
+}
+
+.contribuicao-label-email label{
+    font-weight: 600;
+    font-size: 1rem;
+}
+
+.container-contribuicao form{
+    width: 100%;
+    transform: translateY(-50px);
+    background-color: #f8f9fa;
+    padding: 3rem 4rem;
+    border-radius: 8px;
+}
+
+@media (max-width: 1000px){
+    .container-contribuicao form{
+        transform: translateY(0px);
+        padding: 1rem
+    }
+} 
+
+@media (max-width: 550px){
+    .container-contribuicao{
+        width: 100%;
+    }
+    .container-contribuicao form{
+        transform: translateY(0px);
+        padding: 1rem
+    }
+} 
+
+.container-contribuicao form button{
+    background-color: var(--primary-blue);
+}
+
+.container-contribuicao form button:hover{
+    transform: translateY(-5px);
 }
