@@ -158,6 +158,9 @@
     .admin-tab-content {
         padding: 1rem;
     }
+    .div-wrapper {
+        flex-direction: column;
+    }
 }
 
 .admin-content__title {

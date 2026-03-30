@@ -40,7 +40,7 @@ const DimensaoPageComponent: FC = () => {
   }
   if(!dimensao) return;
   return (
-    <div className="d-flex">
+    <div className="div-wrapper d-flex">
       <SidebarAdmin 
         selectedDimensao={nomeDimensao}
         dimensoes={dimensoesList}
