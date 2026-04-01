@@ -13,7 +13,6 @@ const DimensaoItem: React.FC<{icon:any, dimensao:string, isAtiva:boolean, cor:st
 	const corItem = cor
 	const nomeDimensao = dimensao
 	const icone = icon
-	//console.log(icone)
 		return (
 							<a
 								key={nomeDimensao}
@@ -60,15 +59,16 @@ const SubmenuDimensao: React.FC<SubmenuDimensaoProps> = ({ dimensaoAtiva }) => {
 		...dimensoesColumn3,
 	};
 	const dimensoesValor = Object.keys(todasDimensoes)
-	const dimensoesChaves = ["conectividade",
-							 "ordenamento",
-							 "educacao",
-							 "meioAmbiente",
-							 "seguranca",
-							 "saude",
-							 "emprego",
-							 "instituicoes",
-							 "mobilidade"]
+	console.log('dimensoesValor:', dimensoesValor)
+	const dimensoesChaves = ["emprego",
+		"meioAmbiente",
+		"educacao",
+		"mobilidade",
+		"ordenamento",
+		"seguranca",
+		"saude",
+		"conectividade",
+		"instituicoes",]
 	let dimensoesChaveValor:Record<string,string> = {}
 	dimensoesChaves.map((_,index:number) => {
 		dimensoesChaveValor[dimensoesChaves[index]] = dimensoesValor[index] 
@@ -104,7 +104,9 @@ const SubmenuDimensao: React.FC<SubmenuDimensaoProps> = ({ dimensaoAtiva }) => {
 				>
 					{dimensoesOrdem.map((_,index:number) =>{
 						const nomeDimensaoChave:string = dimensoesOrdem[index]
+						console.log(nomeDimensaoChave)
 						const nomeDimensaoValor = dimensoesChaveValor[nomeDimensaoChave as string]
+						console.log(nomeDimensaoValor)
 						const isAtiva =
 							nomeDimensaoValor === (dimensaoAtiva || activeDimensionFromPath);
 						const cor = dimensaoCores[index] //dimensoesCores123[nomeDimensaoValor] || "default-color";

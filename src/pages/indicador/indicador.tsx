@@ -25,7 +25,11 @@ const IndicadorComponent: FC = () => {
     nome: "",
     graficos: [],
   });
-
+  const [referenciaFonteDados, setReferenciaFonteDados] = useState<string>("")
+  const [periodicidade, setPeriodicidade] = useState<string>("")
+  const [ultimaAtualizacao, setUltimaAtualizacao] = useState<string>("")
+  const [unidadeMedida, setUnidadeMedida] = useState<string>("")
+  const [metodologia, setMetodologia] = useState<string>("")
   const [loading, setLoading] = useState<boolean>(true);
   const [singleColumn, setSingleConlumn] = useState<boolean>(true);
   //guarda a referência dos graficos
@@ -45,26 +49,22 @@ const IndicadorComponent: FC = () => {
   }
   console.log(indicadores)
   useEffect(() => {
-    api
-      .get(url)
-      .then((response) => {
-        setIndicadorJson((prev) => {
+    const getIndicador = async () => {
+      const response = await api.get(url)
+      setIndicadorJson((prev) => {
           const responseData = response.data;
           return responseData.graficos.sort((a: any, b: any) => a.posicao - b.posicao);
         });
         setIndicadorJson(response.data);
+        setReferenciaFonteDados(response.data.fonteDeDados)
+        setPeriodicidade(response.data.periodicidade)
+        setUltimaAtualizacao(response.data.ultimaAtualizacao)
+        setUnidadeMedida(response.data.unidadeMedida)
+        setMetodologia(response.data.metodologia)
         setLoading(false);
-      })
-      .catch((error) => {
-        console.error("Error fetching indicador data:", error);
-        setLoading(false);
-      });
+    }
+    getIndicador()
   }, [url]);
-
-  const printDiv = () => {
-    console.log("Preparando documento")
-    window.print()
-  }
 
   const handleNavigateIndicador = (indicador: string, ordem: number, arrayIndicadores: string[]) => {
     const url = encodeURI(`/${dimensao}/${indicador}/${ordem}`);
@@ -143,6 +143,8 @@ const IndicadorComponent: FC = () => {
 
   }
 
+
+
   const iconeRenderizado = () => <svg
     viewBox={(icone as any).viewBox}                   // Aumenta o ícone se for ativo
     stroke="white"  //{(icon as any).stroke}
@@ -194,7 +196,7 @@ const IndicadorComponent: FC = () => {
     link.download = `${nome}.png`
     link.click();
   }
-  console.log(dimensoesCores123[dimensao as string])
+  console.log(indicadorJson)
   return (
     <div>
       <NavbarComponent />
@@ -302,11 +304,11 @@ const IndicadorComponent: FC = () => {
             <div className="grafico-card card-meta">
               <div className="grafico-card-titulo">Fonte e Metodologia</div>
               <div style={{ marginTop: "1rem" }} className="grafico-card-grid">
-                <div className="meta-block"><div className="grafico-card-grid-label">Fonte dos dados</div><div className="grafico-card-grid-valor"><a href={cartaoMetodologia(dimensao as string).link} target="_blank" rel="noopener">{cartaoMetodologia(dimensao as string).fonteDados}</a></div></div>
-                <div className="meta-block"><div className="grafico-card-grid-label">Periodicidade</div><div className="grafico-card-grid-valor">{cartaoMetodologia(dimensao as string).periodicidade}</div></div>
-                <div className="meta-block"><div className="grafico-card-grid-label">Última atualização</div><div className="grafico-card-grid-valor">{cartaoMetodologia(dimensao as string).ultAtualizacao}</div></div>
-                <div className="meta-block"><div className="grafico-card-grid-label">Unidade de medida</div><div className="grafico-card-grid-valor">{cartaoMetodologia(dimensao as string).unidadeMedida}</div></div>
-                <div className="meta-block" style={{ gridColumn: "1/-1" }}><div className="grafico-card-grid-label">Metodologia</div><div className="grafico-card-grid-valor">{cartaoMetodologia(dimensao as string).metodologia}</div></div>
+                <div className="meta-block"><div className="grafico-card-grid-label">Fonte dos dados</div><div className="grafico-card-grid-valor"><a href={cartaoMetodologia(dimensao as string).link} target="_blank" rel="noopener">{referenciaFonteDados}</a></div></div>
+                <div className="meta-block"><div className="grafico-card-grid-label">Periodicidade</div><div className="grafico-card-grid-valor">{periodicidade}</div></div>
+                <div className="meta-block"><div className="grafico-card-grid-label">Última atualização</div><div className="grafico-card-grid-valor">{ultimaAtualizacao}</div></div>
+                <div className="meta-block"><div className="grafico-card-grid-label">Unidade de medida</div><div className="grafico-card-grid-valor">{unidadeMedida}</div></div>
+                <div className="meta-block" style={{ gridColumn: "1/-1" }}><div className="grafico-card-grid-label">Metodologia</div><div className="grafico-card-grid-valor">{metodologia}</div></div>
               </div>
             </div>
           </div>

@@ -102,9 +102,7 @@ const loadAllIcons = () => {
     dimensoesColumn1Array: [
       logoEmprego,
       logoMeioAmbiente,
-      logoEducacao,
-      logoOrdenamento,
-      
+      logoEducacao,  
     ],
     dimensoesColumn2Array: [
       logoMobilidade,
@@ -153,8 +151,7 @@ const dimensaoCoresArray: string[] = [
 		"#922b21",
 		"#3a52a8",
 		"#d35400"
-	]
-
+]
 const GetAllConst = () => {
   const [dimensoesColumn1, setDimensoesColumn1] = useState<Record<string, string>>({});
   const [dimensoesColumn2, setDimensoesColumn2] = useState<Record<string, string>>({});
@@ -163,8 +160,7 @@ const GetAllConst = () => {
   const [dimensaoAumentaIcone, setDimensaoAumentaIcone] = useState<Record<string, boolean>>({});
   const [dimensoesList, setDimensoesList] = useState<string[]>([]);
   const [isLoaded, setIsLoaded] = useState<boolean>(false);
-  //const url = '/dimensoes/';
-  const url = '/dimensoes/teste';
+  const url = '/dimensoes/';
 
   useEffect(() => {
     const puxarDimensoes = async () => {
