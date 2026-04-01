@@ -9,7 +9,6 @@ interface GraficoComponentProps {
   chaveValorGraficos: { [key: string]: string };
   grafico: GraficosIndicador;
   setDeleteArray: React.Dispatch<React.SetStateAction<GraficosIndicador[]>>;
-  graficosData: GraficosIndicador[];
   setGraficosData: React.Dispatch<React.SetStateAction<GraficosIndicador[]>>;
   onDelete?: () => void;
 }
@@ -18,7 +17,6 @@ export const GraficoComponent: FC<GraficoComponentProps> = ({
   chaveValorGraficos,
   grafico,
   setDeleteArray,
-  graficosData,
   setGraficosData,
   onDelete,
 }) => {
@@ -124,27 +122,8 @@ export const GraficoComponent: FC<GraficoComponentProps> = ({
                     }
                   })
                   resultados[index][chave] = novoValor
-                  //console.log(resultados[index][chave])
                 }
                 //Verifica a existência de mais de um ponto
-                /**
-                if(coluna[chave].split(".").length > 2){
-                  const dividirValor:string[] = coluna[chave].split(".")
-                  let novoValor:string = ""
-                  dividirValor.map((str,index) => {
-                    //verifica se está no último index,se sim adiciona o ponto
-                    if(index === dividirValor.length - 1){
-                      novoValor += "."
-                      novoValor += str
-                    }
-                    //se insere até chegar no ponto
-                    else{
-                      novoValor += str
-                    }
-                  })
-                  resultados[index][chave] = novoValor
-                  //console.log(resultados[index][chave])
-                } */
               })
             })
             if(msgsErro.length > 0){
@@ -172,11 +151,18 @@ export const GraficoComponent: FC<GraficoComponentProps> = ({
 useEffect(() => {
   setGraficosData(prevState => {
               const newState = prevState
-              prevState.forEach((g:GraficosIndicador, index:number) => {
-                if(g.id === graficoResponse.id){
-                  newState[index] = graficoResponse
-                }
-              })
+              let foundState = false
+
+              if (prevState.length > 0)
+                {prevState.forEach((g:GraficosIndicador, index:number) => {
+                  if(g.id === graficoResponse.id){
+                    newState[index] = graficoResponse
+                    foundState = true
+                  }
+                })}
+              if(foundState === false){
+                newState.push(graficoResponse)
+              }
               return newState
             })
 },[tituloGrafico, descricaoGrafico, arquivo, tipoGrafico])

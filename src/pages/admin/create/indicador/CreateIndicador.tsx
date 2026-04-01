@@ -35,6 +35,12 @@ export const CreateIndicador: FC<{
   const [metodologia, setMetodologia] = useState<string>("")
   //Array que guarda os dados dos gráficos para que possam ser enviados definitivamente
   const [graficosData, setGraficosData] = useState<GraficosIndicador[]>([]);
+  const [patchGraficosData, setGraficosPatchData] = useState<GraficosIndicador[]>([]);
+  const [nomeFonteDados, setNomeFonteDados] = useState("");
+  const [linkReferencia, setLinkReferencia] = useState("");
+  const [erroNomeReferencia, setErroNomeReferencia] = useState(false);
+  const [openReferencia, setOpenReferencia] = useState(false);
+  const [popUpFonteDados, setPopUpFonteDados] = useState(false);
   //Atributos relacionados aos nomes das colunas e suas cores
   const { dimensoesColumn1, dimensoesColumn2, dimensoesCores123 } =
     dimensoes.GetAllConst();
@@ -144,12 +150,16 @@ export const CreateIndicador: FC<{
     }
 
     if (patch === true) {
-      //console.log(graficosData)
       patchIndicador(
         dimensao,
         indicadorNome as string,
         indicador,
-        graficosData,
+        referenciaFonteDados,
+        periodicidade,
+        ultimaAtualizacao,
+        unidadeMedida,
+        metodologia,
+        patchGraficosData,
       );
       navigate(`/admin/dimensao/${dimensao}/`);
     } else {
@@ -160,15 +170,16 @@ export const CreateIndicador: FC<{
   };
 
   useEffect(() => {
-    if (indicadorNome != undefined) {
+    const getIndicador = async () => {
       setPatch(true);
-      api
-        .get(url)
-        .then((response) => {
-          //setIndicadorAntigo(response.data.nome);
+      const response = await api.get(url)
+      console.log(response.data)
           setIndicador(response.data.nome)
-          //arrayIndicadorResponse.length = 0;
-          //console.log(response.data.graficos);
+          setReferenciaFonteDados(response.data.fonteDeDados)
+          setPeriodicidade(response.data.periodicidade)
+          setUltimaAtualizacao(response.data.ultimaAtualizacao)
+          setUnidadeMedida(response.data.unidadeMedida)
+          setMetodologia(response.data.metodologia)
 
           const graficosFromApi: GraficosIndicador[] =
             response.data.graficos.map((grafico: any, index: any) => ({
@@ -179,7 +190,6 @@ export const CreateIndicador: FC<{
               tipoGrafico: grafico.tipoGrafico,
               posicao: grafico.posicaoGrafico ?? index
             }));
-
 
           setGraficosData(graficosFromApi.sort((a: GraficosIndicador, b: GraficosIndicador) => a.posicao - b.posicao));
 
@@ -196,11 +206,10 @@ export const CreateIndicador: FC<{
               [grafico.id]: false,
             }))
           }
+    }
 
-        })
-        .catch((error) => {
-          console.log(error);
-        });
+    if (indicadorNome != undefined) {
+      getIndicador()
     }
   }, []);
 
@@ -236,6 +245,31 @@ export const CreateIndicador: FC<{
       [novoGrafico.id]: true,
     }));
     setNextId((prev) => prev + 1);
+  };
+
+  const handleEnviarNovaFonteDados = async () => {
+    if (!nomeFonteDados.trim()) {
+      setErroNomeReferencia(true);
+      return;
+    }
+
+    setErroNomeReferencia(false);
+
+    const referenciaNova = {
+      nome: nomeFonteDados,
+      link: linkReferencia,
+    }
+
+    try {
+      await api.post(`/admin/dimensoes/${dimensao}/referencias/`, referenciaNova);
+      // Ação após sucesso: limpar campos, fechar modal, etc.
+      setOpenReferencia(false);
+      setReferencias((prev) => [...prev, nomeFonteDados]);
+      setNomeFonteDados("");
+      setLinkReferencia("");
+    } catch (error) {
+      console.error("Erro ao enviar referência:", error);
+    }
   };
 
   const deleteSingleGrafico = (grafico: GraficosIndicador) => {
@@ -354,14 +388,13 @@ export const CreateIndicador: FC<{
       if (view[index].posicao != index)
         view[index].posicao = index
     });
-    //console.log(graficosData)
     return (
       <DndContext sensors={sensors}
         collisionDetection={pointerWithin}
         onDragEnd={onDragEnd}
         autoScroll={false}
         onDragStart={onDragStart}>
-        <SortableContext items={graficosData.map((i) => i.id.toString())} strategy={verticalListSortingStrategy}>
+        <SortableContext items={graficosData.map((i) => i!.id.toString())} strategy={verticalListSortingStrategy}>
           <div style={{ display: "grid", gap: 8, minHeight: '60px', height: 'auto' }}>
             {view.map((grafico, index) => (
               <SortableGrafico id={grafico.id.toString()} index={index} open={openStates[grafico.id]} tituloGrafico={grafico.tituloGrafico}>
@@ -371,8 +404,7 @@ export const CreateIndicador: FC<{
                       chaveValorGraficos={chaveValorGraficos}
                       grafico={grafico}
                       setDeleteArray={setDeleteArray}
-                      graficosData={graficosData}
-                      setGraficosData={setGraficosData}
+                      setGraficosData={setGraficosPatchData}
                       onDelete={() => deleteSingleGrafico(grafico)}
                     />
                   </div>
@@ -394,27 +426,11 @@ export const CreateIndicador: FC<{
     );
   }
 
-  if(!dimensao) return;
+  if (!dimensao) return;
 
   return (
     <div className="create-indicador-container">
-      {/* <div
-        style={{
-          backgroundColor: `var(--${dimensoesCores123[dimensao!]})`,
-        }}
-        className="admin-header-dimensao-page"
-      >
-        <div className="admin-header-dimensao-page-space">
-          <div
-            style={{
-              maskImage: `url(${dimensoesColumn12[dimensao!]})`,
-            }}
-            className="dimensao-button-header"
-          ></div>
-          <h1 className="admin-header-dimensao-page">{dimensao}</h1>
-        </div>
-      </div> */}
-      <CreatePageHeader dimensao={dimensao}/>
+      <CreatePageHeader dimensao={dimensao} />
       <h2 className="create-indicador-title">
         {patch === false ? "Criar Novo Indicador" : "Modificar Indicador"}
       </h2>
@@ -456,66 +472,105 @@ export const CreateIndicador: FC<{
         </button>
 
         <h3>Fonte e Metodologia</h3>
-          <div className="fonteMetodologia">
-            <Form.Group controlId="referencias">
-              <Form.Label>Fontes e Dados</Form.Label>
-              {referencias.length > 0 && (
-                <Form.Select
-                  defaultValue={referenciaFonteDados}
-                  onBlur={(e) => setReferenciaFonteDados(e.target.value)}
-                  name="referencias"
-                >
-                  <option value="">Escolha a sua Referência</option>
-                  {referencias.map((referencia) => (
-                    <option key={referencia} value={referencia} title={referencia}>
-                      {referencia.length > 80 ? referencia.slice(0, 80) + "…" : referencia}
-                    </option>
-                  ))}
-                </Form.Select>
-              )}
-            </Form.Group>
+        <div className="fonteMetodologia">
+          <Form.Group controlId="referencias">
+            <Form.Label>Fontes e Dados</Form.Label>
+            {referencias.length > 0 && (
+              <Form.Select
+                defaultValue={referenciaFonteDados}
+                onBlur={(e) => setReferenciaFonteDados(e.target.value)}
+                name="referencias"
+              >
+                <option value="">Escolha a sua Fonte de Dados</option>
+                {referencias.map((referencia) => (
+                  <option key={referencia} value={referencia} title={referencia}>
+                    {referencia.length > 80 ? referencia.slice(0, 80) + "…" : referencia}
+                  </option>
+                ))}
+              </Form.Select>
+            )}
+            <div className="botaoNovaReferencia" style={popUpFonteDados === true ? { width: '80%', justifyContent: 'flex-start' } : {}}>
+              <button type="button" onClick={() => setOpenReferencia(true)}>Nova Fonte de dados</button>
+              <span onMouseEnter={() => setPopUpFonteDados(true)} style={popUpFonteDados ? { display: "none" } : {}}>i</span>
+              {popUpFonteDados && <p onMouseLeave={() => setPopUpFonteDados(false)}>O botão "Nova Fonte de dados" permite adicionar uma nova referência de dados para escolher</p>}
+            </div>
 
-            <Form.Group controlId="periodicidade" className="mt-3">
-              <Form.Label>Periodicidade</Form.Label>
-              <Form.Control
-                type="text"
-                name="periodicidade"
-                defaultValue={periodicidade}
-                onBlur={(e) => setPeriodicidade(e.target.value)}
-              />
-            </Form.Group>
+            {openReferencia && (
+              <div className="overlay">
+                <div className="novaReferencia">
 
-            <Form.Group controlId="ultimaAtualizacao" className="mt-3">
-              <Form.Label>Última Atualização</Form.Label>
-              <Form.Control
-                type="text"
-                name="ultimaAtualizacao"
-                defaultValue={ultimaAtualizacao}
-                onBlur={(e) => setUltimaAtualizacao(e.target.value)}
-              />
-            </Form.Group>
+                  <span><p>Nova Fonte de Dados</p><button type="button" onClick={() => setOpenReferencia(false)}>X</button></span>
 
-            <Form.Group controlId="unidadeMedida" className="mt-3">
-              <Form.Label>Unidade de Medida</Form.Label>
-              <Form.Control
-                type="text"
-                name="unidadeMedida"
-                defaultValue={unidadeMedida}
-                onBlur={(e) => setUnidadeMedida(e.target.value)}
-              />
-            </Form.Group>
+                  <div className="campo">
+                    <label htmlFor="nome">Nome *</label>
+                    <input
+                      id="nome"
+                      type="text"
+                      value={nomeFonteDados}
+                      onChange={(e) => setNomeFonteDados(e.target.value)}
+                      placeholder="Digite o nome"
+                    />
+                    {erroNomeReferencia && <span className="erro">O campo nome é obrigatório.</span>}
+                  </div>
 
-            <Form.Group controlId="metodologia" className="mt-3">
-              <Form.Label>Metodologia</Form.Label>
-              <Form.Control
-                as="textarea"
-                rows={5}
-                name="metodologia"
-                defaultValue={metodologia}
-                onBlur={(e) => setMetodologia(e.target.value)}
-              />
-            </Form.Group>
-          </div>
+                  <div className="campo">
+                    <label htmlFor="link">Link</label>
+                    <input
+                      id="link"
+                      type="text"
+                      value={linkReferencia}
+                      onChange={(e) => setLinkReferencia(e.target.value)}
+                      placeholder="Digite o link (opcional)"
+                    />
+                  </div>
+
+                  <button type="button" id="enviarFonteDados" onClick={handleEnviarNovaFonteDados}>Enviar</button>
+                </div>
+              </div>
+            )}
+          </Form.Group>
+
+          <Form.Group controlId="periodicidade" className="mt-3">
+            <Form.Label>Periodicidade</Form.Label>
+            <Form.Control
+              type="text"
+              name="periodicidade"
+              defaultValue={periodicidade}
+              onBlur={(e) => setPeriodicidade(e.target.value)}
+            />
+          </Form.Group>
+
+          <Form.Group controlId="ultimaAtualizacao" className="mt-3">
+            <Form.Label>Última Atualização</Form.Label>
+            <Form.Control
+              type="text"
+              name="ultimaAtualizacao"
+              defaultValue={ultimaAtualizacao}
+              onBlur={(e) => setUltimaAtualizacao(e.target.value)}
+            />
+          </Form.Group>
+
+          <Form.Group controlId="unidadeMedida" className="mt-3">
+            <Form.Label>Unidade de Medida</Form.Label>
+            <Form.Control
+              type="text"
+              name="unidadeMedida"
+              defaultValue={unidadeMedida}
+              onBlur={(e) => setUnidadeMedida(e.target.value)}
+            />
+          </Form.Group>
+
+          <Form.Group controlId="metodologia" className="mt-3">
+            <Form.Label>Metodologia</Form.Label>
+            <Form.Control
+              as="textarea"
+              rows={5}
+              name="metodologia"
+              defaultValue={metodologia}
+              onBlur={(e) => setMetodologia(e.target.value)}
+            />
+          </Form.Group>
+        </div>
         <div className="d-flex justify-content-between mt-4">
           <button
             type="button"

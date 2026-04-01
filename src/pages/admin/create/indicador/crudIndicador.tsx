@@ -64,7 +64,12 @@ export const postIndicador = async (
 export const patchIndicador = async (
   dimensao: string | undefined,
   antigoIndicador: string,
-  novoIndicador: string,
+  novoIndicador: string = "",
+  referencia: string = "",
+  periodicidade: string = "",
+  ultimaAtualizacao: string = "",
+  unidadeMedida: string = "",
+  metodologia: string = "",
   arrayGrafico: GraficosIndicador[],
 ) => {
   const indicador: Indicador = {
@@ -72,23 +77,40 @@ export const patchIndicador = async (
   };
 
   try {
+    const endpoint = `/admin/dimensoes/${dimensao}/indicador/${encodeURIComponent(antigoIndicador)}/`;
+    const formData = new FormData();
     const novoIndicadorBool: boolean = novoIndicador !== antigoIndicador;
+    
     if (novoIndicadorBool) {
       indicador.nome = novoIndicador;
-      const formData = new FormData();
-      const endpoint = `/admin/dimensoes/${dimensao}/indicador/${encodeURIComponent(antigoIndicador)}/`;
       formData.append("indicadorNovo", novoIndicador);
-      await api.patch(endpoint, formData).then(res =>{
+    } else {
+      indicador.nome = antigoIndicador;
+    }
+
+    if (referencia !== "") {
+      formData.append("fonteDeDados", referencia);
+    }
+    if (periodicidade !== "") {
+      formData.append("periodicidade", periodicidade);
+    }
+    if (ultimaAtualizacao !== "") {
+      formData.append("ultimaAtualizacao", ultimaAtualizacao);
+    }
+    if (unidadeMedida !== "") {
+      formData.append("unidadeMedida", unidadeMedida);
+    }
+    if (metodologia !== "") {
+      formData.append("metodologia", metodologia);
+    }
+    await api.patch(endpoint, formData).then(res =>{
         if(res.status === 200){
             console.log("Indicador alterado com sucesso");
         }else{
           console.log("erro")
         }
       })
-    } else {
-      indicador.nome = antigoIndicador;
-    }
-
+    console.log(arrayGrafico)
     //Anexos
     if (arrayGrafico.length > 0) {
       let formData = new FormData();
