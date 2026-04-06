@@ -1,3 +1,7 @@
+.loginScreen{
+    height: 100vh
+}
+
 .logo {
     display: flex;
     flex-direction: column;
@@ -18,7 +22,7 @@
 }
 .loginContainer {
     max-width: 380px;
-    margin: 80px auto;
+    margin: 0 auto;
     padding: 32px;
     border-radius: 12px;
     background: #ffffff;
@@ -30,6 +34,15 @@
     margin-bottom: 6px;
     font-weight: 600;
     color: #333;
+}
+.erroLogin{
+    color: var(--dark-red-d);
+    text-align: center;
+    padding: 8px;
+    border: 1px solid var(--dark-red-d);
+    border-radius: 8px;
+    width: 100%;
+    background-color: rgba(224, 90, 43, 0.1);
 }
 
 /* Inputs com ícones */

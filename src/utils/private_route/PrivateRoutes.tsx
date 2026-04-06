@@ -3,6 +3,7 @@ import { AuthContext, AuthContextType } from "./Authcontext.ts";
 import { useContext, useState, useEffect } from "react";
 import BouncingDotsLoader from "./animation/BouncingDotsLoader.tsx";
 import api from "../../api.tsx";
+import backgroundImageLogin from "../../assets/images/carousel/Banner Barcarena/5.png"
 import { LogIn } from "lucide-react";
 import { Eye } from "lucide-react";
 import logoNoLabel from "../../assets/images/icons/LogoNoLabel.png";
@@ -13,16 +14,21 @@ const PrivateRoutes = () => {
     useContext<AuthContextType>(AuthContext);
   const [userName, setUserName] = useState<string>("");
   const [password, setPassword] = useState<string>("");
+  const [errorLogin, setErrorLogin] = useState<string>("");
   const [loading, setLoading] = useState<boolean>(true);
   const [visible, setVisible] = useState<boolean>(false);
   const handleLogin = async () => {
-    const token = await api.post("/user/login", {
+    try {
+      const token = await api.post("/user/login", {
       username: userName,
       hashed_password: password,
     });
-    if (token.status === 200 && token.data) {
       setToken(token.data);
       setIsAuthenticated(true);
+    } catch (error) {
+      console.log(error)
+      console.log("Erro ao fazer login")
+      setErrorLogin("Usuário ou senha incorretos");
     }
   };
   useEffect(() => {
@@ -32,6 +38,7 @@ const PrivateRoutes = () => {
   }, [isAuthenticated]);
   if (!isAuthenticated) {
     return (
+      <div className="loginScreen">
       <div className="loginContainer">
         <div className="logo">
           <img src={logoNoLabel} alt="Logo da ODSB" />
@@ -57,7 +64,9 @@ const PrivateRoutes = () => {
           />
           <Eye onClick={() => setVisible(!visible)} />
         </span>
-        <button onClick={handleLogin}>Entrar</button>
+        {errorLogin && <p className="erroLogin">{errorLogin}</p>}
+        <button type='submit' onClick={handleLogin}>Entrar</button>
+      </div>
       </div>
     );
   }
