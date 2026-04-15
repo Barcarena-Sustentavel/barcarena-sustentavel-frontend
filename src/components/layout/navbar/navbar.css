@@ -1,15 +1,21 @@
 .logo-navbar {
     width: 25%;
 }
-.barra-navegacao{
-  font-family: 'Sora', sans-serif;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 0.9rem 3rem;
-  max-width: 1400px;
-  margin: 0 auto;
 
+.nav-container{
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+    background-color: white;
+}
+.barra-navegacao{
+    font-family: 'Sora', sans-serif;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.9rem 3rem;
+    max-width: 1400px;
+    margin: 0 auto;
 }
 .nav-links {
   display: flex;

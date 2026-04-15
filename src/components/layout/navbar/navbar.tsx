@@ -24,32 +24,35 @@ const NavbarComponent: FC = () => {
     setIconRotated(!iconRotated);
   };
   return(
-    <nav className="barra-navegacao">
-       <Navbar.Brand
-          as={Link}
-          to="/"
-          className="d-flex align-self-left logo-navbar"
+    <div className="nav-container">
+      <nav className="barra-navegacao">
+          <Navbar.Brand
+              as={Link}
+              to="/"
+              className="d-flex align-self-left logo-navbar"
+            >
+              <Logo></Logo>
+            </Navbar.Brand>
+          <button
+          className={`hamburger ${menuAberto ? "aberto" : ""}`}
+          onClick={() => setMenuAberto(!menuAberto)}
         >
-          <Logo></Logo>
-        </Navbar.Brand>
-      <button
-      className={`hamburger ${menuAberto ? "aberto" : ""}`}
-      onClick={() => setMenuAberto(!menuAberto)}
-    >
-      <span></span>
-      <span></span>
-      <span></span>
-    </button>
+          <span></span>
+          <span></span>
+          <span></span>
+        </button>
 
-    {/* Menu */}
-    <ul className={`nav-links ${menuAberto ? "nav-aberto" : ""}`}>
-      <li><a href="/">Início</a></li>
-      <li><a href="/#dimensoes">Dimensões</a></li>
-      <li><a href="/#galeria">Publicações</a></li>
-      <li><a href="/colaboradores/">Colaboradores</a></li>
-      <li><a href="/about/">Sobre</a></li>
-    </ul>
-  </nav>
+        {/* Menu */}
+        <ul className={`nav-links ${menuAberto ? "nav-aberto" : ""}`}>
+          <li><a href="/">Início</a></li>
+          <li><a href="/#dimensoes">Dimensões</a></li>
+          <li><a href="/#galeria">Publicações</a></li>
+          <li><a href="/colaboradores/">Colaboradores</a></li>
+          <li><a href="/about/">Sobre</a></li>
+        </ul>
+      </nav>
+    </div>
+    
   )
 /*
   return (
