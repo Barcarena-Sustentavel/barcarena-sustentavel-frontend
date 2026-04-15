@@ -14,10 +14,10 @@ interface FormContribuicaoProps {
 
 const FormContribuicao: React.FC<FormContribuicaoProps> = ({ dimensaoId, formStyle = {} }) => {
     const [formData, setFormData] = useState<Omit<Contribuicao, 'id' | 'fkDimensao'> & { file: File | null }>({
-        nome: null,
+        nome: '',
         email: '',
-        telefone: null,
-        comentario: null,
+        telefone: '',
+        comentario: '',
         file: null
     });
 
@@ -154,26 +154,26 @@ const FormContribuicao: React.FC<FormContribuicaoProps> = ({ dimensaoId, formSty
                 {/*<form onSubmit={handleSubmit}>*/}
                 {/* 1. Adicionei a Row principal para segurar as duas colunas */}
                 <div className='contribuicao-campo'><label>Nome <span className="contribuicao-requerida">*</span></label>
-                    <input id="contrib-nome" type="text" placeholder="Digite seu nome" value={formData.nome ?? ""}       // 2. O valor atual do estado
+                    <input id="contrib-nome" type="text" name="nome" placeholder="Digite seu nome" value={formData.nome ?? ""}       // 2. O valor atual do estado
                         onChange={handleChange}></input></div>
                 <div className="contribuicao-campo" style={{ gridRow: 'span 2' }}>
                     <label>Comentário <span className="contribuicao-requerida">*</span></label>
-                    <textarea id="contrib-comentario" placeholder="Digite seu comentário" value={formData.comentario ?? ""}
+                    <textarea id="contrib-comentario" name="comentario" placeholder="Digite seu comentário" value={formData.comentario ?? ""}
                         onChange={handleChange}></textarea>
                 </div>
                 <div className="contribuicao-campo">
                     <label>E-mail <span className="contribuicao-requerida">*</span></label>
-                    <input id="contrib-email" type="email" placeholder="exemplo@email.com" value={formData.email ?? ""}
+                    <input id="contrib-email" type="email" name="email" placeholder="exemplo@email.com" value={formData.email ?? ""}
                         onChange={handleChange}></input>
                 </div>
                 <div className="contribuicao-campo">
                     <label>Telefone <span className="contribuicao-requerida">*</span></label>
-                    <input id="contrib-telefone" type="tel" placeholder="(00) 00000-0000" value={formData.telefone ?? ""}
+                    <input id="contrib-telefone" type="tel" name="telefone" placeholder="(00) 00000-0000" value={formData.telefone ?? ""}
                         onChange={handleChange}></input>
                 </div>
                 <div className="contribuicao-campo contrib-field-file">
                     <label>Anexar Arquivo</label>
-                    <input type="file"></input>
+                    <input type="file" name="file" onChange={handleChange}></input>
                 </div>
                 <div className="contribuicao-info">
                     <div className="contribuicao-info-icone">i</div>
