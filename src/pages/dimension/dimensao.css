@@ -279,5 +279,8 @@ a.custom-link-tooplate-gotto-job:hover {
   .secao-ref-estudoComplementar{
     padding:1rem
   }
+  .descricao p {
+    font-size: 0.8rem;
+  }
   
 }

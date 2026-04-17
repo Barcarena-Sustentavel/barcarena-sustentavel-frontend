@@ -118,7 +118,6 @@ const SubmenuDimensao: React.FC<SubmenuDimensaoProps> = ({ dimensaoAtiva }) => {
 					}
 				</div>
 			</div>
-			<Location parentName={dimensaoAtiva} />
 			<div
 				className="submenu-dimensao-hero"
 				style={{ backgroundColor:`${dimensoesCores123[dimensaoAtiva || activeDimensionFromPath]}` /*`var(--${dimensoesCores123[dimensaoAtiva || activeDimensionFromPath]})`*/ }}>
