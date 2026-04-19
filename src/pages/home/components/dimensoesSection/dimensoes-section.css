@@ -3,9 +3,7 @@
 }
 .dimensions {
   padding: 5rem 3rem;
-  max-width: 1400px;
-  margin: 0 auto;
-  
+  background-color: var(--light);
 }
 .sec-header {
   text-align: center;

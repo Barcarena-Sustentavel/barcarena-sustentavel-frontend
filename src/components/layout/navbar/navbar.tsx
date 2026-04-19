@@ -1,28 +1,11 @@
 import { FC, useState } from "react";
 import { Link } from "react-router-dom";
 import { Navbar, Container, Nav, Modal, Button } from "react-bootstrap";
-//import logoMinimalist from "../assets/images/icons/LogoMinimalist.png";
 import "./navbar.css";
 import Logo from "../../ui/logo.tsx";
-import {
-  MobileModalItem,
-  MobileModalDropdown,
-  MobileModalDropdownItem,
-  MobileModalProvider,
-} from "./mobileModalItem.tsx";
 
 const NavbarComponent: FC = () => {
-  const [showMobileModal, setShowMobileModal] = useState(false);
-  const [modalActive, setModalActive] = useState(false);
-  const [iconRotated, setIconRotated] = useState(false);
   const [menuAberto, setMenuAberto] = useState(false);
-  const handleCloseMobileModal = () => setShowMobileModal(false);
-  const handleShowMobileModal = () => setShowMobileModal(true);
-  const toggleModal = () => {
-    setModalActive(!modalActive);
-    console.log("teste modal");
-    setIconRotated(!iconRotated);
-  };
   return(
     <div className="nav-container">
       <nav className="barra-navegacao">

@@ -9,7 +9,6 @@ import api from "../../api.tsx";
 import Footer from "../../components/layout/footer/footer.tsx";
 import SubmenuDimensao from "./components/submenuDimensao.tsx";
 import FormContribuicao from "./components/formContribuicao.tsx";
-import BackButton from "../../components/layout/backButton/backButton.tsx";
 import HTMLFileIframe from "../kml/mapa/map4.tsx";
 import dimensoes from "../../utils/const.tsx";
 const NODE_ENV = import.meta.env.VITE_NODE_ENV;
@@ -45,13 +44,6 @@ const DimensaoComponent: FC = () => {
   );
   const url: string = `/dimensoes/${dimensao}/`;
   const navigate = useNavigate();
-  const coresBordas = [
-    "var(--secondary-green)",
-    "var(--primary-blue)",
-    "var(--secondary-darkblue)",
-    "var(--secondary-light-blue)",
-    "var(--secondary-orange)",
-  ];
 
   // Contador global de elementos
   let contadorGlobal = 0;
