@@ -1,4 +1,4 @@
-import api from "../api.tsx";
+import api from "../adapters/api.tsx";
 import { useState, useEffect } from "react";
 
 // Lazy load SVG icons usando importação dinâmica
@@ -79,25 +79,6 @@ const loadAllIcons = () => {
     loadIcon('mobilidade'),
   ]);
 
-  /*
-  return {
-    dimensoesColumn1Array: [
-      logoConectividade,
-      logoOrdenamento,
-      logoEducacao,
-    ],
-    dimensoesColumn2Array: [
-      logoMeioAmbiente,
-      logoSegurança,
-      logoSaude,
-    ],
-    dimensoesColumn3Array: [
-      logoEmprego,
-      logoInstituicoes,
-      logoMobilidade,
-    ],
-  };
-  */
  return {
     dimensoesColumn1Array: [
       logoEmprego,
@@ -116,31 +97,7 @@ const loadAllIcons = () => {
     ],
   };
 };
-/*
-const dimensaoCoresArray: string[] = [
-  "dark-blue-d", // Confiança, proteção
-  "green-light-d", // Movimento, fluidez
-  "blue-d", // Saúde, equilíbrio
-  "dark-green-d", // Planejamento, controle
-  "green-d", // Natural, estável (também se aplica bem)
-  "dark-red-d", // Autoridade, seriedade
-  "red-d", // Ação, urgência, energia
-  "orange-d", // Estímulo, criatividade
-  "yellow-d", // Comunicação, otimismo
-];*/
-/*
-const dimensaoCoresArray: string[] = [
-		"#3a52a8",
-		"#148f77",
-		"#1B4F9B",
-		"#148f77",
-		"#1e8449",
-		"#922b21",
-		"#c0392b",
-		"#d35400",
-		"#b7950b"
-	]
-*/
+
 const dimensaoCoresArray: string[] = [
 		"#c0392b",
 		"#27ae60",
@@ -190,7 +147,6 @@ const GetAllConst = () => {
       const tempDimensaoAumentaIcone: Record<string, boolean> = {};
 
       for (let index = 0; index < dimensoesList.length; index++) {
-        //console.log('dimensao',dimensoesList[index], 'cor',dimensoesColumn1Array[index])
         if(index < 3){
           tempDimensoesColumn1[dimensoesList[index]] = dimensoesColumn1Array[index];
         }

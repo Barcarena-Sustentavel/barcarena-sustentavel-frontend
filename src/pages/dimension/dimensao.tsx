@@ -1,14 +1,15 @@
 import { FC, useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-import { Referencia } from "../../interfaces/referencia_interface.tsx";
-import { Dimensao } from "../../interfaces/dimensao_interface.tsx";
+import { Referencia } from "../../interfaces/referencia/referencia_interface.tsx";
+import { Dimensao } from "../../interfaces/dimensao/dimensao_interface.js";
 import NavbarComponent from "../../components/layout/navbar/navbar.tsx";
 import "@assets/styles/index.css";
-import "./dimensao.css";
-import api from "../../api.tsx";
+import "./style.css";
+import api from "../../adapters/api.tsx";
 import Footer from "../../components/layout/footer/footer.tsx";
-import SubmenuDimensao from "./components/submenuDimensao.tsx";
-import FormContribuicao from "./components/formContribuicao.tsx";
+import SubmenuDimensao from "./components/subMenuDimensao/submenuDimensao.tsx";
+import FormContribuicao from "./components/formContribuicao/formContribuicao.tsx";
+import BackButton from "../../components/layout/backButton/backButton.tsx";
 import HTMLFileIframe from "../kml/mapa/map4.tsx";
 import dimensoes from "../../utils/const.tsx";
 const NODE_ENV = import.meta.env.VITE_NODE_ENV;
@@ -28,9 +29,9 @@ const DimensaoComponent: FC = () => {
     {corLetra: '#d35400', corBackground: '#d3540022', corBorda: '#d3540044'},
   ]
 
-  const dimensoesNomes:string[] = Object.keys(dimensoesCores123)
+  const dimensoesNomes: string[] = Object.keys(dimensoesCores123)
   console.log(dimensoesNomes)
-  const [dimensaoIndicadorContador, setDimensaoIndicadorContador] = useState<Record<string,any>>({})
+  const [dimensaoIndicadorContador, setDimensaoIndicadorContador] = useState<Record<string, any>>({})
   const [indicadores, setIndicadores] = useState<
     Array<Record<string, string | number | null>>
   >([]);
@@ -45,8 +46,6 @@ const DimensaoComponent: FC = () => {
   const url: string = `/dimensoes/${dimensao}/`;
   const navigate = useNavigate();
 
-  // Contador global de elementos
-  let contadorGlobal = 0;
 
   // Função para obter a cor sequencial
 
@@ -73,48 +72,53 @@ const DimensaoComponent: FC = () => {
   //--------------------------------------------------------------------------
   //useEffect para carregar os dados da dimensão para o iFrame
   useEffect(() => {
-    if (dimensao === "Segurança") {
-      setPathHtml("https://victorsantiago.github.io/odsb_kmls/");
-    } else if (dimensao === "Conectividade") {
-      if (botaoConectividade === "Conectividade na Educação") {
-        setPathHtml("https://victorsantiago.github.io/odsb_escolas/");
-      } else if (botaoConectividade === "Cobertura Móvel") {
-        setPathHtml("https://victorsantiago.github.io/odsb_cobertura/");
-      } else if (botaoConectividade === "Conectividade na Saúde") {
-        setPathHtml("https://victorsantiago.github.io/odsb_saude/");
-      } else {
-        setPathHtml("https://victorsantiago.github.io/odsb_escolas/");
-      }
-    } else if (dimensao === "Ordenamento Territorial") {
-      setPathHtml("https://victorsantiago.github.io/odsb_ordenamento/");
-
-    } else {
-      setPathHtml("");
+    const mapasURL: Record<string, string> = {
+      "Segurança": "https://victorsantiago.github.io/odsb_kmls/",
+      "Ordenamento Territorial": "https://victorsantiago.github.io/odsb_ordenamento/"
     }
-    api.get(url).then((response) => {
+    const mapasURLConectividade: Record<string, string> = {
+      "Cobertura Móvel": "https://victorsantiago.github.io/odsb_cobertura/",
+      "Conectividade na Educação": "https://victorsantiago.github.io/odsb_escolas/",
+      "Conectividade na Saúde": "https://victorsantiago.github.io/odsb_saude/"
+    }
+
+    const getPathHTML = () => {
+      if (dimensao === "Conectividade") {
+        setPathHtml(mapasURLConectividade[botaoConectividade]);
+      }
+      else{
+        setPathHtml(mapasURL[dimensao as string]);
+      }
+    }
+    //Botar em formato de função, diminuir a quantidade de ifs e deixar mais legível
+    //-------------
+    //Botar em formato de função
+    const getDimensao = async () => {
+      const response = await api.get(url)
       setIndicadores([...response.data.indicadores].sort((a: any, b: any) => a.posicao - b.posicao));
       setDimensao(response.data.dimensao);
       setReferencias(response.data.referencias);
       setEstudosComplementares(response.data.estudos_complementares);
-    });
-    //}
-  }, [url, dimensao, botaoConectividade]);
+    }
+    getPathHTML()
+    getDimensao()
+
+  }, [botaoConectividade]);
   useEffect(() => {
     setIndicadoresNomes(indicadores.map((indicador) => indicador.nome as string))
-  }, [indicadores])
+  }, [])
   //--------------------------------------------------------------------------
-  useEffect(() =>{
-  const chavesDimensaoIndicadorContador = Object.keys(dimensaoIndicadorContador)
-  console.log(chavesDimensaoIndicadorContador)
-  if (chavesDimensaoIndicadorContador.length > 0) return
+  useEffect(() => {
+    const chavesDimensaoIndicadorContador = Object.keys(dimensaoIndicadorContador)
+    if (chavesDimensaoIndicadorContador.length > 0) return
 
-  const dimensaoIndicadorContadorTemp:Record<string,any> = {}
-  dimensoesNomes.map((_,index:number) => {
-    console.log(dimensoesNomes[index])
-    return dimensaoIndicadorContadorTemp[dimensoesNomes[index]] = contadorIndicadoresCores[index]}) 
-  setDimensaoIndicadorContador(dimensaoIndicadorContadorTemp)
-  },[dimensoesNomes])
-  console.log(dimensaoIndicadorContador)
+    const dimensaoIndicadorContadorTemp: Record<string, any> = {}
+    dimensoesNomes.map((_, index: number) => {
+      return dimensaoIndicadorContadorTemp[dimensoesNomes[index]] = contadorIndicadoresCores[index]
+    })
+    setDimensaoIndicadorContador(dimensaoIndicadorContadorTemp)
+  }, [])
+  console.log(pathHtml)
   return (
     <div className="home-container">
       <NavbarComponent />
@@ -125,7 +129,7 @@ const DimensaoComponent: FC = () => {
             {dimensaoJson?.descricao}
           </p>
         </div>
-        {pathHtml !== "" && (
+        {pathHtml !== "" || pathHtml !== undefined && (
           <div className="mx-auto" style={{
             width: "100%",
             height: "41rem",
@@ -144,22 +148,7 @@ const DimensaoComponent: FC = () => {
                   marginRight: "auto",
                 }}
               >
-                <select
-                  className="form-select"
-                  style={{
-                    background: 'var(--primary-dark)',
-                    border: 'none',
-                    fontFamily: 'Sora,sans-serif',
-                    borderRadius:'8px'
-                  }}
-                  onChange={(e) => handleOnCick(e)}
-                  defaultValue={mapasConectividade[0]}
-                >
-                  {mapasConectividade.map((mapa) => (
-                    <option key={mapa} value={mapa}>{mapa}</option>
-                  ))}
-                </select>
-                {/* {mapasConectividade.map((mapa) => {
+                 {mapasConectividade.map((mapa) => {
                 return (
                   <button
                     style={{
@@ -174,17 +163,19 @@ const DimensaoComponent: FC = () => {
                     {mapa}
                   </button>
                 );
-              })} */}
+              })} 
               </div>
             )}
-            <HTMLFileIframe htmlFilePath={pathHtml} />
+            {<HTMLFileIframe htmlFilePath={pathHtml}/>}
           </div>
         )}
         <div className="header-indicadores">
           <h2>Indicadores</h2>
-          {dimensaoIndicadorContador[dimensao as string] !== undefined && <span className="contador-indicadores" style={{color: dimensaoIndicadorContador[dimensao as string]["corLetra"]!, 
-                                                         backgroundColor:dimensaoIndicadorContador[dimensao as string]["corBackground"]!,
-                                                         borderColor:dimensaoIndicadorContador[dimensao as string]["corBorda"]!}}
+          {dimensaoIndicadorContador[dimensao as string] !== undefined && <span className="contador-indicadores" style={{
+            color: dimensaoIndicadorContador[dimensao as string]["corLetra"]!,
+            backgroundColor: dimensaoIndicadorContador[dimensao as string]["corBackground"]!,
+            borderColor: dimensaoIndicadorContador[dimensao as string]["corBorda"]!
+          }}
           >{indicadores.length} indicadores</span>}
         </div>
         <div className="indicadores-grid">
@@ -220,8 +211,8 @@ const DimensaoComponent: FC = () => {
                 ))}
             </div>
           </div>)}
-        
-          {referencias.length > 0 &&
+
+        {referencias.length > 0 &&
           <div className="secao-ref-estudoComplementar">
           <h2>Referências</h2>
             {referencias.map((referencia, indice) => (
@@ -238,26 +229,12 @@ const DimensaoComponent: FC = () => {
 
             ))}
           </div>
-          }
+        }
         <FormContribuicao
-            dimensaoId={0}
-            formStyle={{ borderLeft: `5px solid ${dimensoesCores123[dimensao as string]}` }}
-          />
+          dimensaoId={0}
+          formStyle={{ borderLeft: `5px solid ${dimensoesCores123[dimensao as string]}` }}
+        />
       </div>
-
-      {/* {dimensao === "Conectividade" &&
-        <div className="divMapa">
-          <MapaConectividade dimensao={dimensao} />
-        </div>}
-      {dimensao === "Ordenamento Territorial" && 
-        <div className="divMapa">
-          <MapaOrdenamento dimensao={dimensao}/>
-        </div>}
-      {dimensao === "Segurança" && 
-        <div className="divMapa" style={{ margin: "2rem auto", width: "61%" }}>
-          <HTMLFileIframe htmlFilePath={pathHtml}/>
-        </div>} */}
-
       <Footer />
     </div>
   );

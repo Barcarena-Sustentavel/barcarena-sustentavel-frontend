@@ -9,8 +9,8 @@ import Home from "./pages/home/home.tsx";
 import CreatePage from "./pages/admin/create/createPage.tsx";
 import About from "./pages/about/about.tsx";
 import "leaflet/dist/leaflet.css";
-import AuthProvider from "./utils/private_route/AuthProvider.tsx";
-import PrivateRoutes from "./utils/private_route/PrivateRoutes.tsx";
+import AuthProvider from "./context/private_route/components/AuthProvider.tsx";
+import PrivateRoutes from "./context/private_route/components/PrivateRoutes.tsx";
 import Colaboradores from "./pages/colaboradores/colaboradores.tsx";
 import 'bootstrap/dist/css/bootstrap.min.css';
 

@@ -1,15 +1,16 @@
 import React, { FC, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useEffect } from "react";
-import api from "../../../../api.tsx";
+import api from "../../../../adapters/api.tsx";
 //import Swal from "sweetalert2";
-import { Referencia } from "../../../../interfaces/referencia_interface.tsx";
-import { postReferencias, patchReferencias } from "./crudReferencias.tsx";
-import "./CreateReferencias.css";
-import "../../css/dimensaoPage.css";
+import { Referencia } from "../../../../interfaces/referencia/referencia_interface.tsx";
+import { postReferencias, patchReferencias } from "../../../../services/crudReferencias.tsx";
+import "./style.css";
+//import "../../css/dimensaoPage.css";
+import "../../dimensao/style.css";
 import dimensoes from "../../../../utils/const.tsx";
 import { Form, Alert, Button, Spinner } from "react-bootstrap";
-import CreatePageHeader from "../../headers/createPageHeader.tsx";
+import CreatePageHeader from "../../components/headers/components/createPageHeader.tsx";
 
 const CreateReferencias: FC<{
   dimensao: string | undefined;
@@ -183,52 +184,6 @@ const CreateReferencias: FC<{
         </Button>
       </div>
     </Form>
-      {/*<form onSubmit={handleSubmit}>
-        <div className="form-group">
-          <label htmlFor="nome">Título da Referência</label>
-          <input
-            type="text"
-            id="nome"
-            name="nome"
-            value={formRef.nome}
-            onChange={handleChange}
-            placeholder={
-              formRef.nome === ""
-                ? "Digite o título da referência"
-                : formRef.nome
-            }
-            required
-          />
-        </div>
-
-        <div className="form-group">
-          <label htmlFor="link">Link da Referência</label>
-          <input
-            type="url"
-            id="link"
-            name="link"
-            value={formRef.link}
-            onChange={handleChange}
-            placeholder={
-              formRef.link === "" ? "Digite o link da referência" : formRef.link
-            }
-            required
-          />
-        </div>
-
-        <div className="form-actions">
-          <button
-            type="button"
-            className="btn-cancel"
-            onClick={() => navigate(`/admin/dimensao/${dimensao}/`)}
-          >
-            Cancelar
-          </button>
-          <button type="submit" className="btn-submit" disabled={isSubmitting}>
-            {isSubmitting ? "Adicionando..." : "Adicionar Referência"}
-          </button>
-        </div>
-      </form>*/}
     </div>
   );
 };
