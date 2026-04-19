@@ -1,12 +1,12 @@
 import { FC, useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { TabContentComponent } from "../tab/TabContentComponent.tsx";
-import "../css/dimensaoPage.css";
+import "../dimensao/style.css";
 import dimensoes from "../../../utils/const.tsx";
-import DimensaoPageHeader from "../headers/dimensaoPageHeader.tsx";
+import DimensaoPageHeader from "../components/headers/components/dimensaoPageHeader.tsx";
 import SidebarAdmin from "../sidebar/sidebarAdmin.tsx";
-import api from "../../../api.tsx";
-import { getCor } from "../headers/getCor.tsx";
+import api from "../../../adapters/api.tsx";
+import { getCor } from "../components/headers/script/getCor.tsx";
 
 const DimensaoPageComponent: FC = () => {
   const { dimensao } = useParams();
@@ -49,22 +49,6 @@ const DimensaoPageComponent: FC = () => {
         navigateNovaDimensao={reloadPage}
         />
       <div className="home-container" style={{height:'100vh'}}>
-        {/* <div
-          style={{
-            backgroundColor: `var(--${dimensoesCores123[dimensao!]})`,
-          }}
-          className="admin-header-dimensao-page"
-        >
-          <div className="admin-header-dimensao-page-space">
-            <div
-              style={{
-                maskImage: `url(${dimensoesColumn12[dimensao!]})`,
-              }}
-              className="dimensao-button-header"
-            ></div>
-            <h1 className="admin-header-dimensao-page">{dimensao}</h1>
-          </div>
-        </div> */}
         <DimensaoPageHeader dimensao={dimensao} />
 
         <div className="admin-tabs-container">

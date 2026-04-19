@@ -1,37 +1,38 @@
 import { FC, useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-import { Referencia } from "../../interfaces/referencia_interface.tsx";
-import { Dimensao } from "../../interfaces/dimensao_interface.tsx";
+import { Referencia } from "../../interfaces/referencia/referencia_interface.tsx";
+import { Dimensao } from "../../interfaces/dimensao/dimensao_interface.js";
 import NavbarComponent from "../../components/layout/navbar/navbar.tsx";
 import "@assets/styles/index.css";
-import "./dimensao.css";
-import api from "../../api.tsx";
+import "./style.css";
+import api from "../../adapters/api.tsx";
 import Footer from "../../components/layout/footer/footer.tsx";
-import SubmenuDimensao from "./components/submenuDimensao.tsx";
-import FormContribuicao from "./components/formContribuicao.tsx";
+import SubmenuDimensao from "./components/subMenuDimensao/submenuDimensao.tsx";
+import FormContribuicao from "./components/formContribuicao/formContribuicao.tsx";
 import BackButton from "../../components/layout/backButton/backButton.tsx";
 import HTMLFileIframe from "../kml/mapa/map4.tsx";
 import dimensoes from "../../utils/const.tsx";
+import { get } from "http";
 const NODE_ENV = import.meta.env.VITE_NODE_ENV;
 
 const DimensaoComponent: FC = () => {
   const { dimensao } = useParams();
   const { dimensoesCores123 } = dimensoes.GetAllConst();
   const contadorIndicadoresCores = [
-    {corLetra: '#2c3e7d', corBackground: '#2c3e7d22', corBorda: '#2c3e7d44'},
-    {corLetra: '#148f77', corBackground: '#148f7722', corBorda: '#148f7744'},
-    {corLetra: '#1B4F9B', corBackground: '#1B4F9B22', corBorda: '#1B4F9B44'},
-    {corLetra: '#27ae60', corBackground: '#27ae6022', corBorda: '#27ae6044'},
-    {corLetra: '#1e8449', corBackground: '#1e844922', corBorda: '#1e844944'},
-    {corLetra: '#922b21', corBackground: '#922b2122', corBorda: '#922b2144'},
-    {corLetra: '#c0392b', corBackground: '#c0392b22', corBorda: '#c0392b44'},
-    {corLetra: '#d35400', corBackground: '#d3540022', corBorda: '#d3540044'},
-    {corLetra: '#b7950b', corBackground: '#b7950b22', corBorda: '#b7950b44'},
+    { corLetra: '#2c3e7d', corBackground: '#2c3e7d22', corBorda: '#2c3e7d44' },
+    { corLetra: '#148f77', corBackground: '#148f7722', corBorda: '#148f7744' },
+    { corLetra: '#1B4F9B', corBackground: '#1B4F9B22', corBorda: '#1B4F9B44' },
+    { corLetra: '#27ae60', corBackground: '#27ae6022', corBorda: '#27ae6044' },
+    { corLetra: '#1e8449', corBackground: '#1e844922', corBorda: '#1e844944' },
+    { corLetra: '#922b21', corBackground: '#922b2122', corBorda: '#922b2144' },
+    { corLetra: '#c0392b', corBackground: '#c0392b22', corBorda: '#c0392b44' },
+    { corLetra: '#d35400', corBackground: '#d3540022', corBorda: '#d3540044' },
+    { corLetra: '#b7950b', corBackground: '#b7950b22', corBorda: '#b7950b44' },
   ]
 
-  const dimensoesNomes:string[] = Object.keys(dimensoesCores123)
+  const dimensoesNomes: string[] = Object.keys(dimensoesCores123)
   console.log(dimensoesNomes)
-  const [dimensaoIndicadorContador, setDimensaoIndicadorContador] = useState<Record<string,any>>({})
+  const [dimensaoIndicadorContador, setDimensaoIndicadorContador] = useState<Record<string, any>>({})
   const [indicadores, setIndicadores] = useState<
     Array<Record<string, string | number | null>>
   >([]);
@@ -81,6 +82,26 @@ const DimensaoComponent: FC = () => {
   //--------------------------------------------------------------------------
   //useEffect para carregar os dados da dimensão para o iFrame
   useEffect(() => {
+    const mapasURL: Record<string, string> = {
+      "Segurança": "https://victorsantiago.github.io/odsb_kmls/",
+      "Ordenamento Territorial": "https://victorsantiago.github.io/odsb_ordenamento/"
+    }
+    const mapasURLConectividade: Record<string, string> = {
+      "Cobertura Móvel": "https://victorsantiago.github.io/odsb_cobertura/",
+      "Conectividade na Educação": "https://victorsantiago.github.io/odsb_escolas/",
+      "Conectividade na Saúde": "https://victorsantiago.github.io/odsb_saude/"
+    }
+
+    const getPathHTML = () => {
+      if (dimensao === "Conectividade") {
+        setPathHtml(mapasURLConectividade[botaoConectividade]);
+      }
+      else{
+        setPathHtml(mapasURL[dimensao as string]);
+      }
+    }
+    //Botar em formato de função, diminuir a quantidade de ifs e deixar mais legível
+    /*
     if (dimensao === "Segurança") {
       setPathHtml("https://victorsantiago.github.io/odsb_kmls/");
     } else if (dimensao === "Conectividade") {
@@ -98,31 +119,44 @@ const DimensaoComponent: FC = () => {
 
     } else {
       setPathHtml("");
+    }*/
+    //-------------
+    //Botar em formato de função
+    const getDimensao = async () => {
+      const response = await api.get(url)
+      setIndicadores([...response.data.indicadores].sort((a: any, b: any) => a.posicao - b.posicao));
+      setDimensao(response.data.dimensao);
+      setReferencias(response.data.referencias);
+      setEstudosComplementares(response.data.estudos_complementares);
     }
+    getPathHTML()
+    getDimensao()
+    /*
     api.get(url).then((response) => {
       setIndicadores([...response.data.indicadores].sort((a: any, b: any) => a.posicao - b.posicao));
       setDimensao(response.data.dimensao);
       setReferencias(response.data.referencias);
       setEstudosComplementares(response.data.estudos_complementares);
-    });
-    //}
+    });*/
+    //-------------
+
   }, [url, dimensao, botaoConectividade]);
   useEffect(() => {
     setIndicadoresNomes(indicadores.map((indicador) => indicador.nome as string))
   }, [indicadores])
   //--------------------------------------------------------------------------
-  useEffect(() =>{
-  const chavesDimensaoIndicadorContador = Object.keys(dimensaoIndicadorContador)
-  console.log(chavesDimensaoIndicadorContador)
-  if (chavesDimensaoIndicadorContador.length > 0) return
+  useEffect(() => {
+    const chavesDimensaoIndicadorContador = Object.keys(dimensaoIndicadorContador)
+    console.log(chavesDimensaoIndicadorContador)
+    if (chavesDimensaoIndicadorContador.length > 0) return
 
-  const dimensaoIndicadorContadorTemp:Record<string,any> = {}
-  dimensoesNomes.map((_,index:number) => {
-    console.log(dimensoesNomes[index])
-    return dimensaoIndicadorContadorTemp[dimensoesNomes[index]] = contadorIndicadoresCores[index]}) 
-  setDimensaoIndicadorContador(dimensaoIndicadorContadorTemp)
-  },[dimensoesNomes])
-  console.log(dimensaoIndicadorContador)
+    const dimensaoIndicadorContadorTemp: Record<string, any> = {}
+    dimensoesNomes.map((_, index: number) => {
+      console.log(dimensoesNomes[index])
+      return dimensaoIndicadorContadorTemp[dimensoesNomes[index]] = contadorIndicadoresCores[index]
+    })
+    setDimensaoIndicadorContador(dimensaoIndicadorContadorTemp)
+  }, [dimensoesNomes])
   return (
     <div className="home-container">
       <NavbarComponent />
@@ -158,7 +192,7 @@ const DimensaoComponent: FC = () => {
                     background: 'var(--primary-dark)',
                     border: 'none',
                     fontFamily: 'Sora,sans-serif',
-                    borderRadius:'8px'
+                    borderRadius: '8px'
                   }}
                   onChange={(e) => handleOnCick(e)}
                   defaultValue={mapasConectividade[0]}
@@ -190,9 +224,11 @@ const DimensaoComponent: FC = () => {
         )}
         <div className="header-indicadores">
           <h2>Indicadores</h2>
-          {dimensaoIndicadorContador[dimensao as string] !== undefined && <span className="contador-indicadores" style={{color: dimensaoIndicadorContador[dimensao as string]["corLetra"]!, 
-                                                         backgroundColor:dimensaoIndicadorContador[dimensao as string]["corBackground"]!,
-                                                         borderColor:dimensaoIndicadorContador[dimensao as string]["corBorda"]!}}
+          {dimensaoIndicadorContador[dimensao as string] !== undefined && <span className="contador-indicadores" style={{
+            color: dimensaoIndicadorContador[dimensao as string]["corLetra"]!,
+            backgroundColor: dimensaoIndicadorContador[dimensao as string]["corBackground"]!,
+            borderColor: dimensaoIndicadorContador[dimensao as string]["corBorda"]!
+          }}
           >{indicadores.length} indicadores</span>}
         </div>
         <div className="indicadores-grid">
@@ -227,10 +263,10 @@ const DimensaoComponent: FC = () => {
                 ))}
             </div>
           </div>)}
-        
-          {referencias.length > 0 &&
+
+        {referencias.length > 0 &&
           <div className="secao-ref-estudoComplementar">
-          <h2>Referências</h2>
+            <h2>Referências</h2>
             {referencias.map((referencia) => (
               <ul className="secao-ref-estudoComplementar-lista-ul">
                 <li>
@@ -245,11 +281,11 @@ const DimensaoComponent: FC = () => {
 
             ))}
           </div>
-          }
+        }
         <FormContribuicao
-            dimensaoId={0}
-            formStyle={{ borderLeft: `5px solid ${dimensoesCores123[dimensao as string]}` }}
-          />
+          dimensaoId={0}
+          formStyle={{ borderLeft: `5px solid ${dimensoesCores123[dimensao as string]}` }}
+        />
       </div>
 
       {/* {dimensao === "Conectividade" &&

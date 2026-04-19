@@ -1,5 +1,5 @@
 import React from 'react';
-import "./conhecaProjetoSection.css"
+import "./style.css"
 
 const ConhecaProjetoSection: React.FC = () => {
   return (

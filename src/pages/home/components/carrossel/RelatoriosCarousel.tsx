@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef, useCallback } from 'react';
-import "./RelatoriosCarousel.css"
-import { getArtigoDimensao } from '../../../admin/create/artigo/crudArtigo.tsx';
+import "./style.css"
+import { getArtigoDimensao } from '../../../../services/crudArtigo.tsx';
 
 interface CarCard {
   dimClass: string;

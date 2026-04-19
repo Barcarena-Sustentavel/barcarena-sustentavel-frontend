@@ -1,5 +1,5 @@
-import api from "../../../../api.tsx";
-import { KMLInterface } from "../../../../interfaces/kml_interface.tsx";
+import api from "../../../../adapters/api.tsx";
+import { KMLInterface } from "../../../../interfaces/kml/kml_interface.tsx";
 import Swal from "sweetalert2";
 
 export const postKML = async (

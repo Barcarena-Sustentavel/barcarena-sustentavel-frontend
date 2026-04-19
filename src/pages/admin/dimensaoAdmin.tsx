@@ -1,10 +1,10 @@
 import { FC, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import dimensoes from "../../utils/const.tsx";
-import "./css/dimensaoAdmin.css";
+import "./style.css";
 import { Modal, Button, Form } from "react-bootstrap";
-import api from "../../api.tsx"
-import { patchEmail, postEmail } from "./cruds/crudEmail.tsx"
+import api from "../../adapters/api.tsx"
+import { patchEmail, postEmail } from "../../services/crudEmail.tsx"
 import "../../main.css"
 
 const DimensaoCard: FC<{ colunaDimensoes: Record<string, string>, colunaDimensoesCores: Record<string, string> }> = ({ colunaDimensoes, colunaDimensoesCores }) => {
@@ -51,13 +51,11 @@ const DimensaoCard: FC<{ colunaDimensoes: Record<string, string>, colunaDimensoe
 
 const DimensaoAdmin: FC = () => {
 
+  //Diminuir a quantidade de useStates, quando possível
   const { dimensoesColumn1, dimensoesColumn2, dimensoesColumn3, dimensoesCores123 } =
     dimensoes.GetAllConst();
-  const deleteEstudos: string[] = []
   const [patch, setPatch] = useState<boolean>(false)
   const [page, setPage] = useState<string>("dimensoes")
-  const [estudosPaginaInicial, setEstudosPaginaInicial] = useState<string[]>([])
-  const [estudosPaginaSobre, setEstudosPaginaSobre] = useState<string[]>([])
   const [isPopUpAberto, setIsPopUpAberto] = useState<Record<string, any>>({ estado: false, estudo: "" })
   const [email, setEmail] = useState<string>("");
 
@@ -65,30 +63,11 @@ const DimensaoAdmin: FC = () => {
 
   useEffect(() => {
     const fetchAll = async () => {
-      await api
-        .get("/admin/email_contribuicao")
-        .then((response) => {
-          console.log(response.data.email_contribuicao);
+      const response = await api.get("/admin/email_contribuicao") 
           if (response.data.email_contribuicao) {
-            console.log("Existe email");
             setEmail(response.data.email_contribuicao.email);
             setEmailAtual(response.data.email_contribuicao.email);
           }
-        })
-        .catch((error) => {
-          console.error("Error fetching indicador data:", error);
-        });
-      await api
-        .get("/admin/estudos_complementares/")
-        .then((response) => {
-          console.log("fetch de estudos")
-          setEstudosPaginaInicial(response.data.estudosPaginaInicial)
-          setEstudosPaginaSobre(response.data.estudosPaginaSobre)
-        }).catch((error) => {
-          setEstudosPaginaInicial([])
-          setEstudosPaginaSobre([])
-          console.log(error)
-        })
     }
     fetchAll()
 
@@ -100,37 +79,6 @@ const DimensaoAdmin: FC = () => {
     console.log("handlesubmitemail");
   }
 
-  const listarEstudos = (estudos: Array<any>) => {
-
-    return (estudos.map((estudo) => {
-      const estudoNome: string = estudo
-      return (<span>
-        <input type="checkbox" onChange={(e) => modificarDeleteEstudos(e, estudoNome)} />
-        <button className="btn btn-link text-dark text-decoration-none" value={
-          estudoNome
-        } onClick={(e) => {
-          setPatch(true)
-          setIsPopUpAberto({ estado: true, estudo: estudoNome })
-        }}>{estudoNome}</button>
-      </span>)
-    }
-    ))
-
-  }
-
-  const modificarDeleteEstudos = (e: any, nomeEstudo: string) => {
-    if (e.target.checked) {
-      deleteEstudos.push(nomeEstudo)
-    }
-    else {
-      deleteEstudos.map((nome, index) => {
-        if (nome === nomeEstudo) {
-          deleteEstudos.splice(index, 1)
-        }
-      })
-    }
-    console.log(deleteEstudos)
-  }
   return (
     <div className="admin-sideBar-opcao" style={{ height: '100vh', backgroundColor: (isPopUpAberto.estado === true ? 'rgba(0,0,0,0.7)' : '') }}>
       <div className="sideBar-opcao">

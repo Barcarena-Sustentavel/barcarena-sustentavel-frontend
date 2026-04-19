@@ -1,19 +1,20 @@
 import React, { FC, useEffect, useMemo, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { patchIndicador, postIndicador } from "./crudIndicador.tsx";
-import api from "../../../../api.tsx";
-import { GraficosIndicador } from "../../../../interfaces/indicador_interface.tsx";
-import "../../css/createIndicador.css";
-import { GraficoComponent } from "./components/Grafico.tsx";
+import { patchIndicador, postIndicador } from "../../../../services/crudIndicador.tsx";
+import api from "../../../../adapters/api.tsx";
+import { GraficosIndicador } from "../../../../interfaces/indicador/indicador_interface.js";
+import "./style.css";
+import { GraficoComponent } from "./components/grafico/Grafico.tsx";
 import dimensoes from "../../../../utils/const.tsx";
-import "../../css/dimensaoPage.css";
+import "../../dimensao/style.css";
 import { Alert, Form } from "react-bootstrap";
 import { Collapse } from "react-bootstrap"
 import { DndContext, DragOverlay, PointerSensor, useSensor, useSensors, pointerWithin } from "@dnd-kit/core";
 import { SortableContext, verticalListSortingStrategy, useSortable, arrayMove, defaultAnimateLayoutChanges } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
-import CreatePageHeader from "../../headers/createPageHeader.tsx";
+import CreatePageHeader from "../../components/headers/components/createPageHeader.tsx";
 
+//Modularizar melhor o CreateIndicador
 export const CreateIndicador: FC<{
   dimensao: string | undefined;
   indicadorNome: string | undefined;
@@ -27,6 +28,7 @@ export const CreateIndicador: FC<{
   const [indicador, setIndicador] = useState<string>(
     indicadorNome !== undefined ? indicadorNome : "",
   );
+  //Diminuir a quantidade de useStates
   const [referencias, setReferencias] = useState<string[]>([])
   const [referenciaFonteDados, setReferenciaFonteDados] = useState<string>("")
   const [periodicidade, setPeriodicidade] = useState<string>("")
@@ -214,10 +216,6 @@ export const CreateIndicador: FC<{
   }, []);
 
   useEffect(() => {
-    //console.log(openStates);
-  }, [openStates]);
-
-  useEffect(() => {
     const urlReferencias = `/admin/dimensoes/${dimensao}/referencias/`
     const getReferencias = async () => {
       const response = await api.get(urlReferencias)
@@ -300,6 +298,7 @@ export const CreateIndicador: FC<{
     return defaultAnimateLayoutChanges(args);
   };
 
+  //Mover as funções que usam o Sortable para uma pasta separada
   function SortableGrafico({
     id,
     index,
@@ -389,6 +388,7 @@ export const CreateIndicador: FC<{
         view[index].posicao = index
     });
     return (
+      //Mudar o DndContext para um componente separado
       <DndContext sensors={sensors}
         collisionDetection={pointerWithin}
         onDragEnd={onDragEnd}
@@ -495,6 +495,7 @@ export const CreateIndicador: FC<{
               {popUpFonteDados && <p onMouseLeave={() => setPopUpFonteDados(false)}>O botão "Nova Fonte de dados" permite adicionar uma nova referência de dados para escolher</p>}
             </div>
 
+            {/*Fazer um componente somente para fonte e metodologia*/}
             {openReferencia && (
               <div className="overlay">
                 <div className="novaReferencia">

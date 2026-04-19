@@ -1,14 +1,13 @@
 import * as Highcharts from "highcharts";
 import HighchartsReact from "highcharts-react-official";
 import React, { FC, useRef } from "react";
-import { DashboardProps } from "../../../../../indicador/dashboard/interface/dashboard_interface.tsx";
-//import  '../../../../../../utils/highcharts/heatmap.js';
+import { DashboardProps } from "../../../../../../interfaces/indicador/dashboard_interface.tsx";
 import { MaterialReactTable } from "material-react-table";
 import {
   PlotSeries,
   PizzaSeries,
   TreeMapSeries,
-} from "../../../../../indicador/dashboard/interface/dados_graficos_interface.tsx";
+} from "../../../../../../interfaces/indicador/dados_graficos_interface.tsx";
 
 const plotOptions = (dashboard: DashboardProps) => {
   if (dashboard.tipoGrafico === "pie") {

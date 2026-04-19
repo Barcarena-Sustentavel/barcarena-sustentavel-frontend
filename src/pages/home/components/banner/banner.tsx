@@ -1,6 +1,6 @@
 import { useEffect, useRef } from "react";
-import "./banner.css"
-import { useBannerCanvas } from "./useBannerCanvas.tsx";
+import "./style.css"
+import { useBannerCanvas } from "../../../../hooks/banner/useBannerCanvas.tsx";
 
 const Banner: React.FC = () => {
     const canvasRef = useBannerCanvas();
