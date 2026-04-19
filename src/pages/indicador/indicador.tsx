@@ -139,7 +139,6 @@ const IndicadorComponent: FC = () => {
     link.download = `${nome}.png`
     link.click();
   }
-
   return (
     <div>
       <NavbarComponent />
