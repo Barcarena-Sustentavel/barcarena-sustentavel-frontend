@@ -217,9 +217,10 @@ const DimensaoComponent: FC = () => {
             <h2>Estudos Complementares</h2>
             <div className="secao-ref-estudoComplementar-lista">
               {estudosComplementares.length > 0 &&
-                estudosComplementares.map((estudoComplementar) => (
+                estudosComplementares.map((estudoComplementar, indice) => (
                   <button
                     className="button-as-link"
+                    style={indice === 0 ? { borderTop: "0" } : undefined}
                     onClick={() => handleDownloadEstudo(estudoComplementar)}
                   >
                     {estudoComplementar}
@@ -231,9 +232,9 @@ const DimensaoComponent: FC = () => {
           {referencias.length > 0 &&
           <div className="secao-ref-estudoComplementar">
           <h2>Referências</h2>
-            {referencias.map((referencia) => (
+            {referencias.map((referencia, indice) => (
               <ul className="secao-ref-estudoComplementar-lista-ul">
-                <li>
+                <li style={indice === 0 ? {borderTop: "0"}: undefined}>
                   {referencia?.link !== "" ? <a
                     href={`${referencia?.link}`}
                     target="_blank"
