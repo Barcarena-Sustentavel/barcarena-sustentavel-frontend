@@ -35,9 +35,10 @@ const IndicadorComponent: FC = () => {
   //guarda a referência dos graficos
   const graficosRef = useRef<Array<HTMLDivElement | null>>([]);
   const navigate = useNavigate()
+  const location = useLocation()
 
   const getProximosIndicadores = () => {
-    const location = useLocation()
+    console.log(location)
     const arrayIndicadoresProximoAnterior = location.state
     const indicadorIndex = arrayIndicadoresProximoAnterior.findIndex(
       (indicadorAtual: string) => indicadorAtual === indicador
@@ -63,7 +64,7 @@ const IndicadorComponent: FC = () => {
       setIndicadorJson((prev) => {
         const responseData = response.data;
         console.log(responseData)
-        return {...prev, graficos:responseData.graficos.sort((a: any, b: any) => a.posicao - b.posicao)}
+        return {...prev,nome: responseData.nome, graficos:responseData.graficos.sort((a: any, b: any) => a.posicao - b.posicao)}
       });
       setFonteEMetodologia((prev) => {
         fonteEMetodologia.referenciaFonteDados = response.data.fonteDeDados
@@ -139,7 +140,6 @@ const IndicadorComponent: FC = () => {
     link.click();
   }
 
-  console.log(indicadorJson)
   return (
     <div>
       <NavbarComponent />
@@ -273,24 +273,6 @@ const IndicadorComponent: FC = () => {
               <span className="navegacao-indicador-icone">→</span>
             </a>}
         </div>
-            {/*<div className="anterior-proximo-indicador" style={indicadores.anterior === false ? { justifyContent: 'flex-end' } : (indicadores.proximo === false ? { justifyContent: 'flex-start' } : {})} id="indNav">
-              {indicadores.anterior !== false &&
-                <a id="btnPrev" onClick={() => handleNavigateIndicador(indicadores.anterior, ordemAnterior, arrayIndicadores)} className="navegacao-indicador" style={indicadores.proximo === false ? { justifyContent: 'flex-start' } : {}}>
-                  <span className="navegacao-indicador-icone" style={{ color: `var(--${dimensoesCores123[dimensao as string]})` }}>←</span>
-                  <div>
-                    <div className="navegacao-indicador-label">Indicador anterior</div>
-                    <div className="navegacao-indicador-nome" id="prevName">{indicadores.anterior}</div>
-                  </div>
-                </a>}
-              {indicadores.proximo !== false &&
-                <a id="btnNext" onClick={() => handleNavigateIndicador(indicadores.proximo, ordemProxima, arrayIndicadores)} className="navegacao-indicador" >
-                  <div>
-                    <div className="navegacao-indicador-label">Próximo indicador</div>
-                    <div className="navegacao-indicador-nome" id="nextName">{indicadores.proximo}</div>
-                  </div>
-                  <span className="navegacao-indicador-icone">→</span>
-                </a>}
-            </div>*/}
           </div>
         )}
       </div>

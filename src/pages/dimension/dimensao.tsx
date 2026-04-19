@@ -30,14 +30,11 @@ const DimensaoComponent: FC = () => {
   ]
 
   const dimensoesNomes: string[] = Object.keys(dimensoesCores123)
-  console.log(dimensoesNomes)
   const [dimensaoIndicadorContador, setDimensaoIndicadorContador] = useState<Record<string, any>>({})
   const [indicadores, setIndicadores] = useState<
     Array<Record<string, string | number | null>>
   >([]);
-  const [indicadoresNomes, setIndicadoresNomes] = useState<
-    Array<string>
-  >([]);
+  let proximosIndicadoresNomes: string[] = []
   const [referencias, setReferencias] = useState<Referencia[]>([]);
   const [dimensaoJson, setDimensao] = useState<Dimensao | null>(null);
   const [estudosComplementares, setEstudosComplementares] = useState<string[]>(
@@ -69,9 +66,7 @@ const DimensaoComponent: FC = () => {
     const url = `api/dimensoes/${dimensao}/estudo_complementar/${estudo}/anexo/`;
     window.open(url, "_blank");
   };
-  //--------------------------------------------------------------------------
-  //useEffect para carregar os dados da dimensão para o iFrame
-  useEffect(() => {
+  const getPathHTML = () => {
     const mapasURL: Record<string, string> = {
       "Segurança": "https://victorsantiago.github.io/odsb_kmls/",
       "Ordenamento Territorial": "https://victorsantiago.github.io/odsb_ordenamento/"
@@ -81,8 +76,6 @@ const DimensaoComponent: FC = () => {
       "Conectividade na Educação": "https://victorsantiago.github.io/odsb_escolas/",
       "Conectividade na Saúde": "https://victorsantiago.github.io/odsb_saude/"
     }
-
-    const getPathHTML = () => {
       if (dimensao === "Conectividade") {
         setPathHtml(mapasURLConectividade[botaoConectividade]);
       }
@@ -90,9 +83,11 @@ const DimensaoComponent: FC = () => {
         setPathHtml(mapasURL[dimensao as string]);
       }
     }
-    //Botar em formato de função, diminuir a quantidade de ifs e deixar mais legível
-    //-------------
-    //Botar em formato de função
+  //--------------------------------------------------------------------------
+  //useEffect para carregar os dados da dimensão para o iFrame
+
+  //Utilizado quando a página é carregada pela primeira vez
+  useEffect(() => {
     const getDimensao = async () => {
       const response = await api.get(url)
       setIndicadores([...response.data.indicadores].sort((a: any, b: any) => a.posicao - b.posicao));
@@ -100,13 +95,13 @@ const DimensaoComponent: FC = () => {
       setReferencias(response.data.referencias);
       setEstudosComplementares(response.data.estudos_complementares);
     }
-    getPathHTML()
     getDimensao()
+    getPathHTML()
+  },[])
 
-  }, [botaoConectividade]);
   useEffect(() => {
-    setIndicadoresNomes(indicadores.map((indicador) => indicador.nome as string))
-  }, [])
+    indicadores.map((indicador) => proximosIndicadoresNomes.push(indicador.nome as string))
+  }, [indicadores])
   //--------------------------------------------------------------------------
   useEffect(() => {
     const chavesDimensaoIndicadorContador = Object.keys(dimensaoIndicadorContador)
@@ -118,7 +113,10 @@ const DimensaoComponent: FC = () => {
     })
     setDimensaoIndicadorContador(dimensaoIndicadorContadorTemp)
   }, [])
-  console.log(pathHtml)
+
+  useEffect(() => {
+    getPathHTML()
+  },[botaoConectividade])
   return (
     <div className="home-container">
       <NavbarComponent />
@@ -129,7 +127,7 @@ const DimensaoComponent: FC = () => {
             {dimensaoJson?.descricao}
           </p>
         </div>
-        {pathHtml !== "" || pathHtml !== undefined && (
+        {pathHtml !== undefined && (
           <div className="mx-auto" style={{
             width: "100%",
             height: "41rem",
@@ -137,26 +135,12 @@ const DimensaoComponent: FC = () => {
             marginTop: dimensao === "Conectividade" ? "0" : "21px"
           }}>
             {dimensao === "Conectividade" && (
-              <div
-                style={{
-                  width: "100%",
-                  display: "flex",
-                  justifyContent: "center",
-                  marginTop: "2rem",
-                  marginBottom: "1rem",
-                  marginLeft: "auto",
-                  marginRight: "auto",
-                }}
+              <div className="mapasConectividade"
               >
                  {mapasConectividade.map((mapa) => {
                 return (
                   <button
-                    style={{
-                      padding: "10px",
-                      border: "1px solid",
-                      borderRadius: "8px",
-                      backgroundColor: "var(--primary-blue)",
-                    }}
+                  className={`${mapa === botaoConectividade ? "ativo" : ""}`}
                     value={mapa}
                     onClick={(event: any) => handleOnCick(event)}
                   >
@@ -185,7 +169,7 @@ const DimensaoComponent: FC = () => {
                 className="indicadores-grid-card"
                 style={{ borderTop: `3px solid ${dimensoesCores123[dimensao as string]}` }}
                 onClick={() =>
-                  handleNavigateIndicador(indicador.nome as string, index + 1, indicadoresNomes)
+                  handleNavigateIndicador(indicador.nome as string, index + 1, proximosIndicadoresNomes)
                 }
               >
                 <div className="indicadores-grid-card-numero" style={{ color: `${dimensoesCores123[dimensao as string]}` }}>Indicador {index + 1}</div>
