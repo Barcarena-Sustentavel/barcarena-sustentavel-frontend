@@ -1,4 +1,5 @@
 import { FC, useEffect, useState, useRef } from "react";
+
 import {
   IndicadorDadosGrafico,
   DadosGrafico,
@@ -9,12 +10,10 @@ import { useParams, useNavigate, useLocation } from "react-router-dom";
 import NavbarComponent from "../../components/layout/navbar/navbar.tsx";
 import "./indicador.css";
 import Footer from "../../components/layout/footer/footer.tsx";
-import BackButton from "../../components/layout/backButton/backButton.tsx";
 import Location from "../../components/layout/location/location.tsx";
-import { DashboardProps } from "./dashboard/interface/dashboard_interface.tsx";
 import html2canvas from 'html2canvas';
 import dimensoes from '../../utils/const.tsx'
-import { LucideGitPullRequestCreateArrow } from "lucide-react";
+import { getArtigoDimensao } from "../admin/create/artigo/crudArtigo.tsx";
 const IndicadorComponent: FC = () => {
   const { dimensao, indicador, ordem } = useParams();
   const { dimensoesColumn1, dimensoesColumn2, dimensoesColumn3, dimensoesCores123 } = dimensoes.GetAllConst();
@@ -219,7 +218,7 @@ const IndicadorComponent: FC = () => {
               <div className="indicador-hero-titulo">{indicador}</div>
             </div>
             <div className="indicador-hero-acoes">
-              <a className="indicador-hero-resumo">
+              <a className="indicador-hero-resumo" onClick={() => getArtigoDimensao(dimensao as string)}>
                 <svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><line x1="6" y1="1" x2="6" y2="8"></line><polyline points="3,5 6,8 9,5"></polyline><line x1="1" y1="11" x2="11" y2="11"></line></svg>
                 Resumo da dimensão
               </a>

@@ -17,15 +17,15 @@ const DimensaoComponent: FC = () => {
   const { dimensao } = useParams();
   const { dimensoesCores123 } = dimensoes.GetAllConst();
   const contadorIndicadoresCores = [
-    {corLetra: '#2c3e7d', corBackground: '#2c3e7d22', corBorda: '#2c3e7d44'},
-    {corLetra: '#148f77', corBackground: '#148f7722', corBorda: '#148f7744'},
-    {corLetra: '#1B4F9B', corBackground: '#1B4F9B22', corBorda: '#1B4F9B44'},
+    {corLetra: '#c0392b', corBackground: '#c0392b22', corBorda: '#c0392b44'},
     {corLetra: '#27ae60', corBackground: '#27ae6022', corBorda: '#27ae6044'},
+    {corLetra: '#2c3e7d', corBackground: '#2c3e7d22', corBorda: '#2c3e7d44'},
+    {corLetra: '#b7950b', corBackground: '#b7950b22', corBorda: '#b7950b44'},
+    {corLetra: '#148f77', corBackground: '#148f7722', corBorda: '#148f7744'},
     {corLetra: '#1e8449', corBackground: '#1e844922', corBorda: '#1e844944'},
     {corLetra: '#922b21', corBackground: '#922b2122', corBorda: '#922b2144'},
-    {corLetra: '#c0392b', corBackground: '#c0392b22', corBorda: '#c0392b44'},
+    {corLetra: '#1B4F9B', corBackground: '#1B4F9B22', corBorda: '#1B4F9B44'},
     {corLetra: '#d35400', corBackground: '#d3540022', corBorda: '#d3540044'},
-    {corLetra: '#b7950b', corBackground: '#b7950b22', corBorda: '#b7950b44'},
   ]
 
   const dimensoesNomes:string[] = Object.keys(dimensoesCores123)
