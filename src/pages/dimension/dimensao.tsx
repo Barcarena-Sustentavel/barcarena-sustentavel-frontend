@@ -147,12 +147,10 @@ const DimensaoComponent: FC = () => {
   //--------------------------------------------------------------------------
   useEffect(() => {
     const chavesDimensaoIndicadorContador = Object.keys(dimensaoIndicadorContador)
-    console.log(chavesDimensaoIndicadorContador)
     if (chavesDimensaoIndicadorContador.length > 0) return
 
     const dimensaoIndicadorContadorTemp: Record<string, any> = {}
     dimensoesNomes.map((_, index: number) => {
-      console.log(dimensoesNomes[index])
       return dimensaoIndicadorContadorTemp[dimensoesNomes[index]] = contadorIndicadoresCores[index]
     })
     setDimensaoIndicadorContador(dimensaoIndicadorContadorTemp)

@@ -9,12 +9,9 @@ import { useParams, useNavigate, useLocation } from "react-router-dom";
 import NavbarComponent from "../../components/layout/navbar/navbar.tsx";
 import "./style.css";
 import Footer from "../../components/layout/footer/footer.tsx";
-import BackButton from "../../components/layout/backButton/backButton.tsx";
 import Location from "../../components/layout/location/location.tsx";
-import { DashboardProps } from "../../interfaces/indicador/dashboard_interface.tsx";
 import html2canvas from 'html2canvas';
 import dimensoes from '../../utils/const.tsx'
-import { LucideGitPullRequestCreateArrow } from "lucide-react";
 const IndicadorComponent: FC = () => {
   const { dimensao, indicador, ordem } = useParams();
   const { dimensoesColumn1, dimensoesColumn2, dimensoesColumn3, dimensoesCores123 } = dimensoes.GetAllConst();
@@ -31,13 +28,6 @@ const IndicadorComponent: FC = () => {
     unidadeMedida: "",
     metodologia: ""
   })
-  /*
-
-const [referenciaFonteDados, setReferenciaFonteDados] = useState<string>("")
-const [periodicidade, setPeriodicidade] = useState<string>("")
-const [ultimaAtualizacao, setUltimaAtualizacao] = useState<string>("")
-const [unidadeMedida, setUnidadeMedida] = useState<string>("")
-const [metodologia, setMetodologia] = useState<string>("")*/
   const [loading, setLoading] = useState<boolean>(true);
   const [singleColumn, setSingleConlumn] = useState<boolean>(true);
   //guarda a referência dos graficos
@@ -70,7 +60,8 @@ const [metodologia, setMetodologia] = useState<string>("")*/
       const response = await api.get(url)
       setIndicadorJson((prev) => {
         const responseData = response.data;
-        return responseData.graficos.sort((a: any, b: any) => a.posicao - b.posicao);
+        console.log(responseData)
+        return {...prev, graficos:responseData.graficos.sort((a: any, b: any) => a.posicao - b.posicao)}
       });
       setFonteEMetodologia((prev) => {
         fonteEMetodologia.referenciaFonteDados = response.data.fonteDeDados
@@ -80,13 +71,6 @@ const [metodologia, setMetodologia] = useState<string>("")*/
         fonteEMetodologia.metodologia = response.data.metodologia
         return fonteEMetodologia
       })
-      /*
-      setIndicadorJson(response.data);
-      setReferenciaFonteDados(response.data.fonteDeDados)
-      setPeriodicidade(response.data.periodicidade)
-      setUltimaAtualizacao(response.data.ultimaAtualizacao)
-      setUnidadeMedida(response.data.unidadeMedida)
-      setMetodologia(response.data.metodologia)*/
       setLoading(false);
     }
     getIndicador()
@@ -152,6 +136,8 @@ const [metodologia, setMetodologia] = useState<string>("")*/
     link.download = `${nome}.png`
     link.click();
   }
+
+  console.log(indicadorJson)
   return (
     <div>
       <NavbarComponent />
@@ -204,8 +190,9 @@ const [metodologia, setMetodologia] = useState<string>("")*/
         ) : (
           <div className="indicadorConteudo">
             <div className={`${singleColumn ? 'graficos-container-single-column' : 'graficos-container-double-column'} `} >
-              {indicadorJson.graficos.length > 0 ? (
+              {indicadorJson.graficos !== undefined &&  indicadorJson.graficos.length > 0 ? (
                 indicadorJson.graficos.map((grafico: DadosGrafico, index) => {
+                  console.log(grafico)
                   const id: string = `grafico ${index}`
                   return (
                     <div className="grafico-card" key={index}>
