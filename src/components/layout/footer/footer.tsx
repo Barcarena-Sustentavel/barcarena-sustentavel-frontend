@@ -22,9 +22,6 @@ const Footer = () => {
             <ul>
               <li><a href="/#galeria">Relatórios</a></li>
               <li><a href="/#dimensoes">Indicadores</a></li>
-              <li><a href="/colaboradores/">Colaboradores</a></li>
-              <li><a href="#">Pesquisas</a></li>
-              <li><a href="#">Legislação</a></li>
             </ul>
           </div>
           <div className="footer-col">
@@ -32,9 +29,6 @@ const Footer = () => {
             <ul>
               <li><a href="/about/">Sobre</a></li>
               <li><a href="/colaboradores/">Colaboradores</a></li>
-              <li><a href="#">Missão</a></li>
-              <li><a href="#">Parceiros</a></li>
-              <li><a href="#">Metodologia</a></li>
             </ul>
           </div>
           <div className="footer-col">
@@ -42,9 +36,6 @@ const Footer = () => {
             <ul>
               <li><a href="/cdn-cgi/l/email-protection#6305020f06000c0d0c10000c2305160d070c0b1a07110c4d0c1104">Email</a></li>
               <li><a href="#">Redes Sociais</a></li>
-              <li><a href="#">Denúncias</a></li>
-              <li><a href="#">Privacidade</a></li>
-              <li><a href="#">Acessibilidade</a></li>
             </ul>
           </div>
         </div>
