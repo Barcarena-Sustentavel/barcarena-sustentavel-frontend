@@ -9,7 +9,6 @@ import api from "../../adapters/api.tsx";
 import Footer from "../../components/layout/footer/footer.tsx";
 import SubmenuDimensao from "./components/subMenuDimensao/submenuDimensao.tsx";
 import FormContribuicao from "./components/formContribuicao/formContribuicao.tsx";
-import BackButton from "../../components/layout/backButton/backButton.tsx";
 import HTMLFileIframe from "../kml/mapa/map4.tsx";
 import dimensoes from "../../utils/const.tsx";
 const NODE_ENV = import.meta.env.VITE_NODE_ENV;
@@ -34,7 +33,6 @@ const DimensaoComponent: FC = () => {
   const [indicadores, setIndicadores] = useState<
     Array<Record<string, string | number | null>>
   >([]);
-  let proximosIndicadoresNomes: string[] = []
   const [referencias, setReferencias] = useState<Referencia[]>([]);
   const [dimensaoJson, setDimensao] = useState<Dimensao | null>(null);
   const [estudosComplementares, setEstudosComplementares] = useState<string[]>(
@@ -100,7 +98,8 @@ const DimensaoComponent: FC = () => {
   },[])
 
   useEffect(() => {
-    indicadores.map((indicador) => proximosIndicadoresNomes.push(indicador.nome as string))
+    //
+    //console.log(proximosIndicadoresNomes)
   }, [indicadores])
   //--------------------------------------------------------------------------
   useEffect(() => {
@@ -169,7 +168,10 @@ const DimensaoComponent: FC = () => {
                 className="indicadores-grid-card"
                 style={{ borderTop: `3px solid ${dimensoesCores123[dimensao as string]}` }}
                 onClick={() =>
-                  handleNavigateIndicador(indicador.nome as string, index + 1, proximosIndicadoresNomes)
+                  {
+                    let proximosIndicadoresNomes: string[] = []
+                    indicadores.map((indicador) => proximosIndicadoresNomes.push(indicador.nome as string))
+                    handleNavigateIndicador(indicador.nome as string, index + 1, proximosIndicadoresNomes)}
                 }
               >
                 <div className="indicadores-grid-card-numero" style={{ color: `${dimensoesCores123[dimensao as string]}` }}>Indicador {index + 1}</div>
