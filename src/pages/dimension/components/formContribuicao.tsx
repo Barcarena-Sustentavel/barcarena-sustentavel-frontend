@@ -187,10 +187,10 @@ const FormContribuicao: React.FC<FormContribuicaoProps> = ({ dimensaoId, formSty
                             onChange={onChangeRecaptcha}
                         />
                     </div>
-                    <button type="submit" className="contribuicao-submit">
-                        Enviar
-                    </button>
                 </div>
+                <button type="submit" className="contribuicao-submit">
+                    Enviar
+                </button>
         </form>
     );
 };
