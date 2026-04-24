@@ -26,8 +26,8 @@ const Location: React.FC<LocationProps> = ({ parentName, childName}) => {
 
   return (
     <div className="location-container">
-      <span> <a onClick={() => handleNavigate("/")}>Início</a> › </span>
-      {parentName && <span className="location-parent"><a onClick={() => handleNavigate(`/${parentName}`)}>{parentName}</a></span>}
+      <span> <a className="home-parent" onClick={() => handleNavigate("/")}>Início</a> <span className="location-separator"> › </span> </span>
+      {parentName && <span className="location-parent"><a className="parent-anchor" onClick={() => handleNavigate(`/${parentName}`)}>{parentName}</a></span>}
       {parentName && childName && <span className="location-separator"> › </span>}
       {childName && <span className="location-child">{childName}</span>}
     </div>
