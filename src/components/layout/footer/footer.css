@@ -38,7 +38,10 @@ footer {
     color: #fff;
     margin-bottom: 1rem;
 }
-.footer-col ul { list-style: none; }
+.footer-col ul { 
+    list-style: none; 
+    padding-left: 0;
+}
 .footer-col ul li { margin-bottom: 0.6rem; }
 .footer-col ul li a {
     color: rgba(255,255,255,0.65);
