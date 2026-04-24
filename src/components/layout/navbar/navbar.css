@@ -1,5 +1,8 @@
 .logo-navbar {
     width: 25%;
+    height: 38px;
+    width: auto;
+    object-fit: contain;
 }
 
 .nav-container{
@@ -14,7 +17,7 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 0.9rem 3rem;
+    padding: 0.7rem 3rem;
     max-width: 1400px;
     margin: 0 auto;
 }
