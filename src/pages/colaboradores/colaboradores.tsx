@@ -16,56 +16,56 @@ const Colaboradores: FC = () => {
       nome: "Profa. Dra. Ana Elizabeth Neirão Reymão",
       instituicao: "ICSA — Instituto de Ciências Sociais Aplicadas",
       tag: "ICSA · UFPA",
-      classCard: "blue"
+      cardClass: "blue"
     },
     {
       area: "Meio Ambiente e Saneamento",
       nome: "Profa. Dra. Marinalva Maciel",
       instituicao: "ICEN — Instituto de Ciências Exatas e Naturais",
       tag: "ICEN · UFPA",
-      classCard: "blue"
+      cardClass: "blue"
     },
     {
       area: "Educação, Cultura, Esporte e Lazer",
       nome: "Prof. Dr. Héliton Ribeiro Tavares",
       instituicao: "ICEN — Instituto de Ciências Exatas e Naturais",
       tag: "ICEN · UFPA",
-      classCard: "blue"
+      cardClass: "blue"
     },
     {
       area: "Mobilidade",
       nome: "B.Sc. Raimundo Jorge Pires Bastos",
       instituicao: "SEMOB — Secretaria Municipal de Mobilidade Urbana",
       tag: "SEMOB",
-      classCard: "blue"
+      cardClass: "blue"
     },
     {
       area: "Ordenamento Territorial e Habitação",
       nome: "Prof. Dr. José Júlio Ferreira Lima",
       instituicao: "ITEC — Instituto de Tecnologia",
       tag: "ITEC · UFPA",
-      classCard: "blue"
+      cardClass: "blue"
     },
     {
       area: "Segurança",
       nome: "MSc. Coronel Daniel Neves",
       instituicao: "Polícia Militar do Pará",
       tag: "PM-PA",
-      classCard: "blue"
+      cardClass: "blue"
     },
     {
       area: "Saúde",
       nome: "Prof. Dr. João Marcelo Brazão Protázio",
       instituicao: "ICEN — Instituto de Ciências Exatas e Naturais",
       tag: "ICEN · UFPA",
-      classCard: "blue"
+      cardClass: "blue"
     },
     {
       area: "Conectividade",
       nome: "Prof. Dr. Victor Hugo S. C. Pinto",
       instituicao: "ICEN — Instituto de Ciências Exatas e Naturais",
       tag: "ICEN · UFPA",
-      classCard: "blue"
+      cardClass: "blue"
     },
   ];
 
@@ -157,20 +157,20 @@ const Colaboradores: FC = () => {
         </section>
 
         <div className="colabs-wrap">
-
+          <div className="colab-card featured">
+              <div className="colab-role-tag">✦ Coordenação Geral</div>
+              <div className="colab-name">Profa. Dra. Maria Amélia Enriquez</div>
+              <div className="colab-info">ICSA — Instituto de Ciências Sociais Aplicadas</div>
+              <span className="colab-badge">ICSA · UFPA</span>
+            </div>
           <div className="group-header">
+            
             <div className="line"></div>
             <h2>Especialistas da Área</h2>
             <div className="line"></div>
           </div>
           <div className="colabs-grid">
-            <div className="colab-card featured">
-              <div className="colab-role-tag">✦ Coordenadora Geral do Projeto</div>
-              <div className="colab-sub">Instituições Locais</div>
-              <div className="colab-name">Profa. Dra. Maria Amélia Enriquez</div>
-              <div className="colab-info">ICSA — Instituto de Ciências Sociais Aplicadas</div>
-              <span className="colab-badge">ICSA · UFPA</span>
-            </div>
+            
             {especialistasArea.map((especialista) => (
               <PersonaCard key={especialista.nome} {...especialista} />
             ))}
