@@ -35,7 +35,14 @@
   position: relative;
   transition: color 0.3s;
 }
-
+.nav-links a::after {
+    content: ''; position: absolute; bottom: -4px; left: 0;
+    width: 0; height: 2px; background: var(--accent); transition: width 0.3s;
+}
+.nav-links a:hover { color: var(--primary); }
+.nav-links a:hover::after { width: 100%; }
+.nav-links a.active { color: var(--primary); font-weight: 700; }
+.nav-links a.active::after { width: 100%; background: var(--primary); }
 .hamburger {
   display: none;
   flex-direction: column;
