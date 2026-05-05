@@ -1,8 +1,8 @@
 import { FC, useEffect, useState } from "react";
 import { Carousel, Button } from "react-bootstrap";
 import bannerPublicacoes from "../../../../assets/images/carousel/bannerPublicacoes.jpg";
-import "./slideArtigos.css";
-import api from "../../../../api.tsx";
+import "./style.css";
+import api from "../../../../adapters/api.tsx";
 
 const SlideArtigos: FC<{
 	dimensoesList: Record<string, any>;
@@ -26,7 +26,6 @@ const SlideArtigos: FC<{
 		});
 	};
 	useEffect(() => {
-		//console.log("dimensoesArray", dimensoesArray);
 		if (slideArtigos.length > 0) {
 			return;
 		}

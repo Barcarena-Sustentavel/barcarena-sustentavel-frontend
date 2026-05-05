@@ -1,9 +1,9 @@
 import { FC, useEffect, useState } from "react";
-import "./sidebarAdmin.css"
+import "./style.css"
 import { useNavigate } from "react-router-dom";
-import api from "../../../api.tsx";
-import { getCor } from "../headers/getCor.tsx";
-import { getIcone } from "../headers/getIcone.tsx";
+import api from "../../../adapters/api.tsx";
+import { getCor } from "../components/headers/script/getCor.tsx";
+import { getIcone } from "../components/headers/script/getIcone.tsx";
 
 interface SidebarAdminProps {
   selectedDimensao: string;

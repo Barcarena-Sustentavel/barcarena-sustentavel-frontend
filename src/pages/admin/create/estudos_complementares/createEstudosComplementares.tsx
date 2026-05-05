@@ -1,15 +1,15 @@
 import React, { FC, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useEffect } from "react";
-import api from "../../../../api.tsx";
+import api from "../../../../adapters/api.tsx";
 //import Swal from "sweetalert2";
-import { patchEstudoComplementar, postEstudoComplementar } from "./crudEstudosComplementares.tsx";
-import { EstudoComplementar } from "../../../../interfaces/estudo_complementar_interface.tsx";
-import "./CreateEstudosComplementares.css";
-import "../../css/dimensaoPage.css";
+import { patchEstudoComplementar, postEstudoComplementar } from "../../../../services/crudEstudosComplementares.tsx";
+import { EstudoComplementar } from "../../../../interfaces/estudo_complementar/estudo_complementar_interface.tsx";
+import "./style.css";
+import "../../dimensao/style.css";
 import dimensoes from "../../../../utils/const.tsx";
 import { Form, Alert, Button, Spinner } from "react-bootstrap";
-import CreatePageHeader from "../../headers/createPageHeader.tsx";
+import CreatePageHeader from "../../components/headers/components/createPageHeader.tsx";
 
 const CreateEstudosComplementares: FC<{
   dimensao: string | undefined;
@@ -139,22 +139,6 @@ const CreateEstudosComplementares: FC<{
 
   return (
     <div className="post-referencias-container">
-      {/* <div
-        style={{
-          backgroundColor: `var(--${dimensoesCores123[dimensao!]})`,
-        }}
-        className="admin-header-dimensao-page"
-      >
-        <div className="admin-header-dimensao-page-space">
-          <div
-            style={{
-              maskImage: `url(${dimensoesColumn12[dimensao!]})`,
-            }}
-            className="dimensao-button-header"
-          ></div>
-          <h1 className="admin-header-dimensao-page">{dimensao}</h1>
-        </div>
-      </div> */}
       <CreatePageHeader dimensao={dimensao}/>
       <h2>
         {patch === true ? "Modificar Estudo Complementar" : "Adicionar Estudo Complementar"}

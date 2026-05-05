@@ -5,9 +5,9 @@ import NavbarComponent from "../../components/layout/navbar/navbar.tsx";
 import Footer from "../../components/layout/footer/footer.tsx";
 import emConstrucao from '../../assets/images/icons/emConstrucao.svg' 
 import profile from '../../assets/images/icons/profile.png'
-import "./colaboradores.css";
+import "./style.css";
 import BarraParceiros from "../../components/layout/barraParceiros/BarraParceiros.tsx";
-import PersonaCard from "./personaCard.tsx";
+import PersonaCard from "./components/personaCard.tsx";
 
 const Colaboradores: FC = () => {
   const especialistasArea = [

@@ -1,11 +1,11 @@
 import React, { FC, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useEffect } from "react";
-import api from "../../../../api.tsx";
-import { CreateKML } from "../../../../interfaces/kml_interface.tsx";
+import api from "../../../../adapters/api.tsx";
+import { CreateKML } from "../../../../interfaces/kml/kml_interface.tsx";
 import { postKML, patchKML } from "./crudKml.tsx";
 import "./CreateKml.css";
-import "../../css/dimensaoPage.css";
+import "../../dimensao/style.css";
 import dimensoes from "../../../../utils/const.tsx";
 import { Form, Alert, Button} from "react-bootstrap";
 

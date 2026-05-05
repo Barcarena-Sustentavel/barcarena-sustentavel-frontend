@@ -3,9 +3,9 @@ import "@assets/styles/index.css";
 import NavbarComponent from "../../components/layout/navbar/navbar.tsx";
 import Footer from "../../components/layout/footer/footer.tsx";
 import IBS from "@assets/images/about/21.12.2022---conexoes-sustentaveis.jpg";
-import "./about.css";
-import api from "../../api.tsx";
-import { getArtigoDimensao } from "../admin/create/artigo/crudArtigo.tsx";
+import "./style.css";
+import api from "../../adapters/api.tsx";
+import { getArtigoDimensao } from "../../services/crudArtigo.tsx";
 import downloadIcon from "../../assets/images/icons/download-svgrepo-com.svg";
 import Mandala from "../../components/layout/mandala/mandala.tsx";
 

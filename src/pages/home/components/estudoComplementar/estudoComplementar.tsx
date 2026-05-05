@@ -1,5 +1,5 @@
 import {FC, useEffect, useState} from "react";
-import api from "../../../../api.tsx";
+import api from "../../../../adapters/api.tsx";
 
 const EstudoComplementar:FC = () => {
     const [listEstudos, setListEstudo] = useState<Array<any>>([])

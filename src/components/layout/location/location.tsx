@@ -1,7 +1,6 @@
 import React from "react";
 import "./location.css";
-import dimensoes from '../../../utils/const.tsx'
-import { useParams, useNavigate, useLocation } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 interface LocationProps {
   parentName?: string;
