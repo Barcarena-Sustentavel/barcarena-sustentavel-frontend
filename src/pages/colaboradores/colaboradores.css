@@ -11,7 +11,7 @@
     --green: #8DC63F;
 }
 * { margin:0; padding:0; box-sizing:border-box; }
-body {
+html body {
     font-family: 'Sora', sans-serif;
     color: var(--text);
     background: var(--light);
@@ -20,7 +20,6 @@ body {
 
 /* ══ HERO ══ */
 .page-hero {
-    margin-top: 64px;
     background: linear-gradient(160deg, #060D20 0%, #0D1F40 55%, #0A1635 100%);
     padding: 5rem 3rem 4rem;
     text-align: center;
@@ -138,6 +137,7 @@ body {
     background: linear-gradient(135deg, var(--primary-dark) 0%, var(--primary) 100%);
     border-left-color: #8DC63F;
     grid-column: 1 / -1;
+    margin-bottom: 40px;
 }
 .colab-card.featured .colab-sub  { color: rgba(255,255,255,0.6); }
 .colab-card.featured .colab-name { color: #fff; font-size: 1.15rem; }

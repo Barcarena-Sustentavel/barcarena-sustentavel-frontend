@@ -1,8 +1,13 @@
 .header-location {
+  max-width: 1400px;
+  margin: 0 auto;
   display: flex;
   align-items: center;
-  justify-content: space-between;
-  margin: 16px;
+  gap: 0.5rem;
+  font-size: 0.78rem;
+  color: var(--text-light);
+  flex-wrap: wrap;
+  padding:  0.3rem 0;
 }
 
 .location-container {
@@ -28,9 +33,21 @@
 .location-separator {
   margin: 0 4px;
   color: #b7b6b6;
+  margin-bottom: 1px;
 }
 
 .location-child {
-  color: #676767;
+  color: var(--text);
   font-weight: 600;
+  margin-bottom: 1px;
+}
+
+.home-parent,
+.location-parent {
+  cursor: pointer;
+}
+
+.home-parent:hover,
+.parent-anchor:hover {
+  color: var(--accent);
 }

@@ -1,11 +1,13 @@
-import { FC, useState } from "react";
-import { Link } from "react-router-dom";
+import { FC, useEffect, useState } from "react";
+import { Link, useLocation } from "react-router-dom";
 import { Navbar, Container, Nav, Modal, Button } from "react-bootstrap";
 import "./navbar.css";
 import Logo from "../../ui/logo.tsx";
 
 const NavbarComponent: FC = () => {
   const [menuAberto, setMenuAberto] = useState(false);
+  const { pathname } = useLocation();
+
   return(
     <div className="nav-container">
       <nav className="barra-navegacao">
@@ -30,8 +32,8 @@ const NavbarComponent: FC = () => {
           <li><a href="/">Início</a></li>
           <li><a href="/#dimensoes">Dimensões</a></li>
           <li><a href="/#galeria">Publicações</a></li>
-          <li><a href="/colaboradores/">Colaboradores</a></li>
-          <li><a href="/about/">Sobre</a></li>
+          <li><a  className={pathname === "/colaboradores/" ? "active": ""}href="/colaboradores/">Colaboradores</a></li>
+          <li><a className={pathname === "/about/" ? "active": ""} href="/about/">Sobre</a></li>
         </ul>
       </nav>
     </div>
