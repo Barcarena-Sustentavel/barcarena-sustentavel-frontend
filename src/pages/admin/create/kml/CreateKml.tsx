@@ -6,7 +6,7 @@ import { CreateKML } from "../../../../interfaces/kml/kml_interface.tsx";
 import { postKML, patchKML } from "./crudKml.tsx";
 import "./CreateKml.css";
 import "../../dimensao/style.css";
-import dimensoes from "../../../../utils/const.tsx";
+// import dimensoes from "../../../../utils/const.tsx";
 import { Form, Alert, Button} from "react-bootstrap";
 
 const CreateKml: FC<{
@@ -22,15 +22,15 @@ const CreateKml: FC<{
     nome: "",
     arquivo: new File([], ""),
   });
- const {
-     dimensoesColumn1,
-     dimensoesColumn2,
-     dimensoesCores123,
-   } = dimensoes.GetAllConst();
-   const dimensoesColumn12 = {
-     ...dimensoesColumn1,
-     ...dimensoesColumn2,
-   };
+//  const {
+//      dimensoesColumn1,
+//      dimensoesColumn2,
+//      dimensoesCores123,
+//    } = dimensoes.GetAllConst();
+//    const dimensoesColumn12 = {
+//      ...dimensoesColumn1,
+//      ...dimensoesColumn2,
+//    };
   useEffect(() => {
     if (kml != undefined) {
       setPatch(true);
@@ -92,16 +92,16 @@ const CreateKml: FC<{
   return (
     <div className="post-referencias-container">
       <div
-        style={{
-          backgroundColor: `var(--${dimensoesCores123[dimensao!]})`,
-        }}
+        // style={{
+        //   backgroundColor: `var(--${dimensoesCores123[dimensao!]})`,
+        // }}
         className="admin-header-dimensao-page"
       >
         <div className="admin-header-dimensao-page-space">
           <div
-            style={{
-              maskImage: `url(${dimensoesColumn12[dimensao!]})`,
-            }}
+            // style={{
+            //   maskImage: `url(${dimensoesColumn12[dimensao!]})`,
+            // }}
             className="dimensao-button-header"
           ></div>
           <h1 className="admin-header-dimensao-page">{dimensao}</h1>

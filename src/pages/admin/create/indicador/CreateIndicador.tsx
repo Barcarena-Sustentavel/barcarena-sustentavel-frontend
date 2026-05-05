@@ -28,8 +28,7 @@ export const CreateIndicador: FC<{
     indicadorNome !== undefined ? indicadorNome : "",
   );
   //Diminuir a quantidade de useStates
-  const [referencias, setReferencias] = useState<string[]>([])
-  const 
+  const [referencias, setReferencias] = useState<string[]>([]);
   const [referenciaFonteDados, setReferenciaFonteDados] = useState<string>("")
   const [periodicidade, setPeriodicidade] = useState<string>("")
   const [ultimaAtualizacao, setUltimaAtualizacao] = useState<string>("")
