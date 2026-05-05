@@ -2,6 +2,34 @@ h2{
   letter-spacing: 0px;
 }
 
+.home-container{
+  background-color: #EEF1FA;
+}
+
+.mapasConectividade{
+  width: 100%;
+  display: flex;
+  gap:1rem;
+  font-family: 'Sora', sans-serif;
+  margin-top: 2rem;
+  margin-bottom: 1rem;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.mapasConectividade button{
+  padding: 10px;
+  border: 1px solid;
+  border-radius: 8px;
+  background-color: var(--primary-blue);
+}
+
+.mapasConectividade .ativo{
+  border: 2px solid var(--primary-blue);
+  border-radius: 8px;
+  box-shadow: 5px 5px 6px -4px #131A29;
+}
+  
 .dimension-details-container {
     border-radius: 4px;
     border: 1px solid grey;
@@ -20,9 +48,10 @@ h2{
 }
 
 .dimensao-container{
-  max-width: 1400px;
+  max-width: 1400px;    
   margin: 0 auto;
   padding: 3.5rem 3rem;
+  background-color: #EEF1FA;
 }
 
 @media (max-width: 900px){
@@ -43,13 +72,12 @@ h2{
   background: #fff;
   border-radius: 16px;
   padding: 2.5rem;
-  /*border-left: 5px solid;*/
   margin-bottom: 3rem;
 }
 .descricao p {
     font-family: 'Sora', sans-serif;
     color: var(--text-light);
-    font-size: 0.97rem;
+    font-size: 1rem;
     line-height: 1.85;
 }
 .header-indicadores{
@@ -143,7 +171,7 @@ h2{
   text-decoration: none;
   font-size: 0.88rem;
   font-weight: 600;
-  border-bottom: 1px solid var(--border);
+  border-top: 1px solid var(--border);
   transition: color 0.2s, transform 0.2s;
   width: 100%;
   text-align: -webkit-left;
@@ -154,11 +182,12 @@ h2{
 .secao-ref-estudoComplementar-lista-ul{
   list-style: none;
   padding: 0;
+  margin: 0;
 }
 .secao-ref-estudoComplementar-lista-ul li{
   font-family: 'Sora', sans-serif;
   padding: 0.5rem 0 0.5rem 1rem;
-  border-bottom: 1px solid var(--border);
+  border-top: 1px solid var(--border);
   font-size: 0.88rem;
   color: var(--primary);
   font-weight: 100;
@@ -209,32 +238,6 @@ h2{
     overflow: hidden;
 }
 
-/* .contribuicao {
-    width: 100%;
-}
-
-.contribuicao label {
-    font-size: calc(1.5rem);
-    padding-left: 16px;
-}
-
-.contribuicao input,
-textarea {
-    margin-left: 16px;
-    width: 90%;
-}
-
-.contribuicao button {
-    width: 30%;
-    margin: 1rem auto 1rem auto;
-    font-size: 2rem;
-    color: #dee5ff;
-    font-family: "BrandonGrotesque";
-    background-color: #3466f5;
-    border-radius: 8px;
-    border-width: none;
-} */
-
 .button-as-link {
     color: var(--primary-color);
     text-decoration: none;
@@ -273,11 +276,15 @@ a.custom-link-tooplate-gotto-job:hover {
   .indicadores-grid{
     grid-template-columns: 1fr;
   }
-  .descricao p{
-    font-size: 0.5rem;
-  }
   .secao-ref-estudoComplementar{
     padding:1rem
   }
+  .descricao p {
+    font-size: 1rem;
+  }
   
+}
+
+.secao-ref-estudoComplementar-lista-ul > li > p {
+  margin: 0;
 }

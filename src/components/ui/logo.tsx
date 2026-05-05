@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import logo2 from "@assets/images/icons/Logo2.png";
 import logoNoLabel from "@assets/images/icons/LogoNoLabel.png";
-import logoMinimalist from "@assets/images/icons/LogoMinimalist.png";
 
 // Tipos das props (TypeScript)
 type LogoProps = {
@@ -32,8 +31,6 @@ function Logo({ forceVersion, className, style, onClick }: LogoProps) {
   const getLogoSource = () => {
     if (forceVersion) {
       switch (forceVersion) {
-        case 'minimalist':
-          return logoMinimalist;
         case 'no-label':
           return logoNoLabel;
         case 'full':
@@ -42,9 +39,7 @@ function Logo({ forceVersion, className, style, onClick }: LogoProps) {
       }
     }
     
-    if (windowSize.width < 768) {
-      return logoMinimalist;
-    } else if (windowSize.width < 992) {
+    if (windowSize.width < 992) {
       return logoNoLabel;
     } else {
       return logo2;
@@ -58,7 +53,7 @@ function Logo({ forceVersion, className, style, onClick }: LogoProps) {
       className={className}
       style={{ 
         maxHeight: 'auto', 
-        maxWidth: "70%", //getLogoSource() != logoMinimalist ? "70%" : "0%",
+        maxWidth: "100%", 
         ...style,
         cursor: onClick ? 'pointer' : undefined // Mostra cursor pointer apenas se tiver onClick
       }}

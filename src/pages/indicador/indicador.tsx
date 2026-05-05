@@ -6,6 +6,7 @@ import {
 import { DashboardComponent } from "./components/dashboard/dashboard.tsx";
 import api from "../../adapters/api.tsx";
 import { useParams, useNavigate, useLocation } from "react-router-dom";
+import { getArtigoDimensao } from "../../services/crudArtigo.tsx";
 import NavbarComponent from "../../components/layout/navbar/navbar.tsx";
 import "./style.css";
 import Footer from "../../components/layout/footer/footer.tsx";
@@ -32,9 +33,10 @@ const IndicadorComponent: FC = () => {
   //guarda a referência dos graficos
   const graficosRef = useRef<Array<HTMLDivElement | null>>([]);
   const navigate = useNavigate()
+  const location = useLocation()
 
   const getProximosIndicadores = () => {
-    const location = useLocation()
+    console.log(location)
     const arrayIndicadoresProximoAnterior = location.state
     const indicadorIndex = arrayIndicadoresProximoAnterior.findIndex(
       (indicadorAtual: string) => indicadorAtual === indicador
@@ -60,7 +62,7 @@ const IndicadorComponent: FC = () => {
       setIndicadorJson((prev) => {
         const responseData = response.data;
         console.log(responseData)
-        return {...prev, graficos:responseData.graficos.sort((a: any, b: any) => a.posicao - b.posicao)}
+        return {...prev,nome: responseData.nome, graficos:responseData.graficos.sort((a: any, b: any) => a.posicao - b.posicao)}
       });
       setFonteEMetodologia((prev) => {
         fonteEMetodologia.referenciaFonteDados = response.data.fonteDeDados
@@ -135,8 +137,6 @@ const IndicadorComponent: FC = () => {
     link.download = `${nome}.png`
     link.click();
   }
-
-  console.log(indicadorJson)
   return (
     <div>
       <NavbarComponent />
@@ -159,7 +159,7 @@ const IndicadorComponent: FC = () => {
               <div className="indicador-hero-titulo">{indicador}</div>
             </div>
             <div className="indicador-hero-acoes">
-              <a className="indicador-hero-resumo">
+              <a className="indicador-hero-resumo" onClick={() => getArtigoDimensao(dimensao as string)}>
                 <svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><line x1="6" y1="1" x2="6" y2="8"></line><polyline points="3,5 6,8 9,5"></polyline><line x1="1" y1="11" x2="11" y2="11"></line></svg>
                 Resumo da dimensão
               </a>
@@ -252,10 +252,7 @@ const IndicadorComponent: FC = () => {
                 <div className="meta-block" style={{ gridColumn: "1/-1" }}><div className="grafico-card-grid-label">Metodologia</div><div className="grafico-card-grid-valor">{fonteEMetodologia.metodologia}</div></div>
               </div>
             </div>
-          </div>
-        )}
-
-        <div className="anterior-proximo-indicador" style={indicadoresProximoAnterior.anterior === false ? { justifyContent: 'flex-end' } : (indicadoresProximoAnterior.proximo === false ? { justifyContent: 'flex-start' } : {})} id="indNav">
+             <div className="anterior-proximo-indicador" style={indicadoresProximoAnterior.anterior === false ? { justifyContent: 'flex-end' } : (indicadoresProximoAnterior.proximo === false ? { justifyContent: 'flex-start' } : {})} id="indNav">
           {indicadoresProximoAnterior.anterior !== false &&
             <a id="btnPrev" onClick={() => handleNavigateIndicador(indicadoresProximoAnterior.anterior, indicadoresOrdemAnterior, arrayIndicadoresProximoAnterior)} className="navegacao-indicador" style={indicadoresProximoAnterior.proximo === false ? { justifyContent: 'flex-start' } : {}}>
               <span className="navegacao-indicador-icone" style={{ color: `var(--${dimensoesCores[dimensao as string]})` }}>←</span>
@@ -273,6 +270,8 @@ const IndicadorComponent: FC = () => {
               <span className="navegacao-indicador-icone">→</span>
             </a>}
         </div>
+          </div>
+        )}
       </div>
 
       <Footer />

@@ -72,6 +72,7 @@
   font-size: 0.82rem;
   color: var(--text-light);
   line-height: 1.6;
+  grid-column: span 2;
 }
 .contribuicao-info-icone{
   width: 28px;
