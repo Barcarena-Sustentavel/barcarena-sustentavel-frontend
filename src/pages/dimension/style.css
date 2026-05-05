@@ -118,6 +118,7 @@ h2{
 .indicadores-grid-card:hover{
   transform: translateY(-4px);
   box-shadow: 0 10px 28px rgba(0,0,0,0.10);
+  cursor: pointer;;
 }
 .indicadores-grid-card-nome{
   font-size: 0.88rem;
@@ -287,4 +288,15 @@ a.custom-link-tooplate-gotto-job:hover {
 
 .secao-ref-estudoComplementar-lista-ul > li > p {
   margin: 0;
+}
+
+.source-name {
+  background: rgba(9, 28, 58, 0.1);
+  border: 1px solid rgba(9, 28, 58, 0.15);
+  border-radius: 6px;
+  padding: 5px 12px;
+  font-size: 0.7rem;
+  font-weight: 600;
+  color: rgba(9, 28, 58, 0.75);
+  max-width: 30%;
 }

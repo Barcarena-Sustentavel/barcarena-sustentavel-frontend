@@ -93,6 +93,7 @@ const DimensaoComponent: FC = () => {
       setDimensao(response.data.dimensao);
       setReferencias(response.data.referencias);
       setEstudosComplementares(response.data.estudos_complementares);
+      console.log(response.data.indicadores);
     }
     getDimensao()
     getPathHTML()
@@ -178,6 +179,8 @@ const DimensaoComponent: FC = () => {
                 <div className="indicadores-grid-card-numero" style={{ color: `${dimensoesCores[dimensao as string]}` }}>Indicador {index + 1}</div>
                 <div className="indicadores-grid-card-nome">{indicador.nome}</div>
                 <div className="ind-card-arrow">→</div>
+                <span className="source-name"
+                      style={{ visibility: indicador.fonteDados ? "visible" : "hidden" }}>{indicador.fonteDados ?? ""}</span>
               </div>
 
             ))}
