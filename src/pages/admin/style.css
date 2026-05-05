@@ -98,14 +98,17 @@
     background-color: var(--primary-blue); /*rgba(135, 206, 235, 1);*/
 }
 
-.dimensoes-row {
-    display: flex;
-    margin: 10px auto;
-    gap: 1.5rem;
+.dimensoes-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  width: 80%;
+  row-gap: 1.5rem;
+  margin: 10px auto;
 }
 
 @media (max-width: 750px){
-    .dimensoes-row{
+    .dimensoes-grid{
+        display: flex;
         flex-direction: column;
     }
 }

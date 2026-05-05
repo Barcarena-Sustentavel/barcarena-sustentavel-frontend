@@ -9,7 +9,7 @@ export class Tabela extends Grafico {
         super(colunas, dados);
     }
 
-    gerarGrafico() {
+    gerarDados() {
         //Mapeamento das colunas
         const cols = this.colunas.map((coluna) => ({
             header: coluna,

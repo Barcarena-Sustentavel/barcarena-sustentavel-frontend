@@ -1,13 +1,13 @@
 import React, { FC, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { useEffect } from "react";
+import { useEffect, useContext } from "react";
 import api from "../../../../adapters/api.tsx";
 //import Swal from "sweetalert2";
 import { patchEstudoComplementar, postEstudoComplementar } from "../../../../services/crudEstudosComplementares.tsx";
 import { EstudoComplementar } from "../../../../interfaces/estudo_complementar/estudo_complementar_interface.tsx";
+import { ConstContext, ConstContextType } from "../../../../context/const/script/ConstContext.ts";
 import "./style.css";
 import "../../dimensao/style.css";
-import dimensoes from "../../../../utils/const.tsx";
 import { Form, Alert, Button, Spinner } from "react-bootstrap";
 import CreatePageHeader from "../../components/headers/components/createPageHeader.tsx";
 
@@ -15,6 +15,7 @@ const CreateEstudosComplementares: FC<{
   dimensao: string | undefined;
   estudoComplementarNome: string | undefined;
 }> = ({ dimensao, estudoComplementarNome }) => {
+  const { dimensoes } = useContext<ConstContextType>(ConstContext);
   const navigate = useNavigate();
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [patch, setPatch] = useState(false);
@@ -24,16 +25,6 @@ const CreateEstudosComplementares: FC<{
   })
   const [errorNome, setErrorNome] = useState<string | null>(null);
   const [errorArquivo, setErrorArquivo] = useState<string | null>(null);
-  const {
-    dimensoesColumn1,
-    dimensoesColumn2,
-    dimensoesCores123,
-  } = dimensoes.GetAllConst();
-  const dimensoesColumn12 = {
-    ...dimensoesColumn1,
-    ...dimensoesColumn2,
-  };
-
 
   useEffect(() => {
     if (estudoComplementarNome != undefined) {

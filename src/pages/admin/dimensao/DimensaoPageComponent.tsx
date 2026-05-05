@@ -12,12 +12,6 @@ const DimensaoPageComponent: FC = () => {
   const { dimensao } = useParams();
   const [nomeDimensao, setNomeDimensao] = useState<string>(dimensao as string);
   const [activeTab, setActiveTab] = useState<string>("Dimensão");
-  const { dimensoesColumn1, dimensoesColumn2, dimensoesColumn3, dimensoesCores123 } =
-    dimensoes.GetAllConst();
-  const dimensoesColumn12 = {
-    ...dimensoesColumn1,
-    ...dimensoesColumn2,
-  };
   const [dimensoesList, setDimensoesList] = useState<string[]>([""])
   // botão para voltar página
   const navigate = useNavigate();

@@ -5,7 +5,6 @@ import api from "../../../../adapters/api.tsx";
 import { GraficosIndicador } from "../../../../interfaces/indicador/indicador_interface.js";
 import "./style.css";
 import { GraficoComponent } from "./components/grafico/Grafico.tsx";
-import dimensoes from "../../../../utils/const.tsx";
 import "../../dimensao/style.css";
 import { Alert, Form } from "react-bootstrap";
 import { Collapse } from "react-bootstrap"
@@ -30,6 +29,7 @@ export const CreateIndicador: FC<{
   );
   //Diminuir a quantidade de useStates
   const [referencias, setReferencias] = useState<string[]>([])
+  const 
   const [referenciaFonteDados, setReferenciaFonteDados] = useState<string>("")
   const [periodicidade, setPeriodicidade] = useState<string>("")
   const [ultimaAtualizacao, setUltimaAtualizacao] = useState<string>("")
@@ -44,12 +44,6 @@ export const CreateIndicador: FC<{
   const [openReferencia, setOpenReferencia] = useState(false);
   const [popUpFonteDados, setPopUpFonteDados] = useState(false);
   //Atributos relacionados aos nomes das colunas e suas cores
-  const { dimensoesColumn1, dimensoesColumn2, dimensoesCores123 } =
-    dimensoes.GetAllConst();
-  const dimensoesColumn12 = {
-    ...dimensoesColumn1,
-    ...dimensoesColumn2,
-  };
   //URL para recuperar dados do indicador
   const url = `admin/dimensoes/${dimensao}/indicador/${encodeURI(indicadorNome as string)}/`;
   //Mensagem de erros do indicador

@@ -25,16 +25,6 @@ const CreateReferencias: FC<{
   });
   const [errorNome, setErrorNome] = useState<string | null>(null);
   const [errorLink, setErrorLink] = useState<string | null>(null);
-  const {
-    dimensoesColumn1,
-    dimensoesColumn2,
-    dimensoesCores123,
-  } = dimensoes.GetAllConst();
-  const dimensoesColumn12 = {
-    ...dimensoesColumn1,
-    ...dimensoesColumn2,
-  };
-
 
   useEffect(() => {
     if (referencia != undefined) {

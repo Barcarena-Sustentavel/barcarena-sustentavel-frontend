@@ -1,7 +1,7 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import "./style.css";
-import dimensoes from "../../../../utils/const.tsx" // Ajuste o caminho conforme necessário
 import { useLocation } from "react-router-dom";
+import { ConstContext, ConstContextType} from "../../../../context/const/script/ConstContext.ts";
 import { getArtigoDimensao } from "../../../../services/crudArtigo.tsx";
 import Location from "../../../../components/layout/location/location.tsx";
 interface SubmenuDimensaoProps {
@@ -46,19 +46,8 @@ const SubmenuDimensao: React.FC<SubmenuDimensaoProps> = ({ dimensaoAtiva }) => {
 	const activeDimensionFromPath = decodeURIComponent(
 		location.pathname.split("/")[1],
 	);
-	const [isOpen, setIsOpen] = useState(false);
-	const {
-		dimensoesColumn1,
-		dimensoesColumn2,
-		dimensoesColumn3,
-		dimensoesCores123,
-	} = dimensoes.GetAllConst();
-	const todasDimensoes = {
-		...dimensoesColumn1,
-		...dimensoesColumn2,
-		...dimensoesColumn3,
-	};
-	const dimensoesValor = Object.keys(todasDimensoes)
+	const {dimensoesCores, dimensoesIcones} = useContext<ConstContextType>(ConstContext);
+	const dimensoesValor = Object.keys(dimensoesIcones)
 	//Diminuir a redundância de dimensoes chaves e ordem
 	const dimensoesChavesOrdem = [
 		"emprego",
@@ -74,18 +63,6 @@ const SubmenuDimensao: React.FC<SubmenuDimensaoProps> = ({ dimensaoAtiva }) => {
 	dimensoesChavesOrdem.map((_,index:number) => {
 		dimensoesChaveValor[dimensoesChavesOrdem[index]] = dimensoesValor[index] 
 	}) 
-	/*
-	const dimensoesOrdem = [
-		"emprego",
-		"meioAmbiente",
-		"educacao",
-		"mobilidade",
-		"ordenamento",
-		"seguranca",
-		"saude",
-		"conectividade",
-		"instituicoes",
-	];*/
 	const dimensaoCores = [
 		"#c0392b",
 		"#27ae60",
@@ -97,7 +74,7 @@ const SubmenuDimensao: React.FC<SubmenuDimensaoProps> = ({ dimensaoAtiva }) => {
 		"#3a52a8",
 		"#d35400"
 	]
-	const icone = todasDimensoes[dimensaoAtiva || activeDimensionFromPath];
+	const icone = dimensoesIcones[dimensaoAtiva || activeDimensionFromPath];
 	return (
 		<div>
 			<div className="submenu-dimensao-wrap">
@@ -110,7 +87,7 @@ const SubmenuDimensao: React.FC<SubmenuDimensaoProps> = ({ dimensaoAtiva }) => {
 						const isAtiva =
 							nomeDimensaoValor === (dimensaoAtiva || activeDimensionFromPath);
 						const cor = dimensaoCores[index]
-						const icon = todasDimensoes[nomeDimensaoValor]	
+						const icon = dimensoesIcones[nomeDimensaoValor]	
 						return(<DimensaoItem icon={icon} dimensao={nomeDimensaoValor as string} isAtiva={isAtiva} cor={cor} />)
 					}) 
 					}
@@ -119,7 +96,7 @@ const SubmenuDimensao: React.FC<SubmenuDimensaoProps> = ({ dimensaoAtiva }) => {
 			<Location parentName={dimensaoAtiva} />
 			<div
 				className="submenu-dimensao-hero"
-				style={{ backgroundColor:`${dimensoesCores123[dimensaoAtiva || activeDimensionFromPath]}` /*`var(--${dimensoesCores123[dimensaoAtiva || activeDimensionFromPath]})`*/ }}>
+				style={{ backgroundColor:`${dimensoesCores[dimensaoAtiva || activeDimensionFromPath]}` /*`var(--${dimensoesCores123[dimensaoAtiva || activeDimensionFromPath]})`*/ }}>
 				<div className="submenu-dimensao-hero-dentro">
 					<div className="submenu-dimensao-hero-svg" >
 						{icone !== undefined && <svg

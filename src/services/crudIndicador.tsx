@@ -1,3 +1,4 @@
+import { Key } from "lucide-react";
 import api from "../adapters/api.tsx";
 import {
   Indicador,
@@ -77,29 +78,25 @@ export const patchIndicador = async (
     const endpoint = `/admin/dimensoes/${dimensao}/indicador/${encodeURIComponent(antigoIndicador)}/`;
     const formData = new FormData();
     const novoIndicadorBool: boolean = novoIndicador !== antigoIndicador;
-    
     if (novoIndicadorBool) {
       indicador.nome = novoIndicador;
       formData.append("indicadorNovo", novoIndicador);
     } else {
       indicador.nome = antigoIndicador;
     }
-    //Diminuir a quantidade de ifs
-    if (referencia !== "") {
-      formData.append("fonteDeDados", referencia);
+    const formDataBody:Record<string, any> = {
+     "fonteDeDados": referencia,
+     "periodicidade":periodicidade,
+     "ultimaAtualizacao":ultimaAtualizacao,
+     "unidadeMedida":unidadeMedida,
+     "metodologia":metodologia 
     }
-    if (periodicidade !== "") {
-      formData.append("periodicidade", periodicidade);
-    }
-    if (ultimaAtualizacao !== "") {
-      formData.append("ultimaAtualizacao", ultimaAtualizacao);
-    }
-    if (unidadeMedida !== "") {
-      formData.append("unidadeMedida", unidadeMedida);
-    }
-    if (metodologia !== "") {
-      formData.append("metodologia", metodologia);
-    }
+
+    Object.entries(formDataBody).forEach(([Key,value]) => {
+      if(value !== "") {
+        formData.append(Key, value);
+      }
+    })
     await api.patch(endpoint, formData).then(res =>{
         if(res.status === 200){
             console.log("Indicador alterado com sucesso");

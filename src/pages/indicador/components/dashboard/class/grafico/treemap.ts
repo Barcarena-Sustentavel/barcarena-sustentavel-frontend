@@ -1,12 +1,12 @@
 import { Grafico } from "./grafico.ts";
 import { TreeMapSeries } from "../../../../../../interfaces/indicador/dados_graficos_interface.tsx";
-export class Treemap extends Grafico {
+import { Options } from "../interfaces/options/options.ts";
+export class Treemap extends Grafico implements Options{
     dadosGraficosTrees: TreeMapSeries[] = [];
     constructor(colunas: string[], dados: number[][]) {
         super(colunas, dados);
     }
-    gerarPlotOptions(){}
-    gerarGrafico(): TreeMapSeries[] {
+    gerarDados(): TreeMapSeries[] {
         for (let i = 0; i < this.dados.length; i++) {
             this.dadosGraficosTrees.push({
                 name: this.colunas[i], //`Dado ${index + 1}`,
@@ -15,5 +15,38 @@ export class Treemap extends Grafico {
             });
         }
         return this.dadosGraficosTrees;
+    }
+    plotOptions(tipoGrafico: string, dados: any[], categorias: string[] | number[]): Record<string, any> {
+        return {
+            chart: {
+                type: tipoGrafico,
+            },
+
+            title: {
+                text: ""//dashboard.tituloGrafico ?? "",
+            },
+            plotOptions: {
+                pie: {
+                    allowPointSelect: true,
+                    cursor: "pointer",
+                },
+            },
+            series: dados,
+            exporting: {
+                buttons: {
+                    contextButton: {
+                        menuItems: ['downloadPNG', 'downloadJPEG', 'downloadPDF', 'downloadSVG']
+                    }
+                }
+            },
+            xAxis: {
+                categories: categorias,
+            },
+            yAxis: {
+                title: {
+                    text: ""//"Valores",
+                },
+            },
+        };
     }
 }

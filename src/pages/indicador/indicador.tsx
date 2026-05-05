@@ -1,4 +1,4 @@
-import { FC, useEffect, useState, useRef } from "react";
+import { FC, useEffect, useState, useRef, useContext } from "react";
 import {
   IndicadorDadosGrafico,
   DadosGrafico,
@@ -11,12 +11,11 @@ import "./style.css";
 import Footer from "../../components/layout/footer/footer.tsx";
 import Location from "../../components/layout/location/location.tsx";
 import html2canvas from 'html2canvas';
-import dimensoes from '../../utils/const.tsx'
+import { ConstContext, ConstContextType } from "../../context/const/script/ConstContext.ts";
 const IndicadorComponent: FC = () => {
   const { dimensao, indicador, ordem } = useParams();
-  const { dimensoesColumn1, dimensoesColumn2, dimensoesColumn3, dimensoesCores123 } = dimensoes.GetAllConst();
-  const todasAsDimensoes = { ...dimensoesColumn1, ...dimensoesColumn2, ...dimensoesColumn3 }
-  const icone = todasAsDimensoes[dimensao as string]
+  const {dimensoesCores, dimensoesIcones} = useContext<ConstContextType>(ConstContext);
+  const icone = dimensoesIcones[dimensao as string]
   const [indicadorJson, setIndicadorJson] = useState<IndicadorDadosGrafico>({
     nome: "",
     graficos: [],
@@ -150,7 +149,7 @@ const IndicadorComponent: FC = () => {
       </div>
 
       <div className="indicador-container">
-        <div className="indicador-hero" style={{ backgroundColor: `${dimensoesCores123[dimensao as string]}` }}>
+        <div className="indicador-hero" style={{ backgroundColor: `${dimensoesCores[dimensao as string]}` }}>
           <div className="indicador-hero-inner">
             <div className="indicador-hero-icon">
               {icone !== undefined && iconeRenderizado()}
@@ -167,14 +166,14 @@ const IndicadorComponent: FC = () => {
               <div className="indicador-hero-toggle">
                 <button className="botao-layout"
                   onClick={() => setSingleConlumn(true)}
-                  style={singleColumn ? { backgroundColor: "rgba(255,255,255,0.9)", color: `${dimensoesCores123[dimensao as string]}` } : {}}>
+                  style={singleColumn ? { backgroundColor: "rgba(255,255,255,0.9)", color: `${dimensoesCores[dimensao as string]}` } : {}}>
                   {/*<i className="bi bi-square"></i>*/}
                   <svg viewBox="0 0 16 16" fill="none"><rect x="2" y="2" width="12" height="5" rx="1.5" fill="currentColor"></rect><rect x="2" y="9" width="12" height="5" rx="1.5" fill="currentColor"></rect></svg>
                 </button>
 
                 <button className="botao-layout"
                   onClick={() => setSingleConlumn(false)}
-                  style={!singleColumn ? { backgroundColor: "rgba(255,255,255,0.9)", color: `${dimensoesCores123[dimensao as string]}` } : {}}>
+                  style={!singleColumn ? { backgroundColor: "rgba(255,255,255,0.9)", color: `${dimensoesCores[dimensao as string]}` } : {}}>
                   {/*<i className="bi bi-layout-split"></i>*/}
                   <svg viewBox="0 0 16 16" fill="none"><rect x="1" y="2" width="6" height="5" rx="1.5" fill="currentColor"></rect><rect x="9" y="2" width="6" height="5" rx="1.5" fill="currentColor"></rect><rect x="1" y="9" width="6" height="5" rx="1.5" fill="currentColor"></rect><rect x="9" y="9" width="6" height="5" rx="1.5" fill="currentColor"></rect></svg>
                 </button>
@@ -213,7 +212,7 @@ const IndicadorComponent: FC = () => {
                       </div>
                       <div id={id} style={{ display: 'none' }}></div>
                       {grafico.descricaoGrafico && (
-                        <div className="grafico-card-descricao" style={{ borderLeft: `3px solid ${dimensoesCores123[dimensao as string]}` }}>
+                        <div className="grafico-card-descricao" style={{ borderLeft: `3px solid ${dimensoesCores[dimensao as string]}` }}>
                           <p>{grafico.descricaoGrafico}</p>
                         </div>
                       )}
@@ -259,7 +258,7 @@ const IndicadorComponent: FC = () => {
         <div className="anterior-proximo-indicador" style={indicadoresProximoAnterior.anterior === false ? { justifyContent: 'flex-end' } : (indicadoresProximoAnterior.proximo === false ? { justifyContent: 'flex-start' } : {})} id="indNav">
           {indicadoresProximoAnterior.anterior !== false &&
             <a id="btnPrev" onClick={() => handleNavigateIndicador(indicadoresProximoAnterior.anterior, indicadoresOrdemAnterior, arrayIndicadoresProximoAnterior)} className="navegacao-indicador" style={indicadoresProximoAnterior.proximo === false ? { justifyContent: 'flex-start' } : {}}>
-              <span className="navegacao-indicador-icone" style={{ color: `var(--${dimensoesCores123[dimensao as string]})` }}>←</span>
+              <span className="navegacao-indicador-icone" style={{ color: `var(--${dimensoesCores[dimensao as string]})` }}>←</span>
               <div>
                 <div className="navegacao-indicador-label">Indicador anterior</div>
                 <div className="navegacao-indicador-nome" id="prevName">{indicadoresProximoAnterior.anterior}</div>
