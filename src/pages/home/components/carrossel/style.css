@@ -37,7 +37,7 @@
     padding: 0 10px;
     border-radius: 18px;
     overflow: visible;
-    background: rgba(8, 16, 32, 0.55);
+    background: #0006;
     border: 1px solid rgba(255,255,255,0.13);
     display: flex; flex-direction: column;
     backdrop-filter: blur(10px);
@@ -158,7 +158,7 @@
     transition: all .3s;
 }
 .car-btn:hover { background:var(--primary); border-color:var(--primary); }
-.car-dots-wrap { display:flex; gap:6px; }
+.car-dots-wrap { display:flex; gap:6px; width: 98px; }
 .car-dot {
     width:7px; height:7px; border-radius:50%;
     background:rgba(255,255,255,.25); cursor:pointer; transition:all .3s;
