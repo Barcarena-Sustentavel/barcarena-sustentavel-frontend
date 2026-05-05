@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { AuthContext } from "../scritpt/Authcontext.ts";
 import { fetchToken } from "../scritpt/Token.ts";
+
 const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
   children,
 }) => {

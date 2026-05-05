@@ -1,12 +1,11 @@
-import { FC, useEffect, useState } from "react";
+import { FC, useEffect, useState, useContext } from "react";
 import { useNavigate } from "react-router-dom";
 import dimensoes from "../../utils/const.tsx";
 import "./style.css";
-import { Modal, Button, Form } from "react-bootstrap";
 import api from "../../adapters/api.tsx"
 import { patchEmail, postEmail } from "../../services/crudEmail.tsx"
 import "../../main.css"
-
+import { ConstContext, ConstContextType } from "../../context/const/script/ConstContext.ts";
 const DimensaoCard: FC<{ colunaDimensoes: Record<string, string>, colunaDimensoesCores: Record<string, string> }> = ({ colunaDimensoes, colunaDimensoesCores }) => {
   const navigate = useNavigate();
 
@@ -15,7 +14,7 @@ const DimensaoCard: FC<{ colunaDimensoes: Record<string, string>, colunaDimensoe
   };
 
   return (
-    <div className="dimensoes-row">
+    <div className="dimensoes-grid">
       {Object.entries(colunaDimensoes).map(([key, value]) => (
         <div
           className="dimensao-card"
@@ -52,9 +51,8 @@ const DimensaoCard: FC<{ colunaDimensoes: Record<string, string>, colunaDimensoe
 const DimensaoAdmin: FC = () => {
 
   //Diminuir a quantidade de useStates, quando possível
-  const { dimensoesColumn1, dimensoesColumn2, dimensoesColumn3, dimensoesCores123 } =
-    dimensoes.GetAllConst();
-  const [patch, setPatch] = useState<boolean>(false)
+  const { dimensoesIcones,dimensoesCores } =
+      useContext<ConstContextType>(ConstContext);
   const [page, setPage] = useState<string>("dimensoes")
   const [isPopUpAberto, setIsPopUpAberto] = useState<Record<string, any>>({ estado: false, estudo: "" })
   const [email, setEmail] = useState<string>("");
@@ -89,10 +87,8 @@ const DimensaoAdmin: FC = () => {
         </div>
       </div>
       {page === "dimensoes" && <div className="dimensoes-grid-wallpaper">
-        <div className="dimensoes-flex">
-          <DimensaoCard colunaDimensoes={dimensoesColumn1} colunaDimensoesCores={dimensoesCores123} />
-          <DimensaoCard colunaDimensoes={dimensoesColumn2} colunaDimensoesCores={dimensoesCores123} />
-          <DimensaoCard colunaDimensoes={dimensoesColumn3} colunaDimensoesCores={dimensoesCores123} />
+        <div>
+          <DimensaoCard colunaDimensoes={dimensoesIcones} colunaDimensoesCores={dimensoesCores} />        
         </div>
       </div>
       }

@@ -1,7 +1,6 @@
 import { FC, useState, useEffect } from "react";
 import { Form } from "react-bootstrap";
 import api from "../../../../adapters/api.tsx";
-import { Dimensao } from "../../../../interfaces/dimensao/dimensao_interface.tsx";
 import { Alert } from "react-bootstrap";
 
 export const DimensaoTab: FC<{ nomeDimensao: string | undefined, novoNomeDimensao: (name: string) => void }> = ({ nomeDimensao, novoNomeDimensao }) => {

@@ -12,11 +12,13 @@ import "leaflet/dist/leaflet.css";
 import AuthProvider from "./context/private_route/components/AuthProvider.tsx";
 import PrivateRoutes from "./context/private_route/components/PrivateRoutes.tsx";
 import Colaboradores from "./pages/colaboradores/colaboradores.tsx";
+import ConstProvider from "./context/const/components/ConstProvider.tsx";
 import 'bootstrap/dist/css/bootstrap.min.css';
 
 const App: FC = () => {
   return (
     <AuthProvider>
+      <ConstProvider>
       <BrowserRouter>
         <Routes>
           {/*Página inicial*/}
@@ -54,6 +56,7 @@ const App: FC = () => {
           <Route path="/colaboradores/" element={<Colaboradores />} />
         </Routes>
       </BrowserRouter>
+      </ConstProvider>
     </AuthProvider>
   );
 };

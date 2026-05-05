@@ -14,5 +14,5 @@ export const EstudosComplementaresTab: FC<{ nomeDimensao: string | undefined, }>
         getEstudosComplementares()
     },[])
 
-    return <CommonTab activeTabDict={nomeEstudosComplementares} activeTab="" />
+    return <CommonTab activeTabDict={nomeEstudosComplementares} activeTab="estudosComplementares" nomeDimensao={nomeDimensao} />
 }

@@ -1,4 +1,4 @@
-import { FC, useEffect, useState } from "react";
+import { FC, useEffect, useState,useContext } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { Referencia } from "../../interfaces/referencia/referencia_interface.tsx";
 import { Dimensao } from "../../interfaces/dimensao/dimensao_interface.js";
@@ -10,12 +10,12 @@ import Footer from "../../components/layout/footer/footer.tsx";
 import SubmenuDimensao from "./components/subMenuDimensao/submenuDimensao.tsx";
 import FormContribuicao from "./components/formContribuicao/formContribuicao.tsx";
 import HTMLFileIframe from "../kml/mapa/map4.tsx";
-import dimensoes from "../../utils/const.tsx";
+import { ConstContext, ConstContextType } from "../../context/const/script/ConstContext.ts";
 const NODE_ENV = import.meta.env.VITE_NODE_ENV;
 
 const DimensaoComponent: FC = () => {
   const { dimensao } = useParams();
-  const { dimensoesCores123 } = dimensoes.GetAllConst();
+  const { dimensoesCores } = useContext<ConstContextType>(ConstContext)
   const contadorIndicadoresCores = [
     {corLetra: '#c0392b', corBackground: '#c0392b22', corBorda: '#c0392b44'},
     {corLetra: '#27ae60', corBackground: '#27ae6022', corBorda: '#27ae6044'},
@@ -28,7 +28,8 @@ const DimensaoComponent: FC = () => {
     {corLetra: '#d35400', corBackground: '#d3540022', corBorda: '#d3540044'},
   ]
 
-  const dimensoesNomes: string[] = Object.keys(dimensoesCores123)
+  const dimensoesNomes: string[] = Object.keys(dimensoesCores)
+  console.log(dimensoesNomes)
   const [dimensaoIndicadorContador, setDimensaoIndicadorContador] = useState<Record<string, any>>({})
   const [indicadores, setIndicadores] = useState<
     Array<Record<string, string | number | null>>
@@ -121,7 +122,7 @@ const DimensaoComponent: FC = () => {
       <NavbarComponent />
       <SubmenuDimensao dimensaoAtiva={dimensaoJson?.nome || ""} />
       <div className="dimensao-container">
-        <div className="descricao" style={{ borderLeft: `5px solid ${dimensoesCores123[dimensao as string]}` }}>
+        <div className="descricao" style={{ borderLeft: `5px solid ${dimensoesCores[dimensao as string]}` }}>
           <p>
             {dimensaoJson?.descricao}
           </p>
@@ -166,7 +167,7 @@ const DimensaoComponent: FC = () => {
             indicadores.map((indicador, index) => (
               <div
                 className="indicadores-grid-card"
-                style={{ borderTop: `3px solid ${dimensoesCores123[dimensao as string]}` }}
+                style={{ borderTop: `3px solid ${dimensoesCores[dimensao as string]}` }}
                 onClick={() =>
                   {
                     let proximosIndicadoresNomes: string[] = []
@@ -174,7 +175,7 @@ const DimensaoComponent: FC = () => {
                     handleNavigateIndicador(indicador.nome as string, index + 1, proximosIndicadoresNomes)}
                 }
               >
-                <div className="indicadores-grid-card-numero" style={{ color: `${dimensoesCores123[dimensao as string]}` }}>Indicador {index + 1}</div>
+                <div className="indicadores-grid-card-numero" style={{ color: `${dimensoesCores[dimensao as string]}` }}>Indicador {index + 1}</div>
                 <div className="indicadores-grid-card-nome">{indicador.nome}</div>
                 <div className="ind-card-arrow">→</div>
               </div>
@@ -218,7 +219,7 @@ const DimensaoComponent: FC = () => {
         }
         <FormContribuicao
           dimensaoId={0}
-          formStyle={{ borderLeft: `5px solid ${dimensoesCores123[dimensao as string]}` }}
+          formStyle={{ borderLeft: `5px solid ${dimensoesCores[dimensao as string]}` }}
         />
       </div>
       <Footer />

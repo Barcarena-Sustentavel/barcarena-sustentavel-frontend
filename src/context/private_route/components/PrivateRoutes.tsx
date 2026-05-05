@@ -3,7 +3,6 @@ import { AuthContext, AuthContextType } from "../scritpt/Authcontext.ts";
 import { useContext, useState, useEffect } from "react";
 import BouncingDotsLoader from "../animation/BouncingDotsLoader.tsx";
 import api from "../../../adapters/api.tsx";
-import backgroundImageLogin from "../../assets/images/carousel/Banner Barcarena/5.png"
 import { LogIn } from "lucide-react";
 import { Eye } from "lucide-react";
 import logoNoLabel from "../../../assets/images/icons/LogoNoLabel.png";
