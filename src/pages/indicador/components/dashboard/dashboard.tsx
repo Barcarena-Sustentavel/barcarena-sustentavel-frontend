@@ -22,7 +22,7 @@ export const DashboardComponent: FC<{
       "pie": new Pizza(colunas, dados).gerarDados(),
       "scatter": new Scatter(colunas, dados).gerarDados(),
     }
-    const grafico:Grafico = tiposGraficos[tipoGrafico] ! == undefined ? tiposGraficos[tipoGrafico] : new Grafico(colunas, dados);
+    const grafico:Grafico = tiposGraficos[tipoGrafico] !== undefined ? tiposGraficos[tipoGrafico] : new Grafico(colunas, dados);
 
     return grafico
   }
