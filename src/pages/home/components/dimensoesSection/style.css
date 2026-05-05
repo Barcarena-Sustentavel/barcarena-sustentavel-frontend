@@ -107,3 +107,15 @@
 @media(max-width:380px) {
   .dim-grid { grid-template-columns: 1fr; }
 }
+
+
+.mapa-placeholder {
+  /* background: rgba(255, 255, 255, 0.08); */
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  border-radius: 6px;
+  padding: 5px 5px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: rgba(255, 255, 255, 0.75);
+  margin-left: 1rem;
+}

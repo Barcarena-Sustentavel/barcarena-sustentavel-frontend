@@ -19,6 +19,18 @@ const DimensaoCard: FC<DimensaoCardProps> = ({ titulo, icone, url, cor }) => {
             />
         </svg>
     )
+
+    const temMapa = (dimensaoNome: string) => {
+        const stringLower = dimensaoNome.toLowerCase();
+        const dimensoesTrue = ["ordenamento", "segurança", "conectividade"];
+        for(const dimensao of dimensoesTrue){
+            console.log(dimensao, stringLower);
+            if(stringLower.includes(dimensao)){
+                return true;
+            }
+        }
+        return false;
+    };
     
     return (
         <a href={`/${url}`} className="dim-card" style={{ borderLeftColor: cor, color: cor, textDecoration: "none" }}>
@@ -34,7 +46,14 @@ const DimensaoCard: FC<DimensaoCardProps> = ({ titulo, icone, url, cor }) => {
 									height="36">
 									{(icone as any).children}
 								</svg>}
-            <div className="dim-name">{titulo}</div>
+            <div className="dim-name">{titulo} 
+                <span className="mapa-placeholder"
+                style={{
+                        background: `${cor}`,
+                        visibility: temMapa(titulo) ? "visible": "hidden",
+                    }}
+                >Mapa</span>
+            </div>
             <div className="dim-arrow"><ArrowUpRight/></div>
         </a>
         
