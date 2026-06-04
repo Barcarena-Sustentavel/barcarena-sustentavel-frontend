@@ -7,19 +7,27 @@ import CreateKml from "./kml/CreateKml.tsx";
 const CreatePage: FC = () => {
   const { dimensao, activeTab, elementName } = useParams();
 
-  if (activeTab === "Referências") {
+  const tabDict: Record<string, string> = {
+    indicador: "Indicadores",
+    referencias: "Referências",
+    estudosComplementares: "EstudosComplementares"
+  }
+
+  if(activeTab === undefined) return;
+
+  if (tabDict[activeTab] === "Referências") {
     return <CreateReferencias dimensao={dimensao} referencia={elementName} />;
   }
 
-  if (activeTab === "Kmls") {
+  if (tabDict[activeTab] === "Kmls") {
     return <CreateKml dimensao={dimensao} kml={elementName} />;
   }
 
-  if (activeTab === "Indicadores") {
+  if (tabDict[activeTab] === "Indicadores") {
     return <CreateIndicador dimensao={dimensao} indicadorNome={elementName} />;
   }
 
-  if (activeTab == "EstudosComplementares") {
+  if (tabDict[activeTab] == "EstudosComplementares") {
     return <CreateEstudosComplementares dimensao={dimensao} estudoComplementarNome={elementName} />
   }
 
