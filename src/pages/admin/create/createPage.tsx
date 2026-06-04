@@ -8,26 +8,32 @@ const CreatePage: FC = () => {
   const { dimensao, activeTab, elementName } = useParams();
 
   const tabDict: Record<string, string> = {
+    indicadores: "Indicadores",
     indicador: "Indicadores",
     referencias: "Referências",
-    estudosComplementares: "EstudosComplementares"
+    estudoscomplementares: "EstudosComplementares"
+  }
+
+  const returnTabDict = (tabName: string) => {
+    const tabNameNormalizado = tabName.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '');
+    return tabDict[tabNameNormalizado];
   }
 
   if(activeTab === undefined) return;
 
-  if (tabDict[activeTab] === "Referências") {
+  if (returnTabDict(activeTab) === "Referências") {
     return <CreateReferencias dimensao={dimensao} referencia={elementName} />;
   }
 
-  if (tabDict[activeTab] === "Kmls") {
+  if (returnTabDict(activeTab) === "Kmls") {
     return <CreateKml dimensao={dimensao} kml={elementName} />;
   }
 
-  if (tabDict[activeTab] === "Indicadores") {
+  if (returnTabDict(activeTab) === "Indicadores") {
     return <CreateIndicador dimensao={dimensao} indicadorNome={elementName} />;
   }
 
-  if (tabDict[activeTab] == "EstudosComplementares") {
+  if (returnTabDict(activeTab) == "EstudosComplementares") {
     return <CreateEstudosComplementares dimensao={dimensao} estudoComplementarNome={elementName} />
   }
 

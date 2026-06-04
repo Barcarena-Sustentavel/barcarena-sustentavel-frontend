@@ -139,7 +139,7 @@ export const TabIndicadores: FC<{ nomeDimensao: string | undefined }> = ({ nomeD
       </DndContext>
       <AddDelete
         dimensao={nomeDimensao}
-        activeTab="indicador"
+        activeTab="Indicadores"
         deleteElement={toDelete}
       />
     </div>
