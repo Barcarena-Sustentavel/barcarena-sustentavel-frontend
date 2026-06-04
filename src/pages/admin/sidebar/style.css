@@ -33,6 +33,7 @@
   flex-direction: column;
   gap: 0;
   margin-top: 0.5rem;
+  height: 100%;
 }
 
 .admin-sidebar__nav-item {
