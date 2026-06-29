@@ -1,5 +1,6 @@
 import React from 'react';
 import "./style.css"
+import mapaBarcarena from "@assets/images/home/barcarena_contornos.svg";
 
 const ConhecaProjetoSection: React.FC = () => {
   return (
@@ -152,6 +153,38 @@ const ConhecaProjetoSection: React.FC = () => {
             />
           </div>
         </div>
+
+        <div className="conheca-map">
+          <img src={mapaBarcarena} alt="Mapa das regiões administrativas de Barcarena: Ilhas, Murucupi, Sede, Vila do Conde e Estradas" loading="lazy"/>
+    </div>
+
+        <div className="conheca-text">
+      <h2 className="conheca-eyebrow">Conheça Barcarena</h2>
+       <p className="conheca-body">
+    Barcarena é um município paraense localizado às margens da 
+    <strong>Baía do Marajó</strong>, na Região Metropolitana de Belém, 
+    a cerca de 40 km da capital. Com aproximadamente 
+    <strong>127 mil habitantes</strong> e mais de 1.300 km², reúne áreas 
+    urbanas, industriais, ribeirinhas e insulares.
+  </p>
+
+  <p className="conheca-body">
+    O município é um dos principais polos industriais e portuários da Amazônia, 
+    abrigando o <strong>Porto de Vila do Conde</strong>, o maior do Pará, 
+    e um importante complexo produtivo de alumina, alumínio primário, caulim 
+    e fertilizantes. Sua economia também conta com forte presença da agricultura 
+    familiar e com o crescimento do turismo, impulsionado pelas praias de água doce, 
+    ilhas e paisagens amazônicas.
+  </p>
+
+  <p className="conheca-body">
+    Seu território está organizado em cinco regiões político-administrativas: 
+    <strong>Sede, Murucupi, Vila do Conde, Estradas e Ilhas</strong>, que expressam 
+    a diversidade social, econômica, cultural e ambiental de Barcarena. Com tantos 
+    contrastes e belezas, Barcarena é um lugar fantástico para conhecer, viver 
+    experiências autênticas e se encantar com a <strong>Amazônia paraense.</strong>
+  </p>
+    </div>
 
       </div>
 

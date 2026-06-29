@@ -88,7 +88,12 @@ top: 50%; left: 8%;
 opacity: 0.045;
 transform: rotate(-15deg);
 }
-
+.conheca-map img {
+    width: 100%;
+    max-width: 480px;
+    height: auto;
+    display: block;
+}
 /* top bar */
 .conheca-top-bar {
 background-color: #283349;
