@@ -14,5 +14,5 @@ export const ReferenciasTab:FC<{nomeDimensao:string | undefined, }> = ({nomeDime
         getReferencias()
     },[])
 
-    return <CommonTab activeTabDict={nomeReferencias} activeTab="referencias" nomeDimensao={nomeDimensao}/>
+    return <CommonTab activeTabDict={nomeReferencias} activeTab="Referências" nomeDimensao={nomeDimensao}/>
 }

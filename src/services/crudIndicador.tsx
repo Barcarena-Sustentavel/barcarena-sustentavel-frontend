@@ -9,7 +9,7 @@ import Swal from "sweetalert2";
 export const postIndicador = async (
   dimensao: string | undefined,
   indicador: string,
-  referencia: string,
+  referencia: string[],
   periodicidade: string,
   ultimaAtualizacao: string,
   unidadeMedida: string,
@@ -63,7 +63,7 @@ export const patchIndicador = async (
   dimensao: string | undefined,
   antigoIndicador: string,
   novoIndicador: string = "",
-  referencia: string = "",
+  referencia: string[] = [],
   periodicidade: string = "",
   ultimaAtualizacao: string = "",
   unidadeMedida: string = "",

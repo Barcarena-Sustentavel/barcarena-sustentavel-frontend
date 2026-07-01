@@ -68,22 +68,22 @@
   border: solid 1px var(--primary-blue);
   border-radius: 4px;
 }
-.botaoNovaReferencia{
+.botaoNovaReferencia , .botaoNovaFonte{
   display: flex;
   justify-content: space-between;
   align-items: center;
   margin-top: 5px;
-  width: 30%;
+  width: 40%;
 }
 
-.botaoNovaReferencia button{
+.botaoNovaReferencia button, .botaoNovaFonte button{
   background-color: var(--primary-blue);
   color: white;
   border: solid 1px var(--primary-blue);
   border-radius: 4px;
 }
 
-.botaoNovaReferencia span{
+.botaoNovaReferencia span, .botaoNovaFonte span{
   cursor: pointer;
   background-color: var(--light);
   color: black;
@@ -94,7 +94,19 @@
   border-radius: 25px;
 }
 
-.botaoNovaReferencia p{
+.selectFonteMetodologia {
+  display: flex;
+  align-items: center; /* Alinha verticalmente no centro */
+  gap: 12px;           /* Cria um espaçamento horizontal entre o checkbox e o select */
+  width: 100%;         /* Garante que o container ocupe a largura disponível */
+}
+
+/* Opcional: Garante que o Select ocupe o restante do espaço disponível */
+.selectFonteMetodologiar > :last-child {
+  flex-grow: 1;
+}
+
+.botaoNovaReferencia p, .botaoNovaFonte p{
   padding:2px;
   margin-left: 5px;
   width: 50%;

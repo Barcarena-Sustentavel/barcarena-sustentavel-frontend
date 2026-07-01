@@ -18,17 +18,18 @@ export const DashboardComponent: FC<{
 
   const gerarGrafico = ():Grafico => {
     const tiposGraficos:Record<string,any> = {
-      "treemap": new Treemap(colunas, dados).gerarDados(),
-      "pie": new Pizza(colunas, dados).gerarDados(),
-      "scatter": new Scatter(colunas, dados).gerarDados(),
+      "treemap": new Treemap(colunas, dados),
+      "pie": new Pizza(colunas, dados),
+      "scatter": new Scatter(colunas, dados),
     }
     const grafico:Grafico = tiposGraficos[tipoGrafico] !== undefined ? tiposGraficos[tipoGrafico] : new Grafico(colunas, dados);
-
+    console.log("grafico", grafico)
     return grafico
   }
 
   if (tipoGrafico !== "tabela") {
     const grafico:Grafico = gerarGrafico();
+    //console.log("grafico", grafico)
     const dadosGrafico = grafico.gerarDados();
     const plotOptions = grafico.plotOptions(tipoGrafico, dadosGrafico, categorias);
     return (

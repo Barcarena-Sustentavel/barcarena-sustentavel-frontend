@@ -8,7 +8,6 @@ import { postReferencias, patchReferencias } from "../../../../services/crudRefe
 import "./style.css";
 //import "../../css/dimensaoPage.css";
 import "../../dimensao/style.css";
-import dimensoes from "../../../../utils/const.tsx";
 import { Form, Alert, Button, Spinner } from "react-bootstrap";
 import CreatePageHeader from "../../components/headers/components/createPageHeader.tsx";
 

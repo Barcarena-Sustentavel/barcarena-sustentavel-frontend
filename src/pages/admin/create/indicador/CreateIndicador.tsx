@@ -12,6 +12,7 @@ import { DndContext, DragOverlay, PointerSensor, useSensor, useSensors, pointerW
 import { SortableContext, verticalListSortingStrategy, useSortable, arrayMove, defaultAnimateLayoutChanges } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
 import CreatePageHeader from "../../components/headers/components/createPageHeader.tsx";
+import {FonteMetodologia} from "./components/fonteEMetodologia/fonteEMetodologia.tsx";
 
 //Modularizar melhor o CreateIndicador
 export const CreateIndicador: FC<{
@@ -29,11 +30,13 @@ export const CreateIndicador: FC<{
   );
   //Diminuir a quantidade de useStates
   const [referencias, setReferencias] = useState<string[]>([]);
-  const [referenciaFonteDados, setReferenciaFonteDados] = useState<string>("")
+  const [referenciaFonteDados, setReferenciaFonteDados] = useState<{id:number, nome:string, stored:boolean}[]>([])
+  const [deletarFonte, setDeletarFonte] = useState<{id:number, nome:string, stored:boolean}[]>([]);
   const [periodicidade, setPeriodicidade] = useState<string>("")
   const [ultimaAtualizacao, setUltimaAtualizacao] = useState<string>("")
   const [unidadeMedida, setUnidadeMedida] = useState<string>("")
   const [metodologia, setMetodologia] = useState<string>("")
+  const [erroFonteMetodologia, setErroFonteMetodologia] = useState<string>("")
   //Array que guarda os dados dos gráficos para que possam ser enviados definitivamente
   const [graficosData, setGraficosData] = useState<GraficosIndicador[]>([]);
   const [patchGraficosData, setGraficosPatchData] = useState<GraficosIndicador[]>([]);
@@ -115,6 +118,21 @@ export const CreateIndicador: FC<{
     setDeleteArray([]);
   };
 
+  const handleDeletarFonte = (e: React.MouseEvent<HTMLButtonElement>) => {
+    e.preventDefault();
+    deletarFonte.forEach((fonte) => {
+      if (fonte.nome !== "" && fonte.stored === true) {
+        const url = `/admin/dimensoes/${dimensao}/indicador/${indicadorNome}/anexos/${fonte.id}/`;
+        api
+          .delete(url)
+          .catch((error) => console.error("Erro ao deletar:", error));
+      }else{
+        setDeletarFonte((prev) => prev.filter((fonte) => fonte.id !== fonte.id))
+        setReferenciaFonteDados((prev) => prev.filter((fonte) => fonte.id !== fonte.id))
+      }
+    });
+  }
+
   //Faz o submit do a
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -139,17 +157,20 @@ export const CreateIndicador: FC<{
       return;
     }
 
+    if(referenciaFonteDados.length === 0 || periodicidade === "" || ultimaAtualizacao === "" || unidadeMedida === "" || metodologia === ""){
+      setErroFonteMetodologia("Preencha todos os campos obrigatórios de Fonte e Metodologia.");
+    }
     if (!indicador) {
       setErrorIndicador("O campo de nome do indicador é obrigatório.");
       return;
     }
-
+    const novoReferenciaFonteDados = referenciaFonteDados.map((referencia:{id:number, nome:string}) => referencia.nome)
     if (patch === true) {
       patchIndicador(
         dimensao,
         indicadorNome as string,
         indicador,
-        referenciaFonteDados,
+        novoReferenciaFonteDados,
         periodicidade,
         ultimaAtualizacao,
         unidadeMedida,
@@ -159,7 +180,7 @@ export const CreateIndicador: FC<{
       navigate(`/admin/dimensao/${dimensao}/`);
     } else {
       //postIndicador(dimensao, indicador, arrayIndicadorResponse);
-      postIndicador(dimensao, indicador, referenciaFonteDados, periodicidade, ultimaAtualizacao, unidadeMedida, metodologia, graficosData);
+      postIndicador(dimensao, indicador, novoReferenciaFonteDados, periodicidade, ultimaAtualizacao, unidadeMedida, metodologia, graficosData);
       navigate(`/admin/dimensao/${dimensao}/`);
     }
   };
@@ -170,7 +191,16 @@ export const CreateIndicador: FC<{
       const response = await api.get(url)
       console.log(response.data)
           setIndicador(response.data.nome)
-          setReferenciaFonteDados(response.data.fonteDeDados)
+          //setReferenciaFonteDados(response.data.fonteDeDados)
+          setReferenciaFonteDados((prev) =>{
+            const novoReferenciaDados:{id:number, nome:string, stored:boolean}[] = []
+            if(response.data.fonteDeDados.length > 0){
+              response.data.fonteDeDados.map((nome:string,index:number) => novoReferenciaDados.push({id:index, nome:nome, stored: true}))
+            }else{
+              novoReferenciaDados.push({id:0, nome:"", stored: false})
+            }
+            return novoReferenciaDados
+          })
           setPeriodicidade(response.data.periodicidade)
           setUltimaAtualizacao(response.data.ultimaAtualizacao)
           setUnidadeMedida(response.data.unidadeMedida)
@@ -380,6 +410,7 @@ export const CreateIndicador: FC<{
       if (view[index].posicao != index)
         view[index].posicao = index
     });
+    console.log(referenciaFonteDados)
     return (
       //Mudar o DndContext para um componente separado
       <DndContext sensors={sensors}
@@ -468,26 +499,18 @@ export const CreateIndicador: FC<{
         <div className="fonteMetodologia">
           <Form.Group controlId="referencias">
             <Form.Label>Fontes e Dados</Form.Label>
-            {referencias.length > 0 && (
-              <Form.Select
-                defaultValue={referenciaFonteDados}
-                onBlur={(e) => setReferenciaFonteDados(e.target.value)}
-                name="referencias"
-              >
-                <option value="">Escolha a sua Fonte de Dados</option>
-                {referencias.map((referencia) => (
-                  <option key={referencia} value={referencia} title={referencia}>
-                    {referencia.length > 80 ? referencia.slice(0, 80) + "…" : referencia}
-                  </option>
-                ))}
-              </Form.Select>
-            )}
-            <div className="botaoNovaReferencia" style={popUpFonteDados === true ? { width: '80%', justifyContent: 'flex-start' } : {}}>
-              <button type="button" onClick={() => setOpenReferencia(true)}>Nova Fonte de dados</button>
-              <span onMouseEnter={() => setPopUpFonteDados(true)} style={popUpFonteDados ? { display: "none" } : {}}>i</span>
-              {popUpFonteDados && <p onMouseLeave={() => setPopUpFonteDados(false)}>O botão "Nova Fonte de dados" permite adicionar uma nova referência de dados para escolher</p>}
+            {referencias.length > 0 && 
+              <FonteMetodologia setDeletarFonte={setDeletarFonte} referencias={referencias} referenciasAtuais={referenciaFonteDados} setReferencias={setReferenciaFonteDados}/>   
+            }
+            <div>
+              <button type="button" onClick={handleDeletarFonte} disabled={deletarFonte.length === 0 ? true : false}>Deletar Fonte de Dados Selecionadas ({deletarFonte.length})</button>
             </div>
-
+            <div className="botaoNovaReferencia" style={popUpFonteDados === true ? { width: '80%', justifyContent: 'flex-start' } : {}}>
+              <button type="button" onClick={() => setOpenReferencia(true)}>Criar nova Fonte de Dados</button>
+              <span onMouseEnter={() => setPopUpFonteDados(true)} style={popUpFonteDados ? { display: "none" } : {}}>i</span>
+              {popUpFonteDados && <p onMouseLeave={() => setPopUpFonteDados(false)}>O botão "Criar nova Fonte de Dados" permite adicionar uma nova referência de dados para escolher</p>}
+            </div>
+            
             {/*Fazer um componente somente para fonte e metodologia*/}
             {openReferencia && (
               <div className="overlay">
@@ -563,6 +586,11 @@ export const CreateIndicador: FC<{
               defaultValue={metodologia}
               onBlur={(e) => setMetodologia(e.target.value)}
             />
+            {erroFonteMetodologia !== "" && (
+            <Alert variant="danger" className="mt-2">
+              {erroFonteMetodologia}
+            </Alert>
+          )}
           </Form.Group>
         </div>
         <div className="d-flex justify-content-between mt-4">

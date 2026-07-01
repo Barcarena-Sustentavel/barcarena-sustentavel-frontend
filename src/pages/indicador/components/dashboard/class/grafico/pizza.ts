@@ -7,7 +7,7 @@ export class Pizza extends Grafico implements Options{
         super(colunas, dados);
     }
 
-    gerarDados(): PizzaSeries[]{
+    gerarDados():PizzaSeries[]{
         {
             for (let i = 0; i < this.dados.length; i++) {
                 this.dadosGraficosPizza.push({

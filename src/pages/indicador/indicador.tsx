@@ -22,7 +22,7 @@ const IndicadorComponent: FC = () => {
     graficos: [],
   });
   const [fonteEMetodologia, setFonteEMetodologia] = useState({
-    referenciaFonteDados: "",
+    referenciaFonteDados: [],
     periodicidade: "",
     ultimaAtualizacao: "",
     unidadeMedida: "",
@@ -56,6 +56,7 @@ const IndicadorComponent: FC = () => {
   const arrayIndicadoresProximoAnterior = getProximosIndicadores().arrayIndicadoresProximoAnterior
 
   useEffect(() => {
+    console.log(indicador)
     const url: string = `/dimensoes/${dimensao}/indicador/${indicador}/`;
     const getIndicador = async () => {
       const response = await api.get(url)
@@ -75,7 +76,7 @@ const IndicadorComponent: FC = () => {
       setLoading(false);
     }
     getIndicador()
-  }, []);
+  }, [indicadoresOrdemProxima, indicadoresOrdemAnterior]);
 
   const handleNavigateIndicador = (indicador: string, ordem: number, arrayIndicadores: string[]) => {
     const url = encodeURI(`/${dimensao}/${indicador}/${ordem}`);

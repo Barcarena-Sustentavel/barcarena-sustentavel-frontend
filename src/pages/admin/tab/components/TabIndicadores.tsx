@@ -19,7 +19,7 @@ export const TabIndicadores: FC<{ nomeDimensao: string | undefined }> = ({ nomeD
   >([]);
   const [toDelete, setToDelete] = useState<string[]>([]);
   const [checkedItems, setCheckedItems] = useState<Record<string, boolean>>({});
-  const url = `/admin/dimensoes/${nomeDimensao as string}/indicador`
+  const url = `/admin/dimensoes/${nomeDimensao as string}/indicadores`
 
   const SortableItem: FC<{
     id: number;
@@ -139,7 +139,7 @@ export const TabIndicadores: FC<{ nomeDimensao: string | undefined }> = ({ nomeD
       </DndContext>
       <AddDelete
         dimensao={nomeDimensao}
-        activeTab="indicador"
+        activeTab="Indicadores"
         deleteElement={toDelete}
       />
     </div>
