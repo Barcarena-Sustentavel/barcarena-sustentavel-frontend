@@ -94,6 +94,43 @@ transform: rotate(-15deg);
     height: auto;
     display: block;
 }
+
+.barca-para {
+    display: flex;
+    gap: 15px;
+    align-items: flex-start;
+    margin-bottom: 20px;
+}
+
+.barca-para p {
+    margin: 0;
+    font-size: 14px;
+    line-height: 1.7;
+    color: rgba(255, 255, 255, 0.78);
+    padding-top: 7px;
+}
+
+.barca-para strong {
+    color: #8DC63F;
+    font-weight: 700;
+}
+
+.barca-ic {
+    flex: 0 0 auto;
+    width: 42px;
+    height: 42px;
+    border-radius: 12px;
+    background: rgba(141, 198, 63, 0.1);
+    border: 1px solid rgba(141, 198, 63, 0.32);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.barca-ic svg {
+    width: 22px;
+    height: 22px;
+}
 /* top bar */
 .conheca-top-bar {
 background-color: #283349;
