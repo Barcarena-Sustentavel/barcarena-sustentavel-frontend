@@ -20,104 +20,99 @@
     opacity: 0.07;
 }
 
-/* folha grande canto inferior esquerdo */
 .conheca-deco .deco-leaf-1 {
-    width: 200px;
-    height: 200px;
+    width: clamp(100px, 14vw, 200px);
+    height: clamp(100px, 14vw, 200px);
     bottom: -30px;
     left: -20px;
     opacity: 0.06;
     transform: rotate(-20deg);
 }
 
-/* folha média topo direito */
 .conheca-deco .deco-leaf-2 {
-    width: 140px;
-    height: 140px;
+    width: clamp(70px, 10vw, 140px);
+    height: clamp(70px, 10vw, 140px);
     top: -20px;
-    right: 160px;
+    right: clamp(20px, 12vw, 160px);
     opacity: 0.05;
     transform: rotate(30deg);
 }
 
-/* folha pequena centro esquerdo */
 .conheca-deco .deco-leaf-3 {
-    width: 90px;
-    height: 90px;
+    width: clamp(45px, 6vw, 90px);
+    height: clamp(45px, 6vw, 90px);
     top: 40%;
     left: 30%;
     opacity: 0.04;
     transform: rotate(-10deg);
 }
 
-/* galho topo esquerdo */
 .conheca-deco .deco-branch {
-    width: 180px;
-    height: 130px;
+    width: clamp(90px, 13vw, 180px);
+    height: clamp(65px, 9vw, 130px);
     top: 0;
     left: -10px;
     opacity: 0.055;
     transform: rotate(5deg);
 }
 
-/* folha tropical canto direito */
 .conheca-deco .deco-tropical {
-    width: 160px;
-    height: 160px;
+    width: clamp(80px, 11vw, 160px);
+    height: clamp(80px, 11vw, 160px);
     bottom: -10px;
     right: -20px;
     opacity: 0.06;
     transform: rotate(15deg) scaleX(-1);
 }
 
-/* folha fina pontuda — centro direito */
 .conheca-deco .deco-slim {
-    width: 80px;
-    height: 160px;
+    width: clamp(40px, 6vw, 80px);
+    height: clamp(80px, 12vw, 160px);
     top: 20%;
     right: 22%;
     opacity: 0.045;
     transform: rotate(-25deg);
 }
 
-/* folha redonda pequena — centro inferior */
 .conheca-deco .deco-round {
-    width: 100px;
-    height: 100px;
+    width: clamp(50px, 7vw, 100px);
+    height: clamp(50px, 7vw, 100px);
     bottom: 15%;
     left: 42%;
     opacity: 0.04;
     transform: rotate(40deg);
 }
 
-/* galho secundário — centro direito */
 .conheca-deco .deco-branch2 {
-    width: 200px;
-    height: 120px;
+    width: clamp(100px, 14vw, 200px);
+    height: clamp(60px, 9vw, 120px);
     bottom: 10px;
-    right: 180px;
+    right: clamp(60px, 13vw, 180px);
     opacity: 0.05;
     transform: rotate(-10deg) scaleX(-1);
 }
 
-/* folha longa estreita — canto superior direito */
 .conheca-deco .deco-narrow {
-    width: 70px;
-    height: 190px;
+    width: clamp(35px, 5vw, 70px);
+    height: clamp(95px, 13vw, 190px);
     top: -10px;
     right: 30px;
     opacity: 0.05;
     transform: rotate(20deg);
 }
 
-/* trio de folhinhas — esquerda centro */
 .conheca-deco .deco-trio {
-    width: 130px;
-    height: 130px;
+    width: clamp(65px, 9vw, 130px);
+    height: clamp(65px, 9vw, 130px);
     top: 50%;
     left: 8%;
     opacity: 0.045;
     transform: rotate(-15deg);
+}
+
+/* Oculta decorações em telas pequenas para evitar ruído visual */
+@media (max-width: 620px) {
+    .conheca-deco { display: none; }
 }
 
 .conheca-map img {
@@ -125,18 +120,19 @@
     max-width: 480px;
     height: auto;
     display: block;
+    margin-inline: auto;
 }
 
 .barca-para {
     display: flex;
-    gap: 15px;
+    gap: clamp(10px, 2vw, 15px);
     align-items: flex-start;
     margin-bottom: 20px;
 }
 
 .barca-para p {
     margin: 0;
-    font-size: 14px;
+    font-size: clamp(13px, 1vw + 0.5rem, 14px);
     line-height: 1.7;
     color: rgba(255, 255, 255, 0.78);
     padding-top: 7px;
@@ -149,8 +145,8 @@
 
 .barca-ic {
     flex: 0 0 auto;
-    width: 42px;
-    height: 42px;
+    width: clamp(36px, 4vw, 42px);
+    height: clamp(36px, 4vw, 42px);
     border-radius: 12px;
     background: rgba(141, 198, 63, 0.1);
     border: 1px solid rgba(141, 198, 63, 0.32);
@@ -160,13 +156,14 @@
 }
 
 .barca-ic svg {
-    width: 22px;
-    height: 22px;
+    width: clamp(18px, 2vw, 22px);
+    height: clamp(18px, 2vw, 22px);
 }
 
 .barca-legend-band {
-    grid-column: 1 / -1;
     width: 100%;
+    max-width: 100%;
+    margin-top: 36px;
 }
 
 .barca-legend-band .barca-sub {
@@ -179,24 +176,27 @@
     letter-spacing: normal;
     line-height: 1.35;
     color: rgba(255, 255, 255, 0.85);
-    font-size: 16px;
+    font-size: clamp(14px, 1vw + 0.6rem, 16px);
     margin: 0 0 26px;
 }
 
 .legenda-grid {
     display: grid;
     grid-template-columns: repeat(5, 1fr);
-    gap: 24px;
+    gap: clamp(12px, 2vw, 24px);
     border: 1px solid rgba(255, 255, 255, 0.13);
     border-radius: 16px;
     background: rgba(0, 0, 0, 0.18);
-    padding: 24px 26px;
+    padding: clamp(16px, 2vw, 24px) clamp(16px, 2.5vw, 26px);
+    width: 100%;
+    box-sizing: border-box;
 }
 
 .leg-item {
     display: flex;
     gap: 11px;
     align-items: flex-start;
+    min-width: 0;
 }
 
 .leg-item .sw {
@@ -206,6 +206,10 @@
     flex: 0 0 auto;
     margin-top: 2px;
     box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.18);
+}
+
+.leg-item .leg-txt {
+    min-width: 0;
 }
 
 .leg-item .leg-txt strong {
@@ -223,13 +227,14 @@
     font-size: 12px;
     line-height: 1.5;
     color: rgba(255, 255, 255, 0.6);
+    overflow-wrap: break-word;
 }
 
 /* top bar */
 .conheca-top-bar {
     background-color: #283349;
     position: relative;
-    height: 60px;
+    height: clamp(44px, 7vw, 60px);
     overflow: hidden;
 }
 
@@ -239,7 +244,7 @@
     inset: 0;
     background-image: url('/src/assets/images/icons/odsbeye.png');
     background-repeat: repeat-x;
-    background-size: auto 52px;
+    background-size: auto clamp(38px, 6vw, 52px);
     background-position: center;
     opacity: 0.35;
 }
@@ -247,17 +252,22 @@
 .conheca-inner {
     max-width: 1300px;
     margin: 0 auto;
-    padding: 72px 52px;
+    padding: clamp(32px, 6vw, 72px) clamp(20px, 4vw, 52px);
     display: grid;
     grid-template-columns: 1fr 1.2fr;
-    gap: 72px;
+    gap: clamp(28px, 5vw, 72px);
     align-items: center;
     position: relative;
     z-index: 1;
 }
 
+/* Legenda deve ocupar toda a largura, fora da divisão de colunas */
+.conheca-inner .barca-legend-band {
+    grid-column: 1 / -1;
+}
+
 .conheca-eyebrow {
-    font-size: clamp(1.6rem, 3vw, 2.4rem);
+    font-size: clamp(1.4rem, 3vw, 2.4rem);
     font-weight: 800;
     letter-spacing: normal;
     text-transform: none;
@@ -269,7 +279,7 @@
 }
 
 .conheca-body {
-    font-size: 16px;
+    font-size: clamp(14px, 0.6vw + 0.75rem, 16px);
     line-height: 1.85;
     color: rgba(255, 255, 255, 0.78);
     margin-bottom: 36px;
@@ -302,21 +312,91 @@
     border: none;
 }
 
-@media (max-width: 900px) {
-    .conheca-inner {
+/* ══ BREAKPOINTS (mobile-first, consolidados) ══ */
+
+@media (max-width: 1024px) {
+    .legenda-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .barca-info {
         grid-template-columns: 1fr;
-        padding: 48px 24px;
-        gap: 40px;
+        gap: 32px;
+    }
+
+    .barca-mapcol {
+        order: -1;
+    }
+
+    .barca-stats {
+        width: 100%;
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .barca-stats .stat:nth-child(2) {
+        border-right: none;
+    }
+
+    .barca-stats .stat:nth-child(1),
+    .barca-stats .stat:nth-child(2) {
+        border-bottom: 1px solid rgba(255, 255, 255, 0.1);
     }
 }
 
-  @media (max-width: 1024px) { .legenda-grid { grid-template-columns:repeat(2,1fr); } }
-  @media (max-width: 620px) { .legenda-grid { grid-template-columns:1fr; } }
+@media (max-width: 900px) {
+    .conheca-inner {
+        grid-template-columns: 1fr;
+        padding: clamp(32px, 6vw, 48px) clamp(16px, 4vw, 24px);
+        gap: 32px;
+    }
 
-  @media (max-width: 1024px) {
-    .barca-info { grid-template-columns:1fr; gap:32px; }
-    .barca-mapcol { order:-1; }
-    .barca-stats { width:100%; grid-template-columns:repeat(2,1fr); }
-    .barca-stats .stat:nth-child(2) { border-right:none; }
-    .barca-stats .stat:nth-child(1),.barca-stats .stat:nth-child(2) { border-bottom:1px solid rgba(255,255,255,0.1); }
-  }
+    .conheca-inner .barca-legend-band {
+        grid-column: 1;
+    }
+}
+
+@media (max-width: 768px) {
+    .conheca-eyebrow {
+        font-size: clamp(1.3rem, 5vw, 1.8rem);
+    }
+
+    .legenda-grid {
+        padding: 18px 16px;
+        gap: 16px;
+    }
+}
+
+@media (max-width: 620px) {
+    .legenda-grid {
+        grid-template-columns: 1fr;
+        padding: 16px;
+        gap: 14px;
+    }
+
+    .barca-para {
+        gap: 10px;
+    }
+
+    .barca-ic {
+        width: 36px;
+        height: 36px;
+    }
+}
+
+@media (max-width: 420px) {
+    .conheca-body {
+        font-size: 13.5px;
+    }
+
+    .barca-sub {
+        font-size: 14px;
+    }
+
+    .leg-item .leg-txt strong {
+        font-size: 13px;
+    }
+
+    .leg-item .leg-txt p {
+        font-size: 11.5px;
+    }
+}
