@@ -268,7 +268,7 @@ const RelatoriosCarousel: React.FC<RelatoriosCarouselProps> = ({ dimensoesTitulo
         <p className="sec-sub">Baixe um artigo curto sobre uma das dimensões</p>
       </div>
 
-      <section className="car-section" id="galeria" ref={sectionRef}>
+      <section className="car-section" id="publicacoes" ref={sectionRef}>
 
         <div className="car-parallax-clip">
           <div className="car-parallax-bg" ref={bgRef}></div>

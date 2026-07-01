@@ -31,7 +31,8 @@ const NavbarComponent: FC = () => {
         <ul className={`nav-links ${menuAberto ? "nav-aberto" : ""}`}>
           <li><a href="/">Início</a></li>
           <li><a href="/#dimensoes">Dimensões</a></li>
-          <li><a href="/#galeria">Publicações</a></li>
+          <li><a href="/#publicacoes">Publicações</a></li>
+          {/* <li><a className={pathname === "/galeria/" ? "active": ""} href="/galeria/">Galeria</a></li> */}
           <li><a  className={pathname === "/colaboradores/" ? "active": ""}href="/colaboradores/">Colaboradores</a></li>
           <li><a className={pathname === "/about/" ? "active": ""} href="/about/">Sobre</a></li>
         </ul>
