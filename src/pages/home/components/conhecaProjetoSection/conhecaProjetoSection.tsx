@@ -165,6 +165,17 @@ const ConhecaProjetoSection: React.FC = () => {
           <div className="barca-para"><span className="barca-ic"><svg viewBox="0 0 24 24" fill="none" stroke="#8DC63F" stroke-width="1.7"><circle cx="9" cy="8" r="3"></circle><path d="M3.6 20a5.4 5.4 0 0 1 10.8 0"></path><circle cx="17.5" cy="9" r="2.3"></circle><path d="M15.4 20.2A4.6 4.6 0 0 1 22 16.4"></path></svg></span><p>Seu território está organizado em cinco regiões políticas administrativas: <strong>Sede, Murucupi, Vila do Conde, Estradas e Ilhas</strong>, que expressam a diversidade social, econômica, cultural e ambiental de Barcarena. Com tantos contrastes e belezas, Barcarena é um lugar fantástico para conhecer, viver experiências autênticas e se encantar com a <strong>Amazônia paraense</strong>.</p></div>
         </div>
 
+        <div className="barca-legend-band">
+      <p className="barca-sub">Barcarena em Regiões políticas e administrativas</p>
+      <div className="legenda-grid">
+        <div className="leg-item"><span className="sw" style={{ background: "#6f8a44" }}></span><div className="leg-txt"><strong>ILHAS</strong><p>Região composta por ilhas e áreas ribeirinhas, com riqueza ambiental e forte cultura tradicional.</p></div></div>
+        <div className="leg-item"><span className="sw" style={{ background: "#c4673a" }}></span><div className="leg-txt"><strong>MURUCUPI</strong><p>Área de comunidades ribeirinhas, produção agrícola e extrativismo, marcada pela vida tradicional amazônica.</p></div></div>
+        <div className="leg-item"><span className="sw" style={{ background: "#d8a330" }}></span><div className="leg-txt"><strong>SEDE</strong><p>Centro administrativo e urbano do município, com concentração de serviços públicos e comércio.</p></div></div>
+        <div className="leg-item"><span className="sw" style={{ background: "#5d8aa8" }}></span><div className="leg-txt"><strong>VILA DO CONDE</strong><p>Polo industrial e portuário, onde está localizado o Porto de Vila do Conde e grandes complexos produtivos.</p></div></div>
+        <div className="leg-item"><span className="sw" style={{ background: "#7d5689" }}></span><div className="leg-txt"><strong>ESTRADAS</strong><p>Região de comunidades interligadas pelas principais vias terrestres, com áreas rurais e expansão urbana.</p></div></div>
+      </div>
+    </div>
+
       </div>
 
     </section>
